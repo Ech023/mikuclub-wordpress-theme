@@ -1,0 +1,205 @@
+/// <reference path="base.js" />
+/// <reference path="class-comment.js" />
+/// <reference path="class-message.js" />
+/// <reference path="class-modal.js" />
+/// <reference path="class-post.js" />
+/// <reference path="class-toast.js" />
+/// <reference path="class-ua-parser.js" />
+/// <reference path="class-user.js" />
+/// <reference path="function.js" />
+/// <reference path="function-ajax.js" />
+
+/***
+ * jquery 监听器文件
+ */
+
+$(function () {
+
+    "use strict";
+
+
+    let $body = $('body');
+
+    //监听搜索表单 的提交事件
+    $('form.search-form').on('submit', function (event) {
+        event.preventDefault();
+        sendSearch(event.target);
+    });
+      //监听搜索表单里的check点击事件
+    $('form.search-form .cat').on('click', function (event) {
+        //触发表单的提交事件
+        $(this).parents('form.search-form').trigger('submit');
+    });
+
+
+    /**
+     * 分页导航下一页按钮点击事件
+     */
+    $('.content .pagination-nav .btn.get-next-page').on('click', '', '', getNextPage);
+
+    /**
+     * 分页导航跳转按钮点击事件
+     * 跳转页面
+     */
+    $('.change-page .change-page-button').on('click', '', '', changePagingPage);
+
+    /**
+     * 分页导航 页码表单变动事件
+     *  限制码表单输入大小, 并根据内容激活或注销表单
+     */
+    $('.change-page .change-page-value').on('change', '', '', respectInputValueRange);
+
+
+    /**
+     * 文章列表自定义排序变更事件
+     * 跳转页面更新排序
+     */
+    $('.post-list-order select').on('change', '', '', postListCustomOrder);
+
+
+    /**
+     * 关注用户按钮点击事件
+     * 关注/取消关注用户
+     */
+    $('.user-functions').on('click', 'button.user-followed.follow', true, setUserFollowed).on('click', 'button.user-followed.unfollow', false, setUserFollowed);
+
+    /**
+     * 创建私信窗口按钮 点击事件
+     * 创建显示模态窗
+     */
+    $body.on('click', '.create-private-message-modal button', '', createPrivateMessageModal);
+
+    /**
+     * 私信模态窗中 发送按钮 点击事件
+     * 发送私信
+     */
+    $body.on('click', '.modal button.send-private-message', '', sendPrivateMessage);
+
+
+    /**
+     * 弹窗消失时触发
+     * 把弹窗从DOM中移除
+     */
+    $body
+        .on('hidden.bs.toast', '.my-toast-system .toast', event => {
+            $(event.target).remove();
+        });
+
+
+    /**模态窗消失时触发
+     *  把模态窗从DOM中移除
+     *  */
+    $body.on('hidden.bs.modal', '.my-modal', event => {
+        //删除jquery模态实例
+        $(event.target).modal('dispose');
+        //从DOM中移除
+        $(event.target).remove();
+
+    });
+
+
+    
+  
+
+
+    //监听APP唤醒链接的点击事件
+    $("a.app-link").on('click', '', '', invokeAppLink);
+
+    //如果随机显示的元素存在
+    if ($(".random-display").length) {
+        randomDisplayElement();
+    }
+
+    //监听屏幕大小变化
+    $(window).on('resize', '', '', actionOnBrowserSize);
+    // 根据窗口大小触发的动作
+    actionOnBrowserSize();
+
+    //简体谷歌广告事件
+    //隐藏空白广告
+    setTimeout(hideEmptyAdSense, 6000);
+
+    /**
+     * 论坛页面显示 未读消息通知窗口
+     */
+    let $alertIconElement = $("#wpforo #wpforo-wrap .wpf-bar-right .wpf-alerts");
+    if ($($alertIconElement).length) {
+        let query = getQueryParameters();
+        if (query.hasOwnProperty('show_notification')) {
+            setTimeout(function () {
+                $alertIconElement.trigger('click');
+            }, 500);
+
+
+        }
+
+    }
+
+    //滚动的时候 显示浮动菜单 并延时隐藏
+    $(document).on('scroll', showSidebarMenuOnScroll);
+
+
+   /**
+    * 如果当前域名为EU
+    * 替换所有A标签的href属性为副域名
+    */
+    update_a_href_to_secondary_domain();
+
+
+});
+
+
+/*
+ //如果当前域名为 cc
+ if (location.host === 'www.mikuclub.cc') {
+    //重定向到online
+    let url = location.href.replace('www.mikuclub.cc', 'www.mikuclub.online');
+    location.replace(url);
+}*/
+
+
+  //如果当前域名为 online 或者 cc
+ if (location.host === 'www.mikuclub.online' ) {
+    //重定向到win
+    let url = location.href.replace('www.mikuclub.online', 'www.mikuclub.win');
+    location.replace(url);
+}
+
+if (location.host === 'www.mikuclub.cc' ) {
+
+     //重定向到win
+    let url = location.href.replace('www.mikuclub.cc', 'www.mikuclub.win');
+    location.replace(url);
+
+    /*
+    //一天内只判断一次
+   const flag = getCookie('redirect_flag');
+
+   if(!flag){
+
+    //如果是0 就跳转
+    const rand = Math.floor(Math.random() * 2);
+
+    if(rand < 1){
+
+        //重定向到win
+        let url = location.href.replace('www.mikuclub.cc', 'www.mikuclub.win');
+        location.replace(url);
+
+         //设置cookie避免重复判断
+         //setCookie('redirect_flag', 0, 1);
+    }
+    else{
+
+        //设置cookie避免重复判断
+        setCookie('redirect_flag', 1, 1);
+
+    }
+    
+    
+
+   }*/
+
+
+}
+

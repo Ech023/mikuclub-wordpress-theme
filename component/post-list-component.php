@@ -1,0 +1,155 @@
+<?php
+
+/**
+ * 文章列表组件
+ */
+function post_list_component() {
+
+
+	//是否显示相关文章信息
+	/*
+	$_author = dopt('d_post_author_b');
+	$_time = dopt('d_post_time_b');
+	$_views = dopt('d_post_views_b');
+	$_comment = dopt('d_post_comment_b');
+	$_like = dopt('d_post_like_b');
+	*/
+
+	//获取默认文章列表
+	$post_list = get_default_post_list();
+
+
+	$post_list_html = '';
+	foreach ( $post_list as $my_post ) {
+
+		$author_avatar = '';
+		$author_name   = '';
+		//不在作者页面才显示
+		if ( ! is_author() ) {
+
+			$author_avatar .= '
+     
+            <a href="' . $my_post->post_author->user_href . '" title="查看UP主空间" target="_blank">
+                ' . print_user_avatar( $my_post->post_author->user_image, 40 ) . '
+            </a>';
+
+			$author_name .= '
+
+            
+                <a class="card-link small" title="查看UP主空间"
+                   href=" ' . $my_post->post_author->user_href . '" target="_blank">
+                    ' . $my_post->post_author->display_name . '
+                </a>
+            ';
+		}
+
+		//当前分类id和文章所属子分类不一样的时候才输出分类链接
+		/*
+		$category_link = '';
+		if ( get_queried_object_id() != $my_post->post_cat_id ) {
+			$category_link = '
+			<div class="right-badge bg-transparent-half rounded small p-1">
+                        <a class=" text-light " href="' . $my_post->post_cat_href . '" title="查看相关分类"  target="_blank">
+							' . $my_post->post_cat_name . '
+                        </a>
+            </div>
+			';
+		}*/
+
+
+		$post_list_html .= <<< HTML
+
+ 		<div class="col card border-0 my-1">
+
+    
+            <div class="card-img-container position-relative">
+                <div class="position-absolute end-0 top-0 me-1 mt-1">
+                    
+                </div>
+                
+                <div class="position-absolute end-0 bottom-0 me-1 mb-1">
+                    <div class="right-badge bg-transparent-half text-light rounded small p-1">
+                        <i class="fas fa-eye"></i> {$my_post->post_views}
+                    </div>
+                </div>
+          
+          		<div>
+          			<a class="" href="{$my_post->post_href}" title="{$my_post->post_title}" target="_blank">
+          		              <img class="card-img-top" src="{$my_post->post_image}" alt="{$my_post->post_title}" />
+                      </a>
+				</div>
+  
+                                          
+            </div>
+            <div class="card-body  my-2 py-2 row g-0">
+
+                <div class="col-3 d-none d-md-block">
+                    {$author_avatar}
+                </div>
+                <div class="col-12 col-md-9">
+             
+                     <h6 class="post-title text-1-rows text-2-rows-sm small medium-bold-sm">
+                        <a class="" href="{$my_post->post_href}" title="{$my_post->post_title}" target="_blank">
+							{$my_post->post_title}
+                        </a>
+                    </h6>
+                    
+                    <div class="my-2">
+					    {$author_name}
+					</div>
+					
+                    
+	                <div class="small d-none d-md-block ">
+	                        <span class="me-2"><i class="fas fa-clock"></i> {$my_post->post_date} </span>
+	                        <span class=""><i class="fas fa-comments"></i> {$my_post->post_comments}</span>
+	                        <span class="me-1 d-none"><i class="fas fa-star"></i> {$my_post->post_likes}</span>
+	                        <span class="d-none"><i class="fas fa-heart"></i> {$my_post->post_favorites}</span>
+	                </div>
+					
+
+                </div>
+                
+
+            </div>
+        </div>
+
+
+HTML;
+
+
+	}
+
+
+	$post_list_output = post_list_order_component();
+
+	//如果列表为空
+	if ( ! $post_list_html ) {
+
+		//输出错误提示
+		$post_list_html .= '	<div class="m-5 mw-100 flex-fill">
+    			<h4 class="text-center">抱歉, 没有找到相关内容</h4>
+    			<br/><br/><br/><br/><br/>
+			</div>';
+
+	}
+
+
+	$post_list_output .= '
+			    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-5 post-list my-4" id="post-list">
+			        ' . $post_list_html . '
+			    </div>
+    	' . pagination_component();
+
+
+	return $post_list_output;
+
+}
+
+
+
+
+
+
+
+
+

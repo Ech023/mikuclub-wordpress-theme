@@ -1,0 +1,295 @@
+/**
+基础通用 css
+ */
+
+:root {
+    --main-color: #39c5bb;
+    --main-color-hover: #30a59c;
+
+    /*--dark-mode-bg-color: rgb(48,48,48);*/
+
+    --container-bg-color: #F1F2F3;
+
+    --container-color: white;
+
+    --container-max-width: 2560px;
+
+    --image-scale: 1 / 16 * 9;
+
+    --container-margin : calc(3rem * 2);
+
+    --container-sm-margin : calc(1rem * 2);
+
+    --col-margin : calc(1.5rem * .5 * 2);
+
+    --secondary-bg-color : #F1F2F3;
+
+    --footer-bg-color : #F8F9FA;
+
+
+
+}
+
+
+/**
+主体默认颜色
+*/
+body {
+    background-color: var(--container-bg-color);
+}
+
+body .container-fluid {
+    background-color: var(--container-color);
+    max-width: var(--container-max-width);
+}
+
+.footer {
+    background-color: var(--footer-bg-color);
+}
+
+
+/**
+增加html4的兼容
+ */
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section {
+    display: block
+}
+
+
+/**
+设置默认 a 标签 的文字颜色
+ */
+a, .nav-link {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover, .nav-link:hover, .nav-link:focus, .nav-link:hover {
+    color: var(--main-color-hover);
+    text-decoration: none;
+}
+
+/**
+设置 a标签 注销样式
+ */
+a.disabled {
+    color: #212529;
+    opacity: .65;
+    pointer-events: none;
+}
+
+/** ======================
+菜单相关
+ */
+/**
+取消下拉菜单和触发按钮间的间隔, 避免反复显示
+ */
+.dropdown-menu {
+    margin-top: 0;
+}
+
+/**
+设置菜单选项 在激活页面的颜色
+跳过第一个选项
+ */
+.navbar .navbar-nav .nav-item.active:not(:first-child) .nav-link {
+    color: var(--main-color);
+}
+
+
+/** ===================*/
+
+/**
+隐藏元素内文本, 但是保留其他东西的显示
+ */
+.hide-text {
+    overflow: hidden;
+    text-indent: 100%;
+    white-space: nowrap;
+}
+
+/**
+自定义颜色 初音绿
+ */
+.btn-miku, .badge-miku {
+    color: #fff;
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+.btn-miku:hover {
+    color: #fff;
+    background-color: var(--main-color-hover);
+    border-color: var(--main-color-hover);
+}
+
+.btn-miku a {
+    color: #fff;
+}
+
+.text-miku, .color-miku {
+    color: var(--main-color) !important;
+}
+
+.bg-miku {
+    background-color: var(--main-color) !important;
+}
+
+.btn-outline-miku {
+    color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+.btn-outline-miku:hover {
+    color: #fff;
+    border-color: var(--main-color-hover);
+    background-color: var(--main-color-hover);
+}
+
+
+/**
+自定义背景颜色 半透明
+ */
+.bg-transparent-half {
+    background-color: #00000080 !important;
+}
+
+
+/*所有图片自动圆角*/
+img {
+    border-radius: .25rem;
+}
+
+
+
+/**
+绝对定位专用属性
+ */
+
+ /*
+.top-0 {
+    top: 0;
+}
+
+.bottom-0 {
+    bottom: 0;
+}*/
+
+/**
+替换默认的图片加载占位符号
+ */
+.sl_lazyimg {
+    background: url(https://www.mikuclub.cc/wp-content/themes/miku/img/图片占位图.jpg) center center / 50% no-repeat !important;
+}
+
+/**
+替换默认面包屑的分隔符
+ */
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+}
+
+/**
+消息弹窗 ====================================================
+
+消息弹窗第一排显示
+ */
+.my-toast-system{
+    z-index: 1080;
+}
+/**
+自定义消息弹窗最小宽度
+ */
+div.my-toast-system .toast {
+    min-width: 220px;
+}
+
+/*======================================================*/
+
+
+/** 滚动条 ====================================================*/
+
+/* 滚动槽宽度 */
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+    border-radius: .25rem;
+    background: rgba(0, 0, 0, 0.06);
+
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+    border-radius: .25rem;
+    background: var(--main-color);
+    width: 300px;
+
+}
+
+/* 滚动条滑块 hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--main-color-hover);
+}
+
+/** ====================================================*/
+
+/**
+字体放大
+ */
+.large{
+    font-size: 120%;
+    font-weight: 400;
+}
+
+/*清除浮动*/
+.clear-both{
+    clear: both;
+}
+
+
+/**
+设置最小高度
+ */
+.mh-90vh {
+    min-height: 90vh;
+}
+.mh-75vh {
+    min-height: 75vh;
+}
+
+
+.medium{
+
+    font-size: medium;
+    font-weight: normal;
+
+}
+
+.medium-bold{
+
+    font-size: medium;
+    font-weight: 500;
+
+}
+
+
+.text-1-rows{
+    height: 2.00rem;
+    overflow: hidden;
+}
+
+.text-2-rows{
+    height: 3.75rem;
+    overflow: hidden;
+}
+
+.cursor_pointer{
+    cursor: pointer;
+}
+
+
+
+

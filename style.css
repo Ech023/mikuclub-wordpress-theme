@@ -1,0 +1,392 @@
+/**
+网页全站范围
+ */
+
+/**
+幻灯片底部渐变背景
+ */
+.carousel .carousel-background {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 14;
+    height: 30%;
+    background-image: linear-gradient(transparent, black);
+}
+
+/**
+幻灯片item标题z高度
+ */
+.carousel .carousel-item .carousel-caption {
+    z-index: 15;
+}
+
+
+/**
+全站 自定义主菜单选项 背景颜色
+ */
+nav.navbar .dropdown-item.active,
+.dropdown-item:active {
+    background-color: var(--main-color-hover);
+}
+
+
+
+
+/** 消息页面 ====================================================*/
+
+/**
+自定义 消息页面 消息列表 改变 默认鼠标手势
+ */
+.message-page .message-item .card-header {
+    cursor: pointer;
+}
+
+/**
+自定义 消息页面 消息列表 增加 hover 效果
+ */
+.message-page .message-item .card-header:hover {
+    background-color: #f8f9fa !important;
+}
+
+/** ====================================================*/
+
+
+/** single 内容页面 ====================================================*/
+
+/**
+内容页自定义弹出框大小
+ */
+body.single .popover {
+
+    max-width: 400px;
+    margin-left: .5rem;
+    margin-right: .5rem;
+}
+
+/**
+内容页自定义弹出框的图片效果
+ */
+body.single .popover img.smile {
+    transition: .3s;
+}
+
+body.single .popover img.smile:hover {
+    background: #cccccc;
+}
+
+/**
+自定义评论列表 表情图片 的高度
+ */
+body.single .comments-part img.wp-smiley {
+    height: auto !important;
+    max-height: none !important;
+}
+
+/*内容页 h标签下边距*/
+body.single div.content .article-content h1,
+body.single div.content .article-content h2,
+body.single div.content .article-content h3,
+body.single div.content .article-content h4,
+body.single div.content .article-content h5,
+body.single div.content .article-content h6 {
+    margin-bottom: 1rem;
+}
+
+/*内容页 P标签行高*/
+body.single div.content .article-content p {
+    line-height: 2;
+}
+
+/**
+内容页 限制图片的最大宽度
+*/
+body.single div.content .article-content img {
+    max-width: 100%;
+}
+
+
+/** ====================================================*/
+
+/** 全站 悬浮菜单 ====================================================*/
+
+/**
+浮动侧边栏菜单
+ */
+#fixed-sidebar-menu {
+    bottom: 40%;
+    transform: translate(-5%, 0%);
+    z-index: 15;
+}
+
+
+#fixed-sidebar-menu .list-group-item.active {
+    background: var(--main-color);
+    border-color: var(--main-color);
+}
+
+/*md*/
+@media (min-width: 768px) {
+
+    #fixed-sidebar-menu {
+        bottom: 30%;
+        transform: translate(-30%, -50%);
+
+    }
+
+
+}
+
+
+/** ====================================================*/
+
+
+/**
+主菜单选项 边距
+ */
+.main-menu .menu-item {
+    margin: 0.25rem 0;
+}
+
+/*md*/
+/*md*/
+@media (min-width: 768px) {
+
+    .main-menu .menu-item {
+        margin: 0;
+    }
+}
+
+
+
+/**
+幻灯片图片高度
+ */
+.carousel.top-slide .carousel-item img {
+    height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-sm-margin)));
+}
+
+/*md*/
+@media (min-width: 992px) {
+    .carousel.top-slide .carousel-item img {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin)) / 12 * 6);
+    }
+}
+
+
+/*xl*/
+@media (min-width: 1200px) {
+    .carousel.top-slide .carousel-item img {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin)) / 12 * 5);
+    }
+}
+
+
+
+/**
+* 顶部热门文章图片高度
+*/
+.top-hot-post-list .card-img-top {
+    height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-sm-margin) - var(--col-margin)) / 12 * 12 / 2);
+}
+
+
+
+
+
+/*lg*/
+@media (min-width: 992px) {
+
+    .top-hot-post-list .card-img-top {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 2) / 12 * 7 / 3);
+    }
+
+}
+
+
+/*xl*/
+@media (min-width: 1200px) {
+
+    .top-hot-post-list .card-img-top {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 3) / 12 * 7 / 4);
+    }
+
+}
+
+
+
+
+
+/**
+文章列表图片高度
+*/
+.post-list img.card-img-top {
+    height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-sm-margin) - var(--col-margin) * 1) / 2);
+}
+
+@media (min-width: 768px) {
+
+    .post-list img.card-img-top {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 2) / 3);
+    }
+
+}
+
+/*lg*/
+@media (min-width: 992px) {
+
+    .post-list img.card-img-top {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 3) / 4);
+    }
+
+}
+
+@media (min-width: 1400px) {
+
+    .post-list img.card-img-top {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 4) / 5);
+    }
+
+}
+
+
+
+/**
+主页 普通文章列表
+ */
+.post-recently-list img.card-img-top {
+    height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-sm-margin) - var(--col-margin) * 1) / 2);
+}
+
+/*md*/
+@media (min-width: 768px) {
+
+    .post-recently-list img.card-img-top {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin)) / 4);
+    }
+
+}
+
+/*xl*/
+@media (min-width: 1200px) {
+
+    .post-recently-list img.card-img-top {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin)) / 12 * 9 / 5);
+    }
+
+}
+
+
+
+/**
+主页侧边栏热门文章列表图片高度
+*/
+.hot-post-sidebar .image_link {
+    height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin)) / 12 * 3 / 2.5);
+}
+
+
+
+/**
+分类页, 标签页, 文章页 热门文章列表
+ */
+.hot-post-list img.card-img-top {
+    height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-sm-margin) - var(--col-margin) * 1) / 2);
+}
+
+/*md*/
+@media (min-width: 768px) {
+
+    .hot-post-list img.card-img-top {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 3) / 4);
+    }
+
+}
+
+
+/**
+文章页 相关文章列表
+ */
+.related-posts img.card-img-top {
+    height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-sm-margin) - var(--col-margin) * 1) / 2);
+}
+
+/*lg*/
+@media (min-width: 992px) {
+
+    .related-posts img.card-img-top {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 3) / 4);
+    }
+
+}
+
+
+
+
+
+/**
+子评论显示
+ */
+
+
+.comment-list .children img.avatar {
+    display: none;
+}
+
+@media (min-width: 576px) {
+
+    .comment-list .children img.avatar {
+        display: block;
+    }
+}
+
+.comment-list .children .user-meta span.badge {
+    display: none;
+}
+
+/*md*/
+@media (min-width: 768px) {
+    .comment-list .children .user-meta span.badge {
+        display: inline-block;
+    }
+}
+
+
+/*主菜单魔法区高亮*/
+.navbar .navbar-nav .nav-item.mofa .nav-link {
+    color: red;
+}
+
+/*文章页 描述里A链接增加下划线和颜色*/
+article.article-content .source-part a,
+article.article-content .content-part a {
+    color: #17a2b8;
+    text-decoration: underline;
+}
+
+/*文章页 作者信息*/
+.article-header .post-author-data {
+    background-color: var(--secondary-bg-color);
+
+}
+
+/*文章页 工具栏颜色*/
+.article-content .functional-part {
+    background-color: var(--secondary-bg-color);
+
+}
+
+
+
+@media (min-width: 576px) {}
+
+
+/*md*/
+@media (min-width: 768px) {}
+
+/*lg*/
+@media (min-width: 992px) {}
+
+/*xl*/
+@media (min-width: 1200px) {}

@@ -1,0 +1,84 @@
+/**
+手机css
+ */
+
+
+
+@media (min-width: 576px) {
+
+    .medium-sm{
+        font-size: medium;
+        font-weight: normal;
+    }
+    .medium-bold-sm{
+
+        font-size: medium;
+        font-weight: 500;
+
+    }
+
+    .text-2-rows-sm{
+        height: 3.75rem;
+        overflow: hidden;
+    }
+
+    .w-sm-auto{
+        width: auto !important;
+    }
+
+    .w-sm-50{
+        width: 50% !important;
+    }
+
+}
+
+
+
+
+/*md*/
+@media (min-width: 768px) {
+
+    .w-md-50 {
+        width: 50% !important;
+    }
+
+
+    .w-md-75 {
+        width: 75% !important;
+    }
+
+    .small-md{
+        font-size: 80%;
+        font-weight: 400;
+    }
+
+    .medium-md{
+        font-size: medium;
+        font-weight: normal;
+
+    }
+    .medium-bold-md{
+
+        font-size: medium;
+        font-weight: 500;
+
+    }
+
+}
+
+/*lg*/
+@media (min-width: 992px) {
+
+    .w-lg-75 {
+        width: 75% !important;
+    }
+
+
+}
+
+
+/*xl*/
+@media (min-width: 1200px) {
+
+
+}

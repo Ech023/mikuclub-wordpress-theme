@@ -1,0 +1,156 @@
+/**
+暗夜模式专用CSS
+*/
+
+
+body.darkmode {
+
+    --container-bg-color:  #212121;
+    --container-color: #181818;
+
+    --secondary-bg-color: #383838;
+
+    --footer-bg-color: #383838;
+    
+}
+
+body.darkmode, 
+body.darkmode a, 
+body.darkmode span, 
+body.darkmode .dropdown-item-text, 
+body.darkmode .nav-link.disabled,
+body.darkmode .input-group-text,
+body.darkmode .form-select,
+body.darkmode  .btn-outline-dark,
+
+body.darkmode input:focus, 
+body.darkmode textarea:focus,
+body.darkmode .btn:hover,
+body.darkmode .nav-tabs .nav-item.show .nav-link,
+body.darkmode .nav-tabs .nav-link.active,
+body.darkmode div.page-tougao .wpuf-form-add.wpuf-style ul.wpuf-form .category-wrap select,
+body.darkmode .list-group-item,
+
+body.darkmode #wpforo #wpforo-wrap .wpf-search .wpf-search-form i,
+body.darkmode #wpforo #wpforo-wrap .wpf-search input[type="text"].wpf-search-field,
+body.darkmode #wpforo #wpforo-wrap *
+{
+    color: #fff;
+}
+
+
+body.darkmode a:hover{
+    color: var(--main-color-hover);
+}
+
+
+body.darkmode input,  body.darkmode textarea{
+    background-color: var(--secondary-bg-color) !important;
+    caret-color: white;
+    color: white !important;
+    
+}
+
+
+/*移除bootstrap自带的白色背景*/
+body.darkmode .card
+{
+    background-color: transparent !important;
+}
+
+body.darkmode .page-link{
+    background-color: transparent !important;
+    color: white !important;
+}
+
+body.darkmode .page-link:hover{
+    background-color: transparent !important;
+    color: var(--main-color-hover) !important;
+}
+
+body.darkmode .dropdown-menu{
+    background-color: var(--container-bg-color) !important;
+}
+
+
+
+/*加载占位图*/
+
+body.darkmode .sl_lazyimg{
+    background: url(https://www.mikuclub.cc/wp-content/themes/miku/img/图片占位图dark.png) center center / 50% no-repeat !important;
+   
+}
+
+
+/**
+浮动侧边栏背景颜色
+*/
+body.darkmode #fixed-sidebar-menu .list-group-item:not(.active)
+
+{
+    background-color: var(--container-bg-color);
+    border: 1px solid #dee2e6;
+    color: white;
+}
+body.darkmode #fixed-sidebar-menu .list-group-item span{
+    color: white;
+}
+
+
+/**
+全站通告栏 链接的默认颜色
+ */
+ body.darkmode .speedbar a,
+ body.darkmode .page-item.disabled .page-link
+ {
+    color: var(--main-color)  !important;
+}
+
+body.darkmode #wpforo #wpforo-wrap #wpforo-title,
+body.darkmode #wpforo #wpforo-wrap .wpforo-post-head .wpf-post-head-top .wpf-post-stat .wpf-post-stat-box span,
+body.darkmode #wpforo #wpforo-wrap .wpfl-4 .wpf-thread-box.wpf-thread-title a
+{
+    color: white;
+}
+
+
+body.darkmode .bg-white, 
+body.darkmode .form-select,
+body.darkmode .toast-header,
+body.darkmode .modal-content,
+body.darkmode .popover-header,
+body.darkmode .popover-body,
+body.darkmode .nav-tabs .nav-item.show .nav-link,
+body.darkmode .nav-tabs .nav-link.active,
+body.darkmode  div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li,
+body.darkmode div.page-tougao .wpuf-form-add.wpuf-style ul.wpuf-form .category-wrap select,
+body.darkmode .list-group-item,
+body.darkmode  #wpforo #wpforo-wrap .wpfl-4 .wpf-parent-post .wpf-right .wpf-content,
+body.darkmode #wpforo #wpforo-wrap .wpfl-4 .wpf-content-foot,
+body.darkmode  #wpforo #wpforo-wrap .wpfl-4 .wpforo-post .wpforo-post-footer,
+body.darkmode #wpforo #wpforo-wrap .wpforo-portable-form-wrap,
+body.darkmode  #wpforo #wpforo-wrap .wpfl-4 .wpf-child-post .wpf-reply-content,
+body.darkmode #wpforo #wpforo-wrap .wpforo-post blockquote, 
+body.darkmode #wpforo #wpforo-wrap .wpforo-revision-body blockquote,
+body.darkmode  #wpforo #wpforo-wrap #wpforo-stat-body,
+body.darkmode #wpforo #wpforo-wrap *
+{
+    background-color: var(--secondary-bg-color) !important;
+}
+
+body.darkmode .btn-close{
+    background-color: white;
+}
+
+body.darkmode  #wpforo #wpforo-wrap .wpfl-4 .wpf-content-foot .wpf-reply .wpf-action,
+body.darkmode  .wpfbg-9
+{
+    background: transparent; !important
+}
+
+body.darkmode  #wpforo #wpforo-wrap .wpf-head-bar .wpf-head-bar-right .wpf-button,
+body.darkmode  #wpforo #wpforo-wrap .wpforo-portable-form-wrap button[type="submit"],
+body.darkmode  #wpforo #wpforo-wrap .wpforo-portable-form-wrap button[type="reset"]
+{
+    border: 1px solid;
+}

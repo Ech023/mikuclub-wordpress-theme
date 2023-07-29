@@ -1,0 +1,417 @@
+/* 投稿页面表单CSS */
+
+
+
+div.page-tougao ul.wpuf-form li {
+    margin: .5rem 0;
+    padding: 0;
+}
+
+div.page-tougao ul.wpuf-form li.previews {
+
+}
+
+/**
+input 和 textarea
+ */
+
+div.page-tougao form.wpuf-form-add.wpuf-style ul.wpuf-form li .wpuf-fields input, div.page-tougao .wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields textarea {
+    background: none;
+    color: #495057;
+    box-shadow: none;
+    width: 100%;
+
+}
+
+
+/**
+表单input
+ */
+
+div.page-tougao form.wpuf-form-add.wpuf-style ul.wpuf-form li .wpuf-fields input {
+    height: 3rem;
+}
+
+/**
+表单帮助文字
+ */
+div.page-tougao ul.wpuf-form li .wpuf-fields .wpuf-help {
+    color: #6c757d;
+    font-size: 0.85rem;
+    font-style: normal;
+}
+
+/**
+双列 的 排版
+ */
+div.page-tougao ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .items-of-column-2 {
+    width: 50% !important;
+    padding-right: 1rem !important;
+}
+
+div.page-tougao ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .items-of-column-2.column-2 {
+    padding-right: 0 !important;
+}
+
+/**
+三列 的排版
+ */
+
+div.page-tougao ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .items-of-column-3{
+
+}
+
+div.page-tougao ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .items-of-column-3.column-1{
+    width: 50% !important;
+    padding-right: 1rem !important;
+}
+
+div.page-tougao ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .items-of-column-3.column-2{
+    width: 25% !important;
+    padding-right: 1rem !important;
+}
+
+div.page-tougao ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .items-of-column-3.column-3{
+    width: 25% !important;
+    padding-right: 0 !important;
+}
+
+
+
+/**
+分类选项 =============================================
+ */
+div.page-tougao ul.wpuf-form li.category {
+
+}
+
+div.page-tougao ul.wpuf-form li.category .wpuf-label {
+    margin-bottom: 5px;
+}
+
+div.page-tougao ul.wpuf-form li.category .wpuf-help {
+    clear: both;
+}
+
+
+/*分类加载进度条*/
+div.page-tougao ul.wpuf-form li.category .wpuf-loading {
+    background: none;
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    vertical-align: text-bottom;
+    border: .25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: spinner-border .75s linear infinite;
+    animation: spinner-border .75s linear infinite;
+    color: var(--main-color);
+    margin: .75rem .50rem 0;
+}
+
+div.page-tougao ul.wpuf-form .category-wrap div {
+    float: left;
+    margin: .5rem;
+    margin-left: 0;
+}
+
+div.page-tougao .wpuf-form-add.wpuf-style ul.wpuf-form .category-wrap select {
+    height: 40px;
+    padding-left: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ddd;
+}
+
+/**
+描述插入照片按钮 部分 =============================
+ */
+
+div.page-tougao ul.wpuf-form li .wpuf-fields  #wpuf-insert-image-container{
+    margin-bottom: 1rem;
+}
+
+div.page-tougao ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
+    font-size: 1rem;
+    border-radius: .25rem;
+    background: var(--main-color);
+    border-color: var(--main-color);
+    color: #fff;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    box-shadow: none;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+div.page-tougao ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image:hover {
+    background-color: var(--main-color-hover);
+    border-color: var(--main-color-hover);
+}
+
+div.page-tougao ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+div.page-tougao ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container .upload-item{
+    float: right;
+    margin-right: .5rem;
+}
+div.page-tougao ul.wpuf-form li .wpuf-fields .upload-item .progress{
+    box-shadow: none;
+    background: none;
+    border-radius: .25rem;
+}
+div.page-tougao ul.wpuf-form li .wpuf-fields .upload-item .progress .bar{
+    box-shadow: none;
+    /*background: none;*/
+    background: var(--main-color);
+
+    border-radius: .25rem;
+}
+
+/*
+==================================================================
+*/
+
+
+/**
+预览图上传按钮==================================================================
+ */
+div.page-tougao ul.wpuf-form li .wpuf-fields a.file-selector {
+
+    display: block;
+    margin-bottom: 1rem;
+    width: 100%;
+    background: var(--main-color);
+    border-color: var(--main-color);
+    color: #fff;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    box-shadow: none;
+    padding: .375rem .75rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: .3rem;
+    height: auto;
+
+}
+
+div.page-tougao ul.wpuf-form li .wpuf-fields a.file-selector:hover {
+    background-color: var(--main-color-hover);
+    border-color: var(--main-color-hover);
+}
+
+div.page-tougao ul.wpuf-form li .wpuf-fields a.file-selector:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+
+
+div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list {
+    overflow-y: hidden;
+}
+
+div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li {
+    width: 33.3%;
+    border: 0;
+    padding: .5rem;
+    margin: 0;
+    height: auto;
+    border-radius: .25rem;
+    background: white;
+
+}
+
+
+div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li div.caption {
+    position: relative;
+    display: block;
+    background: none;
+    left: auto;
+    margin: 0;
+    top: auto;
+    text-align: center;
+    width: auto;
+    margin-top: .5rem;
+}
+
+div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li div.caption a {
+    line-height: 2rem;
+    border: 1px solid #ccc;
+    padding: 0 2rem;
+    border-radius: .25rem;
+    color: #6c757d;
+}
+
+
+
+div.page-tougao ul.wpuf-form .ui-state-default.wpuf-image-wrap .caption a:hover {
+    background: none;
+    border-color: red;
+    color: red;
+}
+
+div.page-tougao ul.wpuf-form .ui-state-default.wpuf-image-wrap .caption span {
+    display: none;
+}
+
+div.page-tougao ul.wpuf-form li .wpuf-fields .wpuf-attachment-upload-filelist div.upload-item {
+    margin: 1rem 0;
+}
+
+
+/*
+提交按钮
+==================================================================
+*/
+
+
+div.page-tougao ul.wpuf-form li.wpuf-submit {
+    margin: 1rem 0;
+}
+
+
+div.page-tougao ul.wpuf-form li.wpuf-submit input[type="submit"] {
+    background-color: var(--main-color) !important;
+    background-image: none !important;
+    border-color: var(--main-color) !important;
+    height: auto !important;
+    transition: .5s;
+    margin: 0 !important;
+    border-radius: .3rem !important;
+    text-shadow: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: white !important;
+    padding: .375rem .75rem !important;
+    font-size: 1.25rem !important;
+    line-height: 1.5;
+    vertical-align: middle;
+    font-weight: 400;
+}
+
+div.page-tougao ul.wpuf-form li.wpuf-submit input[type="submit"]:hover {
+    background-color: var(--main-color-hover) !important;
+    border-color: var(--main-color-hover) !important;
+}
+div.page-tougao ul.wpuf-form li.wpuf-submit input[type="submit"]:focus {
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25) !important;
+}
+
+
+div.page-tougao ul.wpuf-form div.wpuf-error-msg {
+    color: red;
+    float: none;
+}
+
+/**
+隐藏 加载进度条
+ */
+div.page-tougao ul.wpuf-form .wpuf-submit .wpuf-loading {
+
+    height: 60px !important;
+    /*background: url('https://www.mikuclub.cc/wp-content/themes/miku/img/齿轮进度条.gif') no-repeat;*/
+    background-position: center;
+    vertical-align: bottom;
+    width: 7%;
+    background-size: contain;
+    display: none;
+}
+
+
+div.page-tougao form.wpuf-form-add.wpuf-style ul.wpuf-form li .wpuf-fields .link-error {
+    border-color: red;
+    color: red;
+}
+
+div.page-tougao form.wpuf-form-add.wpuf-style ul.wpuf-form li .wpuf-fields .link-valid {
+    border-color: var(--main-color);
+    color: var(--main-color);
+}
+
+
+
+
+
+@media (max-width: 768px) {
+
+
+    div.page-tougao ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .items-of-column-2 {
+        width: 100% !important;
+        padding-right: 0 !important;
+    }
+
+    div.page-tougao ul.wpuf-form .wpuf-field-columns.has-columns-3 .wpuf-column-field-inner-columns .wpuf-column .items-of-column-3.column-1 {
+        width: 100% !important;
+        padding-right: 0 !important;
+    }
+
+    div.page-tougao ul.wpuf-form .wpuf-field-columns.has-columns-3 .wpuf-column-field-inner-columns .wpuf-column .items-of-column-3.column-2, div.page-tougao ul.wpuf-form .wpuf-field-columns.has-columns-3 .wpuf-column-field-inner-columns .wpuf-column .items-of-column-3.column-3 {
+        width: 50% !important;
+    }
+
+    div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list {
+        text-align: center;
+    }
+
+    div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li {
+        width: 49%;
+        margin: 0.5%;
+    }
+
+    div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li div.caption {
+
+    }
+
+    div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li div.caption a {
+        line-height: 1.5rem;
+        font-size: 0.75rem;
+        padding: 0 1rem;
+    }
+
+   
+
+
+
+}
+
+
+
+/**
+预览图片高度
+*/
+div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li div.attachment-name img {
+    max-height: 100%;
+    height: calc( ( min( 100vw, var(--container-max-width)) * var(--image-scale) - var(--container-sm-margin) - var(--col-margin) * 2 )  / 2 );
+}
+
+@media (min-width: 768px) {
+
+    div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li div.attachment-name img {
+        height: calc( ( min( 100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 2 )  / 3 );
+    }
+
+}
+
+/*lg*/
+@media (min-width: 992px) {
+
+   
+
+}
+
+@media (min-width: 1400px) {
+
+    
+
+}
+
+

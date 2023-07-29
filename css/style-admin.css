@@ -1,0 +1,80 @@
+
+
+
+.status-draft {
+    background-color: #FCE3F2;
+}
+
+.status-pending {
+    background-color: rgba(0, 166, 212, 0.22) !important;
+}
+
+.status-future {
+    background-color: #C6EBF5;
+}
+
+.status-private {
+    background-color: #F2D46F;
+}
+
+img.post-ratings-image {
+    width: 30px;
+}
+
+
+tr.user-rich-editing-wrap, tr.user-admin-color-wrap,
+tr.user-comment-shortcuts-wrap, tr.show-admin-bar,
+tr.user-language-wrap, tr.user-first-name-wrap,
+tr.user-last-name-wrap,
+tr.user-url-wrap,
+#wpua-remove-button-existing a.edit-attachment,
+#wpua-undo-existing, .update-nag, #wpfooter {
+    display: none;
+}
+
+
+
+.text-center{
+    text-align: center;
+}
+
+.list-group {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    border-radius: 0.25rem;
+}
+
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 0.75rem 1.25rem;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.bg-danger {
+    color: #fff;
+    background-color: #dc3545;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}

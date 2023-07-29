@@ -1,0 +1,220 @@
+/*论坛专用 自定义 custom css-----------------------------------------------------*/
+
+/*I解决 论坛不能编辑帖子的问题*/
+/*
+#wpforo #wpforo-wrap .post-wrap .wpf-topic-create {
+    display: block;
+}*/
+
+/*帖子图标 靠的太近*/
+/*
+#wpforo #wpforo-wrap .wpfl-4 .wpf-thread-box.wpf-thread-status{
+    margin-right: 0.5vw;
+}*/
+/*
+#wpforo #wpforo-wrap{
+    background-color: var(--container-color) !important;
+}*/
+
+
+#wpforo #wpforo-wrap #wpforo-menu .wpf-res-menu {
+    display: none !important;
+}
+
+#wpforo #wpforo-wrap #wpforo-menu #wpf-menu.wpf-menu {
+    display: none !important;
+}
+
+#wpforo #wpforo-wrap .wpf-post-btns {
+    display: none;
+}
+
+#wpforo #wpforo-wrap .wpforo-post .wpforo-membertoggle {
+    display: none;
+}
+
+#wpforo #wpforo-wrap .wpforo-post .wpforo-memberinfo {
+    display: none;
+}
+
+/*论坛主页加载更多*/
+#wpforo #wpforo-wrap .wpf-more-topics {
+    margin-top: 30px;
+}
+
+#wpforo #wpforo-wrap .wpf-more-topics a {
+    font-size: 20px;
+    border: 1px solid #0099cc;
+    border-radius: 0.2rem;
+    padding: 10px 0;
+    display: block;
+}
+
+
+#wpforo #wpforo-wrap .wpfl-4 div.wpf-thread-box.wpf-thread-title a,
+#wpforo #wpforo-wrap .wpfl-4 .wpf-thread-box.wpf-thread-title div.wpf-thread-head a {
+    font-size: 18px;
+    line-height: 27px;
+}
+
+#wpforo #wpforo-wrap .wpfl-4 .wpf-thread-box.wpf-thread-title div.wpf-thread-author-name {
+    display: none;
+}
+
+#wpforo #wpforo-wrap .wpfl-4 .wpf-parent-post .wpf-right .wpf-content-head-bottom {
+    margin-top: 5px;
+}
+
+#wpforo #wpforo-wrap .wpforo-post-head .wpf-post-head-top .wpf-post-info {
+    align-self: start;
+}
+
+#wpforo #wpforo-wrap .wpforo-post-head .wpf-post-head-top .wpf-post-info span.wpf-post-info-forum {
+    display: none;
+
+}
+
+#wpforo #wpforo-wrap .wpf-breadcrumb a,
+#wpforo #wpforo-wrap .wpf-breadcrumb span {
+    font-size: 1rem;
+}
+
+
+#wpforo #wpforo-wrap .wpforo-main .wpf-head-bar,
+#wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpforo-category {
+    border-radius: 0;
+}
+
+#wpforo #wpforo-wrap .wpforo-main .wpf-head-bar-right .wpf-button {
+    padding: 15px 50px !important;
+    margin: 10px 0;
+    border-radius: 0.2rem;
+}
+
+#wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-cat-forum-list .wpf-forum-item a {
+    font-size: 20px;
+    margin: 0 10px;
+}
+
+#wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-cat-forum-list .wpf-forum-item .wpf-circle {
+    margin-top: 5px;
+}
+
+#wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-cat-forum-list .wpf-forum-item .wpf-forum-item-stat {
+    margin-top: 5px;
+}
+
+#wpforo #wpforo-wrap .wpforo-main .wpf-navi .wpf-navi-wrap .wpf-page-info {
+    font-size: 20px;
+    line-height: 40px;
+    margin-right: 15px;
+}
+
+#wpforo #wpforo-wrap .wpforo-main .wpf-navi select.wpf-navi-dropdown {
+    font-size: 18px;
+}
+
+#wpforo #wpforo-wrap .wpforo-main .wpf-navi .wpf-navi-wrap .wpf-next-button {
+    border-radius: 0 .2rem .2rem 0;
+    font-size: 20px;
+    line-height: 1;
+    padding: 10px 20px !important;
+}
+
+#wpforo #wpforo-wrap .wpforo-main .wpf-navi .wpf-navi-wrap .wpf-prev-button {
+    border-radius: .2rem 0 0.2rem;
+    font-size: 20px;
+    line-height: 1;
+    padding: 10px 20px !important;
+}
+
+
+#wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-threads-head .wpf-thead-last-reply,
+#wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-thread-box.wpf-thread-last-reply {
+    width: 200px;
+}
+
+#wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-thread-last-avatar img,
+#wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-thread-last-avatar img.avatar {
+    display: none;
+}
+
+#wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-thread-box.wpf-thread-last-reply .wpf-thread-last-user {
+    flex-direction: row;
+    margin-bottom: 5px;
+}
+
+
+#wpforo #wpforo-wrap .wpforo-main .wpf_attach_button {
+    border: 1px solid black;
+    border-radius: 0.2rem;
+    text-decoration: none;
+    padding: 5px 40px;
+}
+
+#wpforo #wpforo-wrap .wpforo-main input[type=submit],
+#wpforo #wpforo-wrap .wpforo-main input[type=reset],
+#wpforo #wpforo-wrap .wpforo-main input[type=button] {
+    padding: 10px 50px !important;
+    border-radius: 0.2rem;
+}
+
+
+#wpforo #wpforo-wrap .wpforo-main .wpf_attach_button_wrap .fa-paperclip,
+#wpforo #wpforo-wrap .wpforo-main .wpf_attach_button_wrap .wpfa-browse,
+#wpforo #wpforo-wrap .wpforo-main .wpf_attach_button_wrap .wpf_dd_info {
+    display: none;
+}
+
+#wpforo #wpforo-wrap .wpforo-main .wpfa-item.wpfa-img {
+    box-shadow: none;
+}
+
+
+
+#wpforo .mce-edit-area iframe {
+    min-height: 130px !important;
+}
+
+
+
+#wpforo #wpforo-wrap .wpforo-main .mce-toolbar .mce-widget.mce-btn {
+    margin: 5px 5px;
+}
+
+#wpforo #wpforo-wrap .wpforo-main .mce-toolbar .mce-widget.mce-btn button i {
+    font-size: 25px;
+    width: 25px;
+    height: 25px;
+}
+
+
+#wpforo #wpforo-wrap .wpforo-main .wpf-topic-forum-wrap select.wpf-topic-form-forumid{
+    padding: 12px;
+}
+
+
+@media (max-width: 800px) {
+
+    #wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-head-box.wpf-thead-status,
+    #wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-head-box.wpf-thead-author,
+    #wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-head-box.wpf-thead-last-reply,
+    #wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-thread-box.wpf-thread-author,
+    #wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-thread-box.wpf-thread-last-reply,
+    #wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-thread-box .wpf-thread-status-mobile {
+        display: none;
+    }
+
+
+
+    #wpforo #wpforo-wrap .wpforo-main input[type=submit],
+    #wpforo #wpforo-wrap .wpforo-main input[type=reset],
+    #wpforo #wpforo-wrap .wpforo-main input[type=button] {
+       width: 100%;
+    }
+
+    #wpforo #wpforo-wrap .wpforo-main .wpfl-4 .wpf-thread .wpf-thread-forum-mobile{
+        margin-top: 7.5px;
+    }
+
+}
