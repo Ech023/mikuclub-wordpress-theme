@@ -25,7 +25,7 @@ $(function () {
         event.preventDefault();
         sendSearch(event.target);
     });
-      //监听搜索表单里的check点击事件
+    //监听搜索表单里的check点击事件
     $('form.search-form .cat').on('click', function (event) {
         //触发表单的提交事件
         $(this).parents('form.search-form').trigger('submit');
@@ -98,8 +98,8 @@ $(function () {
     });
 
 
-    
-  
+
+
 
 
     //监听APP唤醒链接的点击事件
@@ -139,11 +139,27 @@ $(function () {
     $(document).on('scroll', showSidebarMenuOnScroll);
 
 
-   /**
-    * 如果当前域名为EU
-    * 替换所有A标签的href属性为副域名
-    */
+    /**
+     * 如果当前域名为EU
+     * 替换所有A标签的href属性为副域名
+     */
     update_a_href_to_secondary_domain();
+
+
+    /**
+     * 在页面加载完成后 更新页面中 img标签里的src地址 到 备用图片域名
+     */
+    update_image_src_of_element_to_backup_image_domain();
+
+    /**
+     * 根据local storage数值初始化 备用图床切换 按钮状态
+     */
+    init_backup_image_domain_button();
+
+    /**
+     * 监听 切换备用按钮的change事件
+     */
+    on_change_backup_image_domain_button();
 
 
 });
@@ -151,24 +167,24 @@ $(function () {
 
 /*
  //如果当前域名为 cc
- if (location.host === 'www.mikuclub.cc') {
+ if (location.host === SITE_DOMAIN.www_mikuclub_cc) {
     //重定向到online
-    let url = location.href.replace('www.mikuclub.cc', 'www.mikuclub.online');
+    let url = location.href.replace(SITE_DOMAIN.www_mikuclub_cc, SITE_DOMAIN.www_mikuclub_online);
     location.replace(url);
 }*/
 
 
-  //如果当前域名为 online 或者 cc
- if (location.host === 'www.mikuclub.online' ) {
+//如果当前域名为 online 或者 cc
+if (location.host === SITE_DOMAIN.www_mikuclub_online) {
     //重定向到win
-    let url = location.href.replace('www.mikuclub.online', 'www.mikuclub.win');
+    let url = location.href.replace(SITE_DOMAIN.www_mikuclub_online, SITE_DOMAIN.www_mikuclub_win);
     location.replace(url);
 }
 
-if (location.host === 'www.mikuclub.cc' ) {
+if (location.host === SITE_DOMAIN.www_mikuclub_cc) {
 
-     //重定向到win
-    let url = location.href.replace('www.mikuclub.cc', 'www.mikuclub.win');
+    //重定向到win
+    let url = location.href.replace(SITE_DOMAIN.www_mikuclub_cc, SITE_DOMAIN.www_mikuclub_win);
     location.replace(url);
 
     /*
@@ -183,7 +199,7 @@ if (location.host === 'www.mikuclub.cc' ) {
     if(rand < 1){
 
         //重定向到win
-        let url = location.href.replace('www.mikuclub.cc', 'www.mikuclub.win');
+        let url = location.href.replace(SITE_DOMAIN.www_mikuclub_cc, SITE_DOMAIN.www_mikuclub_win);
         location.replace(url);
 
          //设置cookie避免重复判断

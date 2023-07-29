@@ -13,12 +13,17 @@ class MyAuthor {
         this.user_href = user.user_href;
         this.user_image = user.user_image;
 
+        //如果备用图床域名 为开启状态
+        if (is_enable_backup_image_domain()) {
+            //启动备用图片域名
+            this.user_image = replace_image_src_to_backup_image_domain(this.user_image);
+        }
     }
 
 
 }
 
-class MyCommentAuthor extends  MyAuthor{
+class MyCommentAuthor extends MyAuthor {
 
 
     constructor(user) {

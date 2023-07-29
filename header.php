@@ -96,10 +96,11 @@ else
     {
         echo dopt('d_headcode');
     }
-    
+
     //判断当前是否是 页面
-    if(is_page()){
-        
+    if (is_page())
+    {
+
         //输出 论坛自定义表情按钮的js代码
         echo wpforo_custom_editor_smiley_js_code();
     }
@@ -264,6 +265,20 @@ else
 
             <?php if (!is_page() && !is_single())
             { ?>
+
+                <!-- 菜单下方功能栏 -->
+                <div class="menu-functional-bar speedbar  my-2 p-2 px-3 rounded text-end">
+                    <div class="ms-auto "  title="如果无法正常加载站内图片, 可以尝试开启备用图床 (备用图床的加载速度比默认的更缓慢)">
+                        <span class="enable_backup_image_domain_title me-1">
+                            站内图片无法加载?
+                        </span>
+                        <div class="form-check form-check-inline form-switch ">
+                            <input class="form-check-input cursor_pointer" type="checkbox" role="switch" id="enable_backup_image_domain">
+                            <label class="form-check-label cursor_pointer" for="enable_backup_image_domain">使用备用图床</label>
+                        </div>
+                    </div>
+
+                </div>
 
                 <div class="speedbar <?php echo !is_home() ? 'd-none d-sm-block' : '' ?> mt-2 mb-4 p-2 px-3 rounded">
 

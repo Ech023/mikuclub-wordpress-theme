@@ -501,10 +501,10 @@ function openLink(link) {
 function update_a_href_to_secondary_domain() {
 
     const array_old_domain = [
-        'www.mikuclub.online',
-        'www.mikuclub.eu',
-        'www.mikuclub.win',
-        'www.mikuclub.cc',
+        SITE_DOMAIN.www_mikuclub_online,
+        SITE_DOMAIN.www_mikuclub_eu,
+        SITE_DOMAIN.www_mikuclub_cc,
+        SITE_DOMAIN.www_mikuclub_win
     ];
 
     const current_domain = location.host;
@@ -541,9 +541,131 @@ function update_a_href_to_secondary_domain() {
 
     //}
 
+}
+
+/**
+ * 切换所有图片的域名到备用域名
+ * @param {string} image_src
+ */
+function replace_image_src_to_backup_image_domain(image_src) {
+
+    if (image_src) {
+
+        // 使用正则表达式匹配文件名，把 ww.mikuclub.win / ww.mikuclub.eu 的 地址 改成 file.mikuclub.fun
+        image_src = image_src.replace(/www\.mikuclub\.(win|eu)/g, BACKUP_IMAGE_DOMAIN);
+
+        // 使用正则表达式匹配文件名，把 file*.mikuclub.fun 域名 统一替换成 file.mikuclub.fun
+        image_src = image_src.replace(/file\d+\.mikuclub\.fun/g, BACKUP_IMAGE_DOMAIN);
+    }
+
+    return image_src;
+}
+
+/**
+ * 在页面加载完成后 更新页面中 img标签里的src地址
+ */
+function update_image_src_of_element_to_backup_image_domain() {
+
+    //如果备用图床域名 为开启状态
+    if (is_enable_backup_image_domain()) {
+
+        //抓取所有 使用 file域名的图片元素
+        $(`
+            img[src*="${SITE_DOMAIN.www_mikuclub_win}"], 
+            img[file*="${SITE_DOMAIN.www_mikuclub_win}"], 
+            img[src*="${SITE_DOMAIN.www_mikuclub_eu}"], 
+            img[file*="${SITE_DOMAIN.www_mikuclub_eu}"], 
+            img[src*="file"], 
+            img[file*="file"]
+        `).each(function (index, element) {
+
+            //切换到备用域名
+            let image_src = $(this).attr('file');
+            //如果图片没有file属性
+            if (typeof image_src === 'undefined' || image_src === false) {
+                //重新抓取 src属性
+                image_src = $(this).attr('src');
+                image_src = replace_image_src_to_backup_image_domain(image_src);
+                //更新src属性
+                $(this).attr('src', image_src);
+            }
+            else {
+                image_src = replace_image_src_to_backup_image_domain(image_src);
+                //更新file属性
+                $(this).attr('file', image_src);
+            }
+
+
+        });
+
+    }
+
+}
+
+/**
+ * 根据local storage数值初始化 切换 备用图床域名 按钮状态
+ */
+function init_backup_image_domain_button() {
+
+    const value = getLocalStorage(LOCAL_STORAGE_KEY.enableBackupImageDomain);
+
+    //如果数值存在 而且是 true
+    if (value === true) {
+        //勾选按钮
+        $('input#enable_backup_image_domain').prop('checked', true);
+        //隐藏按钮部分说明
+        //$('span.enable_backup_image_domain_title').hide();
+    }
+
+}
+
+/**
+ * 检查 备用图床域名 是否开启
+ * @returns {boolean}
+ */
+function is_enable_backup_image_domain() {
+    const value = getLocalStorage(LOCAL_STORAGE_KEY.enableBackupImageDomain);
+    return value ? true : false;
+}
+
+/**
+ * 在页面加载完成后 监听切换 备用图床域名 按钮的change事件
+ */
+function on_change_backup_image_domain_button() {
+
+    $('input#enable_backup_image_domain').on('change', function () {
+
+        //逆转当前的按钮数值
+        const value = getLocalStorage(LOCAL_STORAGE_KEY.enableBackupImageDomain);
+        const new_value = !value;
+
+        //如果是要开启
+        if (new_value === true) {
+
+            //弹出确认框
+            if (confirm('确认要开启吗? 如果无法正常加载站内图片, 可以尝试开启备用图床, (备用图床的加载速度比默认的更缓慢)') === false) {
+                //取消勾选
+                $('input#enable_backup_image_domain').prop('checked', false);
+                //如果未确认, 中断操作
+                return;
+            }
+
+            //更新数值
+            setLocalStorage(LOCAL_STORAGE_KEY.enableBackupImageDomain, new_value);
+
+            //刷新页面
+            location.reload();
+        }
+        //如果是关闭
+        else {
+            //直接更新数值
+            setLocalStorage(LOCAL_STORAGE_KEY.enableBackupImageDomain, new_value);
+        }
 
 
 
 
+
+    });
 
 }

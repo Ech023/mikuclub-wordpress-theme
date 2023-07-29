@@ -31,7 +31,11 @@ class MyPostSlim {
             this.post_author = new MyAuthor(post.post_author);
         }
 
-
+        //如果备用图床域名 为开启状态
+        if (is_enable_backup_image_domain()) {
+            //启动备用图片域名
+            this.post_image = replace_image_src_to_backup_image_domain(this.post_image);
+        }
     }
 
     //输出html

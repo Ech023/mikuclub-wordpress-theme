@@ -47,6 +47,8 @@ const LOCAL_STORAGE_KEY = {
     postHistory: 'post_history',
     commentLikes: 'comment_likes',
     commentDislikes: 'comment_dislikes',
+
+    enableBackupImageDomain: 'enable_backup_image_domain',
 };
 
 
@@ -94,6 +96,15 @@ const HTTP_METHOD = {
     put: 'PUT',
     delete: 'DELETE'
 };
+
+const BACKUP_IMAGE_DOMAIN = 'file.mikuclub.fun';
+
+const SITE_DOMAIN = {
+    www_mikuclub_online : 'www.mikuclub.online',
+    www_mikuclub_cc : 'www.mikuclub.cc',
+    www_mikuclub_eu : 'www.mikuclub.eu',
+    www_mikuclub_win : 'www.mikuclub.win'
+}
 
 
 /**
@@ -312,7 +323,7 @@ function setLocalStorage(key, value) {
 
     let result = false;
     //只有在支持localStorage的情况 并且键名和键值不是空
-    if (window.localStorage && key && value) {
+    if (window.localStorage && key && (value !== undefined && value !== null)) {
         //键值转换成json格式
         value = JSON.stringify(value);
         //设置本地储存
