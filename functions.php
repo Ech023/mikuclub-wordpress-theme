@@ -136,14 +136,14 @@ function setup_front_script()
         [
             'name' => 'js-class-post',
             'path' => '/js/class-post.js',
-            'version' => '1.07',
+            'version' => '1.08',
             'in_footer' => false,
         ],
         //自定义JS 用户类
         [
             'name' => 'js-class-user',
             'path' => '/js/class-user.js',
-            'version' => '1.03',
+            'version' => '1.04',
             'in_footer' => false,
         ],
         //自定义JS 消息类
@@ -171,7 +171,7 @@ function setup_front_script()
         [
             'name' => 'js-base',
             'path' => '/js/base.js',
-            'version' => '1.17',
+            'version' => '1.18',
             'in_footer' => false,
         ],
         //名言名句变量
@@ -186,7 +186,7 @@ function setup_front_script()
         [
             'name' => 'js-function',
             'path' => '/js/function.js',
-            'version' => '1.43',
+            'version' => '1.44',
             'in_footer' => false,
         ],
         //通用JS AJAX的函数
@@ -207,7 +207,7 @@ function setup_front_script()
         [
             'name' => 'js-listener',
             'path' => '/js/listener.js',
-            'version' => '1.24',
+            'version' => '1.25',
             'in_footer' => false,
         ],
         //JS 广告
