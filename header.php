@@ -139,8 +139,8 @@ else
             <div class="top-menu-bar row mx-0 px-3 px-sm-5">
 
                 <!--顶部左侧菜单栏-->
-                <div class="left-menu col-xl-auto d-none d-lg-block">
-                    <nav class="navbar navbar-expand d-none d-xl-block">
+                <div class="left-menu col-12 col-xxl-auto d-none d-md-block">
+                    <nav class="navbar navbar-expand ">
                         <?php echo get_top_left_menu(); ?>
                     </nav>
                 </div>
@@ -152,17 +152,24 @@ else
                     //只有在不是搜索页面的时候显示
                     if (!is_search())
                     { ?>
+                        <div class="row">
+                            <div class="col align-items-center py-2">
+                                <form class="search-form ms-xxl-auto me-auto " style="max-width: 500px;">
+                                    <div class="input-group ">
+                                        <input type="text" class="form-control" placeholder="搜索" name="search" autocomplete="off">
 
-                        <form class="search-form row align-items-center h-100">
-                            <div class="input-group ">
-                                <input type="text" class="form-control" placeholder="搜索" name="search" autocomplete="off">
+                                        <button class="btn btn-miku" type="submit">
+                                            <i class="fas fa-search"></i>
+                                        </button>
 
-                                <button class="btn btn-miku" type="submit">
-                                    <i class="fas fa-search"></i>
-                                </button>
-
+                                    </div>
+                                </form>
                             </div>
-                        </form>
+                        </div>
+
+
+
+
 
                     <?php } ?>
                 </div>
@@ -268,7 +275,7 @@ else
 
                 <!-- 菜单下方功能栏 -->
                 <div class="menu-functional-bar speedbar  my-2 p-2 px-3 rounded text-end">
-                    <div class="ms-auto "  title="如果无法正常加载站内图片, 可以尝试开启备用图床 (备用图床的加载速度比默认的更缓慢)">
+                    <div class="ms-auto " title="如果无法正常加载站内图片, 可以尝试开启备用图床 (备用图床的加载速度比默认的更缓慢)">
                         <span class="enable_backup_image_domain_title me-1">
                             站内图片无法加载?
                         </span>
