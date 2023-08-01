@@ -16,7 +16,10 @@ body.darkmode {
 
 body.darkmode, 
 body.darkmode a, 
-body.darkmode span, 
+body.darkmode span,
+body.darkmode table,  
+body.darkmode th,  
+body.darkmode td, 
 body.darkmode .dropdown-item-text, 
 body.darkmode .nav-link.disabled,
 body.darkmode .input-group-text,

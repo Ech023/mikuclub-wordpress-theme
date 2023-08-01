@@ -107,7 +107,7 @@ function setup_front_script()
         [
             'name' => 'style-darkmode',
             'path' => '/css/style-darkmode.css',
-            'version' => '1.13'
+            'version' => '1.14'
         ],
     ];
 
