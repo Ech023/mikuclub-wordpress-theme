@@ -22,8 +22,8 @@ function top_right_menu_component() {
 
 
                 <li class="nav-item">
-                    <a class="sign nav-link btn btn-miku px-md-4 px-2 mt-1" href="<?php echo wp_login_url(); ?>" title="登录"><i
-                                class="fas fa-sign-in-alt"></i> 登录 </a>
+                    <a class="sign nav-link btn btn-miku px-md-4 px-2 mt-1" href="<?php echo wp_login_url(); ?>" title="登录/注册"><i
+                                class="fas fa-sign-in-alt"></i> 登录 / 注册 </a>
                 </li>
 
 
