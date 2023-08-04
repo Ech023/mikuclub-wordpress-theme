@@ -18,11 +18,25 @@ $current_page_url =  get_permalink(get_the_ID());
 $user_followed = get_user_followed();
 
 
+//创建作者页面链接
+$author_page_link_element = '';
+if ($p_id_author)
+{
+
+	$author_page_link = get_author_posts_url($p_id_author);
+
+	$author_page_link_element = <<<HTML
+	<a href="{$author_page_link}" class="btn  btn-lg text-white bg-secondary" title="查看UP主页面">查看UP主页面</a>
+HTML;
+}
 
 
 
 //关注列表元素
 $array_author_element = '';
+
+
+$content = '';
 
 //如果关注列表不是空
 if ($user_followed)
@@ -104,8 +118,8 @@ if ($user_followed)
 
 			//输出 自定义 图标
 			$user_image = <<<HTML
-			<div  style="width: 40px; height: 40px" class="ms-2 ps-2 pt-1">
-				<i class="fa-solid fa-border-all fa-2x"></i>
+			<div  style="width: 50px; height: 50px" class="mx-auto">
+				<i class="fa-solid fa-border-all fa-3x"></i>
 			</div>
 HTML;
 		}
@@ -125,9 +139,7 @@ HTML;
 			]);
 
 			//输出img标签
-			$user_image = <<<HTML
-			<img class="rounded-circle " src="{$user_image_url}" style="width: 40px; height: 40px" alt="作者头像">
-HTML;
+			$user_image = print_user_avatar($user_image_url);
 		}
 
 
@@ -148,7 +160,6 @@ HTML;
 HTML;
 		return $result;
 	}, '');
-
 }
 //如果没有关注过其他用户, 输出错误信息
 else
@@ -178,18 +189,21 @@ $output = <<<HTML
 			{$breadcrumbs_component}
 		</h4>
 
-		<div class="row">
-			<div class="col-12 col-md-1 mb-4 mb-md-0">
+		<div class="row gy-3">
+			<div class="col-12 col-md-1">
 				<div class="text-center">
 					<div>关注</div>
 					<div class="fw-bold large">{$number_followed}</div>
 				</div>
 			</div>
-			<div class="col-11">
+			<div class="col-10 col-md-9 col-xxl-10">
 				<div class="row g-4  pb-4 overflow-y-auto" style="max-height: 312px">
 					{$array_author_element}
 				</div>
 
+			</div>
+			<div class="col-12 col-md-2 col-xxl-1 text-center">
+				{$author_page_link_element}
 			</div>
 
 		</div>
