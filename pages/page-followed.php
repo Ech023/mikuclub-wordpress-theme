@@ -149,11 +149,6 @@ HTML;
 		return $result;
 	}, '');
 
-	$array_author_element .= $array_author_element;
-	$array_author_element .= $array_author_element;
-	$array_author_element .= $array_author_element;
-	$array_author_element .= $array_author_element;
-	$array_author_element .= $array_author_element;
 }
 //如果没有关注过其他用户, 输出错误信息
 else
