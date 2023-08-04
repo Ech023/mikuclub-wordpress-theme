@@ -74,7 +74,7 @@ function setup_front_script()
         [
             'name' => 'style-system',
             'path' => '/css/style-system.css',
-            'version' => '3.07'
+            'version' => '3.08'
         ],
         //自定义CSS
         [
@@ -98,7 +98,7 @@ function setup_front_script()
         [
             'name' => 'style-tougao',
             'path' => '/css/style-tougao.css',
-            'version' => '1.06'
+            'version' => '1.07'
         ],
         //手机CSS
         [
@@ -316,7 +316,7 @@ function setup_front_script()
         [
             'name' => 'js-darkmode',
             'path' => '/js/darkmode.js',
-            'version' => '1.09',
+            'version' => '1.10',
             'in_footer' => false, //必须在顶部, 不然会有视觉延时
         ],
 
