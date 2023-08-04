@@ -84,7 +84,7 @@ function pagination_component()
 			{
 				$the_list_content .= '
 					<li class="page-item flex-fill ">
-						<a class="page-link text-dark border-0 rounded" href="' . get_pagenum_link($i, true) . '">' . $i . '</a>
+						<a class="page-link border-0 rounded" href="' . get_pagenum_link($i, true) . '">' . $i . '</a>
 					</li>';
 			}
 		}

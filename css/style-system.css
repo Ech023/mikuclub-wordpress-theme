@@ -26,7 +26,9 @@
 
     --footer-bg-color : #F8F9FA;
 
+    --text-color: var(--bs-black);
 
+    --button-text-color: var(--bs-white);
 
 }
 
@@ -59,12 +61,12 @@ article, aside, details, figcaption, figure, footer, header, hgroup, nav, sectio
 /**
 设置默认 a 标签 的文字颜色
  */
-a, .nav-link {
-    color: black;
+a, .nav-link, .page-link {
+    color: var(--text-color);
     text-decoration: none;
 }
 
-a:hover, .nav-link:hover, .nav-link:focus, .nav-link:hover {
+a:hover, .nav-link:hover, .nav-link:focus, .nav-link:hover, .page-link:hover {
     color: var(--main-color-hover);
     text-decoration: none;
 }
@@ -73,7 +75,7 @@ a:hover, .nav-link:hover, .nav-link:focus, .nav-link:hover {
 设置 a标签 注销样式
  */
 a.disabled {
-    color: #212529;
+    color: var(--bs-btn-disabled-color);
     opacity: .65;
     pointer-events: none;
 }
@@ -112,19 +114,19 @@ a.disabled {
 自定义颜色 初音绿
  */
 .btn-miku, .badge-miku {
-    color: #fff;
+    color: var(--button-text-color);
     background-color: var(--main-color);
     border-color: var(--main-color);
 }
 
 .btn-miku:hover {
-    color: #fff;
+    color: var(--button-text-color);
     background-color: var(--main-color-hover);
     border-color: var(--main-color-hover);
 }
 
 .btn-miku a {
-    color: #fff;
+    color: var(--button-text-color);
 }
 
 .text-miku, .color-miku {
@@ -141,7 +143,7 @@ a.disabled {
 }
 
 .btn-outline-miku:hover {
-    color: #fff;
+    color: var(--button-text-color);
     border-color: var(--main-color-hover);
     background-color: var(--main-color-hover);
 }

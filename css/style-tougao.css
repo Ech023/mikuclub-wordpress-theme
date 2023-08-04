@@ -17,7 +17,7 @@ input 和 textarea
 
 div.page-tougao form.wpuf-form-add.wpuf-style ul.wpuf-form li .wpuf-fields input, div.page-tougao .wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields textarea {
     background: none;
-    color: #495057;
+    color: var(--text-color);
     box-shadow: none;
     width: 100%;
 

@@ -45,6 +45,8 @@ function init_dark_mode() {
  */
 function update_dark_mode(mode) {
 
+
+
     const now = new Date();
     const hour = now.getHours();
 
@@ -59,26 +61,36 @@ function update_dark_mode(mode) {
 
         //移除夜间模式css类
         $('body').removeClass('darkmode');
+        //移除bootstrap暗夜属性
+        $('html').removeAttr('data-bs-theme');
     }
     //如果设置记录 为 开
     if (mode === 2) {
 
         //添加夜间模式css类
         $('body').addClass('darkmode');
+        //添加bootstrap暗夜属性
+        $('html').attr('data-bs-theme', 'dark');
     }
     //如果没有设置为自动模式 + 时间为 夜间 范围
     else if (mode === 0) {
 
-        if(hour >= start_hour || hour <= end_hour){
+        if (hour >= start_hour || hour <= end_hour) {
+
             //添加夜间模式css类
             $('body').addClass('darkmode');
+            //添加bootstrap暗夜属性
+            $('html').attr('data-bs-theme', 'dark');
+
         }
-        else{
+        else {
             //移除夜间模式css类
             $('body').removeClass('darkmode');
+            //移除bootstrap暗夜属性
+            $('html').removeAttr('data-bs-theme');
         }
 
-       
+
 
     }
 
@@ -142,7 +154,7 @@ function on_click_button_darkmode() {
 
 
 /**
- *从本地存储获取数据 暗夜模式专用
+ *从本地存储获取数据 暗夜模式专用 (因为需要在页面加载完毕前运行)
  * @param {string} key
  * @returns {any}
  */
@@ -167,7 +179,7 @@ function getLocalStorageForDarkMode(key) {
 }
 
 /**
- *设置数据到本地储存 暗夜模式专用
+ *设置数据到本地储存 暗夜模式专用 (因为需要在页面加载完毕前运行)
  * 错误的情况返回false
  * @param {string} key
  * @param {any} value

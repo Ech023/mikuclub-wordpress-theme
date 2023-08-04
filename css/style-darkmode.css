@@ -7,13 +7,14 @@ body.darkmode {
 
     --container-bg-color:  #212121;
     --container-color: #181818;
-
     --secondary-bg-color: #383838;
-
     --footer-bg-color: #383838;
+    --text-color: var(--bs-body-color);
+    --button-text-color: var(--bs-body-color);
     
 }
 
+/*
 body.darkmode, 
 body.darkmode a, 
 body.darkmode span,
@@ -32,26 +33,34 @@ body.darkmode .btn:hover,
 body.darkmode .nav-tabs .nav-item.show .nav-link,
 body.darkmode .nav-tabs .nav-link.active,
 body.darkmode div.page-tougao .wpuf-form-add.wpuf-style ul.wpuf-form .category-wrap select,
-body.darkmode .list-group-item,
+body.darkmode .list-group-item
 
-body.darkmode #wpforo #wpforo-wrap .wpf-search .wpf-search-form i,
-body.darkmode #wpforo #wpforo-wrap .wpf-search input[type="text"].wpf-search-field,
-body.darkmode #wpforo #wpforo-wrap *
 {
-    color: #fff;
-}
+    /*color: #fff;*/
+/*}*/
 
 
 body.darkmode a:hover{
     color: var(--main-color-hover);
 }
 
+body.darkmode .btn:hover{
+    color: var(--text-color);
+}
+
+
 
 body.darkmode input,  body.darkmode textarea{
     background-color: var(--secondary-bg-color) !important;
-    caret-color: white;
-    color: white !important;
-    
+    caret-color: var(--text-color);
+    color: var(--text-color) !important;
+}
+
+/**
+降低 投稿页面 内容编辑器的亮度
+*/
+body.darkmode .page-tougao ul.wpuf-form li .wp-editor-wrap{
+    filter: brightness(80%);
 }
 
 
@@ -61,6 +70,7 @@ body.darkmode .card
     background-color: transparent !important;
 }
 
+/*
 body.darkmode .page-link{
     background-color: transparent !important;
     color: white !important;
@@ -71,9 +81,12 @@ body.darkmode .page-link:hover{
     color: var(--main-color-hover) !important;
 }
 
+
 body.darkmode .dropdown-menu{
     background-color: var(--container-bg-color) !important;
 }
+
+*/
 
 
 
@@ -92,28 +105,45 @@ body.darkmode #fixed-sidebar-menu .list-group-item:not(.active)
 
 {
     background-color: var(--container-bg-color);
-    border: 1px solid #dee2e6;
-    color: white;
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
 }
+
+/*
 body.darkmode #fixed-sidebar-menu .list-group-item span{
-    color: white;
-}
+    color: var(--text-color);
+}*/
 
 
 /**
 全站通告栏 链接的默认颜色
- */
+ *//*
  body.darkmode .speedbar a,
  body.darkmode .page-item.disabled .page-link
  {
     color: var(--main-color)  !important;
+}*/
+
+/* 菜单栏图标 */
+body.darkmode #wpforo #wpforo-wrap .wpf-breadcrumb div:after,
+body.darkmode #wpforo #wpforo-wrap .wpf-breadcrumb div.active:after,
+body.darkmode #wpforo #wpforo-wrap
+{
+    background-color: var(--secondary-bg-color);
 }
+
+
 
 body.darkmode #wpforo #wpforo-wrap #wpforo-title,
 body.darkmode #wpforo #wpforo-wrap .wpforo-post-head .wpf-post-head-top .wpf-post-stat .wpf-post-stat-box span,
-body.darkmode #wpforo #wpforo-wrap .wpfl-4 .wpf-thread-box.wpf-thread-title a
+body.darkmode #wpforo #wpforo-wrap .wpfl-4 .wpf-thread-box.wpf-thread-title a,
+body.darkmode #wpforo #wpforo-wrap .wpfl-4 .wpf-threads-head .wpf-head-box,
+body.darkmode #wpforo #wpforo-wrap .mce-btn button,
+body.darkmode #wpforo #wpforo-wrap .wpf-search .wpf-search-form i,
+body.darkmode #wpforo #wpforo-wrap .wpf-search input[type="text"].wpf-search-field,
+body.darkmode #wpforo #wpforo-wrap *
 {
-    color: white;
+    color: var(--text-color);
 }
 
 
@@ -148,7 +178,7 @@ body.darkmode .btn-close{
 body.darkmode  #wpforo #wpforo-wrap .wpfl-4 .wpf-content-foot .wpf-reply .wpf-action,
 body.darkmode  .wpfbg-9
 {
-    background: transparent; !important
+    background: transparent !important;
 }
 
 body.darkmode  #wpforo #wpforo-wrap .wpf-head-bar .wpf-head-bar-right .wpf-button,
