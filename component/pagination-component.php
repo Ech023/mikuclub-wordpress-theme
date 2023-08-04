@@ -53,7 +53,7 @@ function pagination_component()
 		}
 
 		//增加跳转窗口
-		$the_list_end .= '<li class="page-item flex-fill my-2 my-md-2">
+		$the_list_end .= '<li class="page-item flex-fill align-self-center ps-2">
 				
 					<div class="input-group change-page">
 						  <input type="number" class="form-control form-control-lg change-page-value" placeholder="总共' . $max_page . '页" name="paged"  min="1" max="' . $max_page . '" autocomplete="off">

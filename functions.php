@@ -39,6 +39,9 @@ function setup_front_script()
     //jquery库
     wp_enqueue_script('jquery', 'https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js', false, '3.5.1', false);
 
+    //vue3库
+    //wp_enqueue_script('vue-3', 'https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js', false, '3.3.4', false);
+
     //fontanwesome图标库
     wp_enqueue_style('fontawesome', 'https://cdn.staticfile.org/font-awesome/6.3.0/css/fontawesome.min.css', false, '5.13');
     wp_enqueue_style('fontawesome-solid', 'https://cdn.staticfile.org/font-awesome/6.3.0/css/solid.min.css', false, '5.13');
@@ -46,8 +49,8 @@ function setup_front_script()
     //wp_enqueue_style('fontawesome-regular', 'https://cdn.staticfile.org/font-awesome/6.3.0/css/regular.min.css', false, '5.13');
 
     //bootstrap库
-    wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.staticfile.org/twitter-bootstrap/5.1.3/css/bootstrap.min.css', false, '5.1.3');
-    wp_enqueue_script('twitter-bootstrap-js', 'https://cdn.staticfile.org/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js', false, '5.1.3', true);
+    wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.staticfile.org/twitter-bootstrap/5.3.1/css/bootstrap.min.css', false, '5.3.1');
+    wp_enqueue_script('twitter-bootstrap-js', 'https://cdn.staticfile.org/twitter-bootstrap/5.3.1/js/bootstrap.bundle.min.js', false, '5.3.1', true);
 
 
     //图片灯箱 lightbox2库
@@ -293,6 +296,13 @@ function setup_front_script()
             'name' => 'js-history',
             'path' => '/js/page-history.js',
             'version' => '1.11',
+            'in_footer' => false,
+        ],
+         //JS 关注页
+         [
+            'name' => 'js-followed',
+            'path' => '/js/page-followed.js',
+            'version' => '1.00',
             'in_footer' => false,
         ],
         //JS 论坛
