@@ -550,17 +550,13 @@ function update_image_src_of_element_to_backup_image_domain() {
     if (is_enable_backup_image_domain()) {
 
         let query_selector = '';
-        for(const domain of SITE_DOMAIN.get_array_site_domain()){
+        for (const domain of SITE_DOMAIN.get_array_site_domain()) {
             query_selector += `img[src*="${domain}"],`;
             query_selector += `img[file*="${domain}"],`;
         }
 
         //抓取所有 使用 file域名的图片元素
-        $(`
-            img[src*="${SITE_DOMAIN.www_mikuclub_win}"], 
-            img[file*="${SITE_DOMAIN.www_mikuclub_win}"], 
-            img[src*="${SITE_DOMAIN.www_mikuclub_eu}"], 
-            img[file*="${SITE_DOMAIN.www_mikuclub_eu}"], 
+        $(query_selector + `
             img[src*="file"], 
             img[file*="file"]
         `).each(function (index, element) {
