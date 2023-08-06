@@ -70,6 +70,12 @@ body.darkmode .card
     background-color: transparent !important;
 }
 
+
+body.darkmode [data-bs-theme=dark] .carousel .carousel-caption, [data-bs-theme=dark].carousel .carousel-caption{
+    color: var(--text-color);
+}
+
+
 /*
 body.darkmode .page-link{
     background-color: transparent !important;
