@@ -71,7 +71,7 @@ body.darkmode .card
 }
 
 
-body.darkmode [data-bs-theme=dark] .carousel .carousel-caption, [data-bs-theme=dark].carousel .carousel-caption{
+body.darkmode .carousel .carousel-caption, body.darkmode .carousel .carousel-caption{
     color: var(--text-color);
 }
 
