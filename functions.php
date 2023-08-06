@@ -174,7 +174,7 @@ function setup_front_script()
         [
             'name' => 'js-base',
             'path' => '/js/base.js',
-            'version' => '1.19',
+            'version' => '1.20',
             'in_footer' => false,
         ],
         //名言名句变量

@@ -175,8 +175,9 @@ define('WPFORO_TOPIC_ATTACH_THUMBNAIL_SRC', 'wpforo_topic_attach_thumbnail_src')
 define('ARRAY_SITE_DOMAIN', [
 	'www.mikuclub.cc',
 	'www.mikuclub.online',
-	'www.mikuclub.eu',
 	'www.mikuclub.win',
+	'www.mikuclub.eu',
+	'www.mikuclub.uk',
 ]);
 
 //网站主域名

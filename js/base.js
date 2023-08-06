@@ -102,8 +102,9 @@ const BACKUP_IMAGE_DOMAIN = 'file.mikuclub.fun';
 const SITE_DOMAIN = {
     www_mikuclub_online: 'www.mikuclub.online',
     www_mikuclub_cc: 'www.mikuclub.cc',
-    www_mikuclub_eu: 'www.mikuclub.eu',
     www_mikuclub_win: 'www.mikuclub.win',
+    www_mikuclub_eu: 'www.mikuclub.eu',
+    www_mikuclub_uk: 'www.mikuclub.uk',
 
     /**
      * 获取所有用过的域名
@@ -113,8 +114,9 @@ const SITE_DOMAIN = {
         return [
             this.www_mikuclub_online,
             this.www_mikuclub_cc,
-            this.www_mikuclub_eu,
             this.www_mikuclub_win,
+            this.www_mikuclub_eu,
+            this.www_mikuclub_uk,
         ]
     },
 
