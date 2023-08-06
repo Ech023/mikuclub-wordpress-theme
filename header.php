@@ -78,9 +78,9 @@ else
         echo '<meta name="robots" content="noindex,nofollow">';
     }
     ?>
-    <link rel="icon" href="https://cdn.mikuclub.fun/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://<?php echo CDN_MIKUCLUB_FUN ?>/favicon.ico" type="image/x-icon">
     <!--加载图标-->
-    <link rel="shortcut icon" href="https://cdn.mikuclub.fun/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://<?php echo CDN_MIKUCLUB_FUN ?>/favicon.ico" type="image/x-icon">
     <!--加载图标2-->
 
     <title>

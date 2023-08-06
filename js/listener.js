@@ -145,7 +145,6 @@ $(function () {
      */
     update_a_href_to_secondary_domain();
 
-
     /**
      * 在页面加载完成后 更新页面中 img标签里的src地址 到 备用图片域名
      */
@@ -165,6 +164,12 @@ $(function () {
 });
 
 
+/**
+ * 把失效的域名跳转到当前的主域名
+ */
+redirect_site_domain_deactivated();
+
+
 /*
  //如果当前域名为 cc
  if (location.host === SITE_DOMAIN.www_mikuclub_cc) {
@@ -173,7 +178,7 @@ $(function () {
     location.replace(url);
 }*/
 
-
+/*
 //如果当前域名为 online 或者 cc
 if (location.host === SITE_DOMAIN.www_mikuclub_online) {
     //重定向到win
@@ -216,6 +221,6 @@ if (location.host === SITE_DOMAIN.www_mikuclub_cc) {
 
    }*/
 
-
-}
+/*
+}*/
 

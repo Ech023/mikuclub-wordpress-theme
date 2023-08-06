@@ -170,3 +170,33 @@ define('BLOCKED_USER_CHECK', 'blocked_user_check');
 define('WPFORO_TOPIC_ATTACH_SRC', 'wpforo_topic_attach_src');
 //wpforo论坛 主题预览缩微图图的数组地址
 define('WPFORO_TOPIC_ATTACH_THUMBNAIL_SRC', 'wpforo_topic_attach_thumbnail_src');
+
+//网站支持的域名
+define('ARRAY_SITE_DOMAIN', [
+	'www.mikuclub.cc',
+	'www.mikuclub.online',
+	'www.mikuclub.eu',
+	'www.mikuclub.win',
+]);
+
+//网站主域名
+define('SITE_DOMAIN_MAIN', 'www.mikuclub.cc');
+
+//CDN域名
+define('CDN_MIKUCLUB_FUN', 'cdn.mikuclub.fun');
+define('FILE1_MIKUCLUB_FUN', 'file1.mikuclub.fun');
+define('FILE2_MIKUCLUB_FUN', 'file2.mikuclub.fun');
+define('FILE3_MIKUCLUB_FUN', 'file3.mikuclub.fun');
+define('FILE4_MIKUCLUB_FUN', 'file4.mikuclub.fun');
+define('FILE5_MIKUCLUB_FUN', 'file5.mikuclub.fun');
+define('FILE6_MIKUCLUB_FUN', 'file6.mikuclub.fun');
+
+//静态文件自动CDN域名
+define('ARRAY_FILE_DOMAIN', [
+	FILE1_MIKUCLUB_FUN,
+	FILE2_MIKUCLUB_FUN,
+	FILE3_MIKUCLUB_FUN,
+	FILE4_MIKUCLUB_FUN,
+	FILE5_MIKUCLUB_FUN,
+	FILE6_MIKUCLUB_FUN,
+]);

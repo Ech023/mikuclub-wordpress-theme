@@ -29,7 +29,7 @@ global $post;
             //在左方添加0
             $rand_image = str_pad($rand_image, 3, '0', STR_PAD_LEFT);
 
-            $link = 'https://cdn.mikuclub.fun/project_sekai_cg/'.$rand_image.'.jpg';
+            $link = 'https://'.CDN_MIKUCLUB_FUN.'/project_sekai_cg/'.$rand_image.'.jpg';
 
 			?>
             <div class="page-content page-qiandao my-2">

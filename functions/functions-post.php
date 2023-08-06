@@ -927,19 +927,10 @@ function set_thumbnail_src($post_id)
     //获取第一张图片
     $thumbnail_src = $thumbnails_src[0];
 
-    $array_search = [
-        'file1.mikuclub.fun',
-        'file2.mikuclub.fun',
-        'file3.mikuclub.fun',
-        'file4.mikuclub.fun',
-        'file5.mikuclub.fun',
-        'www.mikuclub.cc',
-        'www.mikuclub.online',
-        'www.mikuclub.win',
-    ];
+    $array_search = array_merge(ARRAY_SITE_DOMAIN, ARRAY_FILE_DOMAIN);
 
     //获取当前网址
-    $origin_domain = get_home_url();
+    $origin_domain = SITE_DOMAIN_MAIN;
     //去除协议名称
     $origin_domain = str_replace(['http:', 'https:', '/'], '', $origin_domain);
 
@@ -1015,7 +1006,13 @@ function set_images_all_sizes_src($post_id)
     //更新图片地址到数据库
     foreach ($images_array as $images)
     {
-        update_post_meta($post_id, $images['name'], $images['src']);
+        //修正储存的图片地址
+        $array_src =  $images['src'];
+        $array_search = array_merge(ARRAY_SITE_DOMAIN, ARRAY_FILE_DOMAIN);
+        $origin_domain = SITE_DOMAIN_MAIN;
+        $array_src = str_replace($array_search, $origin_domain, $array_src);
+
+        update_post_meta($post_id, $images['name'], $array_src);
     }
 }
 
@@ -1054,6 +1051,10 @@ function set_images_src($post_id, $meta_name, $size)
     {
         $images_src[] = first_img_src($post_id);
     }
+
+    $array_search = array_merge(ARRAY_SITE_DOMAIN, ARRAY_FILE_DOMAIN);
+    $origin_domain = SITE_DOMAIN_MAIN;
+    $images_src = str_replace($array_search, $origin_domain, $images_src);
 
     //存储图片地址数组到数据库
     update_post_meta($post_id, $meta_name, $images_src);

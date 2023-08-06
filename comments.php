@@ -4,6 +4,68 @@
 
 //当前用户ID
 $user_id = get_current_user_id();
+$pub_comment_element = '';
+
+if (is_single())
+{
+    $pub_link = 'https://shop119340084.taobao.com/shop/view_shop.htm?spm=a230r.1.14.4.75dc14ecGDLY4r&user_number_id=1965847533&mm_sycmid=1_139544_204eb550d8889ed3be7ea07664a8ccf6';
+    $cdn_domain = CDN_MIKUCLUB_FUN;
+    $pub_comment_element = <<<HTML
+
+    <!-- A酱的绅士玩具屋 评论区广告 -->
+    <div class="my-2">
+
+        <div class="row comment-body border-bottom  ">
+
+            <div class="col-auto col-md-1 my-2 avatar-container">
+                <a class="" href="{$pub_link}" title="查看用户主空间" target="_blank" rel="nofollow">
+                    <img class="avatar rounded-circle" src="https://{$cdn_domain}/pub/A酱的绅士玩具屋/头像.jpg" width="50" height="50" alt="用户头像">
+                </a>
+            </div>
+            <div class="col col-md-10 my-2">
+                <div class="user-meta">
+                    <a class="m-1 d-block d-sm-inline" href="{$pub_link}" title="查看用户主空间" target="_blank" rel="nofollow">A酱的绅士玩具屋</a>
+                    <span class="badge bg-warning m-1">飞机杯</span>
+                </div>
+                <div class="comment-content my-3" style="">
+                    <p class="mb-0">天天在家手冲会不会阳痿? 如何锻炼自己的牛子持久不射? <img src="https://www.mikuclub.cc/wp-content/themes/miku/img/smilies/icon_question.gif" alt=":?:" class="wp-smiley" style="height: 1em; max-height: 1em;"></p>
+                    <p class="mb-0">我也想像哥布林一样一天一个女骑士。<img src="https://www.mikuclub.cc/wp-content/themes/miku/img/smilies/icon_wink.gif" alt=":?:" class="wp-smiley" style="height: 1em; max-height: 1em;"></p>
+                    <p class="mb-0">那就快去“<a class="text-info" href="{$pub_link}" target="_blank" rel="nofollow">A酱的绅士玩具屋</a>”吧, 初音社为大家申请到了限时粉丝专属价, 只有和客服A酱说是初音社来的就可以享受到优惠哦!~ <img src="https://www.mikuclub.cc/wp-content/themes/miku/img/smilies/icon_neutral.gif" alt=":|" class="wp-smiley" style="height: 1em; max-height: 1em;"></p>
+                    <p class="my-2"> <a class="text-info text-decoration-underline" href="{$pub_link}" target="_blank" rel="nofollow">戳这里即可拥有>> 一个榨汁飞(lao)机(po)杯,快来我和签订契约成为绅(hen)士(tai)吧!</a> </p>
+
+                </div>
+                <div class="comment-meta small">
+                    <span class="m-1 text-muted d-block d-sm-inline mb-3 mb-sm-1">2022-09-03 00:00:00</span>
+                    <span class="d-none d-md-inline m-1 text-muted"><i class="fas fa-store"></i> 淘宝店</span>
+
+                    <div class="comment-likes d-inline ms-0 ms-sm-3 me-3">
+                        <span class="text-muted">
+                            <i class="far fa-thumbs-up"></i> 点赞
+                        </span>
+                        <span class="mx-3 comment-likes-count">
+                            666
+                        </span>
+                        <span class="text-muted">
+                            <i class="far fa-thumbs-down"></i> 踩
+                        </span>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+HTML;
+}
+
+
 
 
 
@@ -90,66 +152,15 @@ $user_id = get_current_user_id();
 
 
     <?php
-
-    $pub_link = 'https://shop119340084.taobao.com/shop/view_shop.htm?spm=a230r.1.14.4.75dc14ecGDLY4r&user_number_id=1965847533&mm_sycmid=1_139544_204eb550d8889ed3be7ea07664a8ccf6';
     //if ( have_comments() ) {
     ?>
     <div>
 
-        <!-- A酱的绅士玩具屋 评论区广告 -->
-        <div class="my-2">
-
-            <div class="row comment-body border-bottom  ">
-
-                <div class="col-auto col-md-1 my-2 avatar-container">
-                    <a class="" href="<?php echo $pub_link; ?>" title="查看用户主空间" target="_blank" rel="nofollow">
-                        <img class="avatar rounded-circle" src="https://cdn.mikuclub.fun/pub/A酱的绅士玩具屋/头像.jpg" width="50" height="50" alt="用户头像">
-                    </a>
-
-                </div>
-                <div class="col col-md-10 my-2">
-                    <div class="user-meta">
-                        <a class="m-1 d-block d-sm-inline" href="<?php echo $pub_link; ?>" title="查看用户主空间" target="_blank" rel="nofollow">A酱的绅士玩具屋</a>
-                        <span class="badge bg-warning m-1">飞机杯</span>
-                    </div>
-                    <div class="comment-content my-3" style="">
-                        <p class="mb-0">天天在家手冲会不会阳痿? 如何锻炼自己的牛子持久不射? <img src="https://www.mikuclub.cc/wp-content/themes/miku/img/smilies/icon_question.gif" alt=":?:" class="wp-smiley" style="height: 1em; max-height: 1em;"></p>
-                        <p class="mb-0">我也想像哥布林一样一天一个女骑士。<img src="https://www.mikuclub.cc/wp-content/themes/miku/img/smilies/icon_wink.gif" alt=":?:" class="wp-smiley" style="height: 1em; max-height: 1em;"></p>
-                        <p class="mb-0">那就快去“<a class="text-info" href="<?php echo $pub_link; ?>" target="_blank" rel="nofollow">A酱的绅士玩具屋</a>”吧, 初音社为大家申请到了限时粉丝专属价, 只有和客服A酱说是初音社来的就可以享受到优惠哦!~ <img src="https://www.mikuclub.cc/wp-content/themes/miku/img/smilies/icon_neutral.gif" alt=":|" class="wp-smiley" style="height: 1em; max-height: 1em;"></p>
-                        <p class="my-2"> <a class="text-info text-decoration-underline" href="<?php echo $pub_link; ?>" target="_blank" rel="nofollow">戳这里即可拥有>> 一个榨汁飞(lao)机(po)杯,快来我和签订契约成为绅(hen)士(tai)吧!</a> </p>
-
-                    </div>
-                    <div class="comment-meta small">
-                        <span class="m-1 text-muted d-block d-sm-inline mb-3 mb-sm-1">2022-09-03 00:00:00</span>
-                        <span class="d-none d-md-inline m-1 text-muted"><i class="fas fa-store"></i> 淘宝店</span>
-
-                        <div class="comment-likes d-inline ms-0 ms-sm-3 me-3">
-                            <span class="text-muted">
-                                <i class="far fa-thumbs-up"></i> 点赞
-                            </span>
-                            <span class="mx-3 comment-likes-count">
-                                666
-                            </span>
-                            <span class="text-muted">
-                                <i class="far fa-thumbs-down"></i> 踩
-                            </span>
-                        </div>
-
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-        </div>
-
+        <?php echo $pub_comment_element; ?>
 
         <div class="comment-list">
-
         </div>
+        
         <div class="get-next-page text-center" data-post-id="<?php echo get_the_ID() ?>" data-offset="0">
             <div class="spinner-border text-miku" style="display: none"></div>
         </div>

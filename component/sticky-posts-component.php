@@ -12,7 +12,7 @@ function sticky_posts_component() {
 	//获取置顶文章列表
 	$sticky_post_list = get_sticky_posts( $stick_count );
 
-		/*插入临时广告
+	/*插入临时广告
 	移除广告的时候 记得 移除 rel="nofollow"
 	*//*
 		if ( is_home() ) {
@@ -50,17 +50,6 @@ function sticky_posts_component() {
 
 		//创建幻灯片内容
 		foreach ( $sticky_post_list as $my_post_sticky ) {
-
-            //替换首页图片域名为百度小号CC域名CDN地址
-            //============================================================
-            //只替换前3张
-            //if($count_replace < 3){
-            //    $my_post_sticky->post_image= str_replace('www.mikuclub.cc', 'statictuku.mikuclub.cc', $my_post_sticky->post_image );
-            //    $count_replace ++;
-            //}
-
-
-            //=============================================================
 
 			$class_name = ( $isFirst == true ) ? 'active' : '';
 

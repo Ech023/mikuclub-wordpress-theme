@@ -276,13 +276,6 @@
 
             ?>
 
-            <!--div class="my-3 small">
-                下载完该资源后, 各位可以在评论区留下当前资源的秒传链接, 这样在分享失效后, 其他人也能获取到资源, 互相帮助, 减轻投稿者补档负担, 无需账号, 只需要在电脑上计算出资源的秒传识别码 <a
-                        style="text-decoration:underline;" target="_blank"
-                        href="https://www.mikuclub.cc/185303">查看如何创建秒传链接</a>
-
-            </div-->
-
 
             <?php comments_template('', true);
 

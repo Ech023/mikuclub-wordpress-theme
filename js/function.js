@@ -500,35 +500,17 @@ function openLink(link) {
  */
 function update_a_href_to_secondary_domain() {
 
-    const array_old_domain = [
-        SITE_DOMAIN.www_mikuclub_online,
-        SITE_DOMAIN.www_mikuclub_eu,
-        SITE_DOMAIN.www_mikuclub_cc,
-        SITE_DOMAIN.www_mikuclub_win
-    ];
+    const array_old_domain = SITE_DOMAIN.get_array_site_domain();
 
     const current_domain = location.host;
-    /*
-    //如果当前不是主域名
-    if (origin_domain !== current_domain) {
 
-        //替换为副域名
-        $('a[href*="' + origin_domain + '"]').each(function (index, element) {
-            //更新href
-            let href = $(this).attr('href');
-            $(this).attr('href', href.replace(origin_domain, current_domain));
-        });
-
-    }
-    //如果是主域名
-    else{*/
-
-    //修正所有老链接
+    //遍历所有网站用过域名
     for (const old_domain of array_old_domain) {
 
-        //如果域名不一样
+        //如果域名和当前url不一样
         if (old_domain !== current_domain) {
 
+            //修正所有链接的URL
             $('a[href*="' + old_domain + '"]').each(function (index, element) {
                 //更新href
                 let href = $(this).attr('href');
@@ -538,8 +520,6 @@ function update_a_href_to_secondary_domain() {
         }
 
     }
-
-    //}
 
 }
 
@@ -568,6 +548,12 @@ function update_image_src_of_element_to_backup_image_domain() {
 
     //如果备用图床域名 为开启状态
     if (is_enable_backup_image_domain()) {
+
+        let query_selector = '';
+        for(const domain of SITE_DOMAIN.get_array_site_domain()){
+            query_selector += `img[src*="${domain}"],`;
+            query_selector += `img[file*="${domain}"],`;
+        }
 
         //抓取所有 使用 file域名的图片元素
         $(`
@@ -601,6 +587,30 @@ function update_image_src_of_element_to_backup_image_domain() {
     }
 
 }
+
+/**
+ * 把失效的域名跳转到当前的主域名
+ */
+function redirect_site_domain_deactivated() {
+
+    //获取所有失效的域名
+    const array_site_domain = SITE_DOMAIN.get_array_site_domain_disabled();
+    //遍历所有失效域名
+    for (const domain_disabled of array_site_domain) {
+        //如果当前正在访问失效域名
+        if (location.host === domain_disabled) {
+
+            //把失效域名 重定向到 当前主域名
+            const url = location.href.replace(domain_disabled, SITE_DOMAIN.get_main_domain());
+            location.replace(url);
+
+        }
+
+    }
+
+
+}
+
 
 /**
  * 根据local storage数值初始化 切换 备用图床域名 按钮状态

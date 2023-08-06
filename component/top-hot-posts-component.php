@@ -42,7 +42,7 @@ function top_hot_posts_component() {
 			//设置广告外链
 			$adsense_post = new My_Post_Hot($adsense_post);
 			$adsense_post->post_title = '《初音社》力推大男孩宝藏玩具店';
-			$adsense_post->post_image = 'https://cdn.mikuclub.fun/pub/七色谷/thumbnail.jpg';
+			$adsense_post->post_image = 'https://'.CDN_MIKUCLUB_FUN.'/pub/七色谷/thumbnail.jpg';
 			$adsense_post->post_href = 'https://tomaxbjyp.tmall.com/shop/view_shop.htm';
 
 			//$post_list[0] = $adsense_post;

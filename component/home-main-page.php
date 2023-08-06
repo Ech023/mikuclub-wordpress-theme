@@ -232,7 +232,7 @@ HTML;
 
         //替换首页图片域名为西部数码自定义CDN地址
         //============================================================
-
+        /*
         $array_old_domain = [
             'href="https://www.mikuclub.online',
             'href="https://www.mikuclub.eu',
@@ -240,28 +240,18 @@ HTML;
         ];
 
         $main_domain = 'href="https://www.mikuclub.cc';
-
         //把A链接里的可能存在的备用域名改为主域名
         $home_content_output = str_replace($array_old_domain, $main_domain, $home_content_output);
+        */
+
+        $home_content_output = fix_site_domain_with_domain_main($home_content_output);
+
+
         //=============================================================
 
         //创建缓存
         set_cache_meta($cache_key, CACHE_GROUP_COMPONENTS, $home_content_output);
     }
-
-    /*
-    //获取当前域名
-    $current_domain =  $_SERVER['HTTP_HOST'];
-    //设置副域名
-    $secondary_domain = 'www.mikuclub.online';
-
-    //如果当前域名是 副域名
-    if ($current_domain == $secondary_domain)
-    {
-          //把A链接里的主域名改为备用域名
-         $home_content_output = str_replace('href="https://www.mikuclub.cc', 'href="https://www.mikuclub.online', $home_content_output);
-    }*/
-
 
 
     return $home_content_output;

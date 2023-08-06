@@ -174,7 +174,7 @@ function setup_front_script()
         [
             'name' => 'js-base',
             'path' => '/js/base.js',
-            'version' => '1.18',
+            'version' => '1.19',
             'in_footer' => false,
         ],
         //名言名句变量
@@ -189,7 +189,7 @@ function setup_front_script()
         [
             'name' => 'js-function',
             'path' => '/js/function.js',
-            'version' => '1.44',
+            'version' => '1.45',
             'in_footer' => false,
         ],
         //通用JS AJAX的函数
@@ -210,7 +210,7 @@ function setup_front_script()
         [
             'name' => 'js-listener',
             'path' => '/js/listener.js',
-            'version' => '1.25',
+            'version' => '1.26',
             'in_footer' => false,
         ],
         //JS 广告
@@ -930,7 +930,6 @@ function share_to_sina()
 
 
         $top_image = get_images_full_size($post_id)[0];
-        //$top_image = str_replace('www.mikuclub.cc', 'static.mikuclub.cc', $top_image);
 
 
         $body = [
@@ -1224,7 +1223,7 @@ function get_random_head_background_image()
     //	一年中的第几天 + 当前小时 然后 除余 图片数量 得出 随机数
     $random_index = (date('z') + date('G')) % $number + 1;
 
-    return 'https://cdn.mikuclub.fun/top/' . $random_index . '.webp';
+    return 'https://'.CDN_MIKUCLUB_FUN.'/top/' . $random_index . '.webp';
 }
 
 /**
@@ -1310,19 +1309,9 @@ HTML;
  */
 function fix_image_domain_with_file_1($image_src)
 {
-    $array_search = [
-        'www.mikuclub.cc',
-        'www.mikuclub.online',
-        'www.mikuclub.eu',
-        'www.mikuclub.win',
-        'file2.mikuclub.fun',
-        'file3.mikuclub.fun',
-        'file4.mikuclub.fun',
-        'file5.mikuclub.fun',
-        'file6.mikuclub.fun',
-    ];
+    $array_search = array_merge(ARRAY_SITE_DOMAIN, ARRAY_FILE_DOMAIN);
 
-    $new_domain = 'file1.mikuclub.fun';
+    $new_domain = FILE1_MIKUCLUB_FUN;
 
     $images_src = str_replace($array_search, $new_domain, $image_src);
 
@@ -1338,19 +1327,9 @@ function fix_image_domain_with_file_1($image_src)
 function fix_image_domain_with_file_2($image_src)
 {
 
-    $array_search = [
-        'www.mikuclub.cc',
-        'www.mikuclub.online',
-        'www.mikuclub.eu',
-        'www.mikuclub.win',
-        'file1.mikuclub.fun',
-        'file3.mikuclub.fun',
-        'file4.mikuclub.fun',
-        'file5.mikuclub.fun',
-        'file6.mikuclub.fun',
-    ];
+    $array_search = array_merge(ARRAY_SITE_DOMAIN, ARRAY_FILE_DOMAIN);
 
-    $new_domain = 'file2.mikuclub.fun';
+    $new_domain = FILE2_MIKUCLUB_FUN;
 
     $images_src = str_replace($array_search, $new_domain, $image_src);
 
@@ -1366,19 +1345,9 @@ function fix_image_domain_with_file_2($image_src)
 function fix_image_domain_with_file_3($image_src)
 {
 
-    $array_search = [
-        'www.mikuclub.cc',
-        'www.mikuclub.online',
-        'www.mikuclub.eu',
-        'www.mikuclub.win',
-        'file1.mikuclub.fun',
-        'file2.mikuclub.fun',
-        'file4.mikuclub.fun',
-        'file5.mikuclub.fun',
-        'file6.mikuclub.fun',
-    ];
+    $array_search = array_merge(ARRAY_SITE_DOMAIN, ARRAY_FILE_DOMAIN);
 
-    $new_domain = 'file3.mikuclub.fun';
+    $new_domain = FILE3_MIKUCLUB_FUN;
 
     $images_src = str_replace($array_search, $new_domain, $image_src);
 
@@ -1393,19 +1362,9 @@ function fix_image_domain_with_file_3($image_src)
  */
 function fix_image_domain_with_file_4($image_src)
 {
-    $array_search = [
-        'www.mikuclub.cc',
-        'www.mikuclub.online',
-        'www.mikuclub.eu',
-        'www.mikuclub.win',
-        'file1.mikuclub.fun',
-        'file2.mikuclub.fun',
-        'file3.mikuclub.fun',
-        'file5.mikuclub.fun',
-        'file6.mikuclub.fun',
-    ];
+    $array_search = array_merge(ARRAY_SITE_DOMAIN, ARRAY_FILE_DOMAIN);
 
-    $new_domain = 'file4.mikuclub.fun';
+    $new_domain = FILE4_MIKUCLUB_FUN;
 
     $images_src = str_replace($array_search, $new_domain, $image_src);
 
@@ -1420,19 +1379,9 @@ function fix_image_domain_with_file_4($image_src)
  */
 function fix_image_domain_with_file_5($image_src)
 {
-    $array_search = [
-        'www.mikuclub.cc',
-        'www.mikuclub.online',
-        'www.mikuclub.eu',
-        'www.mikuclub.win',
-        'file1.mikuclub.fun',
-        'file2.mikuclub.fun',
-        'file3.mikuclub.fun',
-        'file4.mikuclub.fun',
-        'file6.mikuclub.fun',
-    ];
+    $array_search = array_merge(ARRAY_SITE_DOMAIN, ARRAY_FILE_DOMAIN);
 
-    $new_domain = 'file5.mikuclub.fun';
+    $new_domain = FILE5_MIKUCLUB_FUN;
 
     $images_src = str_replace($array_search, $new_domain, $image_src);
 
@@ -1447,21 +1396,28 @@ function fix_image_domain_with_file_5($image_src)
  */
 function fix_image_domain_with_file_6($image_src)
 {
-    $array_search = [
-        'www.mikuclub.cc',
-        'www.mikuclub.online',
-        'www.mikuclub.eu',
-        'www.mikuclub.win',
-        'file1.mikuclub.fun',
-        'file2.mikuclub.fun',
-        'file3.mikuclub.fun',
-        'file4.mikuclub.fun',
-        'file5.mikuclub.fun',
-    ];
+    $array_search = array_merge(ARRAY_SITE_DOMAIN, ARRAY_FILE_DOMAIN);
 
-    $new_domain = 'file6.mikuclub.fun';
+    $new_domain = FILE5_MIKUCLUB_FUN;
 
     $images_src = str_replace($array_search, $new_domain, $image_src);
 
     return $images_src;
+}
+
+/**
+ * 修正域名地址为主域名
+ *
+ * @param string $link
+ * @return string
+ */
+function fix_site_domain_with_domain_main($link)
+{
+    $array_search = ARRAY_SITE_DOMAIN;
+
+    $new_domain = SITE_DOMAIN_MAIN;
+
+    $result = str_replace($array_search, $new_domain, $link);
+
+    return $result;
 }

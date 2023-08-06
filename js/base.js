@@ -86,7 +86,7 @@ const URLS = {
 
     draftPost: MY_SITE.apiRoot + UTILS_PATH + 'draft_post',
 
-    
+
 
 };
 
@@ -100,10 +100,42 @@ const HTTP_METHOD = {
 const BACKUP_IMAGE_DOMAIN = 'file.mikuclub.fun';
 
 const SITE_DOMAIN = {
-    www_mikuclub_online : 'www.mikuclub.online',
-    www_mikuclub_cc : 'www.mikuclub.cc',
-    www_mikuclub_eu : 'www.mikuclub.eu',
-    www_mikuclub_win : 'www.mikuclub.win'
+    www_mikuclub_online: 'www.mikuclub.online',
+    www_mikuclub_cc: 'www.mikuclub.cc',
+    www_mikuclub_eu: 'www.mikuclub.eu',
+    www_mikuclub_win: 'www.mikuclub.win',
+
+    /**
+     * 获取所有用过的域名
+     * @returns {string[]}
+     */
+    get_array_site_domain() {
+        return [
+            this.www_mikuclub_online,
+            this.www_mikuclub_cc,
+            this.www_mikuclub_eu,
+            this.www_mikuclub_win,
+        ]
+    },
+
+    /**
+     * 获取已经失效的域名 (需要跳转到主域名)
+     * @returns {string[]}
+     */
+    get_array_site_domain_disabled() {
+        return [
+            this.www_mikuclub_online,
+            this.www_mikuclub_cc,
+        ];
+    },
+
+    /**
+     * 设置当前在使用的主域名
+    * @returns {string}
+    */
+    get_main_domain() {
+        return this.www_mikuclub_win;
+    }
 }
 
 
