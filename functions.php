@@ -189,7 +189,7 @@ function setup_front_script()
         [
             'name' => 'js-function',
             'path' => '/js/function.js',
-            'version' => '1.45',
+            'version' => '1.46',
             'in_footer' => false,
         ],
         //通用JS AJAX的函数
