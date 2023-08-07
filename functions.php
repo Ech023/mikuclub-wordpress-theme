@@ -1219,7 +1219,7 @@ function get_random_head_background_image()
     //返回对应的图片地址
     //return $array_image_link[ $random_index ];
 
-    $number = 73;
+    $number = 79;
     //	一年中的第几天 + 当前小时 然后 除余 图片数量 得出 随机数
     $random_index = (date('z') + date('G')) % $number + 1;
 
