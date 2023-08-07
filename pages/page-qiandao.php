@@ -24,7 +24,7 @@ global $post;
 		while ( have_posts() ) {
 			the_post();
 
-			$max         = 1045;
+			$max         = 1136;
 			$rand_image = rand( 1, $max );
             //在左方添加0
             $rand_image = str_pad($rand_image, 3, '0', STR_PAD_LEFT);
