@@ -362,7 +362,7 @@ HTML;
 
             <!-- 全站顶部横屏栏广告位-->
             <?php
-            if (is_home() || is_single() || is_category() || is_tag() || (function_exists('is_bbpress') && is_bbpress()))
+            if (is_home() || is_single() || is_category() || is_tag())
             {
 
                 if (dopt('d_adsite_01_b'))

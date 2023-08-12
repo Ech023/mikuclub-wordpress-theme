@@ -1,13 +1,5 @@
-<aside class="sidebar">	
-	<?php 
-	//加载论坛侧边栏
-	 if (function_exists('is_bbpress')  && is_bbpress()){
-		//if ( is_active_sidebar('widget_bbs_sidebar') && function_exists('dynamic_sidebar') && dynamic_sidebar('widget_bbs_sidebar')) : endif; 
-	}
-	else 
-	{	
-	
-	/*	
+<aside class="sidebar">
+	<?php
 	
 	?>
 			<div class="widget widget_text">
@@ -30,42 +22,43 @@
 		<?php
 	 
 	 	*/
-	 		
-				
-			
-	 
-					//加载全站侧边栏
-					if ( is_active_sidebar('widget_sitesidebar') && function_exists('dynamic_sidebar')  && dynamic_sidebar('widget_sitesidebar')) : endif; 
-
-					//加载文章侧边栏
-					if (is_single()){
-						if ( is_active_sidebar('widget_postsidebar') && function_exists('dynamic_sidebar') && dynamic_sidebar('widget_postsidebar')) : endif; 
-					}
-
-					//如果是首页和最新文章页面
-					else if (is_home())
-					{
 
 
-						//如果url里没有page 那就是首页
-						if(strripos($_SERVER['REQUEST_URI'], 'page') == FALSE){
-								//加载首页侧边栏
-								if (is_active_sidebar('widget_home_sidebar') && function_exists('dynamic_sidebar') && dynamic_sidebar('widget_home_sidebar')) : endif; 
-						}
-						//如果是最新文章
-						else
-						{
-								if (is_active_sidebar('widget_new_post_sidebar') &&function_exists('dynamic_sidebar') && dynamic_sidebar('widget_new_post_sidebar')) : endif; 
-						}
 
-					}
-					//如果不是上述页面, 那就是 分类页, 标签页了
-					else 
-					{
 
-						if (is_active_sidebar('widget_othersidebar') && function_exists('dynamic_sidebar') && dynamic_sidebar('widget_othersidebar')) : endif; 
-					}
-			
+	//加载全站侧边栏
+	if (is_active_sidebar('widget_sitesidebar') && function_exists('dynamic_sidebar')  && dynamic_sidebar('widget_sitesidebar')) : endif;
+
+	//加载文章侧边栏
+	if (is_single())
+	{
+		if (is_active_sidebar('widget_postsidebar') && function_exists('dynamic_sidebar') && dynamic_sidebar('widget_postsidebar')) : endif;
 	}
+
+	//如果是首页和最新文章页面
+	else if (is_home())
+	{
+
+
+		//如果url里没有page 那就是首页
+		if (strripos($_SERVER['REQUEST_URI'], 'page') == FALSE)
+		{
+			//加载首页侧边栏
+			if (is_active_sidebar('widget_home_sidebar') && function_exists('dynamic_sidebar') && dynamic_sidebar('widget_home_sidebar')) : endif;
+		}
+		//如果是最新文章
+		else
+		{
+			if (is_active_sidebar('widget_new_post_sidebar') && function_exists('dynamic_sidebar') && dynamic_sidebar('widget_new_post_sidebar')) : endif;
+		}
+	}
+	//如果不是上述页面, 那就是 分类页, 标签页了
+	else
+	{
+
+		if (is_active_sidebar('widget_othersidebar') && function_exists('dynamic_sidebar') && dynamic_sidebar('widget_othersidebar')) : endif;
+	}
+
+
 	?>
 </aside>
