@@ -6,6 +6,7 @@ $options = [
     'd_description',
     'd_keywords',
     'd_tui',
+    'd_tui_qq_collapse',
     'd_tui_bottom',
     "d_tui_android",
     'd_sticky_count',
@@ -230,6 +231,7 @@ function print_theme_config_page()
     $components .= create_component('网站描述', 'text', 'd_description');
     $components .= create_component('网站关键字', 'text', 'd_keywords');
     $components .= create_component('网页版顶部公告', 'textarea', 'd_tui');
+    $components .= create_component('网页版顶部公告下方折叠区域(QQ群)', 'textarea', 'd_tui_qq_collapse');
     $components .= create_component('网页版底部公告', 'textarea', 'd_tui_bottom');
     $components .= create_component('安卓客户端公告', 'textarea', 'd_tui_android');
 

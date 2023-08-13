@@ -129,8 +129,13 @@ a.disabled {
     color: var(--button-text-color);
 }
 
-.text-miku, .color-miku {
+.text-miku {
     color: var(--main-color) !important;
+}
+
+.text-bg-miku {
+    color: var(--button-text-color) !important;
+    background-color: var(--main-color) !important;
 }
 
 .bg-miku {
@@ -155,6 +160,7 @@ a.disabled {
 .bg-transparent-half {
     background-color: #00000080 !important;
 }
+
 
 
 /*所有图片自动圆角*/

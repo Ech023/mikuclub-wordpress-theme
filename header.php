@@ -279,7 +279,7 @@ else
                         <span class="enable_backup_image_domain_title me-1">
                             站内图片无法加载?
                         </span>
-                        <div class="form-check form-check-inline form-switch ">
+                        <div class="form-check form-check-inline form-switch m-0">
                             <input class="form-check-input cursor_pointer" type="checkbox" role="switch" id="enable_backup_image_domain">
                             <label class="form-check-label cursor_pointer" for="enable_backup_image_domain">使用备用图床</label>
                         </div>
@@ -287,76 +287,17 @@ else
 
                 </div>
 
-                <div class="speedbar <?php echo !is_home() ? 'd-none d-sm-block' : '' ?> mt-2 mb-4 p-2 px-3 rounded">
-
+                <div class="speedbar <?php echo !is_home() ? 'd-none d-sm-block' : '' ?> my-2 p-2 px-3 rounded">
+                    <span class=""><i class="fas fa-bullhorn"></i> 公告:</span>
                     <?php echo dopt('d_tui'); ?>
 
                 </div>
-                <!-- 输出qq群信息-->
-                <div id="qq-group-info" class="  my-2 collapse ">
-                    <div class="row row-cols-2 row-cols-sm-4 border rounded">
 
-                        <?php
-                        $array_qq_groups = [
-                            [
-                                'name'   => 'QQ频道',
-                                'number' => '初音社官方',
-                                'link'   => 'https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&appChannel=share&inviteCode=1zjpG7&appChannel=share&businessType=9&from=246610&biz=ka'
-                            ],
-                            [
-                                'name'   => '初音社-06分群 (新群重建V2)',
-                                'number' => '180363371',
-                                'link'   => 'https://jq.qq.com/?_wv=1027&k=4gLdwGbB'
-                            ],
-                            [
-                                'name'   => '初音社-05分群',
-                                'number' => '1137357167',
-                                'link'   => 'https://jq.qq.com/?_wv=1027&k=SuzDYxT3'
-                            ],
-                            [
-                                'name'   => '初音社-04分群',
-                                'number' => '595365219',
-                                'link'   => 'https://jq.qq.com/?_wv=1027&k=k0ugwQJE'
-                            ],
-
-                            [
-                                'name'   => '初音社-03分群',
-                                'number' => '892956861',
-                                'link'   => 'https://jq.qq.com/?_wv=1027&k=9nCq1w0H'
-                            ],
-                            [
-                                'name'   => '初音社-02分群',
-                                'number' => '859826379',
-                                'link'   => 'https://jq.qq.com/?_wv=1027&k=UD9aGvOk'
-                            ],
-                            [
-                                'name'   => '初音社-01分群 (新群重建V2)',
-                                'number' => '712862572',
-                                'link'   => 'https://jq.qq.com/?_wv=1027&k=ypzNFSbh'
-                            ],
-                            [
-                                'name'   => '初音社-电报群 (社图)',
-                                'number' => '@mikuclub',
-                                'link'   => 'https://t.me/joinchat/cz5_1kwQXa8xMDdk'
-                            ],
-                        ];
-
-                        foreach ($array_qq_groups as $qq_group)
-                        {
-                            echo <<<HTML
-                         <div class="col my-2">
-                            {$qq_group['name']}
-                            <a class="text-miku" href="{$qq_group['link']}" target="_blank" title="{$qq_group['name']}" rel="external nofollow">
-                                 {$qq_group['number']}
-                            </a>
-                        </div>
-HTML;
-                        }
-                        ?>
-
-
-                    </div>
+                <!-- 输出默认折叠区域 (qq群信息)-->
+                <div id="qq-group-info" class="my-2 collapse border rounded px-3">
+                    <?php echo dopt('d_tui_qq_collapse'); ?>
                 </div>
+
             <?php } ?>
 
 
@@ -367,11 +308,11 @@ HTML;
 
                 if (dopt('d_adsite_01_b'))
                 {
-                    echo '<div class="pop-banner d-none d-md-block text-center my-4 py-2">' . dopt('d_adsite_01') . '</div>';
+                    echo '<div class="pop-banner d-none d-md-block text-center my-3 py-2">' . dopt('d_adsite_01') . '</div>';
                 }
                 if (dopt('Mobiled_adindex_01_b'))
                 {
-                    echo '<div class="pop-banner d-block d-md-none text-center  my-3">' . dopt('Mobiled_adindex_01') . '</div>';
+                    echo '<div class="pop-banner d-block d-md-none text-center my-3">' . dopt('Mobiled_adindex_01') . '</div>';
                 }
             }
 
@@ -381,7 +322,7 @@ HTML;
             {
                 if (dopt('d_adindex_00_b'))
                 {
-                    echo '<div class="pop-banner d-none d-md-block text-center my-4 py-2">' . dopt('d_adindex_00') . '</div>';
+                    echo '<div class="pop-banner d-none d-md-block text-center my-3 py-2">' . dopt('d_adindex_00') . '</div>';
                 }
                 if (dopt('Mobiled_adindex_00_b'))
                 {
@@ -394,7 +335,7 @@ HTML;
                 //广告：文章页 - 主菜单下方
                 if (dopt('d_adpost_05_b'))
                 {
-                    echo '<div class=" pop-banner  my-4 py-2 d-none d-md-block">' . dopt('d_adpost_05') . '</div>';
+                    echo '<div class=" pop-banner  my-3 py-2 d-none d-md-block">' . dopt('d_adpost_05') . '</div>';
                 }
 
                 //手机广告 - 主菜单下方
