@@ -8,7 +8,7 @@ get_header();
     <div class="content">
 
         <header class="page-header">
-            <h4>
+			<h4 class="my-4">
 				<?php echo breadcrumbs_component(); ?>
             </h4>
 

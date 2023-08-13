@@ -9,8 +9,8 @@ global $post;
 
     <div class="content page-qiandao">
 
-        <header class="page-header my-4">
-            <h4>
+        <header class="page-header">
+            <h4 class="my-4">
 				<?php echo breadcrumbs_component(); ?>
             </h4>
 
