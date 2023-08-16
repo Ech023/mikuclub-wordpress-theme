@@ -245,9 +245,15 @@ function get_user_badges($user_id)
 	$user_comment_count = get_user_comment_count($user_id);
 	$user_like_count    = get_user_like_count($user_id);
 
+	$user = get_userdata($user_id);
+	$timestamp = strtotime($user->user_registered) ?? strtotime('now');
+	//计算用户注册年份
+	$user_old = date("Y") - date("Y", $timestamp);
+
 
 	//用户初始3个勋章位
 	$user_badges = [
+		[],
 		[],
 		[],
 		[]
@@ -257,46 +263,52 @@ function get_user_badges($user_id)
 	//可选的勋章
 	$available_badges = [
 		[
-			'score'            => 500,
+			'score'            => 1000,
+			'year' => 8,
 			'level'            => 'Lv6',
-			USER_POST_COUNT    => '白金UP',
-			USER_COMMENT_COUNT => '真龙王',
-			USER_LIKE_COUNT    => '点赞大师'
+			USER_POST_COUNT    => 'UP主Lv6',
+			USER_COMMENT_COUNT => '评价师Lv6',
+			USER_LIKE_COUNT    => '点赞家Lv6'
 		],
 		[
-			'score'            => 200,
+			'score'            => 300,
+			'year' => 6,
 			'level'            => 'Lv5',
-			USER_POST_COUNT    => '资深UP主',
-			USER_COMMENT_COUNT => '资深龙王',
-			USER_LIKE_COUNT    => '资深点赞师'
+			USER_POST_COUNT    => 'UP主Lv5',
+			USER_COMMENT_COUNT => '评价师Lv5',
+			USER_LIKE_COUNT    => '点赞家Lv5'
 		],
 		[
 			'score'            => 100,
+			'year' => 5,
 			'level'            => 'Lv4',
-			USER_POST_COUNT    => '高级UP主',
-			USER_COMMENT_COUNT => '高级龙王',
-			USER_LIKE_COUNT    => '高级点赞师'
+			USER_POST_COUNT    => 'UP主Lv4',
+			USER_COMMENT_COUNT => '评价师Lv4',
+			USER_LIKE_COUNT    => '点赞家Lv4'
 		],
 		[
-			'score'            => 50,
+			'score'            => 30,
+			'year' => 3,
 			'level'            => 'Lv3',
-			USER_POST_COUNT    => '中级UP主',
-			USER_COMMENT_COUNT => '中级龙王',
-			USER_LIKE_COUNT    => '中级点赞师'
+			USER_POST_COUNT    => 'UP主Lv3',
+			USER_COMMENT_COUNT => '评价师Lv3',
+			USER_LIKE_COUNT    => '点赞家Lv3'
 		],
 		[
-			'score'            => 25,
+			'score'            => 10,
+			'year' => 2,
 			'level'            => 'Lv2',
-			USER_POST_COUNT    => '初级UP主',
-			USER_COMMENT_COUNT => '初级龙王',
-			USER_LIKE_COUNT    => '初级点赞师'
+			USER_POST_COUNT    => 'UP主Lv2',
+			USER_COMMENT_COUNT => '评价师Lv2',
+			USER_LIKE_COUNT    => '点赞家Lv2'
 		],
 		[
-			'score'            => 5,
+			'score'            => 3,
+			'year' => 1,
 			'level'            => 'Lv1',
-			USER_POST_COUNT    => '见习UP主',
-			USER_COMMENT_COUNT => '见习龙王',
-			USER_LIKE_COUNT    => '见习点赞师'
+			USER_POST_COUNT    => 'UP主Lv1',
+			USER_COMMENT_COUNT => '评价师Lv1',
+			USER_LIKE_COUNT    => '点赞家Lv1'
 		]
 	];
 
@@ -321,6 +333,12 @@ function get_user_badges($user_id)
 		{
 			$user_badges[2][] = 'badge bg-success';
 			$user_badges[2][] = $badge[USER_LIKE_COUNT];
+			$user_badges[2][] = $badge['level'];
+		}
+		if (!$user_badges[3] && $user_old >= $badge['year'])
+		{
+			$user_badges[2][] = 'badge bg-secondary';
+			$user_badges[2][] = $user_old.'年老用户';
 			$user_badges[2][] = $badge['level'];
 		}
 	}
