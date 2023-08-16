@@ -38,7 +38,7 @@ function pagination_component()
 		//如果初始页码大于2, 输出省略号
 		if ($start_page > 2)
 		{
-			$the_list_start = '<li class="page-item disabled flex-fill"><span class="page-link border-0">.....</span></li>';
+			$the_list_start = '<li class="page-item disabled flex-fill mb-2"><span class="page-link border-0">.....</span></li>';
 		}
 		//分页尾部html
 		$the_list_end = '';
@@ -46,14 +46,14 @@ function pagination_component()
 		if ($end_page < $max_page - 1)
 		{
 			$the_list_end = '
-				<li class="page-item disabled flex-fill">
+				<li class="page-item disabled flex-fill mb-2">
 					<span class="page-link border-0">.....</span>
 				</li>
 				';
 		}
 
 		//增加跳转窗口
-		$the_list_end .= '<li class="page-item flex-fill align-self-center ps-2">
+		$the_list_end .= '<li class="page-item flex-fill align-self-center ps-2 mb-2">
 				
 					<div class="input-group change-page">
 						  <input type="number" class="form-control form-control-lg change-page-value" placeholder="总共' . $max_page . '页" name="paged"  min="1" max="' . $max_page . '" autocomplete="off">
@@ -76,14 +76,14 @@ function pagination_component()
 			if ($current_paged == $i)
 			{
 
-				$the_list_content .= '<li class="page-item flex-fill disabled">
+				$the_list_content .= '<li class="page-item flex-fill disabled mb-2">
 						<span class="page-link  border-0 text-miku fw-bolder">' . $i . '</span>
 					</li>';
 			}
 			else
 			{
 				$the_list_content .= '
-					<li class="page-item flex-fill ">
+					<li class="page-item flex-fill mb-2">
 						<a class="page-link border-0 rounded" href="' . get_pagenum_link($i, true) . '">' . $i . '</a>
 					</li>';
 			}
