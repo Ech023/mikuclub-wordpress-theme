@@ -251,7 +251,7 @@ function get_user_badges($user_id)
 	$user_old = date("Y") - date("Y", $timestamp);
 
 
-	//用户初始3个勋章位
+	//用户初始4个勋章位
 	$user_badges = [
 		[],
 		[],
@@ -259,7 +259,53 @@ function get_user_badges($user_id)
 		[]
 	];
 
+	//如果存在UP主徽章
+	$user_post_count_level = calculate_user_badges_level($user_post_count);
+	if ($user_post_count_level)
+	{
+		$user_badges[0][] = 'badge bg-danger';
+		$user_badges[0][] = 'UP主' . $user_post_count_level;
+		$user_badges[0][] = $user_post_count_level;
+	}
 
+	//如果存在评价徽章
+	$user_comment_count_level = calculate_user_badges_level($user_comment_count);
+	if ($user_comment_count_level)
+	{
+		$user_badges[1][] = 'badge bg-primary';
+		$user_badges[1][] = '评价师' . $user_comment_count_level;
+		$user_badges[1][] = $user_comment_count_level;
+	}
+
+	//如果存在点赞徽章
+	$user_like_count_level = calculate_user_badges_level($user_like_count);
+	if ($user_like_count_level)
+	{
+		$user_badges[2][] = 'badge bg-success';
+		$user_badges[2][] = '点赞家' . $user_like_count_level;
+		$user_badges[2][] = $user_like_count_level;
+	}
+
+	//如果用户注册时间大于1年
+	if ($user_old > 1)
+	{
+		//根据用户年龄不如, 使用不同的颜色
+		$badge_color = 'bg-secondary';
+		if ($user_old > 6)
+		{
+			$badge_color = 'bg-info';
+		}
+		else if ($user_old > 3)
+		{
+			$badge_color = 'text-bg-warning';
+		}
+
+		$user_badges[3][] = 'badge ' . $badge_color;
+		$user_badges[3][] = $user_old . '年用户';
+		$user_badges[3][] = 0;
+	}
+
+	/*
 	//可选的勋章
 	$available_badges = [
 		[
@@ -338,13 +384,61 @@ function get_user_badges($user_id)
 		if (!$user_badges[3] && $user_old >= $badge['year'])
 		{
 			$user_badges[2][] = 'badge bg-secondary';
-			$user_badges[2][] = $user_old.'年老用户';
+			$user_badges[2][] = $user_old . '年老用户';
 			$user_badges[2][] = $badge['level'];
 		}
-	}
+	}*/
 
 	return $user_badges;
 }
+
+/**
+ * 根据数值计算用户自定义徽章等级
+ *
+ * @param int $value
+ * @return string
+ */
+function calculate_user_badges_level($value)
+{
+
+	$level_6 = 1000;
+	$level_5 = 300;
+	$level_4 = 100;
+	$level_3 = 30;
+	$level_2 = 10;
+	$level_1 = 3;
+
+	$result = '';
+
+
+	if ($value >= $level_6)
+	{
+		$result = 'Lv6';
+	}
+	else if ($value >= $level_5)
+	{
+		$result = 'Lv5';
+	}
+	else if ($value >= $level_4)
+	{
+		$result = 'Lv4';
+	}
+	else if ($value >= $level_3)
+	{
+		$result = 'Lv3';
+	}
+	else if ($value >= $level_2)
+	{
+		$result = 'Lv2';
+	}
+	else if ($value >= $level_1)
+	{
+		$result = 'Lv1';
+	}
+
+	return $result;
+}
+
 
 /**
  * 输出用户勋章
