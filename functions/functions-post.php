@@ -1791,7 +1791,7 @@ HTML;
         //PC端 文章页 - 正文中间
         if (dopt('d_adpost_02_b'))
         {
-            $pc_adsense = '<div class="pop-banner text-center my-4 d-block d-md-block">' . dopt('d_adpost_02') . '</div>';
+            $pc_adsense = '<div class="pop-banner text-center my-4 d-none d-md-block">' . dopt('d_adpost_02') . '</div>';
         }
         $mobile_adsense = '';
         //手机端 文章页 - 正文中间
