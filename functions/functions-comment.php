@@ -208,7 +208,7 @@ function action_on_rest_preprocess_comment($prepared_comment, $request)
         //如果评论人已经被文章作者拉黑
         else if (in_user_black_list($post_author_id, $user_id))
         {
-            $prepared_comment = new WP_Error(400, __FUNCTION__ . ' : 你已被收件人拉黑',  '无法发送 你已被收件人拉黑');
+            $prepared_comment = new WP_Error(400, __FUNCTION__ . ' : 你已被投稿作者拉黑',  '无法发送 你已被投稿作者拉黑');
         }
     }
 
@@ -250,7 +250,7 @@ function insert_custom_comment($comment_content, $comment_post_id, $comment_pare
         //如果评论人已经被文章作者拉黑
         if (in_user_black_list($post_author_id, $user->ID))
         {
-            return new WP_Error(400, __FUNCTION__ . ' : 你已被收件人拉黑',  '无法发送 你已被收件人拉黑');
+            return new WP_Error(400, __FUNCTION__ . ' : 你已被投稿作者拉黑',  '无法发送 你已被投稿作者拉黑');
         }
 
         $result = wp_new_comment($args, true);
