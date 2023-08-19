@@ -121,6 +121,7 @@ define('MY_USER_FAVORITE_POST_LIST', 'favorite_post');
 define('MY_USER_AVATAR', 'mm_user_avatar');
 define('MY_USER_FOLLOWED', 'followed_users');
 define('MY_USER_FANS_COUNT', 'users_fans_count');
+define('MY_USER_BLACK_LIST', 'user_black_list');
 define('ACTION_UPDATE_AVATAR', 'action_update_avatar');
 
 //邮件相关键名

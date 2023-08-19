@@ -63,7 +63,15 @@ $user = wp_get_current_user();
                     <small class="form-text text-muted">如果不需要修改密码, 留空即可, 本密码不影响社交账号登陆</small>
                 </div>
 
-                <div class="mb-3 row">
+
+
+
+
+            </div>
+
+            <div class="col-12 col-md-6">
+
+                <div class="mb-3 row ">
                     <div class="col">
                         <label class="form-label" for="password">积分</label>
                         <div>
@@ -79,9 +87,7 @@ $user = wp_get_current_user();
 
                 </div>
 
-            </div>
-
-            <div class="col-12 col-md-6">
+                <div class="mb-3 border-top"></div>
 
                 <div class="mb-3">
                     <div class="mb-2">我的头像</div>
@@ -112,7 +118,9 @@ $user = wp_get_current_user();
 
             </div>
 
-            <div class="w-100 my-4"></div>
+            <div class="w-100 my-4 border-top"></div>
+
+
 
             <div class="col-12">
                 <button type="submit" class="btn btn-miku w-100">
@@ -130,6 +138,65 @@ $user = wp_get_current_user();
                 </p>
 
             </div>
+
+            <div class="w-100 my-4 border-top"></div>
+
+            <div class="col-12">
+
+                <?php
+
+                $user_black_list = get_user_black_list($user->ID);
+
+                $user_black_list_length = count($user_black_list);
+
+                $user_black_list_element = '';
+                foreach ($user_black_list as $black_user_id)
+                {
+                    $black_user = get_userdata($black_user_id);
+                    //如果用户存在
+                    if ($black_user)
+                    {
+                        //转换成自定义用户类
+                        $black_user = new My_User($black_user);
+                        $black_user_avatar = print_user_avatar($black_user->user_image);
+
+                        $user_black_list_element .= <<<HTML
+                            <div class="col border">
+                                
+                                    <div class="row align-items-center py-3 g-3">
+                                        <div class="col-auto">
+                                            <a href="{$black_user->user_href}" title="查看该用户主页" target="_blank">
+                                                {$black_user_avatar}
+                                            </a>
+                                        </div>
+                                        <div class="col">
+                                            <div class="text-break">
+                                                {$black_user->display_name}
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-auto">
+                                            <a class="btn btn-secondary delete-user-black-list" href="javascript:void(0);" data-target-user-id="{$black_user_id}">从黑名单里移除</a>
+                                        </div>
+                                    </div>
+                             
+                            </div>
+HTML;
+                    }
+                }
+                
+
+                echo <<<HTML
+                     <div class="mb-3">黑名单管理 {$user_black_list_length}</div>
+                     <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 overflow-x-hidden " style="max-height: 600px;">
+                        {$user_black_list_element}
+                    </div>
+HTML;
+                ?>
+
+
+            </div>
+
+
 
 
         </form>

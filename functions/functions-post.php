@@ -2298,3 +2298,33 @@ HTML;
 
     return $output;
 }
+
+/**
+ * 如果文章的作者被当前用户拉黑, 输出遮罩class类名 来遮挡当前文章
+ *
+ * @param int $post_author_id
+ * @return string
+ */
+function set_black_user_post_container_mask_class($post_author_id)
+{
+
+    static $user_black_list = null;
+
+    //只在初始化的时候获取一次
+    if ($user_black_list === null)
+    {
+        $user_id = get_current_user_id();
+        $user_black_list = get_user_black_list($user_id);
+    }
+
+    $class_name = '';
+
+    //如果在黑名单内
+    if (in_array($post_author_id, $user_black_list))
+    {
+        //输出文章遮罩的html class类名
+        $class_name = 'black-user-post-mask';
+    }
+
+    return $class_name;
+}

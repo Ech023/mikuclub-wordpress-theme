@@ -14,6 +14,17 @@ $(function () {
         //绑定列表展开事件, 获取和特定收件人之间的消息列表
         $messagePageElement.on('show.bs.collapse', '.collapse', '', getMessageListWithOneSender);
 
+        //绑定删除私信按钮点击事件
+        $('body.page .content.page-message').on('click', 'a.delete-message-by-user', '', function () {
+
+            //删除私信
+            const target_user_id = $(this).attr('data-target-user-id');
+            delete_private_message_by_user(target_user_id);
+
+            //隐藏对应的发件人私信窗口和列表
+            $(this).closest('div.message-item').hide();
+        });
+
         /**模态窗消失时触发
          *
        */
@@ -75,7 +86,7 @@ function getMessageList() {
     }
 
     //创建请求数据
-    let data = {paged};
+    let data = { paged };
 
 
     //回调函数
@@ -161,22 +172,54 @@ function getMessageListWithOneSender(event) {
     let $elementParent = $(event.target);
     let $element = $elementParent.children('div.card-body');
 
-    let senderId = $elementParent.data('sender');
+    let sender_id = $elementParent.data('sender');
     let senderName = $elementParent.prev().find('.display-name').html();
 
     //创建请求数据
     let data = {
-        sender_id: senderId,
+        sender_id,
         number: 50
     };
 
     let loadingElement = $(' <div class="text-center"><div class="loading spinner-border text-miku" role="status" aria-hidden="true"></div></div>');
+
+
+    let black_list_button_class = 'add-user-black-list';
+    let black_list_button_text = '加入黑名单';
+    //如果目标用户已经被拉黑
+    if (MY_SITE.user_black_list.includes(String(sender_id))) {
+
+        black_list_button_class = 'delete-user-black-list';
+        black_list_button_text = '从黑名单里移除';
+    }
+
+
     let createMessageModalButton = $(`
-    <div class="text-center mt-5 create-private-message-modal">
-        <button class="btn btn-miku w-50">回复</button>
-        <input type="hidden" name="recipient_name" value="${senderName}">
-        <input type="hidden" name="recipient_id" value=${senderId}>
-    </div>`);
+
+    <div class="row mt-5 justify-content-center">
+        <div class="col-9 col-md-6">
+            <div class=" create-private-message-modal">
+                <button class="btn btn-miku w-100">回复</button>
+                <input type="hidden" name="recipient_name" value="${senderName}">
+                <input type="hidden" name="recipient_id" value=${sender_id}>
+            </div>
+        </div>
+        <div class="col-auto">
+            <div class="dropdown" >
+                <a class="btn btn-secondary px-3" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" title="更多操作">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item delete-message-by-user" href="javascript:void(0);" data-target-user-id="${sender_id}">删除私信</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item ${black_list_button_class}" href="javascript:void(0);" data-target-user-id="${sender_id}">${black_list_button_text}</a></li>
+                </ul>
+             </div>
+
+        </div>
+    </div>
+  
+    `);
 
     //清空当前内容, 然后添加进度条
     $element.empty().append(loadingElement);
@@ -199,7 +242,7 @@ function getMessageListWithOneSender(event) {
             $element.append(newMessageList.toHTML());
 
             //只有在发件人不是系统(0)的时候才提供回复按钮
-            if (senderId > 0) {
+            if (sender_id > 0) {
                 //插入回复按钮
                 $element.append(createMessageModalButton);
             }
@@ -227,7 +270,46 @@ function getMessageListWithOneSender(event) {
 }
 
 
+/**
+ * 删除特定发件人发送给用户的所有私信
+ * @param {number} target_user_id 
+ */
+function delete_private_message_by_user(target_user_id) {
 
+    if (!confirm('确认要删除该用户发送给你的所有私信吗?')) {
+        return;
+    }
+
+    const data = {
+        target_user_id,
+    }
+
+    //成功的情况
+    let successCallback = function (response) {
+        TOAST_SYSTEM.add('删除私信成功', TOAST_TYPE.success);
+
+
+
+    };
+
+    //错误的情况
+    let failCallback = function () {
+        TOAST_SYSTEM.add('删除私信失败', TOAST_TYPE.error);
+    };
+
+    let completeCallback = function () {
+
+    };
+
+
+    $.ajax({
+        url: URLS.privateMessage,
+        data,
+        type: HTTP_METHOD.delete,
+        headers: createAjaxHeader()
+    }).done(successCallback).fail(failCallback).always(completeCallback);
+
+}
 
 
 

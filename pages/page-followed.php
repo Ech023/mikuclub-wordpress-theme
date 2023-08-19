@@ -26,7 +26,7 @@ if ($p_id_author)
 	$author_page_link = get_author_posts_url($p_id_author);
 
 	$author_page_link_element = <<<HTML
-	<a href="{$author_page_link}" class="btn  btn-lg text-white bg-secondary" title="查看UP主页面">查看UP主页面</a>
+	<a href="{$author_page_link}" class="btn btn-secondary" title="查看UP主页面">查看UP主页面</a>
 HTML;
 }
 

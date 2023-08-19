@@ -99,6 +99,8 @@ $(function () {
 
         //踩评论
         $singlePage.on('click', '.comments-part a.delete-comment-likes', '', deleteCommentLikes);
+
+
     }
 
 });
@@ -114,14 +116,14 @@ function printEmoji($button) {
         for (let key in SMILES) {
             content += `<img class="m-1 p-1 smile "  src="${MY_SITE.home}/wp-content/themes/miku/img/smilies/${SMILES[key]}"  alt="${key}" skip_lazyload=""/>`;
         }
-        
+
 
         //$button.attr('data-bs-content', content);
 
         //激活弹出框
         new bootstrap.Popover($button, {
-            container : 'body',
-            trigger : 'focus',
+            container: 'body',
+            trigger: 'focus',
             placement: 'bottom',
             html: true,
             content
@@ -154,6 +156,7 @@ function moveCommentForm(event) {
     let $respondButton = $(event.target);
     let respond = $respondButton.data('respond');
     let respondName = $respondButton.data('respond-name');
+
 
     //获取评论框容器
     let $formContainer = $('.comments-part .comment-form-container');
@@ -308,14 +311,20 @@ function sendComment(event) {
     let failCallback = function (jqXHR) {
 
         let errorText = '发送错误';
-        if (jqXHR.hasOwnProperty('responseJSON') && isWpError(jqXHR.responseJSON)) {
-            if (jqXHR.responseJSON.code === 'comment_duplicate') {
-                errorText = '检测到重复评论，您似乎已经提交过这条评论了!';
-            }
-            else if (jqXHR.responseJSON.code === 'comment_flood') {
-                errorText = '您提交评论的速度太快了，请稍后再发表评论!';
-            }
 
+        //如果存在wpError对象
+        const wpError = getWpErrorByJqXHR(jqXHR);
+        if (wpError) {
+
+            if (wpError.code === 'comment_duplicate') {
+                errorText = '检测到重复评论，你似乎已经提交过这条评论了!';
+            }
+            else if (wpError.code === 'comment_flood') {
+                errorText = '发送评论的速度太快了，请稍后再发表评论!';
+            }
+            else if (wpError.data) {
+                errorText = wpError.data;
+            }
         }
 
         TOAST_SYSTEM.add(errorText, TOAST_TYPE.error);
@@ -464,7 +473,7 @@ function deleteComment(event) {
         return;
     }
 
-    if (!confirm('确认要删除吗?')) {
+    if (!confirm('确认要删除该评论吗?')) {
         return;
     }
 
@@ -475,7 +484,7 @@ function deleteComment(event) {
     let successCallback = function (response) {
 
         $deleteButton.parents(`.comment-item-${commentId}`).hide();
-        TOAST_SYSTEM.add('删除成功', TOAST_TYPE.success);
+        TOAST_SYSTEM.add('删除评论成功', TOAST_TYPE.success);
 
         //更新下次请求的offset
         offset = parseInt(offset) > 0 ? parseInt(offset) - 1 : 0;
@@ -485,7 +494,7 @@ function deleteComment(event) {
 
     //错误的情况
     let failCallback = function () {
-        TOAST_SYSTEM.add('删除失败', TOAST_TYPE.error);
+        TOAST_SYSTEM.add('删除评论失败', TOAST_TYPE.error);
     };
 
     let completeCallback = function () {

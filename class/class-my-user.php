@@ -27,13 +27,6 @@ if ( ! class_exists( 'My_User_Base_Model' )
 		public $user_description = '';
 
 
-		//全部升级到安卓1.2后可以删除=====================
-		public $author_id = '';
-		public $name = '';
-		public $avatar_src = '';
-		//=====================
-
-
 	}
 
 

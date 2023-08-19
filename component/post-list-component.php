@@ -3,7 +3,8 @@
 /**
  * 文章列表组件
  */
-function post_list_component() {
+function post_list_component()
+{
 
 
 	//是否显示相关文章信息
@@ -20,17 +21,19 @@ function post_list_component() {
 
 
 	$post_list_html = '';
-	foreach ( $post_list as $my_post ) {
+	foreach ($post_list as $my_post)
+	{
 
 		$author_avatar = '';
 		$author_name   = '';
 		//不在作者页面才显示
-		if ( ! is_author() ) {
+		if (!is_author())
+		{
 
 			$author_avatar .= '
      
             <a href="' . $my_post->post_author->user_href . '" title="查看UP主空间" target="_blank">
-                ' . print_user_avatar( $my_post->post_author->user_image, 40 ) . '
+                ' . print_user_avatar($my_post->post_author->user_image, 40) . '
             </a>';
 
 			$author_name .= '
@@ -56,10 +59,12 @@ function post_list_component() {
 			';
 		}*/
 
+		$post_container_class = set_black_user_post_container_mask_class($my_post->post_author->id);
+
 
 		$post_list_html .= <<< HTML
 
- 		<div class="col card border-0 my-1">
+ 		<div class="col card border-0 my-1 {$post_container_class}">
 
     
             <div class="card-img-container position-relative">
@@ -115,22 +120,21 @@ function post_list_component() {
 
 
 HTML;
-
-
 	}
+
 
 
 	$post_list_output = post_list_order_component();
 
 	//如果列表为空
-	if ( ! $post_list_html ) {
+	if (count($post_list) === 0)
+	{
 
 		//输出错误提示
 		$post_list_html .= '	<div class="m-5 mw-100 flex-fill">
     			<h4 class="text-center">抱歉, 没有找到相关内容</h4>
     			<br/><br/><br/><br/><br/>
 			</div>';
-
 	}
 
 
@@ -142,14 +146,4 @@ HTML;
 
 
 	return $post_list_output;
-
 }
-
-
-
-
-
-
-
-
-

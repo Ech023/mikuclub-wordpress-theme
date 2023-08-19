@@ -1577,6 +1577,129 @@ function set_user_fans_count($user_id, $is_add)
 	return $result == true;
 }
 
+
+/**
+ * 获取用户的黑名单
+ *
+ * @param int $user_id
+ *
+ * @return  int[] 拉黑用户ID数组
+ */
+function get_user_black_list($user_id)
+{
+	//初始化为空数组
+	$output = [];
+
+	//确保用户有登陆
+	if ($user_id)
+	{
+		$output = get_user_meta($user_id, MY_USER_BLACK_LIST, true);
+		//如果不存在 重设为空数组
+		if (empty($output))
+		{
+			$output = [];
+		}
+	}
+
+	return $output;
+}
+
+/**
+ * 检测目标用户ID是否在黑名单内
+ *
+ * @param int $user_id 当前登陆的用户ID
+ * @param int $target_user_id 目标用户ID
+ *
+ * @return boolean 成功TRUE 失败 false
+ */
+function in_user_black_list($user_id, $target_user_id)
+{
+
+	$result = false;
+	//确保用户和目标用户存在
+	if ($user_id && $target_user_id)
+	{
+		//获取黑名单
+		$black_list = get_user_black_list($user_id);
+		//检测是否在黑名单内
+		$result = in_array($target_user_id, $black_list);
+	}
+
+	return $result;
+}
+
+/**
+ * 添加拉黑的用户ID到用户的黑名单
+ *
+ * @param int $user_id 当前登陆的用户ID
+ * @param int $target_user_id 要拉黑的用户ID
+ *
+ * @return boolean 成功TRUE 失败 false
+ */
+function add_user_black_list($user_id, $target_user_id)
+{
+
+	$result = false;
+
+	//确保用户和目标用户存在
+	if ($user_id && $target_user_id && $user_id !== $target_user_id)
+	{
+		//获取黑名单
+		$black_list = get_user_black_list($user_id);
+		//如果黑名单里还不包含目标用户ID
+		if (!in_array($target_user_id, $black_list))
+		{
+			//添加ID到黑名单里
+			$black_list[] = $target_user_id;
+			//更新黑名单
+			$result = update_user_meta($user_id, MY_USER_BLACK_LIST, $black_list);
+		}
+		//如果已经存在
+		else
+		{
+			$result = true;
+		}
+
+		//并且从关注列表里移除
+		set_user_followed($target_user_id, false);
+	}
+
+	return $result == true;
+}
+
+/**
+ * 从黑名单里移除对应的用户ID
+ *
+ * @param int $user_id 当前登陆的用户ID
+ * @param int $target_user_id 要取消拉黑的用户ID
+ *
+ * @return boolean 成功TRUE 失败 false
+ */
+function delete_user_black_list($user_id, $target_user_id)
+{
+
+	$result = false;
+
+	//确保用户和目标用户存在
+	if ($user_id && $target_user_id)
+	{
+		//获取黑名单
+		$black_list = get_user_black_list($user_id);
+		//从黑名单里移除目标ID
+		$black_list = array_filter($black_list, function ($value) use ($target_user_id)
+		{
+			return $value !== $target_user_id;
+		});
+
+		//更新黑名单
+		$result = update_user_meta($user_id, MY_USER_BLACK_LIST, $black_list);
+	}
+
+	return $result == true;
+}
+
+
+
 /**
  * 通过挂钩 更改默认登陆cookie过期时间
  * @param int $expiration

@@ -183,6 +183,44 @@ function action_on_insert_comment($comment_id, $commentdata)
 add_action('wp_insert_comment', 'action_on_insert_comment', 10, 2);
 
 
+
+function action_on_pre_comment_on_post($comment_post_id)
+{
+    $custom_error_response = null;
+
+    $user_id = get_current_user_id();
+    $post_author_id = get_post_field('post_author', $comment_post_id);
+
+    //如果当前用户是封禁用户
+    if (current_user_is_regular() === false)
+    {
+        $custom_error_response = [
+            'code' => 400,
+            'message' => __FUNCTION__ . ' : 该账号已被封禁',
+            'data' => '无法发送 该账号已被封禁'
+        ];
+    }
+
+    //如果评论人已经被文章作者拉黑
+    if (in_user_black_list($post_author_id, $user_id))
+    {
+        $custom_error_response = [
+            'code' => 400,
+            'message' => __FUNCTION__ . ' : 你已被收件人拉黑',
+            'data' => '无法发送 你已被收件人拉黑'
+        ];
+    }
+
+    //如果有错误
+    if ($custom_error_response)
+    {
+        //输出json格式的回复, 并中断运行后续代码
+        wp_send_json($custom_error_response, 500);
+    }
+}
+add_action('pre_comment_on_post', 'action_on_pre_comment_on_post', 10, 1);
+
+
 /**
  * @param string $comment_content
  * @param int $comment_post_id
@@ -203,6 +241,7 @@ function insert_custom_comment($comment_content, $comment_post_id, $comment_pare
         $args = [
             'comment_author' => $user->display_name,
             'comment_author_email' => $user->user_email,
+            'comment_author_url' => '',
             'comment_content' => $comment_content,
             'comment_parent' => $comment_parent,
             'comment_post_ID' => $comment_post_id,
@@ -210,7 +249,17 @@ function insert_custom_comment($comment_content, $comment_post_id, $comment_pare
 
         ];
 
+        //获取文章作者ID
+        $post_author_id = get_post_field('post_author', $comment_post_id);
+        //如果评论人已经被文章作者拉黑
+        if (in_user_black_list($post_author_id, $user->ID))
+        {
+            return new WP_Error(400, __FUNCTION__ . ' : 你已被收件人拉黑',  '无法发送 你已被收件人拉黑');
+        }
+
         $result = wp_new_comment($args, true);
+        //$result = wp_handle_comment_submission($args);
+
         if ($result && !is_wp_error($result))
         {
             $result = new My_Comment(get_comment($result));

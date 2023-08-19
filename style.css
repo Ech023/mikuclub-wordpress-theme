@@ -390,3 +390,25 @@ article.article-content .content-part a {
 
 /*xl*/
 @media (min-width: 1200px) {}
+
+
+/** ====================================================*/
+/*黑名单作者的文章遮罩*/
+
+.black-user-post-mask::before {
+    content: "黑名单作者";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* 白色透明遮罩 */
+    background-color: rgba(255,255,255,0.90); 
+    z-index: 1; /* 确保遮罩位于内容上方 */
+    border-radius: var(--bs-card-border-radius);
+    color: var(--text-color);
+    font-size: 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

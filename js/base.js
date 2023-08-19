@@ -86,6 +86,7 @@ const URLS = {
 
     draftPost: MY_SITE.apiRoot + UTILS_PATH + 'draft_post',
 
+    userBlackList: MY_SITE.apiRoot + UTILS_PATH + 'user_black_list',
 
 
 };
@@ -226,16 +227,36 @@ $.fn.extend({
     }
 });
 
-/**
- * 检测变量是否是 WP错误对象
- * @param {Object} object
- * @return {boolean}
- */
-function isWpError(object) {
 
-    return typeof object == 'object' && object.hasOwnProperty('code') && object.hasOwnProperty('message');
+
+/**
+ * 从错误回复JqXHR里提取 WpError 对象
+ * @param {Object} jqXHR
+ * @return {Object|null} 如果WpError对象存在的话 , null 如果不是 WpError对象
+ */
+function getWpErrorByJqXHR(jqXHR) {
+
+    let wpError = null;
+
+    //如果存在数据
+    if (jqXHR.responseJSON) {
+
+        const object = jqXHR.responseJSON;
+
+        //如果存在WpError对象
+        if (typeof object == 'object' && object.hasOwnProperty('code') && object.hasOwnProperty('message') && object.hasOwnProperty('data')) {
+            
+            object.code 
+            wpError = object;
+        }
+
+    }
+
+    return wpError;
+
 
 }
+
 
 /**
  * 检测当前元素是否在屏幕上可见 (部分)
@@ -401,9 +422,12 @@ function validateURL(url) {
 function defaultFailCallback(jqXHR) {
 
     let errorText = '请求失败';
-    if (jqXHR.hasOwnProperty('responseJSON') && isWpError(jqXHR.responseJSON)) {
-        errorText = jqXHR.responseJSON.message;
+    //如果存在wpError对象
+    const wpError = getWpErrorByJqXHR(jqXHR);
+    if (wpError && wpError.message) {
+        errorText = wpError.message;
     }
+
     TOAST_SYSTEM.add(errorText, TOAST_TYPE.error);
 
 }

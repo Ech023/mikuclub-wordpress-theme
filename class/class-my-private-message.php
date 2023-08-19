@@ -30,22 +30,22 @@ if ( ! class_exists( 'My_Private_Message' )
 
 		function __construct( $message ) {
 
-			if ( isset_numeric($message['ID'] )) {
+			if ( isset($message['ID'] )) {
 				$this->id = $message['ID'];
 			}
-			if ( isset_numeric($message['sender_id'] )) {
+			if ( isset($message['sender_id'] )) {
 				$this->sender_id = $message['sender_id'];
 			}
-			if ( isset_numeric($message['recipient_id'] )) {
+			if ( isset($message['recipient_id'] )) {
 				$this->recipient_id = $message['recipient_id'];
 			}
 			if ( isset($message['content'] )) {
 				$this->content = $message['content'];
 			}
-			if ( isset_numeric($message['respond'] )) {
+			if ( isset($message['respond'] )) {
 				$this->respond = $message['respond'];
 			}
-			if ( isset_numeric($message['status'] )) {
+			if ( isset($message['status'] )) {
 				$this->status = $message['status'];
 			}
 			if ( isset($message['date'] )) {

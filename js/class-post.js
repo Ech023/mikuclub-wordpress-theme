@@ -38,13 +38,35 @@ class MyPostSlim {
         }
     }
 
+    /**
+     * 如果作者在用户的黑名单里, 输出遮罩类名 用来遮挡文章
+     * @returns {string}
+     */
+    setBlackPostMaskClass() {
+
+        let class_name = '';
+
+        //如果有作者信息
+        if (this.post_author) {
+
+            //如果作者在用户的黑名单里
+            if (MY_SITE.user_black_list.includes(String(this.post_author.id))) {
+                //添加遮罩类名
+                class_name = 'black-user-post-mask';
+            }
+        }
+
+        return class_name;
+
+    }
+
     //输出html
     toHTML() {
 
         let output = '';
         let author_avatar = '';
         let author_name = '';
-
+        let post_container_class = this.setBlackPostMaskClass();
 
         //如果有作者信息
         if (this.post_author) {
@@ -61,11 +83,13 @@ class MyPostSlim {
                     ${this.post_author.display_name}
                 </a>
             `;
+
         }
+
 
         output = `
 
-         <div class="col card border-0 my-1">
+         <div class="col card border-0 my-1 ${post_container_class}">
                     <div class="card-img-container position-relative">
                         <div class="position-absolute end-0 top-0 me-1 mt-1">
                             

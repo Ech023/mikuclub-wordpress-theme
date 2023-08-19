@@ -155,10 +155,19 @@ function sendPrivateMessage(event) {
         /**
          * 错误情况
          */
-        let failCallback = function () {
+        let failCallback = function (jqXHR) {
+
+
+            let errorText = '发送错误 请重试';
+
+            //如果存在wpError对象
+            const wpError = getWpErrorByJqXHR(jqXHR);
+            if (wpError && wpError.data) {
+                errorText = wpError.data;
+            }
 
             //创建通知弹窗
-            TOAST_SYSTEM.add('发送错误 请重试', TOAST_TYPE.error);
+            TOAST_SYSTEM.add(errorText, TOAST_TYPE.error);
             //切换按钮激活状态 和 按钮显示内容
             $button.toggleDisabled();
             $button.children().toggle();
@@ -289,14 +298,14 @@ function checkBaiduPanValidity(link, isValidCallback, isInvalidCallback, errorCa
         is_aliyun = true;
 
         //如果链接最后一位是 斜杠
-        if(link[link.length-1] === '/'){
+        if (link[link.length - 1] === '/') {
             //移除斜杠
             link = link.substring(0, link.length - 1);
         }
 
         //设置阿里云分享ID
-       data.share_id = link.split('/').pop();
-    } 
+        data.share_id = link.split('/').pop();
+    }
 
 
 
@@ -306,19 +315,19 @@ function checkBaiduPanValidity(link, isValidCallback, isInvalidCallback, errorCa
     let successCallback = function (response) {
 
         //如果是阿里云
-        if(is_aliyun){
+        if (is_aliyun) {
 
             //如果回复包含code, 说明已失效
-            if(response.code){
+            if (response.code) {
                 isInvalidCallback();
             }
-            else{
+            else {
                 isValidCallback();
             }
 
         }
         //如果是百度
-        else{
+        else {
 
             //如果链接已失效
             if (response.includes("已过期") || response.includes("无法访问") || response.includes("删除了") || response.includes("已经被取消") || response.includes("不存在") || response.includes("错误")) {
@@ -332,7 +341,7 @@ function checkBaiduPanValidity(link, isValidCallback, isInvalidCallback, errorCa
     };
 
     let url = URLS.checkBaiduPan;
-    if(is_aliyun){
+    if (is_aliyun) {
         url = URLS.checkAliyunPan;
     }
 
@@ -343,3 +352,80 @@ function checkBaiduPanValidity(link, isValidCallback, isInvalidCallback, errorCa
 
 
 
+/**
+ * 加黑名单
+ * @param {number} target_user_id
+ */
+function add_user_black_list(target_user_id) {
+
+
+    if (!confirm('确认要将该用户添加到黑名单里吗? (添加后对方将无法在你的投稿里评论/无法发私信给你/对方的投稿将会被遮盖, 后续可以在个人中心里移除黑名单)')) {
+        return;
+    }
+
+    const data = {
+        target_user_id,
+    }
+
+    //成功的情况
+    let successCallback = function (response) {
+        TOAST_SYSTEM.add('添加黑名单成功', TOAST_TYPE.success);
+    };
+
+    //错误的情况
+    let failCallback = function () {
+        TOAST_SYSTEM.add('添加黑名单失败', TOAST_TYPE.error);
+    };
+
+    let completeCallback = function () {
+
+    };
+
+
+    $.ajax({
+        url: URLS.userBlackList,
+        data,
+        type: HTTP_METHOD.post,
+        headers: createAjaxHeader()
+    }).done(successCallback).fail(failCallback).always(completeCallback);
+
+}
+
+/**
+ * 移除黑名单
+ * @param {number} target_user_id
+ */
+function delete_user_black_list(target_user_id) {
+
+
+    if (!confirm('确认要将该用户从黑名单里移除吗?')) {
+        return;
+    }
+
+    const data = {
+        target_user_id,
+    }
+
+    //成功的情况
+    let successCallback = function (response) {
+        TOAST_SYSTEM.add('移除黑名单成功', TOAST_TYPE.success);
+    };
+
+    //错误的情况
+    let failCallback = function () {
+        TOAST_SYSTEM.add('移除黑名单失败', TOAST_TYPE.error);
+    };
+
+    let completeCallback = function () {
+
+    };
+
+
+    $.ajax({
+        url: URLS.userBlackList,
+        data,
+        type: HTTP_METHOD.delete,
+        headers: createAjaxHeader()
+    }).done(successCallback).fail(failCallback).always(completeCallback);
+
+}

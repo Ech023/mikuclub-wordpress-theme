@@ -58,7 +58,7 @@ function setup_front_script()
     wp_enqueue_script('lightbox2-js', 'https://cdn.staticfile.org/lightbox2/2.11.1/js/lightbox.min.js', false, '1.0', true);
 
     //UA解析 JS库
-    wp_enqueue_script('ua-parser', 'https://cdn.staticfile.org/UAParser.js/1.0.2/ua-parser.min.js', false, '1.0.2', true);
+    wp_enqueue_script('ua-parser', 'https://cdn.staticfile.org/UAParser.js/1.0.35/ua-parser.min.js', false, '1.0.35', true);
 
     //图片裁剪 JS库
     wp_enqueue_script('cropper-js', 'https://cdn.staticfile.org/cropperjs/2.0.0-alpha.1/cropper.min.js', false, '2.0.0', true);
@@ -298,8 +298,8 @@ function setup_front_script()
             'version' => '1.11',
             'in_footer' => false,
         ],
-         //JS 关注页
-         [
+        //JS 关注页
+        [
             'name' => 'js-followed',
             'path' => '/js/page-followed.js',
             'version' => '1.00',
@@ -335,7 +335,9 @@ function setup_front_script()
         //添加nonce数据, 来支持调用rest api
         'nonce' => wp_create_nonce('wp_rest'),
         'user_id' => get_current_user_id(),
+        MY_USER_BLACK_LIST => get_user_black_list(get_current_user_id()),
         'is_admin' => current_user_is_admin(),
+        'is_premium_user' => current_user_can_publish_posts(),
     ];
     //如果是文章页
     if (is_single())
@@ -350,6 +352,8 @@ function setup_front_script()
     {
         $dynamic_variable['category_id'] = get_queried_object_id();
     }
+
+
 
     wp_localize_script('js-base', 'MY_SITE', $dynamic_variable);
 }
@@ -1223,7 +1227,7 @@ function get_random_head_background_image()
     //	一年中的第几天 + 当前小时 然后 除余 图片数量 得出 随机数
     $random_index = (date('z') + date('G')) % $number + 1;
 
-    return 'https://'.CDN_MIKUCLUB_FUN.'/top/' . $random_index . '.webp';
+    return 'https://' . CDN_MIKUCLUB_FUN . '/top/' . $random_index . '.webp';
 }
 
 /**

@@ -156,7 +156,7 @@ HTML;
         <div class="my-4">
             <form>
                 <div class="input-group">
-                    <input class="form-control" name="author_id" placeholder="作者ID" value="<?php echo (isset_numeric($_GET['author_id']) ? $_GET['author_id'] : '') ?>" />
+                    <input class="form-control" name="author_id" placeholder="作者ID" value="<?php echo (isset($_GET['author_id']) ? $_GET['author_id'] : '') ?>" />
 
                     <button class="btn btn-miku" type="submit">搜索作者</button>
 
