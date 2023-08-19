@@ -80,7 +80,7 @@ function setup_front_script()
         [
             'name' => 'style',
             'path' => '/style.css',
-            'version' => '3.10'
+            'version' => '3.11'
         ],
         //论坛CSS
         [
@@ -110,7 +110,7 @@ function setup_front_script()
         [
             'name' => 'style-darkmode',
             'path' => '/css/style-darkmode.css',
-            'version' => '1.17'
+            'version' => '1.18'
         ],
     ];
 
@@ -139,7 +139,7 @@ function setup_front_script()
         [
             'name' => 'js-class-post',
             'path' => '/js/class-post.js',
-            'version' => '1.08',
+            'version' => '1.09',
             'in_footer' => false,
         ],
         //自定义JS 用户类
@@ -160,7 +160,7 @@ function setup_front_script()
         [
             'name' => 'js-class-comment',
             'path' => '/js/class-comment.js',
-            'version' => '1.16',
+            'version' => '1.17',
             'in_footer' => false,
         ],
         //自定义JS 评论类
@@ -174,7 +174,7 @@ function setup_front_script()
         [
             'name' => 'js-base',
             'path' => '/js/base.js',
-            'version' => '1.20',
+            'version' => '1.21',
             'in_footer' => false,
         ],
         //名言名句变量
@@ -196,7 +196,7 @@ function setup_front_script()
         [
             'name' => 'js-function-ajax',
             'path' => '/js/function-ajax.js',
-            'version' => '1.12',
+            'version' => '1.13',
             'in_footer' => false,
         ],
         //JS 页面加载完成后自动运行
@@ -210,7 +210,7 @@ function setup_front_script()
         [
             'name' => 'js-listener',
             'path' => '/js/listener.js',
-            'version' => '1.26',
+            'version' => '1.27',
             'in_footer' => false,
         ],
         //JS 广告
@@ -252,7 +252,7 @@ function setup_front_script()
         [
             'name' => 'js-message',
             'path' => '/js/page-message.js',
-            'version' => '1.07',
+            'version' => '1.08',
             'in_footer' => false,
         ],
         //JS 文章页面
@@ -266,7 +266,7 @@ function setup_front_script()
         [
             'name' => 'js-post-comment',
             'path' => '/js/page-post-comment.js',
-            'version' => '1.10',
+            'version' => '1.11',
             'in_footer' => false,
         ],
 
