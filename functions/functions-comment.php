@@ -183,42 +183,38 @@ function action_on_insert_comment($comment_id, $commentdata)
 add_action('wp_insert_comment', 'action_on_insert_comment', 10, 2);
 
 
-
-function action_on_pre_comment_on_post($comment_post_id)
+/**
+ * 通过REST API添加新评论前进行用户资格检测
+ *
+ * @param array           $prepared_comment The prepared comment data for `wp_insert_comment`.
+ * @param WP_REST_Request $request          The current request.
+ * @return array|WP_Error 将要插入的评论 或者 WP_Error 错误
+ */
+function action_on_rest_preprocess_comment($prepared_comment, $request)
 {
-    $custom_error_response = null;
 
-    $user_id = get_current_user_id();
-    $post_author_id = get_post_field('post_author', $comment_post_id);
-
-    //如果当前用户是封禁用户
-    if (current_user_is_regular() === false)
+    $comment_post_id =  $prepared_comment['comment_post_ID'] ?? null;
+    //如果相关联的文章id存在
+    if ($comment_post_id)
     {
-        $custom_error_response = [
-            'code' => 400,
-            'message' => __FUNCTION__ . ' : 该账号已被封禁',
-            'data' => '无法发送 该账号已被封禁'
-        ];
+        $user_id = get_current_user_id();
+        $post_author_id = get_post_field('post_author', $comment_post_id);
+
+        //如果当前用户是封禁用户
+        if (current_user_is_regular() === false)
+        {
+            $prepared_comment = new WP_Error(400, __FUNCTION__ . ' : 该账号已被封禁',  '无法发送 该账号已被封禁');
+        }
+        //如果评论人已经被文章作者拉黑
+        else if (in_user_black_list($post_author_id, $user_id))
+        {
+            $prepared_comment = new WP_Error(400, __FUNCTION__ . ' : 你已被收件人拉黑',  '无法发送 你已被收件人拉黑');
+        }
     }
 
-    //如果评论人已经被文章作者拉黑
-    if (in_user_black_list($post_author_id, $user_id))
-    {
-        $custom_error_response = [
-            'code' => 400,
-            'message' => __FUNCTION__ . ' : 你已被收件人拉黑',
-            'data' => '无法发送 你已被收件人拉黑'
-        ];
-    }
-
-    //如果有错误
-    if ($custom_error_response)
-    {
-        //输出json格式的回复, 并中断运行后续代码
-        wp_send_json($custom_error_response, 500);
-    }
+    return $prepared_comment;
 }
-add_action('pre_comment_on_post', 'action_on_pre_comment_on_post', 10, 1);
+add_filter('rest_preprocess_comment', 'action_on_rest_preprocess_comment', 10, 2);
 
 
 /**
