@@ -1734,7 +1734,7 @@ function print_post_content($post_id = null)
             //转换为base64编码 给一键秒传使用
             $baidu_fast_link_base_64 = base64_encode($baidu_fast_link);
 
-            $download_part .= '<h4 class="mt-3">秒传链接</h4>
+            $download_part .= '<h4 class="mt-3">秒传链接 (秒传脚本已全部失效)</h4>
 
 			<div class="my-3 " style="/*white-space: pre-line;word-break: break-all;*/">
                 <textarea class="baidu-fast-link form-control small bg-white" readonly rows="3" style="font-size: 0.75rem;">'
