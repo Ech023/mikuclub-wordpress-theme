@@ -11,11 +11,7 @@
 function getNextPage(event) {
 
     //获取按钮
-    let $button = $(event.target);
-    //如果点击到的对象是按钮的子元素 切换回按钮
-    if (!$button.is('button')) {
-        $button = $button.parent();
-    }
+    const $button = $(this);
 
     let currentPaged;
     //遍历收集所有查询参数input的表单
@@ -114,15 +110,14 @@ function getNextPage(event) {
  */
 function sendPrivateMessage(event) {
 
-    let recipient_id = $(event.target).siblings('input[name="recipient_id"]').val();
+    //获取按钮
+    const $button = $(this);
+
+    let recipient_id = $button.siblings('input[name="recipient_id"]').val();
     let message_content = $('.modal textarea.message-content').val().trim();
 
-    //获取按钮
-    let $button = $(event.target);
-    //如果点击到的对象是按钮的子元素 获取父按钮
-    if (!$button.is('button')) {
-        $button = $button.parent();
-    }
+
+
 
     let data = {
         content: message_content,
@@ -192,11 +187,7 @@ function sendPrivateMessage(event) {
 function setUserFollowed(event) {
 
     //获取按钮
-    let $button = $(event.target);
-    //如果点击到的对象是按钮的子元素 获取父按钮
-    if (!$button.is('button')) {
-        $button = $button.parent();
-    }
+    const $button = $(this);
 
     //关注数元素
     let $userFansCount = $button.children('.user-fans-count');

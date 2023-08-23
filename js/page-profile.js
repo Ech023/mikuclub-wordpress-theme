@@ -36,7 +36,7 @@ function selectImage(event) {
         return;
     }
 
-    let $inputFile = $(event.target);
+    let $inputFile = $(this);
 
     //如果未选中文件
     if (!$inputFile.prop('files').length) {
@@ -65,7 +65,7 @@ function selectImage(event) {
  */
 function initCropper(event) {
 
-    let $modalElement = $(event.target);
+    let $modalElement = $(this);
     let $image = $modalElement.find('img.img-cropper');
 
     $image.cropper({
@@ -97,7 +97,7 @@ function cropperUserAvatar() {
 
     // 获取剪切对象
     let cropper = $image.data('cropper');
-    let canvas = cropper.getCroppedCanvas({width: 100, height: 100, imageSmoothingQuality: 'high', fillColor: 'white'});
+    let canvas = cropper.getCroppedCanvas({ width: 100, height: 100, imageSmoothingQuality: 'high', fillColor: 'white' });
     $(canvas).addClass('rounded-circle');
 
     //输出预览
@@ -117,11 +117,7 @@ function cropperUserAvatar() {
 function uploadUserAvatar(event) {
 
     //获取按钮
-    let $button = $(event.target);
-    //如果点击到的对象是按钮的子元素 切换回按钮
-    if (!$button.is('button')) {
-        $button = $button.parent();
-    }
+    const $button = $(this);
 
     let $pageProfileElement = $('body.page .page-profile');
     let $avatar = $pageProfileElement.find('img.avatar');
@@ -208,7 +204,7 @@ function updateUserProfile(event) {
 
     console.log('发送');
 
-    let $form = $(event.target);
+    let $form = $(this);
 
     let $button = $form.find('button[type="submit"]');
 

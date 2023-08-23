@@ -169,7 +169,7 @@ function getMessageList() {
  */
 function getMessageListWithOneSender(event) {
 
-    let $elementParent = $(event.target);
+    let $elementParent = $(this);
     let $element = $elementParent.children('div.card-body');
 
     let sender_id = $elementParent.data('sender');

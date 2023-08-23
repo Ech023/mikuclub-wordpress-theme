@@ -80,20 +80,19 @@ $(function () {
      * 弹窗消失时触发
      * 把弹窗从DOM中移除
      */
-    $body
-        .on('hidden.bs.toast', '.my-toast-system .toast', event => {
-            $(event.target).remove();
-        });
+    $body.on('hidden.bs.toast', '.my-toast-system .toast', function () {
+        $(this).remove();
+    });
 
 
     /**模态窗消失时触发
      *  把模态窗从DOM中移除
      *  */
-    $body.on('hidden.bs.modal', '.my-modal', event => {
+    $body.on('hidden.bs.modal', '.my-modal', function () {
         //删除jquery模态实例
-        $(event.target).modal('dispose');
+        $(this).modal('dispose');
         //从DOM中移除
-        $(event.target).remove();
+        $(this).remove();
 
     });
 

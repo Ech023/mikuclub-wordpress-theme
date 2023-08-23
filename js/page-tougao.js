@@ -141,7 +141,7 @@ function deletePost(event) {
     }
 
     //获取按钮
-    let $button = $(event.target);
+    const $button = $(this);
 
     let previousValue = $button.html();
     let post_id = $button.data('post-id');
@@ -241,7 +241,7 @@ function draftPost(event) {
 function setStickyPost(event) {
 
     //获取按钮
-    let $button = $(event.target);
+    const $button = $(this);
 
     let previousValue = $button.html();
     let post_id = $button.data('post-id');
@@ -283,7 +283,7 @@ function setStickyPost(event) {
 function deleteStickyPost(event) {
 
     //获取按钮
-    let $button = $(event.target);
+    const $button = $(this);
 
     let previousValue = $button.html();
     let post_id = $button.data('post-id');
@@ -329,7 +329,7 @@ function deleteStickyPost(event) {
 function rejectPost(event) {
 
     //获取按钮
-    let $button = $(event.target);
+    const $button = $(this);
 
     let post_id = $button.data('post-id');
     let cause = prompt('退稿原因', '下载失效');
@@ -379,7 +379,7 @@ function rejectPost(event) {
 function updatePostDate(event) {
 
     //获取按钮
-    let $button = $(event.target);
+    const $button = $(this);
 
     let post_id = $button.data('post-id');
 
@@ -420,7 +420,7 @@ function updatePostDate(event) {
  * @param {Event} event
  */
 function inputTrim(event) {
-    let $input = $(event.target);
+    const $input = $(this);
     let value = $input.val().trim();
     $input.val(value);
 }
@@ -430,7 +430,7 @@ function inputTrim(event) {
  * @param {Event} event
  */
 function actionOnInputTitle(event) {
-    let $input = $(event.target);
+    const $input = $(this);
     //把全角字符转换成半角
     let value = fullCharToHalfChar($input.val());
     //替换标题的方括号
@@ -444,7 +444,7 @@ function actionOnInputTitle(event) {
  * @param {Event} event
  */
 function actionOnInputTags(event) {
-    let $input = $(event.target);
+    const $input = $(this);
     //把全角字符转换成半角
     let value = fullCharToHalfChar($input.val());
     //移除分隔符周围的空格
@@ -460,7 +460,7 @@ function actionOnInputTags(event) {
  * @param {Event} event
  */
 function actionOnInputSourceLink(event) {
-    let $input = $(event.target);
+    const $input = $(this);
     let value = $input.val();
 
     //如果链接无效
@@ -478,7 +478,7 @@ function actionOnInputSourceLink(event) {
 function actionOnInputDownload(event) {
 
     let $pageTougaoElement = $('body.page .page-tougao');
-    let $input = $(event.target);
+    const $input = $(this);
     let value = $input.val();
 
     if (value.length === 0) {
@@ -621,7 +621,7 @@ function checkInputDownloadBaiduValidity(inputElement) {
  */
 function actionOnInputPassword(event) {
 
-    let $input = $(event.target);
+    const $input = $(this);
     let value = $input.val();
     //去除 @密码, 去除 @提取码 去除 @复制这段内容后打开百度网盘手机App，操作更方便哦,   去除 左右空格
     value = value.replace(/\u5bc6\u7801\uff1a/g, "").replace(/\u5bc6\u7801\u003a/g, "").replace(/\u63d0\u53d6\u7801\uff1a/g, "").replace(/\u63d0\u53d6\u7801\u003a/g, "").replace(/\u590d\u5236\u8fd9\u6bb5\u5185\u5bb9\u540e\u6253\u5f00\u767e\u5ea6\u7f51\u76d8\u624b\u673a\u0041\u0070\u0070\uff0c\u64cd\u4f5c\u66f4\u65b9\u4fbf\u54e6/g, '');
@@ -638,7 +638,7 @@ function actionOnInputPassword(event) {
  * @param {Event} event
  */
 function actionOnInputBilibili(event) {
-    let $input = $(event.target);
+    const $input = $(this);
     let value = $input.val();
 
     if (!value.includes('av') && !value.includes('BV')) {
@@ -679,7 +679,7 @@ function actionOnInputBilibili(event) {
  */
 function actionOnInputVideo(event) {
 
-    let $input = $(event.target);
+    const $input = $(this);
     let value = $input.val().trim();
 
     //把小于和大于的符号 替换成 方括号

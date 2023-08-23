@@ -258,15 +258,10 @@ function createPrivateMessageModal(event) {
  */
 function invokeAppLink(event) {
 
-    let $linkElement = $(event.target);
-    if (!$linkElement.is('a')) {
-        $linkElement = $linkElement.parent();
-    }
-
     //app唤醒链接
-    let appInvokeUrl = $linkElement.data('app-invoke-url');
+    let appInvokeUrl = $(this).data('app-invoke-url');
     //备用网页链接
-    let originUrl = $linkElement.data('origin-url');
+    let originUrl = $(this).data('origin-url');
 
 
     //如果为空 则直接使用备用链接

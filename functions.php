@@ -189,14 +189,14 @@ function setup_front_script()
         [
             'name' => 'js-function',
             'path' => '/js/function.js',
-            'version' => '1.46',
+            'version' => '1.47',
             'in_footer' => false,
         ],
         //通用JS AJAX的函数
         [
             'name' => 'js-function-ajax',
             'path' => '/js/function-ajax.js',
-            'version' => '1.13',
+            'version' => '1.14',
             'in_footer' => false,
         ],
         //JS 页面加载完成后自动运行
@@ -210,7 +210,7 @@ function setup_front_script()
         [
             'name' => 'js-listener',
             'path' => '/js/listener.js',
-            'version' => '1.27',
+            'version' => '1.28',
             'in_footer' => false,
         ],
         //JS 广告
@@ -224,14 +224,14 @@ function setup_front_script()
         [
             'name' => 'js-tougao',
             'path' => '/js/page-tougao.js',
-            'version' => '1.39',
+            'version' => '1.40',
             'in_footer' => false,
         ],
         //JS 失效列表 页面
         [
             'name' => 'js-fail-down-list',
             'path' => '/js/page-fail-down-list.js',
-            'version' => '1.08',
+            'version' => '1.09',
             'in_footer' => false,
         ],
         //JS 作者页面
@@ -245,28 +245,28 @@ function setup_front_script()
         [
             'name' => 'js-favorite',
             'path' => '/js/page-favorite.js',
-            'version' => '1.10',
+            'version' => '1.11',
             'in_footer' => false,
         ],
         //JS 消息页面
         [
             'name' => 'js-message',
             'path' => '/js/page-message.js',
-            'version' => '1.08',
+            'version' => '1.09',
             'in_footer' => false,
         ],
         //JS 文章页面
         [
             'name' => 'js-post',
             'path' => '/js/page-post.js',
-            'version' => '1.24',
+            'version' => '1.25',
             'in_footer' => false,
         ],
         //JS 文章页面评论功能
         [
             'name' => 'js-post-comment',
             'path' => '/js/page-post-comment.js',
-            'version' => '1.11',
+            'version' => '1.13',
             'in_footer' => false,
         ],
 
@@ -274,14 +274,14 @@ function setup_front_script()
         [
             'name' => 'js-uploader',
             'path' => '/js/page-uploader.js',
-            'version' => '1.15',
+            'version' => '1.16',
             'in_footer' => false,
         ],
         //JS 用户个人信息页
         [
             'name' => 'js-profile',
             'path' => '/js/page-profile.js',
-            'version' => '1.07',
+            'version' => '1.08',
             'in_footer' => false,
         ],
         //JS 签到页

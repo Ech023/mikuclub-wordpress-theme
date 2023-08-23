@@ -163,7 +163,7 @@ function copySelectedText() {
  */
 function findDownPassword(event) {
 
-    let $button = $(event.target);
+    const $button = $(this);
     let passwordId = $button.data('password-id');
     //选中复制对应的密码栏
     selectAllAndCopy($('.password-part input.' + passwordId));
@@ -178,11 +178,8 @@ function setPostLike(event) {
 
 
     //获取按钮
-    let $button = $(event.target);
-    //如果点击到的对象是按钮的子元素 切换回按钮
-    if (!$button.is('button')) {
-        $button = $button.parent();
-    }
+    const $button = $(this);
+
 
     let postId = $button.data('post-id');
     let isActivated = $button.data('activated');
@@ -240,11 +237,8 @@ function setPostLike(event) {
 function setPostFavorite(event) {
 
     //获取按钮
-    let $button = $(event.target);
-    //如果点击到的对象是按钮的子元素 切换回按钮
-    if (!$button.is('button')) {
-        $button = $button.parent();
-    }
+    const $button = $(this);
+
 
     let postId = $button.data('post-id');
     let isActivated = $button.data('activated');
@@ -301,7 +295,7 @@ function setPostFavorite(event) {
 function setPostShare(event) {
 
     //获取按钮
-    let $button = $(event.target).parent().siblings('button');
+    let $button = $(this).parent().siblings('button');
 
 
     let postId = $button.data('post-id');
@@ -494,11 +488,7 @@ function hideSidebarMenuItem() {
 function openReportModal(event) {
 
     //获取按钮
-    let $button = $(event.target);
-    //如果点击到的对象是按钮的子元素 切换回按钮
-    if (!$button.is('button')) {
-        $button = $button.parent();
-    }
+    const $button = $(this);
 
     let postId = $button.data('post-id');
     let recipientId = $button.data('recipient-id');
@@ -516,11 +506,7 @@ function sendReport(event) {
 
 
     //获取按钮
-    let $button = $(event.target);
-    //如果点击到的对象是按钮的子元素 切换回按钮
-    if (!$button.is('button')) {
-        $button = $button.parent();
-    }
+    const $button = $(this);
 
     let $modalElement = $button.parents('.report-modal');
     let $reportTypeRadio = $modalElement.find('input[name="report_type"]:checked');
@@ -602,7 +588,7 @@ function addPostViews(post_id) {
 
     if (index === 3) {
 
-        let view_number = (Math.floor(Math.random() * 10) + 1 );
+        let view_number = (Math.floor(Math.random() * 10) + 1);
 
         //发送请求
         $.get(URLS.postViewCount, { post_id, view_number }, null);

@@ -140,7 +140,7 @@ function printEmoji($button) {
  */
 function insertEmoji(event) {
 
-    let value = $(event.target).attr('alt');
+    let value = $(this).attr('alt');
     let $textarea = $('.comments-part form.main-comment textarea');
 
     $textarea.val(`${$textarea.val()} ${value} `);
@@ -153,7 +153,7 @@ function insertEmoji(event) {
  */
 function moveCommentForm(event) {
 
-    let $respondButton = $(event.target);
+    let $respondButton = $(this);
     let respond = $respondButton.data('respond');
     let respondName = $respondButton.data('respond-name');
 
@@ -220,11 +220,8 @@ function resetCommentForm() {
 function sendComment(event) {
 
     //获取按钮
-    let $submitButton = $(event.target);
-    //如果点击到的对象是按钮的子元素 切换回按钮
-    if (!$submitButton.is('button')) {
-        $submitButton = $submitButton.parent();
-    }
+    let $submitButton = $(this);
+   
 
     //获取下一页请求参数
     let $getNextPageElement = $('.comments-part .get-next-page');
@@ -457,7 +454,7 @@ function deleteComment(event) {
 
 
     //获取删除事件按钮
-    let $deleteButton = $(event.target);
+    let $deleteButton = $(this);
 
     //获取下一页请求参数
     let $getNextPageElement = $('.comments-part .get-next-page');

@@ -97,7 +97,7 @@ function failDownListLinkCheck($linkElement) {
 function resetFailTimes(event) {
 
     //获取 列表主元素
-    let $button = $(event.target);
+    const $button = $(this);
     let $parentItem = $button.parents('.list-item');
 
     //切换按钮状态
@@ -144,7 +144,7 @@ function resetFailTimes(event) {
 function disableFailTimes(event) {
 
     //获取 列表主元素
-    let $button = $(event.target);
+    const $button = $(this);
     let $parentItem = $button.parents('.list-item');
 
     //切换按钮状态
@@ -191,7 +191,7 @@ function disableFailTimes(event) {
 function rejectPostFromList(event) {
 
     //获取 列表主元素
-    let $button = $(event.target);
+    const $button = $(this);
     let $parentItem = $button.parents('.list-item');
 
     //切换按钮状态
@@ -242,7 +242,7 @@ function deletePostFromFailList(event) {
     }
 
     //获取 列表主元素
-    let $button = $(event.target);
+    const $button = $(this);
     let $parentItem = $button.parents('.list-item');
 
     //切换按钮状态

@@ -163,11 +163,9 @@ function deletePostFromList(event) {
     }
 
     //获取按钮
-    let $button = $(event.target);
-    //如果点击到的对象是按钮的子元素 切换回按钮
-    if (!$button.is('button')) {
-        $button = $button.parent();
-    }
+    const $button = $(this);
+
+
     let $grandparentElement = $button.parent().parent();
 
     let postId = $button.data('post-id');
