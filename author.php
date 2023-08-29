@@ -19,7 +19,7 @@ if ($current_user_id > 0 && $current_user_id != $author->id)
 
     $author_buttons_element = <<<HTML
 
-     <div class="col-auto">
+     <div class="col-auto user-follow" data-user-fans-count="{$user_fans_count}">
          <button class="btn btn-miku add-user-follow-list"  style="{$add_follow_button_style}" data-target-user-id="{$author->id}">
              <i class="fas fa-plus"></i>
              <span>关注</span>
@@ -32,13 +32,9 @@ if ($current_user_id > 0 && $current_user_id != $author->id)
          </button>
      </div>
      <div class="col-auto">
-         <div class="create-private-message-modal">
-             <button class="btn btn-primary">
-                 <i class="fas fa-envelope"></i> 发私信
-             </button>
-             <input type="hidden" name="recipient_name" value="{$author->display_name}" />
-             <input type="hidden" name="recipient_id" value="{$author->id}" />
-         </div>
+         <button class="btn btn-primary show-private-message-modal" data-recipient_id="{$author->id}" data-recipient_name="{$author->display_name}">
+            <i class="fas fa-envelope"></i> 发私信
+         </button>
      </div>
 HTML;
 

@@ -237,11 +237,11 @@ function refreshPostListPage(queryObject) {
 /**
  * 创建私信模态窗
  */
-function createPrivateMessageModal(event) {
+function showPrivateMessageModal(event) {
 
     //获取收件人信息
-    let recipient_name = $(this).siblings('input[name="recipient_name"]').val();
-    let recipient_id = $(this).siblings('input[name="recipient_id"]').val();
+    let recipient_id = $(this).data('recipient_id');
+    let recipient_name = $(this).data('recipient_name');
 
     //console.log('nome' +recipient_name);
     //console.log('id' +recipient_id);

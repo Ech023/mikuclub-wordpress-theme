@@ -31,7 +31,7 @@ get_header();
 
 
 			<?php
-			comments_template( '', true );
+			//comments_template( '', true );
 		}
 		?>
 

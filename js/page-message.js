@@ -198,11 +198,11 @@ function getMessageListWithOneSender(event) {
 
     <div class="row mt-5 justify-content-center">
         <div class="col-9 col-md-6">
-            <div class=" create-private-message-modal">
-                <button class="btn btn-miku w-100">回复</button>
-                <input type="hidden" name="recipient_name" value="${senderName}">
-                <input type="hidden" name="recipient_id" value=${sender_id}>
-            </div>
+
+            <button class="btn btn-miku w-100 show-private-message-modal" data-recipient_id="${sender_id}" data-recipient_name="${senderName}">
+                回复
+            </button>
+
         </div>
         <div class="col-auto">
             <div class="dropdown" >

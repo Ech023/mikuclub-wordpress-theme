@@ -189,14 +189,14 @@ function setup_front_script()
         [
             'name' => 'js-function',
             'path' => '/js/function.js',
-            'version' => '1.47',
+            'version' => '1.48',
             'in_footer' => false,
         ],
         //通用JS AJAX的函数
         [
             'name' => 'js-function-ajax',
             'path' => '/js/function-ajax.js',
-            'version' => '1.16',
+            'version' => '1.17',
             'in_footer' => false,
         ],
         //JS 页面加载完成后自动运行
@@ -210,7 +210,7 @@ function setup_front_script()
         [
             'name' => 'js-listener',
             'path' => '/js/listener.js',
-            'version' => '1.29',
+            'version' => '1.30',
             'in_footer' => false,
         ],
         //JS 广告
@@ -252,7 +252,7 @@ function setup_front_script()
         [
             'name' => 'js-message',
             'path' => '/js/page-message.js',
-            'version' => '1.09',
+            'version' => '1.10',
             'in_footer' => false,
         ],
         //JS 文章页面

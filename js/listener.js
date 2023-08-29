@@ -63,13 +63,13 @@ $(function () {
      * 创建私信窗口按钮 点击事件
      * 创建显示模态窗
      */
-    $body.on('click', '.create-private-message-modal button', '', createPrivateMessageModal);
+    $body.on('click', 'button.show-private-message-modal', '', showPrivateMessageModal);
 
     /**
      * 私信模态窗中 发送按钮 点击事件
      * 发送私信
      */
-    $body.on('click', '.modal button.send-private-message', '', sendPrivateMessage);
+    $body.on('click', '.modal.private-message-modal button.send-private-message', '', sendPrivateMessage);
 
 
     /**

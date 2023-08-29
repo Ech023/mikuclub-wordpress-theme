@@ -347,7 +347,10 @@ function add_user_follow_list() {
     const $delete_follow_button = $(this).siblings('button.delete-user-follow-list');
     //取消关注按钮的关注数子元素
     const $user_fans_count_element = $delete_follow_button.children('.user-fans-count');
-    const user_fans_count = parseInt($user_fans_count_element.html());
+    //获取当前关注数
+    const $button_container_element = $(this).parent();
+    const user_fans_count = $button_container_element.data('user-fans-count') + 1;
+    $button_container_element.data('user-fans-count', user_fans_count);
 
     //获取要关注的用户ID
     const target_user_id = $(this).data('target-user-id');
@@ -374,7 +377,7 @@ function add_user_follow_list() {
         //显示取消关注按钮
         $delete_follow_button.show();
         //更新取消关注按钮的关注数
-        $user_fans_count_element.html(user_fans_count + 1);
+        $user_fans_count_element.html(user_fans_count);
 
 
     };
@@ -411,7 +414,10 @@ function delete_user_follow_list() {
     const $add_follow_button = $(this).siblings('button.add-user-follow-list');
     //添加关注按钮的关注数子元素
     const $user_fans_count_element = $add_follow_button.children('.user-fans-count');
-    const user_fans_count = parseInt($user_fans_count_element.html());
+    //获取当前关注数
+    const $button_container_element = $(this).parent();
+    const user_fans_count = $button_container_element.data('user-fans-count') - 1;
+    $button_container_element.data('user-fans-count', user_fans_count);
 
     //获取要关注的用户ID
     const target_user_id = $(this).data('target-user-id');
@@ -438,7 +444,7 @@ function delete_user_follow_list() {
         //显示关注按钮
         $add_follow_button.show();
         //更新关注按钮的关注数
-        $user_fans_count_element.html(user_fans_count - 1);
+        $user_fans_count_element.html(user_fans_count);
 
 
     };
