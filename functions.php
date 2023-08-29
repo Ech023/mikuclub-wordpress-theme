@@ -196,7 +196,7 @@ function setup_front_script()
         [
             'name' => 'js-function-ajax',
             'path' => '/js/function-ajax.js',
-            'version' => '1.14',
+            'version' => '1.15',
             'in_footer' => false,
         ],
         //JS 页面加载完成后自动运行
@@ -210,7 +210,7 @@ function setup_front_script()
         [
             'name' => 'js-listener',
             'path' => '/js/listener.js',
-            'version' => '1.28',
+            'version' => '1.29',
             'in_footer' => false,
         ],
         //JS 广告

@@ -57,11 +57,7 @@ $(function () {
     $('.post-list-order select').on('change', '', '', postListCustomOrder);
 
 
-    /**
-     * 关注用户按钮点击事件
-     * 关注/取消关注用户
-     */
-    $('.user-functions').on('click', 'button.user-followed.follow', true, setUserFollowed).on('click', 'button.user-followed.unfollow', false, setUserFollowed);
+
 
     /**
      * 创建私信窗口按钮 点击事件
@@ -97,10 +93,17 @@ $(function () {
     });
 
 
+    //监听所有 关注按钮点击事件
+    $body.on('click', 'button.add-user-follow-list', '', add_user_follow_list);
+
+    //监听所有 取消关注按钮点击事件
+    $body.on('click', 'button.delete-user-follow-list', '', delete_user_follow_list);
+
+
     //监听所有 添加黑名单按钮点击事件
     $body.on('click', 'a.add-user-black-list', '', function () {
         //添加黑名单
-        const target_user_id = $(this).attr('data-target-user-id');
+        const target_user_id = $(this).data('target-user-id');
         add_user_black_list(target_user_id);
 
     });
@@ -108,7 +111,7 @@ $(function () {
     //监听所有 移除黑名单按钮点击事件
     $body.on('click', 'a.delete-user-black-list', '', function () {
         //移除黑名单
-        const target_user_id = $(this).attr('data-target-user-id');
+        const target_user_id = $(this).data('target-user-id');
         delete_user_black_list(target_user_id);
 
     });
@@ -181,6 +184,8 @@ $(function () {
  * 把失效的域名跳转到当前的主域名
  */
 redirect_site_domain_deactivated();
+
+
 
 
 /*

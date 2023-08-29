@@ -180,94 +180,6 @@ function sendPrivateMessage(event) {
 
 }
 
-/**
- *设置关注
- * @param {Event}event
- */
-function setUserFollowed(event) {
-
-    //获取按钮
-    const $button = $(this);
-
-    //关注数元素
-    let $userFansCount = $button.children('.user-fans-count');
-
-    //是否是关注操作
-    //TRUE 是添加关注, FALSE 是取消关注
-    let isAddFollow = event.data;
-
-    //根据操作类型 设置不同的请求方式
-    let requestMethod;
-    if (isAddFollow) {
-        requestMethod = HTTP_METHOD.post;
-    }
-    else {
-        requestMethod = HTTP_METHOD.delete;
-    }
-
-    //获取要关注的用户ID
-    let user_id = $button.data('user-id');
-    //添加为请求数据
-    let data = {
-        user_id
-    };
-
-    //切换按钮激活状态 和 按钮显示内容
-    $button.toggleDisabled();
-
-    //回调函数
-    let successCallback = function (response) {
-
-        //切换按钮的类名
-        $button.toggleClass('follow unfollow btn-miku btn-secondary');
-        //切换按钮文本显示
-        $button.children('.text').toggle();
-
-        let message;
-        if (isAddFollow) {
-            message = '已添加关注';
-            //关注数+1
-            $userFansCount.html((+$userFansCount.html()) + 1);
-        }
-        else {
-            message = '已取消关注';
-            //关注数-1
-            $userFansCount.html((+$userFansCount.html()) - 1);
-        }
-
-        //创建通知弹窗
-        TOAST_SYSTEM.add(message, TOAST_TYPE.success);
-
-    };
-
-    /**
-     * 错误情况
-     */
-    let failCallback = function () {
-
-        //创建通知弹窗
-        TOAST_SYSTEM.add('关注失败 请重试', TOAST_TYPE.error);
-    };
-
-    let completeCallback = function () {
-
-        //切换按钮激活状态, 加载进度条和文字的显示
-        $button.toggleDisabled();
-
-    };
-
-
-    $.ajax({
-        url: URLS.userFollowed,
-        data,
-        type: requestMethod,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(failCallback).always(completeCallback);
-
-
-}
-
-
 
 /**
  * 检测百度分享链接有效性
@@ -414,6 +326,137 @@ function delete_user_black_list(target_user_id) {
 
     $.ajax({
         url: URLS.userBlackList,
+        data,
+        type: HTTP_METHOD.delete,
+        headers: createAjaxHeader()
+    }).done(successCallback).fail(failCallback).always(completeCallback);
+
+}
+
+
+
+
+/**
+ * 添加关注
+ */
+function add_user_follow_list() {
+
+    //当前按钮
+    const $button = $(this);
+    //取消关注按钮
+    const $delete_follow_button = $(this).siblings('button.delete-user-follow-list');
+    //取消关注按钮的关注数子元素
+    const $user_fans_count_element = $delete_follow_button.children('.user-fans-count');
+    const user_fans_count = parseInt($user_fans_count_element.html());
+
+    //获取要关注的用户ID
+    const target_user_id = $(this).data('target-user-id');
+
+
+    //添加为请求数据
+    const data = {
+        target_user_id,
+    }
+
+
+    //禁用按钮
+    $button.toggleDisabled();
+
+
+    //成功的情况
+    const successCallback = function (response) {
+
+        //创建通知弹窗
+        TOAST_SYSTEM.add('已添加关注', TOAST_TYPE.success);
+
+        //隐藏当前按钮
+        $button.hide();
+        //显示取消关注按钮
+        $delete_follow_button.show();
+        //更新取消关注按钮的关注数
+        $user_fans_count_element.html(user_fans_count + 1);
+
+
+    };
+
+    //错误的情况
+    const failCallback = function () {
+        TOAST_SYSTEM.add('添加关注失败', TOAST_TYPE.error);
+    };
+
+    const completeCallback = function () {
+
+        //激活按钮
+        $button.toggleDisabled();
+    };
+
+
+    $.ajax({
+        url: URLS.userFollowed,
+        data,
+        type: HTTP_METHOD.post,
+        headers: createAjaxHeader()
+    }).done(successCallback).fail(failCallback).always(completeCallback);
+
+}
+
+/**
+ * 移除关注
+ */
+function delete_user_follow_list() {
+
+    //当前按钮
+    const $button = $(this);
+    //添加关注按钮
+    const $add_follow_button = $(this).siblings('button.add-user-follow-list');
+    //添加关注按钮的关注数子元素
+    const $user_fans_count_element = $delete_follow_button.children('.user-fans-count');
+    const user_fans_count = parseInt($user_fans_count_element.html());
+
+    //获取要关注的用户ID
+    const target_user_id = $(this).data('target-user-id');
+
+
+    //添加为请求数据
+    const data = {
+        target_user_id,
+    }
+
+
+    //禁用按钮
+    $button.toggleDisabled();
+
+
+    //成功的情况
+    const successCallback = function (response) {
+
+        //创建通知弹窗
+        TOAST_SYSTEM.add('已取消关注', TOAST_TYPE.success);
+
+        //隐藏当前按钮
+        $button.hide();
+        //显示关注按钮
+        $add_follow_button.show();
+        //更新关注按钮的关注数
+        $user_fans_count_element.html(user_fans_count - 1);
+
+
+    };
+
+    //错误的情况
+    const failCallback = function () {
+        TOAST_SYSTEM.add('取消关注失败', TOAST_TYPE.error);
+    };
+
+    const completeCallback = function () {
+
+        //激活按钮
+        $button.toggleDisabled();
+    };
+
+
+    $.ajax({
+        url: URLS.userFollowed,
         data,
         type: HTTP_METHOD.delete,
         headers: createAjaxHeader()

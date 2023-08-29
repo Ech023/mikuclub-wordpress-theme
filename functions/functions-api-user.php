@@ -71,7 +71,7 @@ function api_get_author($data)
 {
 
 	//如果参数错误
-	if (!isset_numeric($data['id']))
+	if (!isset($data['id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : ID 参数错误');
 	}
@@ -106,7 +106,7 @@ function api_get_user_favorite()
 function api_add_user_favorite($data)
 {
 
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
@@ -124,7 +124,7 @@ function api_add_user_favorite($data)
 function api_delete_user_favorite($data)
 {
 
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
@@ -173,14 +173,18 @@ function api_get_user_followed()
 function api_add_user_followed($data)
 {
 
-	if (!isset_numeric($data['user_id']))
+	$target_user_id = $data['target_user_id'] ?? null;
+	if (!is_numeric($target_user_id))
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : user_id 参数错误');
+		return new WP_Error(400, __FUNCTION__ . ' : target_user_id 参数错误');
 	}
-	//增加被关注用户的粉丝数
-	set_user_fans_count($data['user_id'], true);
 
-	return set_user_followed($data['user_id'], true);
+	$target_user_id = intval($target_user_id);
+
+	//增加被关注用户的粉丝数
+	set_user_fans_count($target_user_id, true);
+
+	return set_user_followed($target_user_id, true);
 }
 
 /**
@@ -193,14 +197,18 @@ function api_add_user_followed($data)
 function api_delete_user_followed($data)
 {
 
-	if (!isset_numeric($data['user_id']))
+	$target_user_id = $data['target_user_id'] ?? null;
+	if (!is_numeric($target_user_id))
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : user_id 参数错误');
+		return new WP_Error(400, __FUNCTION__ . ' : target_user_id 参数错误');
 	}
-	//删除被取消关注用户的粉丝数
-	set_user_fans_count($data['user_id'], false);
 
-	return set_user_followed($data['user_id'], false);
+	$target_user_id = intval($target_user_id);
+
+	//删除被取消关注用户的粉丝数
+	set_user_fans_count($target_user_id, false);
+
+	return set_user_followed($target_user_id, false);
 }
 
 /**
@@ -230,6 +238,8 @@ function api_add_user_black_list($data)
 		return new WP_Error(400, __FUNCTION__ . ' : target_user_id 参数错误');
 	}
 
+	$target_user_id = intval($target_user_id);
+
 	$user_id = get_current_user_id();
 
 	//添加拉黑的用户ID到用户的黑名单
@@ -251,6 +261,8 @@ function api_delete_user_black_list($data)
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : target_user_id 参数错误');
 	}
+
+	$target_user_id = intval($target_user_id);
 
 	$user_id = get_current_user_id();
 

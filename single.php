@@ -1,4 +1,82 @@
-<?php get_header();
+<?php
+
+get_header();
+
+global $authordata;
+
+$current_user_id = get_current_user_id();
+$author = get_custom_author($authordata->ID);
+$is_user_followed = is_user_followed($author->id);
+
+
+
+$author_buttons_element = '';
+//必须是登陆用户, 并且不能是作者自己
+if ($current_user_id > 0 && $current_user_id != $author->id)
+{
+    //关注按钮样式
+    $add_follow_button_style = $is_user_followed ? 'display: none;' : '';
+    $delete_follow_button_style = $is_user_followed ? '' : 'display: none;';
+    //作者的关注数
+    $user_fans_count = get_user_fans_count($author->id);
+
+    $author_buttons_element = <<<HTML
+
+     <div class="col-auto">
+         <button class="btn btn-miku add-user-follow-list"  style="{$add_follow_button_style}" data-target-user-id="{$author->id}">
+             <i class="fas fa-plus"></i>
+             <span>关注</span>
+             <span class="user-fans-count">{$user_fans_count}</span>
+         </button>
+     </div>
+     <div class="col-auto">
+         <button class="btn btn-secondary delete-user-follow-list"  style="{$delete_follow_button_style}" data-target-user-id="{$author->id}">
+             <i class="fas fa-minus"></i>
+             <span>已关注</span>
+             <span class="user-fans-count">{$user_fans_count}</span>
+         </button>
+     </div>
+     <div class="col-auto">
+         <div class="create-private-message-modal">
+             <button class="btn btn-primary">
+                 <i class="fas fa-envelope"></i> 发私信
+             </button>
+             <input type="hidden" name="recipient_name" value="{$author->display_name}" />
+             <input type="hidden" name="recipient_id" value="{$author->id}" />
+         </div>
+     </div>
+HTML;
+
+    $toggle_black_list_button = '';
+    //如果该作者已被用户加入黑名单
+    if (in_user_black_list($current_user_id, $author->id))
+    {
+        $toggle_black_list_button = <<<HTML
+         <li><a class="dropdown-item delete-user-black-list" href="javascript:void(0);" data-target-user-id="{$author->id}">从黑名单里移除</a></li>
+HTML;
+    }
+    //如果还未加入黑名单
+    else
+    {
+        $toggle_black_list_button =  <<<HTML
+              <li><a class="dropdown-item add-user-black-list" href="javascript:void(0);" data-target-user-id="{$author->id}">加入黑名单</a></li>
+HTML;
+    }
+
+    $author_buttons_element .= <<<HTML
+         <div class="col-auto">
+             <div class="dropdown">
+                 <a class="btn btn-secondary btn-sm" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" title="更多操作">
+                     <i class="fa-solid fa-ellipsis-vertical"></i>
+                 </a>
+                 <ul class="dropdown-menu">
+                     {$toggle_black_list_button}
+                 </ul>
+             </div>
+         </div>
+
+HTML;
+}
 
 
 ?>
@@ -24,16 +102,10 @@
 
             $post_id = get_the_ID();
 
-            //增加文章点击数 (已改成通过JS增加)
-            //add_post_views( $post_id );
-
-            global $authordata;
-            $author = get_custom_author($authordata->ID);
-
-
             $tag_list = get_the_tags();
 
-            $is_user_followed = is_user_followed($author->id);
+            //增加文章点击数 (已改成通过JS增加)
+            //add_post_views( $post_id );
 
     ?>
 
@@ -50,8 +122,6 @@
 
 
             <header class="article-header">
-
-
 
                 <div class="row gy-3">
 
@@ -178,68 +248,8 @@
                                 <?php echo $author->user_description; ?>
                             </div>
 
-                            <div class=" user-functions row gx-2">
-                                <?php
-
-                                $current_user_id = get_current_user_id();
-
-                                //当前用户有登陆, 并且不是作者本人
-                                if ($current_user_id > 0 && $current_user_id != $author->id)
-                                {
-                                ?>
-                                    <div class="col-auto">
-                                        <button class="btn btn-sm <?php echo $is_user_followed ? "btn-secondary unfollow" : "btn-miku follow"; ?> user-followed" data-user-id="<?php echo $author->id ?>">
-                                            <span class="text follow" style="display : <?php echo $is_user_followed ? 'none' : 'inline'; ?>">
-                                                <i class="fas fa-plus"></i> 关注
-                                            </span>
-                                            <span class="text unfollow" style="display : <?php echo !$is_user_followed ? 'none' : 'inline'; ?>">
-                                                已关注
-                                            </span>
-                                            <span class="user-fans-count"><?php echo get_user_fans_count($author->id); ?></span>
-                                        </button>
-                                    </div>
-
-                                    <div class="col-auto">
-                                        <div class="create-private-message-modal">
-                                            <button class="btn btn-sm btn-primary">
-                                                <i class="fas fa-envelope"></i> 发私信
-                                            </button>
-                                            <input type="hidden" name="recipient_name" value="<?php echo $author->display_name; ?>" />
-                                            <input type="hidden" name="recipient_id" value="<?php echo $author->id; ?>" />
-                                        </div>
-                                    </div>
-
-                                    <div class="col-auto">
-                                        <div class="dropdown">
-                                            <a class="btn btn-secondary btn-sm" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" title="更多操作">
-                                                <i class="fa-solid fa-ellipsis-vertical"></i>
-                                            </a>
-                                            <ul class="dropdown-menu">
-
-                                                <?php
-                                                //如果该作者已被用户加入黑名单
-                                                if (in_user_black_list($current_user_id, $author->id))
-                                                {
-                                                    echo <<<HTML
-                                                        <li><a class="dropdown-item delete-user-black-list" href="javascript:void(0);" data-target-user-id="{$author->id}">从黑名单里移除</a></li>
-HTML;
-                                                }
-                                                //如果还未加入黑名单
-                                                else
-                                                {
-                                                    echo <<<HTML
-                                                        <li><a class="dropdown-item add-user-black-list" href="javascript:void(0);" data-target-user-id="{$author->id}">加入黑名单</a></li>
-HTML;
-                                                }
-
-                                                ?>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-
-
-                                <?php } ?>
+                            <div class="user-functions row gx-2">
+                                <?php echo $author_buttons_element; ?>
                             </div>
                         </div>
 

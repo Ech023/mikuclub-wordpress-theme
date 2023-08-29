@@ -1481,7 +1481,7 @@ function set_user_followed($user_id_to_follow, $is_add)
 			//过滤掉相关元素
 			$user_followed = array_filter($user_followed, function ($element) use ($user_id_to_follow)
 			{
-				return $element != $user_id_to_follow;
+				return intval($element) !== $user_id_to_follow;
 			});
 			//更新
 			$result = update_user_meta($user_id, MY_USER_FOLLOWED, $user_followed);
@@ -1688,7 +1688,7 @@ function delete_user_black_list($user_id, $target_user_id)
 		//从黑名单里移除目标ID
 		$black_list = array_filter($black_list, function ($value) use ($target_user_id)
 		{
-			return $value !== $target_user_id;
+			return intval($value) !== $target_user_id;
 		});
 
 		//更新黑名单
