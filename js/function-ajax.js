@@ -410,7 +410,7 @@ function delete_user_follow_list() {
     //添加关注按钮
     const $add_follow_button = $(this).siblings('button.add-user-follow-list');
     //添加关注按钮的关注数子元素
-    const $user_fans_count_element = $delete_follow_button.children('.user-fans-count');
+    const $user_fans_count_element = $add_follow_button.children('.user-fans-count');
     const user_fans_count = parseInt($user_fans_count_element.html());
 
     //获取要关注的用户ID

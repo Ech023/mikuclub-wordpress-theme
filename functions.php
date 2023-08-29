@@ -196,7 +196,7 @@ function setup_front_script()
         [
             'name' => 'js-function-ajax',
             'path' => '/js/function-ajax.js',
-            'version' => '1.15',
+            'version' => '1.16',
             'in_footer' => false,
         ],
         //JS 页面加载完成后自动运行

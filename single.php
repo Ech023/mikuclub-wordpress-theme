@@ -51,14 +51,14 @@ get_header();
                 $author_buttons_element = <<<HTML
             
                  <div class="col-auto">
-                     <button class="btn btn-miku add-user-follow-list"  style="{$add_follow_button_style}" data-target-user-id="{$author->id}">
+                     <button class="btn btn-miku btn-sm add-user-follow-list"  style="{$add_follow_button_style}" data-target-user-id="{$author->id}">
                          <i class="fas fa-plus"></i>
                          <span>关注</span>
                          <span class="user-fans-count">{$user_fans_count}</span>
                      </button>
                  </div>
                  <div class="col-auto">
-                     <button class="btn btn-secondary delete-user-follow-list"  style="{$delete_follow_button_style}" data-target-user-id="{$author->id}">
+                     <button class="btn btn-secondary btn-sm delete-user-follow-list"  style="{$delete_follow_button_style}" data-target-user-id="{$author->id}">
                          <i class="fas fa-minus"></i>
                          <span>已关注</span>
                          <span class="user-fans-count">{$user_fans_count}</span>
@@ -66,7 +66,7 @@ get_header();
                  </div>
                  <div class="col-auto">
                      <div class="create-private-message-modal">
-                         <button class="btn btn-primary">
+                         <button class="btn btn-primary btn-sm">
                              <i class="fas fa-envelope"></i> 发私信
                          </button>
                          <input type="hidden" name="recipient_name" value="{$author->display_name}" />
