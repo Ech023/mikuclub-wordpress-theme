@@ -25,8 +25,6 @@ if ($current_user_id > 0 && $current_user_id != $author->id)
              <span>关注</span>
              <span class="user-fans-count">{$user_fans_count}</span>
          </button>
-     </div>
-     <div class="col-auto">
          <button class="btn btn-secondary delete-user-follow-list"  style="{$delete_follow_button_style}" data-target-user-id="{$author->id}">
              <i class="fas fa-minus"></i>
              <span>已关注</span>
