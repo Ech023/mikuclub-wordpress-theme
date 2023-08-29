@@ -25,8 +25,6 @@ if ($current_user_id > 0 && $current_user_id != $author->id)
              <span>关注</span>
              <span class="user-fans-count">{$user_fans_count}</span>
          </button>
-     </div>
-     <div class="col-auto">
          <button class="btn btn-secondary delete-user-follow-list"  style="{$delete_follow_button_style}" data-target-user-id="{$author->id}">
              <i class="fas fa-minus"></i>
              <span>已关注</span>
@@ -87,12 +85,13 @@ HTML;
 <div class="content">
 
     <header class="author-header row my-3 gy-4" data-author-id="<?php echo $author->id; ?>">
-        <div class="row justify-content-start">
-            <div class="col-12 col-xl-8">
+
+        <div class="col-12 col-xl-8">
+            <div class="row justify-content-start">
                 <div class="col-12 col-sm-auto text-center">
                     <?php echo print_user_avatar($author->user_image, 100); ?>
                 </div>
-                <div class="col  mt-xl-0">
+                <div class="col mt-xl-0">
                     <h4 class="text-center text-md-start">
                         <span class="fw-bold d-block d-sm-inline mb-2 mb-sm-0 me-2 text-center"><?php echo $author->display_name ?></span>
                         <span class="badge bg-miku   p-2"><?php echo get_user_level($author->id) ?></span>
@@ -102,7 +101,6 @@ HTML;
                         <?php echo $author->user_description; ?>
                     </div>
                 </div>
-
             </div>
         </div>
 
