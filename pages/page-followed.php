@@ -46,7 +46,6 @@ if ($user_followed)
 	$args = [
 		'posts_per_page'      => get_option('posts_per_page'),
 		'ignore_sticky_posts' => '1',
-		'author'              => implode(',', $user_followed),
 		'paged'               => get_query_var('paged', 1),
 		//'no_cache'            => true, //缓存
 		'page_type'           => 'page'
@@ -60,6 +59,11 @@ if ($user_followed)
 	{
 		//更改查询参数
 		$args['author'] = $p_id_author;
+	}
+	//如果不存在则加载关注列表
+	else
+	{
+		$args['author__in'] = $user_followed;
 	}
 
 	$wp_query->query = array_merge($args, $wp_query->query);
