@@ -80,46 +80,53 @@ HTML;
 
 <div class="content">
 
-    <header class="author-header row my-3 gy-4" data-author-id="<?php echo $author->id; ?>">
+    <header class="author-header row my-3 gy-3" data-author-id="<?php echo $author->id; ?>">
 
-        <div class="col-12 col-xl-8">
+        <div class="col-12 col-lg">
             <div class="row justify-content-start">
-                <div class="col-12 col-sm-auto text-center">
-                    <?php echo print_user_avatar($author->user_image, 100); ?>
+                <div class="col-12 col-sm-auto ">
+                    <div class="text-center">
+                        <?php echo print_user_avatar($author->user_image, 100); ?>
+                    </div>
                 </div>
                 <div class="col mt-xl-0">
-                    <h4 class="text-center text-md-start">
-                        <span class="fw-bold d-block d-sm-inline mb-2 mb-sm-0 me-2 text-center"><?php echo $author->display_name ?></span>
-                        <span class="badge bg-miku   p-2"><?php echo get_user_level($author->id) ?></span>
+                    <div class="fs-5 fw-bold text-center text-sm-start m-1">
+                        <?php echo $author->display_name ?>
+                    </div>
+
+                    <div class="m-1 text-center text-sm-start">
                         <?php echo print_user_badges($author->id); ?>
-                    </h4>
-                    <div class="text-center text-md-start mt-3">
+                    </div>
+
+                    <div class="my-2 overflow-hidden text-center text-sm-start" style="max-height: 96px;">
                         <?php echo $author->user_description; ?>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-xl-4">
-            <div class=" user-functions row justify-content-center justify-content-sm-end gx-2">
+        <div class="col-12 col-lg-auto">
+            <div class="user-functions row justify-content-center justify-content-lg-end gx-2 h-100 align-items-center">
                 <?php echo $author_buttons_element; ?>
             </div>
         </div>
+        
+        <div class="m-0"></div>
 
-        <div class="col-12">
+        <div class="col-12 col-xxl-8">
 
-            <div class="row  align-items-center g-0 justify-content-end">
+            <div class="row row-cols-3 row-cols-md-6 text-center small g-2">
+                <?php echo print_author_statistics($author->id); ?>
+            </div>
 
-                <div class="col-12 col-xl-4">
-                    <div class="input-group author-internal-search ">
+        </div>
 
-                        <input type="text" class="form-control search-value " placeholder="搜索该UP主的投稿" name="<?php echo AUTHOR_INTERNAL_SEARCH ?>" autocomplete="off" value="<?php echo sanitize_text_field(get_query_var(AUTHOR_INTERNAL_SEARCH)); ?>" />
-                        <button class="btn btn-miku"><i class="fas fa-search"></i></button>
+        <div class="col-12 col-xxl-4">
 
-                    </div>
-                </div>
+            <div class="input-group author-internal-search ">
 
-
+                <input type="text" class="form-control search-value " placeholder="搜索该UP主的投稿" name="<?php echo AUTHOR_INTERNAL_SEARCH ?>" autocomplete="off" value="<?php echo sanitize_text_field(get_query_var(AUTHOR_INTERNAL_SEARCH)); ?>" />
+                <button class="btn btn-miku"><i class="fas fa-search"></i></button>
 
             </div>
 
@@ -129,7 +136,7 @@ HTML;
 
     </header>
 
-
+    <hr/>
 
 
     <?php echo post_list_component() ?>

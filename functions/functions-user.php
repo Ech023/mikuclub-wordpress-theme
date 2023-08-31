@@ -40,16 +40,29 @@ function check_blocked_user()
 }
 
 /**
- * 获取用户的头像图片ID
- *
- * @param int $user_id
- *
- * @return int | string
+ * 初始化 第一次访问的时候统计用户未读消息数
  */
-function get_my_user_avatar_id($user_id)
+function init_user_unread_message_total_count()
 {
-	return get_user_meta($user_id, MY_USER_AVATAR, true);
+
+	//设置未读私信数量
+	if (!isset($_SESSION[CUSTOM_PRIVATE_MESSAGE_COUNT]))
+	{
+		$_SESSION[CUSTOM_PRIVATE_MESSAGE_COUNT] = get_user_private_message_unread_count();
+	}
+	//设置未读评论数量
+	if (!isset($_SESSION[CUSTOM_COMMENT_REPLY_COUNT]))
+	{
+		$_SESSION[CUSTOM_COMMENT_REPLY_COUNT] = get_user_unread_comment_reply_count();
+	}
+	//设置未读论坛帖子回复数量
+	if (!isset($_SESSION[CUSTOM_FORUM_REPLY_COUNT]))
+	{
+		$_SESSION[CUSTOM_FORUM_REPLY_COUNT] = get_user_forum_notification_count();
+	}
 }
+
+
 
 /**
  * 设置用户的头像图片ID
@@ -163,23 +176,47 @@ function print_user_avatar($avatar_src, $size = 50)
 function action_on_update_avatar($user_id, $attachment_id)
 {
 
-	//添加附件类型键值对数据 说明是 用户头像
-	update_post_meta($attachment_id, ATTACHMENT_WP_USER_AVATAR, $user_id);
-
-	//删除旧头像文件
-	$old_avatar_id = get_my_user_avatar_id($user_id);
-	if ($old_avatar_id)
+	if ($user_id)
 	{
-		wp_delete_attachment($old_avatar_id, true);
+
+		//添加附件类型键值对数据 说明是 用户头像
+		update_post_meta($attachment_id, ATTACHMENT_WP_USER_AVATAR, $user_id);
+
+		//获取旧头像ID
+		$old_avatar_id = get_user_meta($user_id, MY_USER_AVATAR, true);
+		//如果存在
+		if ($old_avatar_id)
+		{
+			//删除
+			wp_delete_attachment($old_avatar_id, true);
+		}
+
+		//保存新头像
+		update_user_meta($user_id, MY_USER_AVATAR, $attachment_id);
+
+		//清空旧头像文件缓存
+		$cache_key = MY_USER_AVATAR . '_' . $user_id;
+		delete_cache_meta($cache_key, CACHE_GROUP_USER);
 	}
-
-	//设置新头像
-	set_my_user_avatar_id($user_id, $attachment_id);
-
-	//清空旧头像文件缓存
-	$cache_key = MY_USER_AVATAR . '_' . $user_id;
-	delete_cache_meta($cache_key, CACHE_GROUP_USER);
 }
+
+/**
+ * 通过API上传图片附件的时候触发
+ *
+ * @param WP_Post $attachment Inserted or updated attachment object.
+ * @param WP_REST_Request $request Request object.
+ */
+function action_on_rest_after_insert_attachment($attachment, $request)
+{
+
+	//如果是上传更换新头像 的 动作
+	if ($request->has_param(ACTION_UPDATE_AVATAR))
+	{
+		action_on_update_avatar($attachment->post_author, $attachment->ID);
+	}
+}
+
+add_action('rest_after_insert_attachment', 'action_on_rest_after_insert_attachment', 10, 2);
 
 
 /**
@@ -236,7 +273,10 @@ function get_user_points($user_id)
  *
  * @param int $user_id
  *
- * @return array[][] 勋章数组
+ * @return array<int, array[]> 勋章数组
+ * [
+ * 	
+ * ]
  */
 function get_user_badges($user_id)
 {
@@ -251,152 +291,75 @@ function get_user_badges($user_id)
 	$user_old = date("Y") - date("Y", $timestamp);
 
 
-	//用户初始4个勋章位
-	$user_badges = [
-		[],
-		[],
-		[],
-		[]
-	];
+	//初始化用户勋章数组
+	$user_badges = [];
 
 	//如果存在UP主徽章
 	$user_post_count_level = calculate_user_badges_level($user_post_count);
 	if ($user_post_count_level)
 	{
-		$user_badges[0][] = 'badge bg-danger';
-		$user_badges[0][] = 'UP主' . $user_post_count_level;
-		$user_badges[0][] = $user_post_count_level;
+
+		$user_badges[] = [
+			'class' => 'badge text-bg-danger',
+			'title' => 'UP主 Lv' . $user_post_count_level,
+			'level' => $user_post_count_level,
+		];
 	}
 
 	//如果存在评价徽章
 	$user_comment_count_level = calculate_user_badges_level($user_comment_count);
 	if ($user_comment_count_level)
 	{
-		$user_badges[1][] = 'badge bg-primary';
-		$user_badges[1][] = '评价师' . $user_comment_count_level;
-		$user_badges[1][] = $user_comment_count_level;
+
+		$user_badges[] = [
+			'class' => 'badge text-bg-primary',
+			'title' => '评价师 Lv' . $user_comment_count_level,
+			'level' => $user_comment_count_level,
+		];
 	}
 
 	//如果存在点赞徽章
 	$user_like_count_level = calculate_user_badges_level($user_like_count);
 	if ($user_like_count_level)
 	{
-		$user_badges[2][] = 'badge bg-success';
-		$user_badges[2][] = '点赞家' . $user_like_count_level;
-		$user_badges[2][] = $user_like_count_level;
+		$user_badges[] = [
+			'class' => 'badge text-bg-success',
+			'title' => '点赞家 Lv' . $user_like_count_level,
+			'level' => $user_like_count_level,
+		];
 	}
 
 	//如果用户注册时间大于1年
 	if ($user_old > 1)
 	{
 		//根据用户年龄不如, 使用不同的颜色
-		$badge_color = 'bg-secondary';
+		$badge_color = 'text-bg-secondary';
 		if ($user_old > 6)
 		{
-			$badge_color = 'bg-info';
+			$badge_color = 'text-bg-info';
 		}
 		else if ($user_old > 3)
 		{
 			$badge_color = 'text-bg-warning';
 		}
 
-		$user_badges[3][] = 'badge ' . $badge_color;
-		$user_badges[3][] = $user_old . '年用户';
-		$user_badges[3][] = 0;
+		$user_badges[] = [
+			'class' => 'badge ' . $badge_color,
+			'title' => $user_old . '年用户',
+			'level' => $user_old,
+		];
 	}
 
-	/*
-	//可选的勋章
-	$available_badges = [
-		[
-			'score'            => 1000,
-			'year' => 8,
-			'level'            => 'Lv6',
-			USER_POST_COUNT    => 'UP主Lv6',
-			USER_COMMENT_COUNT => '评价师Lv6',
-			USER_LIKE_COUNT    => '点赞家Lv6'
-		],
-		[
-			'score'            => 300,
-			'year' => 6,
-			'level'            => 'Lv5',
-			USER_POST_COUNT    => 'UP主Lv5',
-			USER_COMMENT_COUNT => '评价师Lv5',
-			USER_LIKE_COUNT    => '点赞家Lv5'
-		],
-		[
-			'score'            => 100,
-			'year' => 5,
-			'level'            => 'Lv4',
-			USER_POST_COUNT    => 'UP主Lv4',
-			USER_COMMENT_COUNT => '评价师Lv4',
-			USER_LIKE_COUNT    => '点赞家Lv4'
-		],
-		[
-			'score'            => 30,
-			'year' => 3,
-			'level'            => 'Lv3',
-			USER_POST_COUNT    => 'UP主Lv3',
-			USER_COMMENT_COUNT => '评价师Lv3',
-			USER_LIKE_COUNT    => '点赞家Lv3'
-		],
-		[
-			'score'            => 10,
-			'year' => 2,
-			'level'            => 'Lv2',
-			USER_POST_COUNT    => 'UP主Lv2',
-			USER_COMMENT_COUNT => '评价师Lv2',
-			USER_LIKE_COUNT    => '点赞家Lv2'
-		],
-		[
-			'score'            => 3,
-			'year' => 1,
-			'level'            => 'Lv1',
-			USER_POST_COUNT    => 'UP主Lv1',
-			USER_COMMENT_COUNT => '评价师Lv1',
-			USER_LIKE_COUNT    => '点赞家Lv1'
-		]
-	];
 
-	//遍历可选勋章
-	foreach ($available_badges as $badge)
-	{
-
-		//如果还未设置过相应勋章系列 + 分数足够
-		if (!$user_badges[0] && $user_post_count >= $badge['score'])
-		{
-			$user_badges[0][] = 'badge bg-danger ';
-			$user_badges[0][] = $badge[USER_POST_COUNT];
-			$user_badges[0][] = $badge['level'];
-		}
-		if (!$user_badges[1] && $user_comment_count >= $badge['score'])
-		{
-			$user_badges[1][] = 'badge bg-primary';
-			$user_badges[1][] = $badge[USER_COMMENT_COUNT];
-			$user_badges[1][] = $badge['level'];
-		}
-		if (!$user_badges[2] && $user_like_count >= $badge['score'])
-		{
-			$user_badges[2][] = 'badge bg-success';
-			$user_badges[2][] = $badge[USER_LIKE_COUNT];
-			$user_badges[2][] = $badge['level'];
-		}
-		if (!$user_badges[3] && $user_old >= $badge['year'])
-		{
-			$user_badges[2][] = 'badge bg-secondary';
-			$user_badges[2][] = $user_old . '年老用户';
-			$user_badges[2][] = $badge['level'];
-		}
-	}*/
 
 	return $user_badges;
 }
 
 /**
- * 根据数值计算用户自定义徽章等级
+ * 根据数值计算用户出自定义徽章的等级
  *
  * @param int $value
- * @return string
+ * @return int 如果无等级返回 0
  */
 function calculate_user_badges_level($value)
 {
@@ -408,32 +371,32 @@ function calculate_user_badges_level($value)
 	$level_2 = 10;
 	$level_1 = 3;
 
-	$result = '';
+	$result = 0;
 
 
 	if ($value >= $level_6)
 	{
-		$result = 'Lv6';
+		$result = 6;
 	}
 	else if ($value >= $level_5)
 	{
-		$result = 'Lv5';
+		$result = 5;
 	}
 	else if ($value >= $level_4)
 	{
-		$result = 'Lv4';
+		$result = 4;
 	}
 	else if ($value >= $level_3)
 	{
-		$result = 'Lv3';
+		$result = 3;
 	}
 	else if ($value >= $level_2)
 	{
-		$result = 'Lv2';
+		$result = 2;
 	}
 	else if ($value >= $level_1)
 	{
-		$result = 'Lv1';
+		$result = 1;
 	}
 
 	return $result;
@@ -441,26 +404,36 @@ function calculate_user_badges_level($value)
 
 
 /**
- * 输出用户勋章
+ * 输出用户等级+勋章
  *
  * @param int $user_id
+ * @param string $badge_class 自定义徽章类名
  *
  * @return string HTML代码
  */
-function print_user_badges($user_id)
+function print_user_badges($user_id, $badge_class = '')
 {
 
 	$user_badges = get_user_badges($user_id);
 
+	//获取积分等级信息
+	$user_level = get_user_level($user_id);
+	//如果存在
+	if ($user_level)
+	{
+		//插入到勋章数组头部
+		array_unshift($user_badges, [
+			'class' => 'badge bg-miku',
+			'title' => $user_level,
+			'level' => 0,
+		]);
+	}
+
 	$output = '';
-	//如果有获取到胸章, 才会输出
+	//遍历每个胸章
 	foreach ($user_badges as $user_badge)
 	{
-		//如果有包含勋章信息
-		if ($user_badge)
-		{
-			$output .= '<span class="' . $user_badge[0] . ' me-2 p-2 my-1">' . $user_badge[1] . '</span>';
-		}
+		$output .= '<span class="me-2 p-2 my-1 rounded-1 ' . $user_badge['class'] . ' ' . $badge_class . '">' . $user_badge['title'] . '</span>';
 	}
 
 	return $output;
@@ -515,7 +488,10 @@ function get_user_post_count($user_id)
 function get_user_post_total_views($user_id)
 {
 
+	global $wpdb;
+
 	$count = 0;
+
 	if ($user_id)
 	{
 
@@ -523,10 +499,9 @@ function get_user_post_total_views($user_id)
 
 		$count = get_cache_meta($cache_key, CACHE_GROUP_USER, EXPIRED_3_DAYS);
 
-		if ($count === '')
+		if (!$count)
 		{
 			//重新计算
-			global $wpdb;
 			$count = $wpdb->get_var(" SELECT SUM(M.meta_value) FROM {$wpdb->posts} P, {$wpdb->postmeta} M WHERE P.post_author = {$user_id} AND P.post_type = 'post' AND P.post_status = 'publish' AND P.ID = M.post_id AND M.meta_key='views' ");
 			//如果结果NULL, 则重设为0
 			if (!$count)
@@ -596,7 +571,7 @@ function get_user_post_total_likes($user_id)
 		$cache_key = USER_POST_TOTAL_LIKES . '_' . $user_id;
 		$count     = get_cache_meta($cache_key, CACHE_GROUP_USER, EXPIRED_3_DAYS);
 
-		if ($count === '')
+		if (!$count)
 		{
 			//重新计算
 			global $wpdb;
@@ -672,6 +647,14 @@ function add_user_comment_count($user_id)
 	$count++;
 	update_user_meta($user_id, USER_COMMENT_COUNT, $count);
 }
+
+
+
+
+
+
+
+
 
 
 /**
@@ -789,6 +772,8 @@ function delete_user_like_count($user_id)
 		update_user_meta($user_id, USER_LIKE_COUNT, (int) $count);
 	}
 }
+
+
 
 
 /**
@@ -1326,28 +1311,7 @@ function delete_user_favorite($post_id)
 	return $output;
 }
 
-/**
- * 初始化用户未读消息数
- */
-function init_user_unread_message_total_count()
-{
 
-	//设置未读私信数量
-	if (!isset($_SESSION[CUSTOM_PRIVATE_MESSAGE_COUNT]))
-	{
-		$_SESSION[CUSTOM_PRIVATE_MESSAGE_COUNT] = get_user_private_message_unread_count();
-	}
-	//设置未读评论数量
-	if (!isset($_SESSION[CUSTOM_COMMENT_REPLY_COUNT]))
-	{
-		$_SESSION[CUSTOM_COMMENT_REPLY_COUNT] = get_user_unread_comment_reply_count();
-	}
-	//设置未读论坛帖子回复数量
-	if (!isset($_SESSION[CUSTOM_FORUM_REPLY_COUNT]))
-	{
-		$_SESSION[CUSTOM_FORUM_REPLY_COUNT] = get_user_forum_notification_count();
-	}
-}
 
 /**
  * 获取用户未读消息总数
@@ -1654,6 +1618,9 @@ function add_user_black_list($user_id, $target_user_id)
 			$black_list[] = $target_user_id;
 			//更新黑名单
 			$result = update_user_meta($user_id, MY_USER_BLACK_LIST, $black_list);
+
+			//增加目标用户的被拉黑数
+			add_user_blacked_count($target_user_id);
 		}
 		//如果已经存在
 		else
@@ -1687,19 +1654,142 @@ function delete_user_black_list($user_id, $target_user_id)
 		//获取黑名单
 		$black_list = get_user_black_list($user_id);
 		//从黑名单里移除目标ID
-		$black_list = array_filter($black_list, function ($value) use ($target_user_id)
+		$new_black_list = array_filter($black_list, function ($value) use ($target_user_id)
 		{
 			$value = intval($value);
 			return $value !== 0 &&  $value !== $target_user_id;
 		});
 
 		//更新黑名单
-		$result = update_user_meta($user_id, MY_USER_BLACK_LIST, $black_list);
+		$result = update_user_meta($user_id, MY_USER_BLACK_LIST, $new_black_list);
+
+		//如果新旧黑名单有变化
+		if (count($new_black_list) !== count($black_list))
+		{
+			//减少目标用户的被拉黑数
+			delete_user_blacked_count($target_user_id);
+		}
 	}
 
 	return $result == true;
 }
 
+
+/**
+ * 获取用户被拉黑的次数
+ *
+ * @param int $user_id
+ * @return int
+ */
+function get_user_blacked_count($user_id)
+{
+	$result = 0;
+
+	//如果用户ID存在
+	if ($user_id)
+	{
+		//如果不存在 重设为0
+		$result = get_user_meta($user_id, MY_USER_BLACKED_COUNT, true) ?: 0;
+	}
+
+	return $result;
+}
+
+/**
+ * 增加用户被拉黑的次数
+ * @param int $user_id 当前登陆的用户ID
+ */
+function add_user_blacked_count($user_id)
+{
+	//确保用户和目标用户存在
+	if ($user_id)
+	{
+		$result = get_user_blacked_count($user_id);
+		$result++;
+		//更新
+		update_user_meta($user_id, MY_USER_BLACKED_COUNT, $result);
+	}
+}
+
+/**
+ * 减少用户被拉黑的次数
+ * @param int $user_id 当前登陆的用户ID
+ */
+function delete_user_blacked_count($user_id)
+{
+	//确保用户和目标用户存在
+	if ($user_id)
+	{
+		$result = get_user_blacked_count($user_id);
+		//如果次数大于0, 减1, 否则重置为0
+		$result = $result > 0 ? $result - 1 : 0;
+		//更新
+		update_user_meta($user_id, MY_USER_BLACKED_COUNT, $result);
+	}
+}
+
+
+
+/**
+ * 输出作者统计数据
+ *
+ * @param int $author_id
+ * @param string $col_class 每个行元素的自定义类名
+ * @return string HTML代码
+ */
+function print_author_statistics($author_id, $col_class = '')
+{
+
+
+	$arra_count = [];
+	$arra_count[] = [
+		'title' => '粉丝数',
+		'icon' => 'fa-solid fa-user-plus',
+		'value' => get_user_fans_count($author_id),
+	];
+	$arra_count[] = [
+		'title' => '被拉黑数',
+		'icon' => 'fa-solid fa-user-slash',
+		'value' => get_user_blacked_count($author_id),
+	];
+	$arra_count[] = [
+		'title' => '投稿数',
+		'icon' => 'fa-solid fa-file-arrow-up',
+		'value' => get_user_post_count($author_id),
+	];
+	$arra_count[] = [
+		'title' => '获点赞数',
+		'icon' => 'fa-solid fa-thumbs-up',
+		'value' => get_user_post_total_likes($author_id),
+	];
+	$arra_count[] = [
+		'title' => '获评论数',
+		'icon' => 'fa-solid fa-comments',
+		'value' => get_user_post_total_comments($author_id),
+	];
+	$arra_count[] = [
+		'title' => '获点击数',
+		'icon' => 'fas fa-eye',
+		'value' => get_user_post_total_views($author_id),
+	];
+
+	$output = '';
+	//遍历每个数据
+	foreach ($arra_count as $element)
+	{
+
+		$output .= <<<HTML
+
+		<div class="col {$col_class}">
+			<div><i class="me-2 {$element['icon']}"></i>{$element['title']}</div>
+			<div>{$element['value']}</div>
+		</div>
+
+HTML;
+	}
+
+	return $output;
+}
 
 
 /**

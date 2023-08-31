@@ -23,54 +23,26 @@ $user = wp_get_current_user();
             <?php echo breadcrumbs_component(); ?>
         </h4>
 
-        <div class="row text-center my-2 justify-content-center">
+        <div class="row row-cols-3 row-cols-md-6 text-center g-2">
+            <?php echo print_author_statistics($user->ID); ?>
+        </div>
 
-            <div class="col-6 col-sm-2 my-2 my-sm-0">
-                <div>粉丝数</div>
-                <div class="fw-bold large"><?php echo get_user_fans_count($user->ID); ?></div>
-            </div>
+        <div class="my-4">
 
-            <div class="col-6 col-sm-2 my-2 my-sm-0">
-                <div>投稿数</div>
-                <div class="fw-bold large"><?php echo get_user_post_count($user->ID); ?></div>
-            </div>
+            <div class="input-group">
+                <input class="form-control" name="search-post" placeholder="投稿搜索..." value="<?php echo (isset($_GET['s ']) ? $_GET['s '] : '') ?>" autocomplete="new-password" />
 
-            <div class="col-6 col-sm-2 my-2 my-sm-0">
-                <div>查看数</div>
-                <div class="fw-bold large"><?php echo get_user_post_total_views($user->ID); ?></div>
-            </div>
+                <button class="search-post-button btn btn-miku" type="submit">搜索</button>
 
-            <div class="col-6 col-sm-2 my-2 my-sm-0">
-                <div>收到评论数</div>
-                <div class="fw-bold large"><?php echo get_user_post_total_comments($user->ID); ?></div>
-            </div>
-
-            <div class="col-6 col-sm-2 my-2 my-sm-0">
-                <div>收到点赞数</div>
-                <div class="fw-bold large"><?php echo get_user_post_total_likes($user->ID); ?></div>
             </div>
 
 
 
         </div>
-
-        
 
     </header>
 
-    <div class="my-4">
-
-        <div class="input-group">
-            <input class="form-control" name="search-post" placeholder="投稿搜索..." value="<?php echo (isset($_GET['s ']) ? $_GET['s '] : '') ?>" autocomplete="new-password" />
-
-            <button class="search-post-button btn btn-miku" type="submit">搜索</button>
-
-        </div>
-
-
-        
-    </div>
-
+    <hr />
 
     <div class="page-content post-list my-4">
 

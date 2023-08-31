@@ -92,12 +92,11 @@ class MyComment {
 
         //遍历勋章数组 累计输出html
         let authorBadges = '';
-        if (Array.isArray(this.author.user_badges) && this.author.user_badges.length) {
+        if (isNotEmptyArray(this.author.user_badges)) {
             authorBadges = this.author.user_badges.reduce((previousOutput, currentElement) => {
                 //如果有勋章信息
-                if (currentElement.length) {
-                    previousOutput += `<span class="${currentElement[0]} m-1">${currentElement[1]}</span>`;
-                }
+                previousOutput += `<span class="${currentElement['class']} rounded-1 m-1">${currentElement['title']}</span>`;
+                
                 return previousOutput;
             }, '');
         }
@@ -308,7 +307,7 @@ class MyComment {
                             <div class="col col-md-10 my-2">
                                 <div class="user-meta">
                                     <a class="m-1 d-block d-sm-inline" href="${this.author.user_href} " title="查看用户主空间" target="_blank">${authorDisplayName}</a>
-                                    <span class="badge bg-miku m-1">${this.author.user_level}</span>
+                                    <span class="badge bg-miku rounded-1 m-1">${this.author.user_level}</span>
                                     ${authorBadges}
                                 </div>
                                 <div class="comment-content my-3" style="white-space: pre-line;" >${this.comment_content}</div>

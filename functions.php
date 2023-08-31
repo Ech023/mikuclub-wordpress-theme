@@ -160,7 +160,7 @@ function setup_front_script()
         [
             'name' => 'js-class-comment',
             'path' => '/js/class-comment.js',
-            'version' => '1.17',
+            'version' => '1.18',
             'in_footer' => false,
         ],
         //自定义JS 评论类
@@ -1073,23 +1073,7 @@ function get_bilibili_video_info($query_params, $post_id)
 
 
 
-/**
- * 通过API上传图片附件的时候触发
- *
- * @param WP_Post $attachment Inserted or updated attachment object.
- * @param WP_REST_Request $request Request object.
- */
-function action_on_rest_after_insert_attachment($attachment, $request)
-{
 
-    //如果是上传更换新头像 的 动作
-    if ($request->has_param(ACTION_UPDATE_AVATAR))
-    {
-        action_on_update_avatar($attachment->post_author, $attachment->ID);
-    }
-}
-
-add_action('rest_after_insert_attachment', 'action_on_rest_after_insert_attachment', 10, 2);
 
 
 /**

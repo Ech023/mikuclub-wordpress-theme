@@ -46,13 +46,13 @@ if ($access_allowed)
 
             $author_buttons_element = <<<HTML
             
-                <div class="col-auto user-follow" data-user-fans-count="{$user_fans_count}">
-                     <button class="btn btn-miku btn-sm add-user-follow-list"  style="{$add_follow_button_style}" data-target-user-id="{$author->id}">
+                <div class="col user-follow" data-user-fans-count="{$user_fans_count}">
+                     <button class="btn btn-miku btn-sm w-100 add-user-follow-list"  style="{$add_follow_button_style}" data-target-user-id="{$author->id}">
                          <i class="fas fa-plus"></i>
                          <span>关注</span>
                          <span class="user-fans-count">{$user_fans_count}</span>
                      </button>
-                     <button class="btn btn-secondary btn-sm delete-user-follow-list"  style="{$delete_follow_button_style}" data-target-user-id="{$author->id}">
+                     <button class="btn btn-secondary btn-sm w-100 delete-user-follow-list"  style="{$delete_follow_button_style}" data-target-user-id="{$author->id}">
                          <i class="fas fa-minus"></i>
                          <span>已关注</span>
                          <span class="user-fans-count">{$user_fans_count}</span>
@@ -60,8 +60,8 @@ if ($access_allowed)
                  </div>
 
 
-                 <div class="col-auto">
-                    <button class="btn btn-primary btn-sm show-private-message-modal" data-recipient_id="{$author->id}" data-recipient_name="{$author->display_name}">
+                 <div class="col">
+                    <button class="btn btn-primary btn-sm w-100 show-private-message-modal" data-recipient_id="{$author->id}" data-recipient_name="{$author->display_name}">
                         <i class="fas fa-envelope"></i> 发私信
                     </button>
                 </div>
@@ -87,7 +87,7 @@ HTML;
             $author_buttons_element .= <<<HTML
                      <div class="col-auto">
                          <div class="dropdown">
-                             <a class="btn btn-secondary btn-sm" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" title="更多操作">
+                             <a class="btn btn-secondary btn-sm " href="javascript:void(0);" role="button" data-bs-toggle="dropdown" title="更多操作">
                                  <i class="fa-solid fa-ellipsis-vertical"></i>
                              </a>
                              <ul class="dropdown-menu">
@@ -214,24 +214,30 @@ HTML;
 
                 </div>
 
-                <div class=" col-12 col-lg-4">
-                    <div class="post-author-data rounded p-3">
-                        <div class="">
-                            <a href="<?php echo $author->user_href; ?>" title="查看UP主页面">
-                                <?php echo print_user_avatar($author->user_image, 40); ?>
-                                <span class="mx-2">
+                <div class="col-12 col-lg-4">
+                    <div class="post-author-data rounded p-2">
+                        <div>
+                            <div class="d-inline-block m-1">
+                                <a href="<?php echo $author->user_href; ?>" title="查看UP主页面" target="_blank">
+                                    <?php echo print_user_avatar($author->user_image, 40); ?>
+                                </a>
+                            </div>
+                            <div class="d-inline-block m-1">
+                                <a href="<?php echo $author->user_href; ?>" title="查看UP主页面" target="_blank">
                                     <?php echo $author->display_name; ?>
-                                </span>
-                                <span class="badge bg-miku">
-                                    <?php echo get_user_level($author->id); ?>
-                                </span>
-                            </a>
+                                </a>
+                            </div>
+                            <div class="d-inline-block m-1">
+                                <?php echo print_user_badges($author->id); ?>
+                            </div>
+
+
                         </div>
-                        <div class="small text-truncate my-3">
+                        <div class="small my-2 overflow-hidden" style="max-height: 42px;">
                             <?php echo $author->user_description; ?>
                         </div>
 
-                        <div class="user-functions row gx-2">
+                        <div class="user-functions row gx-3">
                             <?php echo $author_buttons_element; ?>
                         </div>
                     </div>
