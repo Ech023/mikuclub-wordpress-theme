@@ -38,12 +38,12 @@ HTML;
 	<div  class="list-header row my-3">
 		<h4 class="col">
 			<a class=""  title="最新帖子" href="{$forums_link}" target="_blank">
-                <i class="fas fa-rss" aria-hidden="true"></i> 论坛最新帖子
+                <i class="fa-solid fa-rss" aria-hidden="true"></i> 论坛最新帖子
              </a>
         </h4>
         <div class="more-link col d-flex justify-content-end align-items-center">
             <a class="btn btn-outline-secondary"  title="论坛最新帖子" href="{$forums_link}" target="_blank">
-                更多 <i class="fas fa-angle-right"></i>
+                更多 <i class="fa-solid fa-angle-right"></i>
             </a>
         </div>
 	</div>

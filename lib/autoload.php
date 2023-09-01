@@ -1,7 +1,8 @@
 <?php
 
 //导入常量
-require_once 'old_constants.php';
+require_once 'constant/old_constants.php';
+require_once 'constant/constant.php';
 
 //导入后台管理员页面
 require_once 'admin/config.php';
@@ -10,6 +11,8 @@ require_once 'admin/config.php';
 $theme_lib_directory = get_template_directory()  . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR;
 
 $array_file_path_to_require = array_merge(
+    //导入常亮
+    glob($theme_lib_directory . 'constant' . DIRECTORY_SEPARATOR . '*.php'),
     //导入类
     glob($theme_lib_directory . 'class' . DIRECTORY_SEPARATOR . '*.php'),
     //导入函数

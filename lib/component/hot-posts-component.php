@@ -90,9 +90,9 @@ function hot_posts_most_views( $number = 6 ) {
 
 	$title = '热门';
 	//标题的图标
-	$title_icon = 'fas fa-fire';
+	$title_icon = 'fa-solid fa-fire';
 	//元素的图标
-	$item_icon = 'fas fa-eye';
+	$item_icon = 'fa-solid fa-eye';
 
 	//获取文章列表
 	$term_id = get_queried_object() ? get_queried_object()->term_id : null;
@@ -119,9 +119,9 @@ function hot_posts_most_rating( $number = 6 ) {
 
 	$title = '推荐';
 	//标题的图标
-	$title_icon = 'fas fa-heart';
+	$title_icon = 'fa-solid fa-heart';
 	//元素的图标
-	$item_icon = 'fas fa-star';
+	$item_icon = 'fa-solid fa-star';
 
 
 	//获取文章列表
@@ -151,9 +151,9 @@ function hot_posts_most_comments( $number = 6 ) {
 
 	$title = '评论榜';
 	//标题的图标
-	$title_icon = 'fas fa-comments';
+	$title_icon = 'fa-solid fa-comments';
 	//元素的图标
-	$item_icon = 'fas fa-comment';
+	$item_icon = 'fa-solid fa-comment';
 
 	//获取文章列表
 	$term_id = get_queried_object() ? get_queried_object()->term_id : null;

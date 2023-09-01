@@ -100,7 +100,7 @@ body.darkmode .dropdown-menu{
 /*加载占位图*/
 
 body.darkmode .sl_lazyimg {
-    background: url(https://www.mikuclub.cc/wp-content/themes/miku/img/图片占位图dark.png) center center / 50% no-repeat !important;
+    background: url(https://www.mikuclub.cc/wp-content/themes/miku/img/placeholder_image_dark.png) center center / 50% no-repeat !important;
 
 }
 

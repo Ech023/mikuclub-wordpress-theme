@@ -19,7 +19,7 @@ get_header();
 
                     <input type="text" class="form-control form-control-lg search-form" name="search" autocomplete="off" value="<?php echo sanitize_text_field(get_query_var('s')); ?>" />
 
-                    <button type="submit" class="btn btn-lg btn-miku"><i class="fas fa-search"></i> 搜索</button>
+                    <button type="submit" class="btn btn-lg btn-miku"><i class="fa-solid fa-search"></i> 搜索</button>
 
                 </div>
 

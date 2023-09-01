@@ -23,7 +23,7 @@ function top_right_menu_component() {
 
                 <li class="nav-item">
                     <a class="sign nav-link btn btn-miku px-md-4 px-2 mt-1" href="<?php echo wp_login_url(); ?>" title="登录/注册"><i
-                                class="fas fa-sign-in-alt"></i> 登录 / 注册 </a>
+                                class="fa-solid fa-sign-in-alt"></i> 登录 / 注册 </a>
                 </li>
 
 
@@ -82,7 +82,7 @@ function top_right_menu_component() {
                     <a class="<?php echo $has_message ? 'text-miku' : ''; ?> nav-link"
                        href="<?php echo add_query_arg( 'type', CUSTOM_PRIVATE_MESSAGE, $message_page_link ); ?>"
                        title="消息" target="_blank">
-                        <i class="fas fa-envelope d-md-none"></i> <span class="d-none d-md-inline">消息</span> <span
+                        <i class="fa-solid fa-envelope d-md-none"></i> <span class="d-none d-md-inline">消息</span> <span
                                 class="message_count"><?php echo $message_count; ?></span>
                     </a>
                     <div class="dropdown-menu">
@@ -121,25 +121,25 @@ function top_right_menu_component() {
                 <li class="nav-item me-2 me-md-0">
                     <a class="nav-link" href="<?php echo $home; ?>/favorite" title="收藏夹"
                        target="_blank">
-                        <i class="fas fa-heart d-md-none"></i><span class="d-none d-md-block">收藏夹</span>
+                        <i class="fa-solid fa-heart d-md-none"></i><span class="d-none d-md-block">收藏夹</span>
                     </a>
                 </li>
                 <li class="nav-item me-2 me-md-0">
                     <a class="nav-link" href="<?php echo $home; ?>/history" title="历史记录"
                        target="_blank">
-                        <i class="fas fa-history d-md-none"></i><span class="d-none d-md-block">历史</span>
+                        <i class="fa-solid fa-history d-md-none"></i><span class="d-none d-md-block">历史</span>
                     </a>
                 </li>
                 <li class="tougao-manage nav-item me-2 me-md-0">
                     <a class="nav-link" href="<?php echo $home; ?>/up_home_page" title="稿件管理"
                        target="_blank">
-                        <i class="fas fa-list-alt d-md-none"></i><span class="d-none d-md-block">稿件管理</span>
+                        <i class="fa-solid fa-list-alt d-md-none"></i><span class="d-none d-md-block">稿件管理</span>
                     </a>
                 </li>
                 <li class="tougao nav-item ">
                     <a class="nav-link btn btn-miku btn-sm px-3 px-md-5" href="<?php echo $home; ?>/submit" title="新投稿"
                        target="_blank">
-                        <i class="fas fa-upload d-md-none"></i><span class="d-none d-md-block">投稿</span>
+                        <i class="fa-solid fa-upload d-md-none"></i><span class="d-none d-md-block">投稿</span>
                     </a>
                 </li>
 

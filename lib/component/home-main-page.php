@@ -24,61 +24,61 @@ function home_main_page()
     $cat_ids_list = [
         [
             'id' => 7, //歌姬PV
-            'icon' => 'fas fa-headphones'
+            'icon' => 'fa-solid fa-headphones'
         ],
         [
             'id' => 3, // MMD区
-            'icon' => 'fas fa-play-circle'
+            'icon' => 'fa-solid fa-play-circle'
         ],
         [
             'id' => 9, //音乐区
-            'icon' => 'fas fa-music'
+            'icon' => 'fa-solid fa-music'
         ],
         [
             'id' => 789, //图片区
-            'icon' => 'fas fa-image'
+            'icon' => 'fa-solid fa-image'
         ],
         [
             'id' => 8, //演唱会
-            'icon' => 'fas fa-drum'
+            'icon' => 'fa-solid fa-drum'
         ],
 
         [
             'id' => 182, //游戏区
-            'icon' => 'fas fa-gamepad'
+            'icon' => 'fa-solid fa-gamepad'
         ],
         [
             'id' => 942, //动漫区
-            'icon' => "fas fa-dragon"
+            'icon' => "fa-solid fa-dragon"
         ],
         [
             'id' => 9305, //视频区
-            'icon' => 'fas fa-film'
+            'icon' => 'fa-solid fa-film'
         ],
 
         [
             'id' => 465, //软件区
-            'icon' => 'fas fa-file-alt'
+            'icon' => 'fa-solid fa-file-alt'
         ],
 
         [
             'id' => 294, //小说区
-            'icon' => 'fas fa-book'
+            'icon' => 'fa-solid fa-book'
         ],
 
         [
             'id' => 8621, //学习区
-            'icon' => 'fas fa-graduation-cap'
+            'icon' => 'fa-solid fa-graduation-cap'
         ],
 
         [
             'id' => 4, //公告区
-            'icon' => 'fas fa-scroll'
+            'icon' => 'fa-solid fa-scroll'
         ],
 
         [
             'id' => 1, //其他区
-            'icon' => 'fas fa-boxes'
+            'icon' => 'fa-solid fa-boxes'
         ],
 
 
@@ -124,7 +124,7 @@ HTML;
         //最新主题帖子
         $home_content_output .= home_bbs_topic_component();
 
-        $home_content_output .= '<div class="my-4"><a class="btn btn-outline-secondary w-100" title="最新帖子" href="' . get_home_url() . '/forums">进入论坛 <i class="fas fa-angle-right"></i></a></div>';
+        $home_content_output .= '<div class="my-4"><a class="btn btn-outline-secondary w-100" title="最新帖子" href="' . get_home_url() . '/forums">进入论坛 <i class="fa-solid fa-angle-right"></i></a></div>';
 
         //因为缓存导致关注列表不输出
         //输出我关注的用户新投稿
@@ -222,7 +222,7 @@ HTML;
         <div class="row text-center my-4">
             <div class="col">
                 <a class=" btn btn-outline-secondary btn-lg" title="最新发布" href="{$recently_post_list_link}">
-		                查看更多 <i class="fas fa-angle-right"></i>
+		                查看更多 <i class="fa-solid fa-angle-right"></i>
 		            </a>
             </div>
         </div>

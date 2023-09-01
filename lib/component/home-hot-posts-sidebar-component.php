@@ -111,9 +111,9 @@ function get_home_hot_posts_sidebar_component_by_random($term_id, $number = 6)
 
 		$title = '热门';
 		//标题的图标
-		$title_icon = 'fas fa-fire';
+		$title_icon = 'fa-solid fa-fire';
 		//元素的图标
-		$item_icon = 'fas fa-eye';
+		$item_icon = 'fa-solid fa-eye';
 
 		//获取文章列表
 	
@@ -132,9 +132,9 @@ function get_home_hot_posts_sidebar_component_by_random($term_id, $number = 6)
 
 		$title = '推荐';
 		//标题的图标
-		$title_icon = 'fas fa-heart';
+		$title_icon = 'fa-solid fa-heart';
 		//元素的图标
-		$item_icon = 'fas fa-star';
+		$item_icon = 'fa-solid fa-star';
 
 
 		//获取文章列表
@@ -155,9 +155,9 @@ function get_home_hot_posts_sidebar_component_by_random($term_id, $number = 6)
 
 		$title = '评论榜';
 		//标题的图标
-		$title_icon = 'fas fa-comments';
+		$title_icon = 'fa-solid fa-comments';
 		//元素的图标
-		$item_icon = 'fas fa-comment';
+		$item_icon = 'fa-solid fa-comment';
 
 		//获取文章列表
 		$post_list = get_hot_post_list($term_id,  $meta_key, $number, $range_day);

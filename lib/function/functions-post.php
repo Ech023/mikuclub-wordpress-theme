@@ -2207,7 +2207,7 @@ function post_functional_box()
         $sharing_box = '
 		 <div class="dropdown  post-share  ">
 		 	 <button class="btn btn-outline-success set-post-share dropdown-toggle border-0 w-100" type="button" data-bs-toggle="dropdown" data-post-id="' . $post_id . '">
-			    <i class="fas fa-share-alt d-block d-md-inline-block my-2 my-md-0"></i> <span class="text">分享</span>  ( <span class="count">' . get_post_shares($post_id) . ' </span> )
+			    <i class="fa-solid fa-share-alt d-block d-md-inline-block my-2 my-md-0"></i> <span class="text">分享</span>  ( <span class="count">' . get_post_shares($post_id) . ' </span> )
 			  </button>'
             . open_social_share_html()
             . '</div>';
@@ -2224,25 +2224,25 @@ function post_functional_box()
 
     $fail_down_button = '
 		<button class="btn btn-outline-danger set-post-fail-times   border-0 w-100" data-post-id="' . $post_id . '">
-			<i class="fas fa-bug d-block d-md-inline-block  my-2 my-md-0" aria-hidden="true"></i> 
+			<i class="fa-solid fa-bug d-block d-md-inline-block  my-2 my-md-0" aria-hidden="true"></i> 
 			 <span class="text">反馈失效</span>  ( <span class="count">' . $fail_times . '</span>  )
 		</button> ';
 
     /*$down_suggestion_button = '
     <button type="button" class="btn btn-outline-dark m-3 m-md-1" data-container="body" data-html="true" data-toggle="popover" data-placement="top" data-trigger="focus" title="下载的文件打不开/损坏/密码错误?" data-content="' . print_download_help() . '">
-          <i class="fas fa-life-ring"></i> 文件打不开/密码错误?
+          <i class="fa-solid fa-life-ring"></i> 文件打不开/密码错误?
     </button>
     ';*/
 
     $down_suggestion_button = '
 	<button type="button" class="btn btn-outline-dark  border-0 w-100" data-bs-toggle="collapse" data-bs-target="#unzip-help">
-	  	<i class="fas fa-life-ring d-block d-md-inline-block  my-2 my-md-0"></i> 文件解压教程
+	  	<i class="fa-solid fa-life-ring d-block d-md-inline-block  my-2 my-md-0"></i> 文件解压教程
 	</button>
 	';
 
     $report_button = '
 	<button type="button" class="btn btn-outline-secondary open-post-report border-0 w-100"  data-post-id="' . $post_id . '">
-	    <i class="fas fa-flag d-block d-md-inline-block  my-2 my-md-0" aria-hidden="true"></i> 
+	    <i class="fa-solid fa-flag d-block d-md-inline-block  my-2 my-md-0" aria-hidden="true"></i> 
 	  	<span>
 	  	    稿件投诉
 	  	</span>
@@ -2344,7 +2344,7 @@ function adult_404_content_for_no_logging_user()
 		 <div class="w-50 mx-auto my-5 text-center" style="min-height: 500px">
 
 	            <div class="m-3">
-	                <i class="fas fa-exclamation-triangle fa-5x text-warning"></i>
+	                <i class="fa-solid fa-exclamation-triangle fa-5x text-warning"></i>
 	            </div>
 	            <h3 class="m-3 mb-5">页面不存在</h3>
 	            <div class="m-3">该页面可能因为如下原因无法访问</div>

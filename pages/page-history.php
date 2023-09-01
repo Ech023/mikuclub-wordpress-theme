@@ -40,7 +40,7 @@ get_header();
                     <input type="text" class="search form-control form-control-lg" placeholder="在历史内搜索" autocomplete="off" />
 
                     <button class="btn btn-miku px-4">
-                        <i class="fas fa-search"></i>
+                        <i class="fa-solid fa-search"></i>
                     </button>
 
                 </div>

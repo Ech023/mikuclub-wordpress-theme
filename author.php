@@ -21,19 +21,19 @@ if ($current_user_id > 0 && $current_user_id != $author->id)
 
      <div class="col-auto user-follow" data-user-fans-count="{$user_fans_count}">
          <button class="btn btn-miku add-user-follow-list"  style="{$add_follow_button_style}" data-target-user-id="{$author->id}">
-             <i class="fas fa-plus"></i>
+             <i class="fa-solid fa-plus"></i>
              <span>关注</span>
              <span class="user-fans-count">{$user_fans_count}</span>
          </button>
          <button class="btn btn-secondary delete-user-follow-list"  style="{$delete_follow_button_style}" data-target-user-id="{$author->id}">
-             <i class="fas fa-minus"></i>
+             <i class="fa-solid fa-minus"></i>
              <span>已关注</span>
              <span class="user-fans-count">{$user_fans_count}</span>
          </button>
      </div>
      <div class="col-auto">
          <button class="btn btn-primary show-private-message-modal" data-recipient_id="{$author->id}" data-recipient_name="{$author->display_name}">
-            <i class="fas fa-envelope"></i> 发私信
+            <i class="fa-solid fa-envelope"></i> 发私信
          </button>
      </div>
 HTML;
@@ -126,7 +126,7 @@ HTML;
             <div class="input-group author-internal-search ">
 
                 <input type="text" class="form-control search-value " placeholder="搜索该UP主的投稿" name="<?php echo AUTHOR_INTERNAL_SEARCH ?>" autocomplete="off" value="<?php echo sanitize_text_field(get_query_var(AUTHOR_INTERNAL_SEARCH)); ?>" />
-                <button class="btn btn-miku"><i class="fas fa-search"></i></button>
+                <button class="btn btn-miku"><i class="fa-solid fa-search"></i></button>
 
             </div>
 

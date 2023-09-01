@@ -87,7 +87,7 @@ function breadcrumbs_component() {
 		$output = '<nav aria-label="breadcrumb">
 						<ol class="breadcrumb bg-transparent mb-0">'
 		          . $breadcrumb_item_li .
-		          '<a href="' . $home . '"><i class="fas fa-home"></i></a>'
+		          '<a href="' . $home . '"><i class="fa-solid fa-house"></i></a>'
 		          . $breadcrumb_item_close_li
 		          . $local_html
 		          . $breadcrumb_item_close_li

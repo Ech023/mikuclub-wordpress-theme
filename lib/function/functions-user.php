@@ -149,7 +149,7 @@ function get_my_user_avatar($user_id)
  */
 function get_my_user_default_avatar()
 {
-	return get_template_directory_uri() . "/img/default_avatar.jpg";
+	return get_template_directory_uri() . "/img/default_avatar.webp";
 }
 
 
@@ -1769,7 +1769,7 @@ function print_author_statistics($author_id, $col_class = '')
 	];
 	$arra_count[] = [
 		'title' => '获点击数',
-		'icon' => 'fas fa-eye',
+		'icon' => 'fa-solid fa-eye',
 		'value' => get_user_post_total_views($author_id),
 	];
 

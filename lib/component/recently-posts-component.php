@@ -24,7 +24,7 @@ function recently_posts_component( $post_list, $list_title, $more_link, $icon) {
 				<div class="card-img-container position-relative ">
 					<div class="position-absolute end-0 bottom-0 me-1 mb-1">
 				            <div class="right-badge bg-transparent-half text-light rounded small p-1">
-				                     <i class="fas fa-eye"></i> {$my_post->post_views}
+				                     <i class="fa-solid fa-eye"></i> {$my_post->post_views}
 		                   </div>
 					</div>
 				    <img class="card-img-top" src="{$my_post->post_image}" alt="{$my_post->post_title}"/>
@@ -56,7 +56,7 @@ HTML;
 		        </h4>
 		        <div class="more-link col d-flex justify-content-end align-items-center">
 		            <a class="btn btn-outline-secondary" title="{$list_title}" href="{$more_link}" target="_blank">
-		                更多 <i class="fas fa-angle-right"></i>
+		                更多 <i class="fa-solid fa-angle-right"></i>
 		            </a>
 		        </div>
 			</div>

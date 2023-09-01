@@ -27,9 +27,9 @@ function setup_front_script()
     //wp_enqueue_script('vue-3', 'https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js', false, '3.3.4', false);
 
     //fontanwesome图标库
-    wp_enqueue_style('fontawesome', 'https://cdn.staticfile.org/font-awesome/6.3.0/css/fontawesome.min.css', false, '5.13');
-    wp_enqueue_style('fontawesome-solid', 'https://cdn.staticfile.org/font-awesome/6.3.0/css/solid.min.css', false, '5.13');
-    wp_enqueue_style('fontawesome-brand', 'https://cdn.staticfile.org/font-awesome/6.3.0/css/brands.min.css', false, '5.13');
+    wp_enqueue_style('fontawesome', 'https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css', false, '5.13');
+    wp_enqueue_style('fontawesome-solid', 'https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css', false, '5.13');
+    wp_enqueue_style('fontawesome-brand', 'https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css', false, '5.13');
     //wp_enqueue_style('fontawesome-regular', 'https://cdn.staticfile.org/font-awesome/6.3.0/css/regular.min.css', false, '5.13');
 
     //bootstrap库
@@ -446,7 +446,7 @@ function print_sub_categories($cat_id)
     {
 
         $output = '<div class="sub-categories-container">
-                                <h2><i class="fas fa-th-large" aria-hidden="true"></i> 子分区</h2>
+                                <h2><i class="fa-solid fa-th-large" aria-hidden="true"></i> 子分区</h2>
                                 <div class="sub-categories">
                             ';
 

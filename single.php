@@ -1,5 +1,7 @@
 <?php
 
+use mikuclub\lib\Post_feedback_rank;
+
 get_header();
 
 $current_user_id = get_current_user_id();
@@ -48,12 +50,12 @@ if ($access_allowed)
             
                 <div class="col user-follow" data-user-fans-count="{$user_fans_count}">
                      <button class="btn btn-miku btn-sm w-100 add-user-follow-list"  style="{$add_follow_button_style}" data-target-user-id="{$author->id}">
-                         <i class="fas fa-plus"></i>
+                         <i class="fa-solid fa-plus"></i>
                          <span>关注</span>
                          <span class="user-fans-count">{$user_fans_count}</span>
                      </button>
                      <button class="btn btn-secondary btn-sm w-100 delete-user-follow-list"  style="{$delete_follow_button_style}" data-target-user-id="{$author->id}">
-                         <i class="fas fa-minus"></i>
+                         <i class="fa-solid fa-minus"></i>
                          <span>已关注</span>
                          <span class="user-fans-count">{$user_fans_count}</span>
                      </button>
@@ -62,7 +64,7 @@ if ($access_allowed)
 
                  <div class="col">
                     <button class="btn btn-primary btn-sm w-100 show-private-message-modal" data-recipient_id="{$author->id}" data-recipient_name="{$author->display_name}">
-                        <i class="fas fa-envelope"></i> 发私信
+                        <i class="fa-solid fa-envelope"></i> 发私信
                     </button>
                 </div>
 
@@ -129,6 +131,10 @@ HTML;
                             // {
                             echo breadcrumbs_component();
                             // } 
+
+                            $post_like = get_post_like($post_id);
+                            $post_unlike = get_post_unlike($post_id);
+
                             ?>
                         </div>
 
@@ -147,11 +153,38 @@ HTML;
                         <div class="w-100 m-0"></div>
 
                         <div class="col-auto ">
-                            <!-- 文章点击量 -->
-                            <div class="post-views">
-                                <i class="fas fa-eye"></i> <?php echo get_post_views($post_id); ?> 点击
+                            <!-- 评价 -->
+                            <div class="post-feedback ">
+                                <i class="fa-solid fa-square-poll-vertical"></i>
+                                <span class="fw-bold">
+                                    <?php echo Post_feedback_rank::get_rank($post_like, $post_unlike) ?>
+                                </span>
+
                             </div>
                         </div>
+
+
+                        <div class="col-auto ">
+                            <!-- 文章点赞 -->
+                            <div class="post-likes">
+                                <i class="fa-solid fa-thumbs-up" aria-hidden="true"></i>
+                                <?php echo (float)$post_like; ?> 点赞
+                            </div>
+                        </div>
+                        <div class="col-auto ">
+                            <!-- 文章差评 -->
+                            <div class="post-likes">
+                                <i class="fa-solid fa-thumbs-down"></i>
+                                <?php echo (float)$post_unlike; ?> 差评
+                            </div>
+                        </div>
+                        <div class="col-auto ">
+                            <!-- 文章点击量 -->
+                            <div class="post-views">
+                                <i class="fa-solid fa-eye"></i> <?php echo get_post_views($post_id); ?> 点击
+                            </div>
+                        </div>
+
                         <div class="col-auto ">
                             <!-- 文章评论数量 -->
                             <div class="post-comments">
@@ -159,20 +192,7 @@ HTML;
                                 <?php echo get_comments_number() . ' 评论'; ?>
                             </div>
                         </div>
-                        <div class="col-auto ">
-                            <!-- 文章点赞 -->
-                            <div class="post-likes">
-                                <i class="fa-solid fa-thumbs-up" aria-hidden="true"></i>
-                                <?php echo (float)get_post_like($post_id); ?> 点赞
-                            </div>
-                        </div>
-                        <div class="col-auto ">
-                            <!-- 文章差评 -->
-                            <div class="post-likes">
-                                <i class="fa-solid fa-thumbs-down"></i>
-                                <?php echo (float)get_post_unlike($post_id); ?> 差评
-                            </div>
-                        </div>
+
                         <div class="col-auto ">
                             <!-- 文章收藏 -->
                             <div class="post-favorite">
@@ -209,7 +229,7 @@ HTML;
                     {
 
                         echo '<div class="tags row my-3 g-2 align-items-center">';
-                        echo '<div class="col-auto me-2"><i class="fas fa-tags"></i> 标签</div>';
+                        echo '<div class="col-auto me-2"><i class="fa-solid fa-tags"></i> 标签</div>';
                         foreach ($tag_list as $tag)
                         {
                             echo '<div class="col-auto"><a class="btn btn-outline-secondary" href="' . get_tag_link($tag->term_id) . '" >' . $tag->name . '</a></div>';

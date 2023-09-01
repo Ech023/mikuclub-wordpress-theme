@@ -187,7 +187,7 @@ img {
 替换默认的图片加载占位符号
  */
 .sl_lazyimg {
-    background: url(https://www.mikuclub.cc/wp-content/themes/miku/img/图片占位图.jpg) center center / 50% no-repeat !important;
+    background: url(https://www.mikuclub.cc/wp-content/themes/miku/img/placeholder_image.webp) center center / 50% no-repeat !important;
 }
 
 /**

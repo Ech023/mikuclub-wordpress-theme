@@ -103,7 +103,7 @@ function dtheme_posts_list($orderby,$limit,$cat,$img) {
 	$myposts = get_posts( $args );
 	foreach ( $myposts as $post ) {
 		setup_postdata( $post );
-		$content .= '<li><div class="thumbnail"><span class="posts_lisit_views"><i class="fas fa-eye"></i> ' . get_post_views($post->ID) . '</span><a title="' . $post->post_title . '" href="' . get_permalink($post->ID) . '" target="_blank" ><img src="' . get_thumbnail_src($post->ID) . '" alt="' . $post->post_title . '" /></a></div><div class="text"><a title="' . $post->post_title . '" href="' . get_permalink($post->ID) . '" target="_blank" >' . $post->post_title . '</a></div></li>';
+		$content .= '<li><div class="thumbnail"><span class="posts_lisit_views"><i class="fa-solid fa-eye"></i> ' . get_post_views($post->ID) . '</span><a title="' . $post->post_title . '" href="' . get_permalink($post->ID) . '" target="_blank" ><img src="' . get_thumbnail_src($post->ID) . '" alt="' . $post->post_title . '" /></a></div><div class="text"><a title="' . $post->post_title . '" href="' . get_permalink($post->ID) . '" target="_blank" >' . $post->post_title . '</a></div></li>';
 	}
 	
 	echo $content;
@@ -128,7 +128,7 @@ function dtheme_posts_list2($orderby,$limit,$cat,$img) {
 						
 					<div class="thumbnail">
 							<span class="posts_lisit_views">
-									<i class="fas fa-eye"></i> <?php echo get_deel_views_by_id(''); ?>
+									<i class="fa-solid fa-eye"></i> <?php echo get_deel_views_by_id(''); ?>
 							</span>
 							<img src="<?php echo get_thumbnail_src($post->ID); ?>" alt="<?php the_title();?>" />
 					</div>

@@ -36,7 +36,7 @@ if (is_single())
                 </div>
                 <div class="comment-meta small">
                     <span class="m-1 text-muted d-block d-sm-inline mb-3 mb-sm-1">2022-09-03 00:00:00</span>
-                    <span class="d-none d-md-inline m-1 text-muted"><i class="fas fa-store"></i> 淘宝店</span>
+                    <span class="d-none d-md-inline m-1 text-muted"><i class="fa-solid fa-store"></i> 淘宝店</span>
 
                     <div class="comment-likes d-inline ms-0 ms-sm-3 me-3">
                         <span class="text-muted">
@@ -96,7 +96,7 @@ HTML;
                     <textarea placeholder="评价一下吧" class="form-control my-2" name="comment_content" rows="3"></textarea>
                     <div>
                         <button class="btn btn-secondary emoji my-1" data-bs-toggle="popover" title="表情">
-                            <i class="fas fa-grin-squint"></i> 表情
+                            <i class="fa-solid fa-grin-squint"></i> 表情
                         </button>
 
                         <div class="form-check form-check-inline m-1 ms-3 ">

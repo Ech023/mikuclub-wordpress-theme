@@ -159,7 +159,7 @@ else
                                         <input type="text" class="form-control" placeholder="搜索" name="search" autocomplete="off">
 
                                         <button class="btn btn-miku" type="submit">
-                                            <i class="fas fa-search"></i>
+                                            <i class="fa-solid fa-search"></i>
                                         </button>
 
                                     </div>
@@ -183,7 +183,7 @@ else
 
                 <div class="col-12 d-md-none my-2 text-center">
                     <button class="wap-menu-button  py-2 px-3 btn btn-outline-secondary w-100" type="button" data-bs-toggle="collapse" data-bs-target="#site-main-menu">
-                        <i class="fas fa-bars"></i>
+                        <i class="fa-solid fa-bars"></i>
                         <span class="d-none d-sm-inline"><?php echo $site_name; ?></span>菜单
                     </button>
                 </div>
@@ -251,7 +251,7 @@ else
                                     <input type="text" class="form-control" placeholder="搜索" name="search">
 
                                     <button class="btn btn-miku" type="submit">
-                                        <i class="fas fa-search"></i> 搜索
+                                        <i class="fa-solid fa-search"></i> 搜索
                                     </button>
 
                                 </div>
@@ -288,7 +288,7 @@ else
                 </div>
 
                 <div class="speedbar <?php echo !is_home() ? 'd-none d-sm-block' : '' ?> my-2 p-2 px-3 rounded">
-                    <span class=""><i class="fas fa-bullhorn"></i> 公告:</span>
+                    <span class=""><i class="fa-solid fa-bullhorn"></i> 公告:</span>
                     <?php echo dopt('d_tui'); ?>
 
                 </div>

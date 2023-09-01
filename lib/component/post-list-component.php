@@ -74,7 +74,7 @@ function post_list_component()
                 
                 <div class="position-absolute end-0 bottom-0 me-1 mb-1">
                     <div class="right-badge bg-transparent-half text-light rounded small p-1">
-                        <i class="fas fa-eye"></i> {$my_post->post_views}
+                        <i class="fa-solid fa-eye"></i> {$my_post->post_views}
                     </div>
                 </div>
           
@@ -105,10 +105,10 @@ function post_list_component()
 					
                     
 	                <div class="small d-none d-md-block ">
-	                        <span class="me-2"><i class="fas fa-clock"></i> {$my_post->post_date} </span>
-	                        <span class=""><i class="fas fa-comments"></i> {$my_post->post_comments}</span>
-	                        <span class="me-1 d-none"><i class="fas fa-star"></i> {$my_post->post_likes}</span>
-	                        <span class="d-none"><i class="fas fa-heart"></i> {$my_post->post_favorites}</span>
+	                        <span class="me-2"><i class="fa-solid fa-clock"></i> {$my_post->post_date} </span>
+	                        <span class=""><i class="fa-solid fa-comments"></i> {$my_post->post_comments}</span>
+	                        <span class="me-1 d-none"><i class="fa-solid fa-star"></i> {$my_post->post_likes}</span>
+	                        <span class="d-none"><i class="fa-solid fa-heart"></i> {$my_post->post_favorites}</span>
 	                </div>
 					
 

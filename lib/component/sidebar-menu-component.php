@@ -10,7 +10,7 @@ function sidebar_menu_component()
 	$menu_items = [
 		[
 			'target_id'   => 'header',
-			'name' => '<i class="fas fa-arrow-up fa-lg "></i>',
+			'name' => '<i class="fa-solid fa-arrow-up fa-lg "></i>',
 			'title' => '回到顶部',
 		],
 	];
@@ -63,7 +63,7 @@ function sidebar_menu_component()
 	//如果不是内容页 并且没登陆 显示 登陆链接
 	if (!is_single() && !is_user_logged_in())
 	{
-		$menu_items_html .= '<a class="list-group-item list-group-item-action py-2 py-md-3 px-2 px-md-3" href="' . wp_login_url() . '" target="_blank" title="登陆"><i class="fas fa-sign-in-alt fa-lg d-block d-md-none"></i><span class="d-none d-md-block">登陆<span></a>';
+		$menu_items_html .= '<a class="list-group-item list-group-item-action py-2 py-md-3 px-2 px-md-3" href="' . wp_login_url() . '" target="_blank" title="登陆"><i class="fa-solid fa-sign-in-alt fa-lg d-block d-md-none"></i><span class="d-none d-md-block">登陆<span></a>';
 	}
 
 	//暗夜模式按钮
@@ -71,15 +71,15 @@ function sidebar_menu_component()
 	
 		<a id="dark_mode_button" class="list-group-item list-group-item-action py-3 py-md-3 px-2 px-md-3" title="手动设置的有效期为7天" href="javascript:void(0)" title="">
 			<span class="moon" style="display: none;">
-				<i class="fas fa-moon fa-lg d-block d-md-none" ></i>
+				<i class="fa-solid fa-moon fa-lg d-block d-md-none" ></i>
 				<span class="d-none d-md-block" style="display: none;">夜间模式</span>
 			</span>
 			<span class="sun" style="display: none;">
-				<i class="fas fa-sun fa-lg d-block d-md-none" ></i>
+				<i class="fa-solid fa-sun fa-lg d-block d-md-none" ></i>
 				<span class="d-none d-md-block" style="display: none;">日间模式</span>
 			</span>
 			<span class="cloud-sun" style="display: none;">
-				<i class="fas fa-cloud-sun fa-lg d-block d-md-none" ></i>
+				<i class="fa-solid fa-cloud-sun fa-lg d-block d-md-none" ></i>
 				<span class="d-none d-md-block" style="display: none;">自动日夜</span>
 			</span>
 		</a>
@@ -93,7 +93,7 @@ HTML;
 		$menu_items_html .= <<<HTML
 	
 	<a class="list-group-item list-group-item-action py-2 py-md-3 px-2 px-md-3" href="#footer" data-bs-target-id="footer" title="前往底部">
-		<i class="fas fa-arrow-down fa-lg "></i>
+		<i class="fa-solid fa-arrow-down fa-lg "></i>
 	</a>
 
 HTML;
