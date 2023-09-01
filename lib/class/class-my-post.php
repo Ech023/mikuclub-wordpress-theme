@@ -95,7 +95,7 @@ if ( ! class_exists( 'My_Post_Base_Model' )
 			$this->post_image = get_thumbnail_src( $post->ID );
 
 			$this->post_views     = get_post_views( $post->ID );
-			$this->post_likes     = get_post_likes( $post->ID );
+			$this->post_likes     = get_post_like( $post->ID );
 			$this->post_comments  = get_post_comments( $post->ID );
 			$this->post_favorites = get_post_favorites( $post->ID );
 			$this->post_shares    = get_post_shares( $post->ID );

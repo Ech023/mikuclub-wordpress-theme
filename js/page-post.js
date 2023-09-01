@@ -184,7 +184,7 @@ function setPostLike(event) {
     let postId = $button.data('post-id');
     let isActivated = $button.data('activated');
 
-    let storageKey = LOCAL_STORAGE_KEY.postLikes;
+    let storageKey = LOCAL_STORAGE_KEY.postLike;
 
     let data = { post_id: postId };
     //如果是已激活状态
@@ -217,9 +217,6 @@ function setPostLike(event) {
         //激活按钮
         $button.toggleDisabled();
     };
-
-
-
 
     $.ajax({
         url: URLS.postLike,
@@ -402,11 +399,11 @@ function checkButtonStatus() {
 
     let postId = $likeButton.data('post-id');
 
-    let postLikes = getLocalStorage(LOCAL_STORAGE_KEY.postLikes);
+    let postLike = getLocalStorage(LOCAL_STORAGE_KEY.postLike);
     let postShares = getLocalStorage(LOCAL_STORAGE_KEY.postShares);
     let postFailTimes = getLocalStorage(LOCAL_STORAGE_KEY.postFailTimes);
 
-    if (postLikes && postLikes.includes(postId)) {
+    if (postLike && postLike.includes(postId)) {
         updateButton($likeButton, '已点赞', 'btn-outline-primary', 'btn-primary', 0, true);
 
     }

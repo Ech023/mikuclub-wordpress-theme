@@ -40,13 +40,13 @@ if (is_single())
 
                     <div class="comment-likes d-inline ms-0 ms-sm-3 me-3">
                         <span class="text-muted">
-                            <i class="far fa-thumbs-up"></i> 点赞
+                            <i class="fa-solid fa-thumbs-up"></i> 点赞
                         </span>
                         <span class="mx-3 comment-likes-count">
                             666
                         </span>
                         <span class="text-muted">
-                            <i class="far fa-thumbs-down"></i> 踩
+                            <i class="fa-solid fa-thumbs-down"></i> 踩
                         </span>
                     </div>
 

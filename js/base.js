@@ -40,7 +40,8 @@ const PLAY_TYPE = {
 
 //本地存储键名
 const LOCAL_STORAGE_KEY = {
-    postLikes: 'count_like',
+    postLike: 'count_like',
+    postUnLikes: 'count_unlike',
     postFavorites: 'count_favorite',
     postFailTimes: 'fail_time',
     postShares: 'count_sharing',
@@ -70,6 +71,7 @@ const URLS = {
     checkAliyunPan: MY_SITE.apiRoot + UTILS_PATH + 'check_aliyun_pan_link',
     favoritePostList: MY_SITE.apiRoot + UTILS_PATH + 'favorite_post_list',
     postLike: MY_SITE.apiRoot + UTILS_PATH + 'post_like_count',
+    postUnlike: MY_SITE.apiRoot + UTILS_PATH + 'post_unlike_count',
     favorite: MY_SITE.apiRoot + UTILS_PATH + 'favorite',
     failDown: MY_SITE.apiRoot + UTILS_PATH + 'fail_down',
     postShare: MY_SITE.apiRoot + UTILS_PATH + 'post_sharing_count',
@@ -245,8 +247,8 @@ function getWpErrorByJqXHR(jqXHR) {
 
         //如果存在WpError对象
         if (typeof object == 'object' && object.hasOwnProperty('code') && object.hasOwnProperty('message') && object.hasOwnProperty('data')) {
-            
-            object.code 
+
+            object.code
             wpError = object;
         }
 
@@ -498,5 +500,25 @@ function deleteArrayElementFromLocalStorage(storageKey, value) {
         //更新储存
         setLocalStorage(storageKey, list);
     }
+
+}
+
+/**
+ * 通过 $.ajax 发送请求
+ * @param {string} url 
+ * @param {object} data 
+ * @param {string} type 
+ * @param {function|null} done_callback 
+ * @param {function|null} fail_callback 
+ * @param {function|null} always_callback 
+ */
+function request(url, data, type = HTTP_METHOD.post, done_callback = null, fail_callback = defaultFailCallback, always_callback = null) {
+
+    $.ajax({
+        url,
+        data,
+        type,
+        headers: createAjaxHeader(),
+    }).done(done_callback).fail(fail_callback).always(always_callback);
 
 }

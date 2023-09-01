@@ -4,24 +4,8 @@
 //ini_set('display_startup_errors',1);    //php启动错误信息
 //error_reporting(-1);                    //打印出所有的 错误信息
 
-//导入主题页面
-
-use LDAP\Result;
-
-require_once 'admin/config.php';
-
-//导入自定义模型类
-require_once 'class/index.php';
-
-//导入自定义函数
-require_once 'functions/index.php';
-
-//导入组件
-require_once 'component/index.php';
-
-//导入挂件配置
-require_once 'widgets/index.php';
-
+//导入加载器
+require_once 'lib/autoload.php';
 
 /*
  * 在前台加载自定义脚本和CSS
@@ -160,7 +144,7 @@ function setup_front_script()
         [
             'name' => 'js-class-comment',
             'path' => '/js/class-comment.js',
-            'version' => '1.18',
+            'version' => '1.19',
             'in_footer' => false,
         ],
         //自定义JS 评论类
@@ -174,7 +158,7 @@ function setup_front_script()
         [
             'name' => 'js-base',
             'path' => '/js/base.js',
-            'version' => '1.21',
+            'version' => '1.22',
             'in_footer' => false,
         ],
         //名言名句变量
@@ -259,7 +243,7 @@ function setup_front_script()
         [
             'name' => 'js-post',
             'path' => '/js/page-post.js',
-            'version' => '1.25',
+            'version' => '1.26',
             'in_footer' => false,
         ],
         //JS 文章页面评论功能

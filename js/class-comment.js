@@ -112,25 +112,25 @@ class MyComment {
                 case 'chromium':
                 case 'chrome webview':
 
-                    browserIcon = 'fab fa-chrome';
+                    browserIcon = 'fa-brands fa-chrome';
                     break;
                 case 'edge':
-                    browserIcon = 'fab fa-edge';
+                    browserIcon = 'fa-brands fa-edge';
                     break;
                 case 'firefox':
-                    browserIcon = 'fab fa-firefox-browser';
+                    browserIcon = 'fa-brands fa-firefox-browser';
                     break;
                 case 'qq':
                 case 'qqbrowser':
                 case 'qqbrowserlite':
-                    browserIcon = 'fab fa-qq';
+                    browserIcon = 'fa-brands fa-qq';
                     break;
                 case 'safari':
                 case 'mobile safari':
-                    browserIcon = 'fab fa-safari';
+                    browserIcon = 'fa-brands fa-safari';
                     break;
                 default:
-                    browserIcon = 'fab fa-internet-explorer';
+                    browserIcon = 'fa-brands fa-internet-explorer';
             }
 
             deviceInfo += `<span class="m-1"><i class="${browserIcon}"></i> ${this.comment_agent.browserName}</span>`;
@@ -141,20 +141,20 @@ class MyComment {
             switch (this.comment_agent.os.toLowerCase()) {
 
                 case 'android':
-                    systemIcon = 'fab fa-android';
+                    systemIcon = 'fa-brands fa-android';
                     break;
                 case 'linux':
-                    systemIcon = 'fab fa-linux';
+                    systemIcon = 'fa-brands fa-linux';
                     break;
                 case 'ubuntu':
-                    systemIcon = 'fab fa-ubuntu';
+                    systemIcon = 'fa-brands fa-ubuntu';
                     break;
                 case 'mac os':
                 case 'ios':
-                    systemIcon = 'fab fa-apple';
+                    systemIcon = 'fa-brands fa-apple';
                     break;
                 default:
-                    systemIcon = 'fab fa-windows';
+                    systemIcon = 'fa-brands fa-windows';
             }
             deviceInfo += `<span class="m-1"><i class="${systemIcon}"></i> ${this.comment_agent.os}</span>`;
         }
@@ -170,8 +170,8 @@ class MyComment {
         let deleteCommentLikesButtonClass = 'delete-comment-likes';
 
         //点赞按钮图标
-        let addCommentLikesButtonIcon = 'far fa-thumbs-up';
-        let deleteCommentLikesButtonIcon = 'far fa-thumbs-down';
+        let addCommentLikesButtonIcon = 'fa-solid fa-thumbs-up';
+        let deleteCommentLikesButtonIcon = 'fa-solid fa-thumbs-down';
 
         //如果用户已经点赞过 就更改图标样式  和 注销点赞按钮
         let arrayCommentLiked = getLocalStorage(LOCAL_STORAGE_KEY.commentLikes);

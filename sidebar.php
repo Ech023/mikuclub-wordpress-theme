@@ -13,7 +13,7 @@
 						<?php if( dopt('d_twitter_b') ) echo '<a href="'.dopt('d_twitter').'" rel="external nofollow" title="Twitter" target="_blank"><i class="twitter fas fa-twitter"></i></a>'; ?>
 						<?php if( dopt('d_facebook_b') ) echo '<a href="'.dopt('d_facebook').'" rel="external nofollow" title="动漫周边" target="_blank"><i class="fascebook fas fa-shopping-cart"></i></a>'; ?>
 						<?php if( dopt('d_weixin_b') ) echo '<a class="weixin"><i class="weixins fas fa-mobile-alt"></i><div class="weixin-popover"><div class="popover bottom in"><div class="popover-arrow"></div><div class="popover-title">二维码“'.dopt('d_weixin').'”</div><div class="popover-content"><img src="'.get_bloginfo('template_url').'/img/weixin.png" ></div></div></div></a>';?>
-						<?php if( dopt('d_emailContact_b') ) echo '<a href="'.dopt('d_emailContact').'" rel="external nofollow" title="Email" target="_blank"><i class="email far fa-envelope"></i></a>'; ?>
+						<?php if( dopt('d_emailContact_b') ) echo '<a href="'.dopt('d_emailContact').'" rel="external nofollow" title="Email" target="_blank"><i class="email fa-solid fa-envelope"></i></a>'; ?>
 
 						<?php } ?>
 					</div>

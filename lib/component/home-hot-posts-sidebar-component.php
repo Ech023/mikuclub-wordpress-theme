@@ -128,7 +128,7 @@ function get_home_hot_posts_sidebar_component_by_random($term_id, $number = 6)
 
 		$range_day = 28;
 		//统计的键名
-		$meta_key = POST_LIKES;
+		$meta_key = POST_LIKE;
 
 		$title = '推荐';
 		//标题的图标

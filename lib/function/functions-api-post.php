@@ -51,7 +51,7 @@ function api_add_post_shares($data)
  *
  * @return int|WP_Error
  **/
-function api_set_post_likes($data)
+function api_set_post_like($data)
 {
 
 	//如果缺少必要参数
@@ -63,12 +63,42 @@ function api_set_post_likes($data)
 	//默认 增加点赞
 	if (!isset($data['cancel']))
 	{
-		$count = add_post_likes($data['post_id']);
+		$count = add_post_like($data['post_id']);
 	}
 	//取消点赞
 	else
 	{
-		$count = delete_post_likes($data['post_id']);
+		$count = delete_post_like($data['post_id']);
+	}
+
+	return $count;
+}
+
+/**
+ * 设置文章差评次数
+ *
+ * @param array $data
+ *
+ * @return int|WP_Error
+ **/
+function api_set_post_unlike($data)
+{
+
+	//如果缺少必要参数
+	if (!isset($data['post_id']))
+	{
+		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
+	}
+
+	//默认 增加点赞
+	if (!isset($data['cancel']))
+	{
+		$count = add_post_unlike($data['post_id']);
+	}
+	//取消点赞
+	else
+	{
+		$count = delete_post_unlike($data['post_id']);
 	}
 
 	return $count;
@@ -365,7 +395,12 @@ function register_custom_post_api()
 
 	register_rest_route('utils/v2', '/post_like_count', [
 		'methods'  => 'POST',
-		'callback' => 'api_set_post_likes',
+		'callback' => 'api_set_post_like',
+	]);
+
+	register_rest_route('utils/v2', '/post_unlike_count', [
+		'methods'  => 'POST',
+		'callback' => 'api_set_post_unlike',
 	]);
 
 	register_rest_route('utils/v2', '/update_post_date', [

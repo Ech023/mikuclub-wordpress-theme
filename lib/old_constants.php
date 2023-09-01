@@ -64,7 +64,8 @@ define('POST_CONTENT_PART_2', 'post_content_part_2');
 
 //文章键名
 define('POST_VIEWS', 'views');
-define('POST_LIKES', 'count_like');
+define('POST_LIKE', 'count_like');
+define('POST_UNLIKE', 'count_unlike');
 define('POST_COMMENTS', 'count_comments');
 define('POST_FAVORITES', 'count_favorite');
 define('POST_FAIL_TIMES', 'fail_time');

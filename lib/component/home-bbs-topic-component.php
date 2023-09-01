@@ -20,7 +20,7 @@ function home_bbs_topic_component() {
 
 		<div class="single-topic col">
 			<a title="{$topic->post_title}" href="{$topic->post_href}" target="_blank" >
-				<i class="far fa-comment-dots" aria-hidden="true"></i>
+				<i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
 				 {$topic->post_title}
 				 <span class="badge bg-miku">{$topic->post_date}</span>
 			</a>

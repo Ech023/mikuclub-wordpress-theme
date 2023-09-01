@@ -26,7 +26,7 @@ function post_list_order_component()
 		],
 		[
 			'name'  => '点赞次数',
-			'value' => POST_LIKES,
+			'value' => POST_LIKE,
 		],
 		[
 			'name'  => '评论次数',

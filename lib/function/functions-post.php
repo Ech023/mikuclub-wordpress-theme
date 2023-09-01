@@ -60,10 +60,10 @@ function add_post_views($post_id, $view_number = null)
  *
  * @return int
  */
-function get_post_likes($post_id)
+function get_post_like($post_id)
 {
 
-    $count_like = get_post_meta($post_id, POST_LIKES, true);
+    $count_like = get_post_meta($post_id, POST_LIKE, true);
     //如果没有, 则初试化为0
     if ($count_like === "")
     {
@@ -80,15 +80,15 @@ function get_post_likes($post_id)
  *
  * @return int 新的点赞数
  */
-function add_post_likes($post_id)
+function add_post_like($post_id)
 {
 
     //获取点赞数
-    $count = get_post_likes($post_id);
+    $count = get_post_like($post_id);
     //点赞数+1
     $count++;
     //保存新点赞数
-    update_post_meta($post_id, POST_LIKES, $count);
+    update_post_meta($post_id, POST_LIKE, $count);
 
     //增加用户点赞数 (只对登陆用户有效)
     add_user_like_count(get_current_user_id());
@@ -103,11 +103,11 @@ function add_post_likes($post_id)
  *
  * @return int 新的点赞数
  */
-function delete_post_likes($post_id)
+function delete_post_like($post_id)
 {
 
     //获取点赞数
-    $count = get_post_likes($post_id);
+    $count = get_post_like($post_id);
 
     //如果点赞数 大于 0
     if ($count > 0)
@@ -120,13 +120,78 @@ function delete_post_likes($post_id)
     }
 
     //保存新点赞数
-    update_post_meta($post_id, POST_LIKES, $count);
+    update_post_meta($post_id, POST_LIKE, $count);
 
     //减少用户点赞数 (只对登陆用户有效)
     delete_user_like_count(get_current_user_id());
 
     return $count;
 }
+
+
+
+/**
+ * 获取文章差评数
+ *
+ * @param int $post_id
+ * @return int
+ */
+function get_post_unlike($post_id)
+{
+    $count_unlike = get_post_meta($post_id, POST_UNLIKE, true) ?: 0;
+
+    return $count_unlike;
+}
+
+/**
+ * 增加文章差评次数
+ *
+ * @param int $post_id
+ * @return int 新的差评数
+ */
+function add_post_unlike($post_id)
+{
+
+    //获取点赞数
+    $count = get_post_unlike($post_id);
+    //点赞数+1
+    $count++;
+    //保存新点赞数
+    update_post_meta($post_id, POST_UNLIKE, $count);
+
+    //增加用户评价数 (只对登陆用户有效)
+    add_user_like_count(get_current_user_id());
+
+    return $count;
+}
+
+/**
+ * 减少文章差评次数
+ *
+ * @param int $post_id
+ * @return int 新的差评数
+ */
+function delete_post_unlike($post_id)
+{
+
+    //获取差评数
+    $count = get_post_unlike($post_id);
+
+    //如果数值大于0, 减一, 否则重置为0
+    $count = $count > 0 ? $count - 1 : 0;
+
+    //保存新差评数
+    update_post_meta($post_id, POST_UNLIKE, $count);
+
+    //减少用户评价数 (只对登陆用户有效)
+    delete_user_like_count(get_current_user_id());
+
+    return $count;
+}
+
+
+
+
 
 
 /**
@@ -2103,8 +2168,8 @@ function post_functional_box()
     //输出点赞按钮
     $like_button = '
 			<button class="btn btn-outline-primary   set-post-like border-0 w-100" data-post-id="' . $post_id . '">
-				<i class="far fa-star d-block d-md-inline-block  my-2 my-md-0" aria-hidden="true"></i> 
-				<span class="text">点赞</span> ( <span class="count">' . get_post_likes($post_id) . '</span> )
+				<i class="fa-solid fa-star d-block d-md-inline-block  my-2 my-md-0" aria-hidden="true"></i> 
+				<span class="text">点赞</span> ( <span class="count">' . get_post_like($post_id) . '</span> )
 			</button>';
     //输出收藏按钮
     $favorite_button = '';
@@ -2129,7 +2194,7 @@ function post_functional_box()
 
         $favorite_button = '
 		          <button class="btn ' . $class_color . '  set-post-favorite border-0 w-100" data-post-id="' . $post_id . '" ' . $is_activated . '>
-		          <i class="far fa-heart d-block d-md-inline-block my-2 my-md-0" aria-hidden="true"></i> 
+		          <i class="fa-solid fa-heart d-block d-md-inline-block my-2 my-md-0" aria-hidden="true"></i> 
 		          <span class="text">' . $text . '</span>  ( <span class="count">' . get_post_favorites($post_id) . '</span> )
 		          </button>';
     }

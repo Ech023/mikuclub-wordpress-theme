@@ -115,7 +115,7 @@ function hot_posts_most_rating( $number = 6 ) {
 	//统计基础周期 是  10天;
 	$range_day = 21;
 	//统计的键名
-	$meta_key = POST_LIKES;
+	$meta_key = POST_LIKE;
 
 	$title = '推荐';
 	//标题的图标

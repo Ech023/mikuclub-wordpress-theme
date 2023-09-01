@@ -155,28 +155,35 @@ HTML;
                         <div class="col-auto ">
                             <!-- 文章评论数量 -->
                             <div class="post-comments">
-                                <i class="far fa-comments"></i>
+                                <i class="fa-solid fa-comments"></i>
                                 <?php echo get_comments_number() . ' 评论'; ?>
                             </div>
                         </div>
                         <div class="col-auto ">
-                            <!-- 文章评分 -->
+                            <!-- 文章点赞 -->
                             <div class="post-likes">
-                                <i class="far fa-star" aria-hidden="true"></i>
-                                <?php echo (float)get_post_likes($post_id); ?> 点赞
+                                <i class="fa-solid fa-thumbs-up" aria-hidden="true"></i>
+                                <?php echo (float)get_post_like($post_id); ?> 点赞
+                            </div>
+                        </div>
+                        <div class="col-auto ">
+                            <!-- 文章差评 -->
+                            <div class="post-likes">
+                                <i class="fa-solid fa-thumbs-down"></i>
+                                <?php echo (float)get_post_unlike($post_id); ?> 差评
                             </div>
                         </div>
                         <div class="col-auto ">
                             <!-- 文章收藏 -->
                             <div class="post-favorite">
-                                <i class="far fa-heart" aria-hidden="true"></i>
+                                <i class="fa-solid fa-heart" aria-hidden="true"></i>
                                 <?php echo (float)get_post_favorites($post_id); ?> 收藏
                             </div>
                         </div>
                         <div class="col-auto ">
                             <!-- 文章分享 -->
                             <div class="post-sharing me-3 my-1 my-md-0">
-                                <i class="far fa-share-square" aria-hidden="true"></i>
+                                <i class="fa-solid fa-share-square" aria-hidden="true"></i>
                                 <?php echo (float)get_post_shares($post_id); ?> 分享
                             </div>
                         </div>

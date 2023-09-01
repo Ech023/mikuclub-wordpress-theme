@@ -888,7 +888,7 @@ function get_useragent($ua)
 	$browser = get_browsers($ua);
 	$os      = get_os($ua);
 
-	return '<span class="useragent"><i class="fab ' . $browser[1] . '"></i> ' . $browser[0] . ' <i class="fab ' . $os[1] . '"></i> ' . $os[0] . '</span>';
+	return '<span class="useragent"><i class="fa-brands ' . $browser[1] . '"></i> ' . $browser[0] . ' <i class="fa-brands ' . $os[1] . '"></i> ' . $os[0] . '</span>';
 }
 
 /**
