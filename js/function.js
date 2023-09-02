@@ -1,3 +1,14 @@
+/// <reference path="base.js" />
+/// <reference path="function-ajax.js" />
+/// <reference path="class-comment.js" />
+/// <reference path="class-message.js" />
+/// <reference path="class-modal.js" />
+/// <reference path="class-post.js" />
+/// <reference path="class-toast.js" />
+/// <reference path="class-ua-parser.js" />
+/// <reference path="class-user.js" />
+
+
 /***
  * JS函数文件
  */

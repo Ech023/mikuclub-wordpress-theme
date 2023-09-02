@@ -1,3 +1,8 @@
+/// <reference path="base.js" />
+/// <reference path="function.js" />
+/// <reference path="function-ajax.js" />
+
+
 $(function () {
 
     /**
@@ -22,6 +27,7 @@ $(function () {
 
         //绑定功能按钮 点击事件
         $('.functional-part button.set-post-like').on('click', '', '', setPostLike);
+        $('.functional-part button.set-post-unlike').on('click', '', '', setPostUnlike);
         $('.functional-part button.set-post-favorite').on('click', '', '', setPostFavorite);
         $('.functional-part .post-share a.dropdown-item').on('click', '', '', setPostShare);
         $('.functional-part button.set-post-fail-times').on('click', '', '', setPostFailTime);
@@ -110,9 +116,9 @@ function openPlayModal(event) {
  * 获取B站视频播放地址
  * @param {string} videoId
  * @param {int} postId
- * @param {function} successCallback
- * @param {function} failCallback
- * @param {function} completeCallback
+ * @param {Function} successCallback
+ * @param {Function} failCallback
+ * @param {Function} completeCallback
  */
 function getBilibiliVIdeoData(videoId, postId, successCallback, failCallback, completeCallback) {
 
@@ -171,60 +177,148 @@ function findDownPassword(event) {
 }
 
 /**
- * 设置点赞
+ * 添加/取消好评
  * @param {Event} event
  */
 function setPostLike(event) {
 
-
     //获取按钮
     const $button = $(this);
 
-
-    let postId = $button.data('post-id');
+    let post_id = $button.data('post-id');
     let isActivated = $button.data('activated');
 
-    let storageKey = LOCAL_STORAGE_KEY.postLike;
+    const storageKey = LOCAL_STORAGE_KEY.postLike;
 
-    let data = { post_id: postId };
+    const data = {
+        post_id
+    };
     //如果是已激活状态
     if (isActivated) {
         data.cancel = 1;
     }
 
-    //注销按钮
-    $button.toggleDisabled();
+
 
     //成功的情况
-    let successCallback = function (response) {
-
+    const successCallback = function (response) {
 
         if (!isActivated) {
-            addArrayElementToLocalStorage(storageKey, postId);
-            updateButton($button, '已点赞', 'btn-outline-primary', 'btn-primary', 1, true);
-            TOAST_SYSTEM.add('已点赞', TOAST_TYPE.success);
+            addArrayElementToLocalStorage(storageKey, post_id);
+            updateButton($button, '已好评', 'btn-secondary', 'btn-outline-secondary', 1, true);
+            TOAST_SYSTEM.add('好评成功', TOAST_TYPE.success);
         }
         else {
-            deleteArrayElementFromLocalStorage(storageKey, postId);
-            updateButton($button, '点赞', 'btn-primary', 'btn-outline-primary', -1, false);
-            TOAST_SYSTEM.add('已取消点赞', TOAST_TYPE.success);
+            deleteArrayElementFromLocalStorage(storageKey, post_id);
+            updateButton($button, '好评', 'btn-outline-secondary', 'btn-secondary', -1, false);
+            TOAST_SYSTEM.add('已取消好评', TOAST_TYPE.success);
         }
 
+        //更新文章评价等级
+        update_post_feedback_rank();
     };
 
 
-    let completeCallback = function () {
-        //激活按钮
-        $button.toggleDisabled();
-    };
 
-    $.ajax({
-        url: URLS.postLike,
+    send_post(
+        URLS.postLike,
         data,
-        type: HTTP_METHOD.post,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
+        //请求前运行
+        () => {
+            //注销按钮
+            $button.toggleDisabled();
+        },
+        //成功后运行
+        successCallback,
+        //错误后运行
+        defaultFailCallback,
+        //请求解锁后运行
+        () => {
+            //激活按钮
+            $button.toggleDisabled();
+        }
+    );
 
+}
+
+/**
+ * 添加/取消差评
+ * @param {Event} event
+ */
+function setPostUnlike(event) {
+
+    //获取按钮
+    const $button = $(this);
+
+    let post_id = $button.data('post-id');
+    let isActivated = $button.data('activated');
+
+    const storageKey = LOCAL_STORAGE_KEY.postUnLike;
+
+    const data = {
+        post_id
+    };
+    //如果是已激活状态
+    if (isActivated) {
+        data.cancel = 1;
+    }
+
+    //成功的情况
+    const successCallback = function (response) {
+
+        if (!isActivated) {
+            addArrayElementToLocalStorage(storageKey, post_id);
+            updateButton($button, '已差评', 'btn-secondary', 'btn-outline-secondary', 1, true);
+            TOAST_SYSTEM.add('差评成功', TOAST_TYPE.success);
+        }
+        else {
+            deleteArrayElementFromLocalStorage(storageKey, post_id);
+            updateButton($button, '差评', 'btn-outline-secondary', 'btn-secondary', -1, false);
+            TOAST_SYSTEM.add('已取消差评', TOAST_TYPE.success);
+        }
+
+        //更新文章评价等级
+        update_post_feedback_rank();
+    };
+
+
+    send_post(
+        URLS.postUnlike,
+        data,
+        //请求前运行
+        () => {
+            //注销按钮
+            $button.toggleDisabled();
+        },
+        //成功后运行
+        successCallback,
+        //错误后运行
+        defaultFailCallback,
+        //请求解锁后运行
+        () => {
+            //激活按钮
+            $button.toggleDisabled();
+        }
+    );
+
+}
+
+/**
+ * 根据评价数量更新文章评价等级
+ */
+function update_post_feedback_rank() {
+
+    const $functional_part = $('.functional-part');
+
+    let post_like_count = $functional_part.find('button.set-post-like .count').html();
+    let post_unlike_count = $functional_part.find('button.set-post-unlike .count').html();
+
+    console.log('更新评价' + post_like_count + ' ' + post_unlike_count);
+
+    let rank = POST_FEEDBACK_RANK.get_rank(post_like_count, post_unlike_count);
+
+    //更新评价等级
+    $functional_part.find('.post_feedback_rank').html(rank);
 }
 
 /**
@@ -240,7 +334,7 @@ function setPostFavorite(event) {
     let postId = $button.data('post-id');
     let isActivated = $button.data('activated');
 
-    let storageKey = LOCAL_STORAGE_KEY.postFavorites;
+    //let storageKey = LOCAL_STORAGE_KEY.postFavorites;
 
     let data = { post_id: postId };
     //请求方式 默认为 post 添加收藏
@@ -258,13 +352,13 @@ function setPostFavorite(event) {
 
 
         if (!isActivated) {
-            addArrayElementToLocalStorage(storageKey, postId);
-            updateButton($button, '已收藏', 'btn-outline-info', 'btn-info', 1, true);
-            TOAST_SYSTEM.add('已收藏', TOAST_TYPE.success);
+            //addArrayElementToLocalStorage(storageKey, postId);
+            updateButton($button, '已收藏', 'btn-secondary', 'btn-outline-secondary', 1, true);
+            TOAST_SYSTEM.add('收藏成功', TOAST_TYPE.success);
         }
         else {
-            deleteArrayElementFromLocalStorage(storageKey, postId);
-            updateButton($button, '收藏', 'btn-info', 'btn-outline-info', -1, false);
+            //deleteArrayElementFromLocalStorage(storageKey, postId);
+            updateButton($button, '收藏', 'btn-outline-secondary', 'btn-secondary', -1, false);
             TOAST_SYSTEM.add('已取消收藏', TOAST_TYPE.success);
         }
 
@@ -309,7 +403,7 @@ function setPostShare(event) {
 
 
         addArrayElementToLocalStorage(storageKey, postId);
-        updateButton($button, '已分享', 'btn-outline-success ', 'btn-success ', 1, true);
+        updateButton($button, '已分享', 'btn-secondary', 'btn-outline-secondary', 1, true);
 
 
     };
@@ -349,7 +443,7 @@ function setPostFailTime(event) {
         return;
     }
 
-    if (!confirm('确认下载地址已失效了吗?')) {
+    if (!confirm('确认下载地址已失效了吗? (管理员会根据用户反馈次数, 退回稿件并通知UP补档)')) {
         //退出
         return;
     }
@@ -366,8 +460,8 @@ function setPostFailTime(event) {
     let successCallback = function (response) {
 
         addArrayElementToLocalStorage(storageKey, postId);
-        updateButton($button, '已反馈', 'btn-outline-danger', 'btn-danger', 1, true);
-        TOAST_SYSTEM.add('管理员会根据上报次数, 进行退稿处理', TOAST_TYPE.success);
+        updateButton($button, '已反馈', 'btn-secondary', 'btn-outline-secondary', 1, true);
+        TOAST_SYSTEM.add('反馈成功', TOAST_TYPE.success);
 
     };
 
@@ -392,29 +486,42 @@ function setPostFailTime(event) {
  */
 function checkButtonStatus() {
 
-    let $likeButton = $('.functional-part button.set-post-like');
+    const $functional_part = $('.functional-part');
 
-    let $sharesButton = $('.functional-part button.set-post-share');
-    let $failTimesButton = $('.functional-part button.set-post-fail-times');
+    const $like_button = $functional_part.find('button.set-post-like');
+    const $unlike_button = $functional_part.find('button.set-post-unlike');
+    const $favorite_button = $functional_part.find('button.set-post-favorite');
 
-    let postId = $likeButton.data('post-id');
+    const $share_button = $functional_part.find('button.set-post-share');
+    const $fail_time_button = $functional_part.find('button.set-post-fail-times');
+
+    let postId = $like_button.data('post-id');
 
     let postLike = getLocalStorage(LOCAL_STORAGE_KEY.postLike);
+    let postUnLike = getLocalStorage(LOCAL_STORAGE_KEY.postUnLike);
     let postShares = getLocalStorage(LOCAL_STORAGE_KEY.postShares);
     let postFailTimes = getLocalStorage(LOCAL_STORAGE_KEY.postFailTimes);
 
-    if (postLike && postLike.includes(postId)) {
-        updateButton($likeButton, '已点赞', 'btn-outline-primary', 'btn-primary', 0, true);
+    let postFavorites = MY_SITE.favorite_post;
 
+    if (postLike && postLike.includes(postId)) {
+        updateButton($like_button, '已好评', 'btn-secondary', 'btn-outline-secondary', 0, true);
+    }
+    if (postUnLike && postUnLike.includes(postId)) {
+        updateButton($unlike_button, '已差评', 'btn-secondary', 'btn-outline-secondary', 0, true);
+    }
+
+    if (postFavorites && postFavorites.includes(String(postId))) {
+        updateButton($favorite_button, '已收藏', 'btn-secondary', 'btn-outline-secondary', 0, true);
     }
 
     if (postShares && postShares.includes(postId)) {
-        updateButton($sharesButton, '已分享', 'btn-outline-success', 'btn-success', 0, true);
-
+        updateButton($share_button, '已分享', 'btn-secondary', 'btn-outline-secondary', 0, true);
     }
 
     if (postFailTimes && postFailTimes.includes(postId)) {
-        updateButton($failTimesButton, '已反馈', 'btn-outline-danger', 'btn-danger', 0, true);
+        updateButton($fail_time_button, '已反馈', 'btn-secondary', 'btn-outline-secondary', 0, true);
+        $fail_time_button.addDisabled();
 
     }
 

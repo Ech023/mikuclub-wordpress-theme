@@ -1,5 +1,7 @@
 <?php
 
+use mikuclub\lib\Post_feedback_rank;
+
 /**
  * 获取文章点击数
  *
@@ -1819,20 +1821,20 @@ function print_post_content($post_id = null)
 
         $post_content_part_1 = <<<HTML
 
-            <div class="first-image-part my-5" id="first-image-part">
+            <div class="first-image-part my-4" id="first-image-part">
                 {$first_image_part}
             </div>
-            <div class="source-part my-5">
+            <div class="source-part my-4">
                 {$source_part}
             </div>
-            <div class="content-part my-54" >
+            <div class="content-part my-4" >
                 {$post_content}
             </div>
             
-            <div class="password-part my-5" id="password-part">
+            <div class="password-part my-4" id="password-part">
                 {$password_part}
             </div>
-            <div class="download-part my-5">
+            <div class="download-part my-4">
                 {$download_part}
             </div>
 
@@ -1979,10 +1981,10 @@ HTML;
         $post_content_part_2 = <<<HTML
             {$pc_adsense}
             {$mobile_adsense}
-            <div class="video-part my-5" id="video-part">
+            <div class="video-part my-4" id="video-part">
                 {$video_part}
             </div>
-            <div class="preview-images-part my-5" id="preview-images-part">
+            <div class="preview-images-part my-4" id="preview-images-part">
                 {$preview_images_part}
             </div>
 HTML;
@@ -1995,7 +1997,7 @@ HTML;
     
     {$post_content_part_1}
     
-    <div class="functional-part my-5 ">
+    <div class="functional-part my-4 ">
         {$post_functional_part}
     </div>
     
@@ -2164,40 +2166,46 @@ function post_functional_box()
 
     //获取文章id
     $post_id = get_the_ID();
+    $post_like = get_post_like($post_id);
+    $post_unlike = get_post_unlike($post_id);
+    $post_feedback_rank = Post_feedback_rank::get_rank($post_like, $post_unlike);
 
     //输出点赞按钮
-    $like_button = '
-			<button class="btn btn-outline-primary   set-post-like border-0 w-100" data-post-id="' . $post_id . '">
-				<i class="fa-solid fa-star d-block d-md-inline-block  my-2 my-md-0" aria-hidden="true"></i> 
-				<span class="text">点赞</span> ( <span class="count">' . get_post_like($post_id) . '</span> )
-			</button>';
+    $like_button = <<<HTML
+
+        <div class="btn-group w-100">
+            <button class="btn btn-sm btn-secondary set-post-like  " data-post-id="{$post_id}">
+                <i class="fa-solid fa-thumbs-up  my-2 my-md-0"></i> 
+                <span class="text">好评</span> <br class="d-sm-none" /> ( <span class="count">{$post_like}</span> )
+            </button>
+            <div class="btn btn-sm btn-secondary disabled text-bg-secondary fw-bold w-25 post_feedback_rank">
+                {$post_feedback_rank}
+            </div>
+            <button class="btn btn-sm btn-secondary set-post-unlike  " data-post-id="{$post_id}">
+                <i class="fa-solid fa-thumbs-down  my-2 my-md-0"></i> 
+                <span class="text">差评</span> <br class="d-sm-none" /> ( <span class="count">{$post_unlike}</span> )
+            </button>
+        </div>
+       
+
+HTML;
+
     //输出收藏按钮
     $favorite_button = '';
-    //只有登陆用户才能看到收藏按钮
-    if (is_user_logged_in())
+    $favorite_button_disabled = '';
+    //如果用户未登陆
+    if (is_user_logged_in() === false)
     {
-
-        //如果未收藏
-        if (!in_array($post_id, get_user_favorite()))
-        {
-            $class_color = 'btn-outline-info';
-            $text = '收藏';
-            $is_activated = '';
-        }
-        else
-        {
-            $class_color = 'btn-info';
-            $text = '已收藏';
-
-            $is_activated = 'data-activated="1"';
-        }
-
-        $favorite_button = '
-		          <button class="btn ' . $class_color . '  set-post-favorite border-0 w-100" data-post-id="' . $post_id . '" ' . $is_activated . '>
-		          <i class="fa-solid fa-heart d-block d-md-inline-block my-2 my-md-0" aria-hidden="true"></i> 
-		          <span class="text">' . $text . '</span>  ( <span class="count">' . get_post_favorites($post_id) . '</span> )
-		          </button>';
+        //禁用收藏按钮
+        $favorite_button_disabled = 'disabled';
     }
+
+    $favorite_button = '
+		          <button class="btn btn-sm btn-secondary set-post-favorite w-100" data-post-id="' . $post_id . '" ' . $favorite_button_disabled . '>
+		          <i class="fa-solid fa-heart my-2 my-md-0" aria-hidden="true"></i> 
+		          <span class="text">收藏</span> <br class="d-sm-none" /> ( <span class="count">' . get_post_favorites($post_id) . '</span> )
+		          </button>';
+
 
 
     //分享按钮
@@ -2206,8 +2214,8 @@ function post_functional_box()
     {
         $sharing_box = '
 		 <div class="dropdown  post-share  ">
-		 	 <button class="btn btn-outline-success set-post-share dropdown-toggle border-0 w-100" type="button" data-bs-toggle="dropdown" data-post-id="' . $post_id . '">
-			    <i class="fa-solid fa-share-alt d-block d-md-inline-block my-2 my-md-0"></i> <span class="text">分享</span>  ( <span class="count">' . get_post_shares($post_id) . ' </span> )
+		 	 <button class="btn btn-sm btn-secondary dropdown-toggle w-100 set-post-share" type="button" data-bs-toggle="dropdown" data-post-id="' . $post_id . '">
+			    <i class="fa-solid fa-share-alt my-2 my-md-0"></i> <span class="text">分享</span>  <br class="d-sm-none" /> ( <span class="count">' . get_post_shares($post_id) . ' </span> )
 			  </button>'
             . open_social_share_html()
             . '</div>';
@@ -2223,9 +2231,9 @@ function post_functional_box()
     }
 
     $fail_down_button = '
-		<button class="btn btn-outline-danger set-post-fail-times   border-0 w-100" data-post-id="' . $post_id . '">
-			<i class="fa-solid fa-bug d-block d-md-inline-block  my-2 my-md-0" aria-hidden="true"></i> 
-			 <span class="text">反馈失效</span>  ( <span class="count">' . $fail_times . '</span>  )
+		<button class="btn btn-sm btn-secondary w-100 set-post-fail-times" data-post-id="' . $post_id . '">
+			<i class="fa-solid fa-bug  my-2 my-md-0" aria-hidden="true"></i> 
+			 <span class="text">反馈失效</span> <br class="d-sm-none" /> ( <span class="count">' . $fail_times . '</span>  )
 		</button> ';
 
     /*$down_suggestion_button = '
@@ -2235,14 +2243,14 @@ function post_functional_box()
     ';*/
 
     $down_suggestion_button = '
-	<button type="button" class="btn btn-outline-dark  border-0 w-100" data-bs-toggle="collapse" data-bs-target="#unzip-help">
-	  	<i class="fa-solid fa-life-ring d-block d-md-inline-block  my-2 my-md-0"></i> 文件解压教程
+	<button type="button" class="btn btn-sm btn-secondary w-100" data-bs-toggle="collapse" data-bs-target="#unzip-help">
+	  	<i class="fa-solid fa-life-ring d-none d-md-inline-block my-2 my-md-0"></i> 文件解压教程
 	</button>
 	';
 
     $report_button = '
-	<button type="button" class="btn btn-outline-secondary open-post-report border-0 w-100"  data-post-id="' . $post_id . '">
-	    <i class="fa-solid fa-flag d-block d-md-inline-block  my-2 my-md-0" aria-hidden="true"></i> 
+	<button type="button" class="btn btn-sm btn-secondary w-100 open-post-report"  data-post-id="' . $post_id . '">
+        <i class="fa-solid fa-paper-plane d-none d-md-inline-block my-2 my-md-0"></i>
 	  	<span>
 	  	    稿件投诉
 	  	</span>
@@ -2253,39 +2261,42 @@ function post_functional_box()
 
 
     return <<<HTML
+        <div class="border-top border-bottom">
+            <div class="row py-3 g-3 ">
+                <div class="col-12 col-xxl-4">
 
-        <div class=" row row-cols-2 row-cols-md-3 row-cols-xl-6 text-center p-2">
-            <div class="col">
-                <div class="p-1">
-                    {$like_button}
+                        {$like_button}
+            
                 </div>
-            </div>
-            <div class="col">
-                <div class="p-1">
-                    {$favorite_button}
+                <div class="col">
+                    
+                        {$favorite_button}
+            
                 </div>
-            </div>
-            <div class="col">
-                 <div class="p-1">
-                     {$sharing_box}
+                <div class="col">
+                    
+                        {$sharing_box}
+                
                 </div>
-            </div>
-             <div class="col">
-                <div class="p-1">
-                    {$fail_down_button} 
+                <div class="col">
+                
+                        {$fail_down_button} 
+                
                 </div>
-            </div>
-            <div class="col">
-                <div class="p-1">
-                    {$down_suggestion_button}
-                </div>
-            </div>
-            <div class="col">
-                <div class="p-1">
+                <div class="m-0 d-lg-none"></div>
+                <div class="col">
+                
                     {$report_button}
+        
                 </div>
-             </div>
-		</div>
+                <div class="col">
+                    
+                        {$down_suggestion_button}
+                
+                </div>
+              
+            </div>
+        </div>
         {$unzip_help_text}
 HTML;
 }
@@ -2309,7 +2320,7 @@ function print_download_help()
 function print_unzip_help()
 {
     return '
-	<div class="collapse mt-2" id="unzip-help" style=" font-size: 1.25rem;">
+	<div class="collapse mt-2" id="unzip-help">
 		<div  class="card card-body">
 			<h4>文件解压教程</h4>
 			<p class="my-1">首先准备好解压工具, 电脑端安装 <b>WINRAR</b>, 手机端安装 <b>Zarchiver</b> 或者 <b>ES文件管理器</b>,  就基本不会解压错误，<span class="text-danger">不要用那些乱报错的阴间解压软件!!! 如果还去用, 报错了就不要在评论里抱怨!!!</span></p>

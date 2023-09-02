@@ -31,15 +31,15 @@ class MyToast {
         //根据类型配置图标和颜色
         switch (this.type) {
             case TOAST_TYPE.error :
-                icon = 'fas fa-exclamation-triangle';
+                icon = 'fa-solid fa-exclamation-triangle';
                 colorClass = 'text-danger';
                 break;
             case TOAST_TYPE.success :
-                icon = 'fas fa-check-circle';
+                icon = 'fa-solid fa-check-circle';
                 colorClass = 'text-miku';
                 break;
             case TOAST_TYPE.continue:
-                icon = 'fas fa-spinner fa-spin';
+                icon = 'fa-solid fa-spinner fa-spin';
                 colorClass = 'text-primary';
         }
 

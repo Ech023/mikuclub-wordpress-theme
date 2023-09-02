@@ -1,3 +1,7 @@
+/// <reference path="constant.js" />
+/// <reference path="function.js" />
+/// <reference path="function-ajax.js" />
+
 /**.
  * 基础JS函数
  */
@@ -41,8 +45,8 @@ const PLAY_TYPE = {
 //本地存储键名
 const LOCAL_STORAGE_KEY = {
     postLike: 'count_like',
-    postUnLikes: 'count_unlike',
-    postFavorites: 'count_favorite',
+    postUnLike: 'count_unlike',
+    //postFavorites: 'count_favorite',
     postFailTimes: 'fail_time',
     postShares: 'count_sharing',
     postHistory: 'post_history',
@@ -159,6 +163,14 @@ function isNotEmptyArray(object) {
 
 }
 
+/**
+ * 判断是否为函数
+ * @param {*} variable 
+ * @returns {boolean}
+ */
+function isFunction(variable) {
+    return typeof variable === 'function';
+}
 /**
  * 自定义时间格式化函数
  * @param fmt
@@ -504,15 +516,84 @@ function deleteArrayElementFromLocalStorage(storageKey, value) {
 }
 
 /**
- * 通过 $.ajax 发送请求
+ * 发送GET请求
  * @param {string} url 
  * @param {object} data 
- * @param {string} type 
+ * @param {function|null} pre_callback 
  * @param {function|null} done_callback 
  * @param {function|null} fail_callback 
  * @param {function|null} always_callback 
  */
-function request(url, data, type = HTTP_METHOD.post, done_callback = null, fail_callback = defaultFailCallback, always_callback = null) {
+function send_get(url, data, pre_callback = null, done_callback = null, fail_callback = defaultFailCallback, always_callback = null) {
+    send_request(
+        HTTP_METHOD.get,
+        url,
+        data,
+        pre_callback,
+        done_callback,
+        fail_callback,
+        always_callback
+    );
+}
+
+/**
+ * 发送POST请求
+ * @param {string} url 
+ * @param {object} data 
+ * @param {function|null} pre_callback 
+ * @param {function|null} done_callback 
+ * @param {function|null} fail_callback 
+ * @param {function|null} always_callback 
+ */
+function send_post(url, data, pre_callback = null, done_callback = null, fail_callback = defaultFailCallback, always_callback = null) {
+    send_request(
+        HTTP_METHOD.post,
+        url,
+        data,
+        pre_callback,
+        done_callback,
+        fail_callback,
+        always_callback
+    );
+}
+
+/**
+ * 发送DELETE请求
+ * @param {string} url 
+ * @param {object} data 
+ * @param {function|null} pre_callback 
+ * @param {function|null} done_callback 
+ * @param {function|null} fail_callback 
+ * @param {function|null} always_callback 
+ */
+function send_delete(url, data, pre_callback = null, done_callback = null, fail_callback = defaultFailCallback, always_callback = null) {
+    send_request(
+        HTTP_METHOD.delete,
+        url,
+        data,
+        pre_callback,
+        done_callback,
+        fail_callback,
+        always_callback
+    );
+}
+
+/**
+ * 通过 $.ajax 发送请求
+ * @param {string} type 
+ * @param {string} url 
+ * @param {object} data 
+ * @param {function|null} pre_callback 
+ * @param {function|null} done_callback 
+ * @param {function|null} fail_callback 
+ * @param {function|null} always_callback 
+ */
+function send_request(type, url, data, pre_callback = null, done_callback = null, fail_callback = defaultFailCallback, always_callback = null) {
+
+    //如果存在前置回调
+    if (isFunction(pre_callback)) {
+        pre_callback();
+    }
 
     $.ajax({
         url,

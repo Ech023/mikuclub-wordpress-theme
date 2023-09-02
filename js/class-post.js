@@ -97,7 +97,7 @@ class MyPostSlim {
                         
                         <div class="position-absolute end-0 bottom-0 me-1 mb-1">
                             <div class="right-badge bg-transparent-half text-light rounded small p-1">
-                                <i class="fas fa-eye"></i> ${this.post_views}
+                                <i class="fa-solid fa-eye"></i> ${this.post_views}
                             </div>
                         </div>
                   
@@ -128,10 +128,10 @@ class MyPostSlim {
                             
                             
                             <div class="small d-none d-sm-block">
-                                    <span class="me-1"><i class="fas fa-clock"></i> ${this.post_date} </span>
-                                    <span class="me-1"><i class="fas fa-comments"></i> ${this.post_comments}</span>
-                                    <span class="me-1 d-none"><i class="fas fa-star"></i> ${this.post_likes}</span>
-                                    <span class="d-none"><i class="fas fa-heart"></i> ${this.post_favorites}</span>
+                                    <span class="me-1"><i class="fa-solid fa-clock"></i> ${this.post_date} </span>
+                                    <span class="me-1"><i class="fa-solid fa-comments"></i> ${this.post_comments}</span>
+                                    <span class="me-1 d-none"><i class="fa-solid fa-star"></i> ${this.post_likes}</span>
+                                    <span class="d-none"><i class="fa-solid fa-heart"></i> ${this.post_favorites}</span>
                             </div>
                             
         

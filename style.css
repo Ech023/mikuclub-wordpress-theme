@@ -373,8 +373,9 @@ article.article-content .content-part a {
 
 /*文章页 工具栏颜色*/
 .article-content .functional-part {
+    /*
     background-color: var(--secondary-bg-color);
-
+    */
 }
 
 

@@ -57,7 +57,7 @@ class MyPrivateMessage {
                                 <span class="mx-2 display-name">${this.author.display_name}</span>
                             </div>
                             <div class="col-6 col-md-2">
-                                <i class="fas fa-clock"></i> ${this.date}
+                                <i class="fa-solid fa-clock"></i> ${this.date}
                             </div>
                             <div class="col-9 col-md-6 text-truncate mt-2 mt-md-0">
                                 ${this.content} 
@@ -66,7 +66,7 @@ class MyPrivateMessage {
                                 ${unread}
                             </div>
                             <div class="col-1">
-                                <i class="fas fa-chevron-right"></i>
+                                <i class="fa-solid fa-chevron-right"></i>
                             </div>
 
                     </div>
@@ -180,7 +180,7 @@ class MyCommentReply {
                                 <span class="mx-2 display-name">${this.author.display_name}</span>
                             </div>
                             <div class="col-6 col-md-2">
-                                <i class="fas fa-clock"></i> ${this.comment_date}
+                                <i class="fa-solid fa-clock"></i> ${this.comment_date}
                             </div>
                             <div class="col-9 col-md-6 text-truncate mt-2 mt-md-0">
                                 <div class="">${this.comment_content}</div>
@@ -190,7 +190,7 @@ class MyCommentReply {
                                 ${unread}
                             </div>
                             <div class="col-1">
-                                <i class="fas fa-chevron-right"></i>
+                                <i class="fa-solid fa-chevron-right"></i>
                             </div>
                            ${parentPostLink}
                     </div>
@@ -261,7 +261,7 @@ class MyForumReply {
                                 <span class="mx-2 display-name">${this.post_author.display_name}</span>
                             </div>
                            <div class="col-6 col-md-2">
-                                <i class="fas fa-clock"></i> ${this.post_date}
+                                <i class="fa-solid fa-clock"></i> ${this.post_date}
                             </div>
                              <div class="col-9 col-md-6 text-truncate mt-2 mt-md-0">
                                 <div class="">${this.post_content}</div>
@@ -271,7 +271,7 @@ class MyForumReply {
                                 ${unread}
                             </div>
                             <div class="col-1">
-                                <i class="fas fa-chevron-right"></i>
+                                <i class="fa-solid fa-chevron-right"></i>
                             </div>
                             ${parentPostLink}
 

@@ -156,7 +156,7 @@ HTML;
                             <!-- 评价 -->
                             <div class="post-feedback ">
                                 <i class="fa-solid fa-square-poll-vertical"></i>
-                                <span class="fw-bold">
+                                <span>
                                     <?php echo Post_feedback_rank::get_rank($post_like, $post_unlike) ?>
                                 </span>
 
@@ -168,7 +168,7 @@ HTML;
                             <!-- 文章点赞 -->
                             <div class="post-likes">
                                 <i class="fa-solid fa-thumbs-up" aria-hidden="true"></i>
-                                <?php echo (float)$post_like; ?> 点赞
+                                <?php echo (float)$post_like; ?> 好评
                             </div>
                         </div>
                         <div class="col-auto ">

@@ -64,7 +64,7 @@ function setup_front_script()
         [
             'name' => 'style',
             'path' => '/style.css',
-            'version' => '3.11'
+            'version' => '3.12'
         ],
         //论坛CSS
         [
@@ -105,25 +105,32 @@ function setup_front_script()
 
     $custom_scripts = [
 
+         //JS变量
+         [
+            'name' => 'js-constant',
+            'path' => '/js/constant.js',
+            'version' => '1.00',
+            'in_footer' => false,
+        ],
         //自定义JS 小弹窗类
         [
             'name' => 'js-class-toast',
             'path' => '/js/class-toast.js',
-            'version' => '1.05',
+            'version' => '1.06',
             'in_footer' => false,
         ],
         //自定义JS 模态窗类
         [
             'name' => 'js-class-modal',
             'path' => '/js/class-modal.js',
-            'version' => '1.05',
+            'version' => '1.06',
             'in_footer' => false,
         ],
         //自定义JS 文章类
         [
             'name' => 'js-class-post',
             'path' => '/js/class-post.js',
-            'version' => '1.09',
+            'version' => '1.10',
             'in_footer' => false,
         ],
         //自定义JS 用户类
@@ -137,14 +144,14 @@ function setup_front_script()
         [
             'name' => 'js-class-message',
             'path' => '/js/class-message.js',
-            'version' => '1.04',
+            'version' => '1.05',
             'in_footer' => false,
         ],
         //自定义JS 评论类
         [
             'name' => 'js-class-comment',
             'path' => '/js/class-comment.js',
-            'version' => '1.19',
+            'version' => '1.20',
             'in_footer' => false,
         ],
         //自定义JS 评论类
@@ -158,7 +165,7 @@ function setup_front_script()
         [
             'name' => 'js-base',
             'path' => '/js/base.js',
-            'version' => '1.22',
+            'version' => '1.23',
             'in_footer' => false,
         ],
         //名言名句变量
@@ -173,14 +180,14 @@ function setup_front_script()
         [
             'name' => 'js-function',
             'path' => '/js/function.js',
-            'version' => '1.48',
+            'version' => '1.49',
             'in_footer' => false,
         ],
         //通用JS AJAX的函数
         [
             'name' => 'js-function-ajax',
             'path' => '/js/function-ajax.js',
-            'version' => '1.17',
+            'version' => '1.18',
             'in_footer' => false,
         ],
         //JS 页面加载完成后自动运行
@@ -319,9 +326,10 @@ function setup_front_script()
         //添加nonce数据, 来支持调用rest api
         'nonce' => wp_create_nonce('wp_rest'),
         'user_id' => get_current_user_id(),
-        MY_USER_BLACK_LIST => get_user_black_list(get_current_user_id()),
         'is_admin' => current_user_is_admin(),
         'is_premium_user' => current_user_can_publish_posts(),
+        MY_USER_BLACK_LIST => get_user_black_list(get_current_user_id()),
+        MY_USER_FAVORITE_POST_LIST => get_user_favorite(),
     ];
     //如果是文章页
     if (is_single())
@@ -339,7 +347,8 @@ function setup_front_script()
 
 
 
-    wp_localize_script('js-base', 'MY_SITE', $dynamic_variable);
+    //wp_localize_script('js-base', 'MY_SITE', $dynamic_variable);
+    wp_add_inline_script('js-base', 'const MY_SITE ='.json_encode($dynamic_variable).';', 'before');
 }
 
 add_action('wp_enqueue_scripts', 'setup_front_script');

@@ -49,13 +49,13 @@ class MyComment {
     toHTML() {
 
         //判断当前用户是否是管理员
-        const is_admin = parseInt(MY_SITE.is_admin) ? true : false;
+        const is_admin = MY_SITE.is_admin;
         //判断当前用户是否是评论人
-        const is_comment_author = parseInt(MY_SITE.user_id) === parseInt(this.author.id)
+        const is_comment_author = MY_SITE.user_id === parseInt(this.author.id)
         //判断当前用户是否是文章的作者
         const is_post_author = parseInt(MY_SITE.post_author_id) === parseInt(this.author.id);
         //判断当前用户是否是高级用户 并且是 文章的作者
-        const is_premium_user_and_post_author = parseInt(MY_SITE.is_premium_user) && is_post_author;
+        const is_premium_user_and_post_author = MY_SITE.is_premium_user && is_post_author;
 
 
 
@@ -159,7 +159,7 @@ class MyComment {
             deviceInfo += `<span class="m-1"><i class="${systemIcon}"></i> ${this.comment_agent.os}</span>`;
         }
         if (this.comment_agent.device) {
-            deviceInfo += `<span class="m-1"><i class="fas fa-mobile-alt"></i> ${this.comment_agent.device}</span>`;
+            deviceInfo += `<span class="m-1"><i class="fa-solid fa-mobile-alt"></i> ${this.comment_agent.device}</span>`;
         }
 
         //输出评论点赞功能
@@ -178,14 +178,14 @@ class MyComment {
 
         if (arrayCommentLiked && arrayCommentLiked.includes(parseInt(this.comment_id))) {
             addCommentLikesButtonClass = 'text-miku disabled';
-            addCommentLikesButtonIcon = 'fas fa-thumbs-up';
+            addCommentLikesButtonIcon = 'fa-solid fa-thumbs-up';
         }
 
         //如果用户已经点踩过 就更改图标样式 和 注销踩按钮
         let arrayCommentDisLiked = getLocalStorage(LOCAL_STORAGE_KEY.commentDislikes);
         if (arrayCommentDisLiked && arrayCommentDisLiked.includes(parseInt(this.comment_id))) {
             deleteCommentLikesButtonClass = 'text-miku disabled';
-            deleteCommentLikesButtonIcon = 'fas fa-thumbs-down';
+            deleteCommentLikesButtonIcon = 'fa-solid fa-thumbs-down';
         }
 
         //如果评论作者和当前用户是同个人 禁用点赞功能, 避免点赞自己

@@ -212,9 +212,11 @@ class MyReportModal extends MyModal {
         this.modalClass = 'report-modal';
 
         let reportType = [
-            '不提供密码-强制要求加群或加微信',
-            '提供的资源和描述不符',
-            '侵权-禁转',
+            '不提供密码-强制加群/关注',
+            '下载和描述不符',
+            '收费',
+            '侵权/禁转',
+            '暴力/血腥内容',
             '其他'
         ];
 
@@ -243,7 +245,7 @@ class MyReportModal extends MyModal {
                         <small class="form-text text-muted">如果只是下载地址失效了, 请点击反馈失效按钮, 不需要提交投诉</small>
                      </div>
                       <div class="mb-3">
-                        <small class="form-text text-muted">如果是密码错误, 请自行查看页面上的文件解压教程</small>
+                        <small class="form-text text-muted">如果是密码错误, 请先查看页面上的文件解压教程</small>
                      </div>
                     <div class="mb-3">
                         <label class="form-label">

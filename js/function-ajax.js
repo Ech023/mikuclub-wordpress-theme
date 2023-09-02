@@ -184,9 +184,9 @@ function sendPrivateMessage(event) {
 /**
  * 检测百度分享链接有效性
  * @param {string} link
- * @param {function} isValidCallback
- * @param {function} isInvalidCallback
- * @param {function} errorCallback
+ * @param {Function} isValidCallback
+ * @param {Function} isInvalidCallback
+ * @param {Function} errorCallback
  */
 function checkBaiduPanValidity(link, isValidCallback, isInvalidCallback, errorCallback) {
 
