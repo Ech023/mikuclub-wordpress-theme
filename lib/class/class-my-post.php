@@ -1,5 +1,6 @@
 <?php
 
+namespace mikuclub;
 
 /**
  * 自定义文章简化版模型
@@ -10,7 +11,6 @@ if ( ! class_exists( 'My_Post_Base_Model' )
      && ! class_exists( 'My_Post_Hot' )
      && ! class_exists( 'My_Post_Sticky' )
      && ! class_exists( 'My_Post_Slim' )
-     && ! class_exists( 'My_BBpress_Reply' )
 
 
 ) {
@@ -108,8 +108,8 @@ if ( ! class_exists( 'My_Post_Base_Model' )
 			$this->post_cat_name = get_cat_name( $this->post_cat_id );
 			$this->post_cat_href = get_category_link( $this->post_cat_id );
 
-			$this->post_date = get_the_date( MY_DATE_FORMAT_SHORT, $post );
-			$this->post_modified_date = get_the_modified_date( MY_DATE_FORMAT_SHORT, $post );
+			$this->post_date = get_the_date( Config::DATE_FORMAT_SHORT, $post );
+			$this->post_modified_date = get_the_modified_date( Config::DATE_FORMAT_SHORT, $post );
 
 		}
 
@@ -117,41 +117,6 @@ if ( ! class_exists( 'My_Post_Base_Model' )
 	}
 
 
-	/**
-	 * 论坛回复模型
-	 */
-	class My_BBpress_Reply {
-
-		public $id;
-		public $post_author;
-		public $post_date;
-		public $post_content;
-		public $post_parent;
-		public $parent_post_title;
-		public $parent_post_href;
-		public $parent_user_read;
-
-		public function __construct( $result_object ) {
-
-
-			$this->id           = $result_object->ID;
-			$this->post_author  = get_custom_author( $result_object->post_author  );
-			$this->post_content = $result_object->post_content;
-			$this->post_date    = get_the_modified_time( MY_DATE_FORMAT_SHORT, $result_object->ID );
-
-			$this->parent_post_title = get_the_title( $result_object->post_parent );
-			$this->parent_post_href  = get_permalink( $result_object->post_parent );
-
-			//获取未读消息标记
-			$this->parent_user_read = get_post_meta( $result_object->ID, BBPRESS_TOPIC_AUTHOR_READ, true );
-			if ( $this->parent_user_read === '' ) {
-				$this->parent_user_read = get_post_meta( $result_object->ID, BBPRESS_REPLY_AUTHOR_READ, true );
-			}
-
-
-		}
-
-	}
 
 	/**
 	 * wpforo论坛主题

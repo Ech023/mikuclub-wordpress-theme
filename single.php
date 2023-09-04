@@ -1,6 +1,6 @@
 <?php
 
-use mikuclub\lib\Post_feedback_rank;
+use mikuclub\Post_Feedback_Rank;
 
 get_header();
 
@@ -141,12 +141,12 @@ HTML;
                         <div class="col-auto d-none d-sm-block">
                             <!-- 文章时间 -->
                             <div class="post-date ">
-                                发布时间 <?php echo get_the_date(MY_DATE_FORMAT); ?>
+                                发布时间 <?php echo get_the_date(Config::DATE_FORMAT); ?>
                             </div>
                         </div>
                         <div class="col-auto ">
                             <div class="post-modified-date ">
-                                更新时间 <?php echo get_the_modified_date(MY_DATE_FORMAT); ?>
+                                更新时间 <?php echo get_the_modified_date(Config::DATE_FORMAT); ?>
                             </div>
                         </div>
 
@@ -157,7 +157,7 @@ HTML;
                             <div class="post-feedback ">
                                 <i class="fa-solid fa-square-poll-vertical"></i>
                                 <span>
-                                    <?php echo Post_feedback_rank::get_rank($post_like, $post_unlike) ?>
+                                    <?php echo Post_Feedback_Rank::get_rank($post_like, $post_unlike) ?>
                                 </span>
 
                             </div>

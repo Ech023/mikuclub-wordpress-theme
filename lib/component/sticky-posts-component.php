@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 /**
  * 幻灯片 组件
  * @return string

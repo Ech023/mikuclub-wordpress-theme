@@ -78,9 +78,9 @@ else
         echo '<meta name="robots" content="noindex,nofollow">';
     }
     ?>
-    <link rel="icon" href="https://<?php echo CDN_MIKUCLUB_FUN ?>/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://<?php echo Web_Domain::CDN_MIKUCLUB_FUN ?>/favicon.ico" type="image/x-icon">
     <!--加载图标-->
-    <link rel="shortcut icon" href="https://<?php echo CDN_MIKUCLUB_FUN ?>/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://<?php echo Web_Domain::CDN_MIKUCLUB_FUN ?>/favicon.ico" type="image/x-icon">
     <!--加载图标2-->
 
     <title>
@@ -134,7 +134,7 @@ else
 
     <div class="container-fluid px-0">
 
-        <header id="header" class="header mx-auto" style="">
+        <header id="header" class="header mx-auto">
 
             <div class="top-menu-bar row mx-0 px-3 px-sm-5">
 

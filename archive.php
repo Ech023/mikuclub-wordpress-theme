@@ -1,4 +1,10 @@
-<?php get_header(); ?>
+<?php
+
+use function mikuclub\post_list_component;
+
+get_header(); 
+
+?>
 
     <div class="content">
         <header class="archive-header">

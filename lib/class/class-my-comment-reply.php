@@ -1,5 +1,6 @@
 <?php
 
+namespace mikuclub;
 
 /**
  * 自定义评论回复模型
@@ -50,7 +51,7 @@ if ( ! class_exists( 'My_Comment_Reply' )
 				$this->comment_parent  = $comment->comment_parent;
 				$this->comment_post_id = $comment->comment_post_ID;
 
-				$this->comment_parent_user_read = get_comment_meta( $comment->comment_ID, COMMENT_PARENT_USER_READ, true );
+				$this->comment_parent_user_read = get_comment_meta( $comment->comment_ID, Comment_Meta::COMMENT_PARENT_USER_READ, true );
 				$this->comment_post_title       = get_the_title( $comment->comment_post_ID );
 				$this->comment_post_href        = get_permalink( $comment->comment_post_ID );
 

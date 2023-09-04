@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 
 /**
  * 增加文章查看次数
@@ -318,21 +318,21 @@ function api_custom_post_metadata($data)
 	$metadata = get_post_meta($post_id, '', false);
 
 	//如果未设置
-	if (!isset($metadata[POST_THUMBNAIL_SRC]))
+	if (!isset($metadata[Post_Meta::POST_THUMBNAIL_SRC]))
 	{
-		$metadata[POST_THUMBNAIL_SRC] = [];
+		$metadata[Post_Meta::POST_THUMBNAIL_SRC] = [];
 	}
-	if (empty($metadata[POST_THUMBNAIL_SRC]) || empty($metadata[POST_THUMBNAIL_SRC][0]))
+	if (empty($metadata[Post_Meta::POST_THUMBNAIL_SRC]) || empty($metadata[Post_Meta::POST_THUMBNAIL_SRC][0]))
 	{
 		//重新获取预览图地址
-		$metadata[POST_THUMBNAIL_SRC][0] = get_thumbnail_src($post_id);
+		$metadata[Post_Meta::POST_THUMBNAIL_SRC][0] = get_thumbnail_src($post_id);
 	}
 
 	//重新获取一遍各个大小的预览图片地址数组
 	//因为默认批量获取 没有对数组进行反反序列化
-	$metadata[POST_IMAGES_THUMBNAIL_SRC] = get_images_thumbnail_size($post_id);
-	$metadata[POST_IMAGES_SRC]           = get_images_large_size($post_id);
-	$metadata[POST_IMAGES_FULL_SRC]      = get_images_full_size($post_id);
+	$metadata[Post_Meta::POST_IMAGES_THUMBNAIL_SRC] = get_images_thumbnail_size($post_id);
+	$metadata[Post_Meta::POST_IMAGES_SRC]           = get_images_large_size($post_id);
+	$metadata[Post_Meta::POST_IMAGES_FULL_SRC]      = get_images_full_size($post_id);
 
 
 	/*
@@ -340,23 +340,23 @@ function api_custom_post_metadata($data)
 	if ($post_id % 2 === 0)
 	{
 		//给app的大图 使用5号CDN虚拟机
-		$metadata[POST_IMAGES_SRC]           = fix_image_domain_with_file_6($metadata[POST_IMAGES_SRC]);
+		$metadata[Post_Meta::POST_IMAGES_SRC]           = fix_image_domain_with_file_6($metadata[Post_Meta::POST_IMAGES_SRC]);
 	}*/
 
-	//$metadata[POST_THUMBNAIL_SRC][0] = fix_image_domain_with_file_6($metadata[POST_THUMBNAIL_SRC][0]);
+	//$metadata[Post_Meta::POST_THUMBNAIL_SRC][0] = fix_image_domain_with_file_6($metadata[Post_Meta::POST_THUMBNAIL_SRC][0]);
 
 
 
 
-	//$metadata[POST_IMAGES_SRC] = str_replace($array_search, $replace, $metadata[POST_IMAGES_SRC]);
-	//$metadata[POST_IMAGES_FULL_SRC] = str_replace($array_search, $replace, $metadata[POST_IMAGES_FULL_SRC]);
+	//$metadata[Post_Meta::POST_IMAGES_SRC] = str_replace($array_search, $replace, $metadata[Post_Meta::POST_IMAGES_SRC]);
+	//$metadata[Post_Meta::POST_IMAGES_FULL_SRC] = str_replace($array_search, $replace, $metadata[Post_Meta::POST_IMAGES_FULL_SRC]);
 
 
 	//替换为 suger虚拟机CDN2号的地址
-	//$metadata[POST_THUMBNAIL_SRC] = str_replace('www.mikuclub.cc', 'static.mikuclub.fun', $metadata[POST_THUMBNAIL_SRC] );
-	//$metadata[POST_IMAGES_THUMBNAIL_SRC] = str_replace('www.mikuclub.cc', 'static.mikuclub.fun', $metadata[POST_IMAGES_THUMBNAIL_SRC] );
-	//$metadata[POST_IMAGES_SRC] = str_replace('www.mikuclub.cc', 'static.mikuclub.fun', $metadata[POST_IMAGES_SRC] );
-	//$metadata[POST_IMAGES_FULL_SRC] = str_replace('www.mikuclub.cc', 'static.mikuclub.fun', $metadata[POST_IMAGES_FULL_SRC] );
+	//$metadata[Post_Meta::POST_THUMBNAIL_SRC] = str_replace('www.mikuclub.cc', 'static.mikuclub.fun', $metadata[Post_Meta::POST_THUMBNAIL_SRC] );
+	//$metadata[Post_Meta::POST_IMAGES_THUMBNAIL_SRC] = str_replace('www.mikuclub.cc', 'static.mikuclub.fun', $metadata[Post_Meta::POST_IMAGES_THUMBNAIL_SRC] );
+	//$metadata[Post_Meta::POST_IMAGES_SRC] = str_replace('www.mikuclub.cc', 'static.mikuclub.fun', $metadata[Post_Meta::POST_IMAGES_SRC] );
+	//$metadata[Post_Meta::POST_IMAGES_FULL_SRC] = str_replace('www.mikuclub.cc', 'static.mikuclub.fun', $metadata[Post_Meta::POST_IMAGES_FULL_SRC] );
 
 
 

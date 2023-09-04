@@ -1,6 +1,6 @@
 <?php
 
-use mikuclub\lib\Post_feedback_rank;
+namespace mikuclub;
 
 /**
  * 获取文章点击数
@@ -12,7 +12,7 @@ use mikuclub\lib\Post_feedback_rank;
 function get_post_views($post_id)
 {
 
-    $views = get_post_meta($post_id, POST_VIEWS, true);
+    $views = get_post_meta($post_id, Post_Meta::POST_VIEWS, true);
     if ($views === '')
     {
         $views = 0;
@@ -49,7 +49,7 @@ function add_post_views($post_id, $view_number = null)
     //$rand_value = 1;
     //增加点击数
     //$views += $rand_value;
-    update_post_meta($post_id, POST_VIEWS, $views);
+    update_post_meta($post_id, Post_Meta::POST_VIEWS, $views);
 
     return $views;
 }
@@ -65,7 +65,7 @@ function add_post_views($post_id, $view_number = null)
 function get_post_like($post_id)
 {
 
-    $count_like = get_post_meta($post_id, POST_LIKE, true);
+    $count_like = get_post_meta($post_id, Post_Meta::POST_LIKE, true);
     //如果没有, 则初试化为0
     if ($count_like === "")
     {
@@ -90,7 +90,7 @@ function add_post_like($post_id)
     //点赞数+1
     $count++;
     //保存新点赞数
-    update_post_meta($post_id, POST_LIKE, $count);
+    update_post_meta($post_id, Post_Meta::POST_LIKE, $count);
 
     //增加用户点赞数 (只对登陆用户有效)
     add_user_like_count(get_current_user_id());
@@ -122,7 +122,7 @@ function delete_post_like($post_id)
     }
 
     //保存新点赞数
-    update_post_meta($post_id, POST_LIKE, $count);
+    update_post_meta($post_id, Post_Meta::POST_LIKE, $count);
 
     //减少用户点赞数 (只对登陆用户有效)
     delete_user_like_count(get_current_user_id());
@@ -140,7 +140,7 @@ function delete_post_like($post_id)
  */
 function get_post_unlike($post_id)
 {
-    $count_unlike = get_post_meta($post_id, POST_UNLIKE, true) ?: 0;
+    $count_unlike = get_post_meta($post_id, Post_Meta::POST_UNLIKE, true) ?: 0;
 
     return $count_unlike;
 }
@@ -159,7 +159,7 @@ function add_post_unlike($post_id)
     //点赞数+1
     $count++;
     //保存新点赞数
-    update_post_meta($post_id, POST_UNLIKE, $count);
+    update_post_meta($post_id, Post_Meta::POST_UNLIKE, $count);
 
     //增加用户评价数 (只对登陆用户有效)
     add_user_like_count(get_current_user_id());
@@ -183,7 +183,7 @@ function delete_post_unlike($post_id)
     $count = $count > 0 ? $count - 1 : 0;
 
     //保存新差评数
-    update_post_meta($post_id, POST_UNLIKE, $count);
+    update_post_meta($post_id, Post_Meta::POST_UNLIKE, $count);
 
     //减少用户评价数 (只对登陆用户有效)
     delete_user_like_count(get_current_user_id());
@@ -205,7 +205,7 @@ function delete_post_unlike($post_id)
  */
 function get_post_fail_times($post_id)
 {
-    $fail_times = get_post_meta($post_id, POST_FAIL_TIMES, true);
+    $fail_times = get_post_meta($post_id, Post_Meta::POST_FAIL_TIME, true);
     if ($fail_times === '')
     {
         $fail_times = 0;
@@ -225,7 +225,7 @@ function add_post_fail_times($post_id)
 {
     $fail_times = get_post_fail_times($post_id);
     $fail_times++;
-    update_post_meta($post_id, POST_FAIL_TIMES, $fail_times);
+    update_post_meta($post_id, Post_Meta::POST_FAIL_TIME, $fail_times);
 
     return $fail_times;
 }
@@ -240,7 +240,7 @@ function add_post_fail_times($post_id)
  */
 function update_post_fail_times($post_id, $value)
 {
-    update_post_meta($post_id, POST_FAIL_TIMES, $value);
+    update_post_meta($post_id, Post_Meta::POST_FAIL_TIME, $value);
 
     return $value;
 }
@@ -265,7 +265,7 @@ function get_post_comments($post_id = 0)
 function update_post_comments($post_id = 0)
 {
     $comment_count = get_comments_number($post_id);
-    update_post_meta($post_id, POST_COMMENTS, $comment_count);
+    update_post_meta($post_id, Post_Meta::POST_COMMENT_COUNT, $comment_count);
 }
 
 /**
@@ -278,7 +278,7 @@ function update_post_comments($post_id = 0)
 function get_post_shares($post_id)
 {
 
-    $count = get_post_meta($post_id, POST_SHARES, true);
+    $count = get_post_meta($post_id, Post_Meta::POST_SHARE_COUNT, true);
     if ($count === '')
     {
         $count = 0;
@@ -302,7 +302,7 @@ function add_post_shares($post_id)
     //分享数+1
     $count++;
     //保存新分享数
-    update_post_meta($post_id, POST_SHARES, $count);
+    update_post_meta($post_id, Post_Meta::POST_SHARE_COUNT, $count);
 
     return $count;
 }
@@ -317,7 +317,7 @@ function add_post_shares($post_id)
 function get_post_favorites($post_id)
 {
 
-    $count = get_post_meta($post_id, POST_FAVORITES, true);
+    $count = get_post_meta($post_id, Post_Meta::POST_FAVORITE_COUNT, true);
     //如果收藏数据为空
     if ($count === '')
     {
@@ -342,7 +342,7 @@ function add_post_favorites($post_id)
     //+1
     $count++;
     //保存
-    update_post_meta($post_id, POST_FAVORITES, $count);
+    update_post_meta($post_id, Post_Meta::POST_FAVORITE_COUNT, $count);
 
     return $count;
 }
@@ -372,7 +372,7 @@ function delete_post_favorites($post_id)
     }
 
     //保存
-    update_post_meta($post_id, POST_FAVORITES, $count);
+    update_post_meta($post_id, Post_Meta::POST_FAVORITE_COUNT, $count);
 
     return $count;
 }
@@ -394,7 +394,7 @@ function get_post_category_ids($post_id)
         return $category_ids;
     }
 
-    $category_ids = get_post_meta($post_id, POST_CATS, true);
+    $category_ids = get_post_meta($post_id, Post_Meta::POST_CATS, true);
     //如果数值为空 重新计算分类数组
     if (empty($category_ids))
     {
@@ -423,7 +423,7 @@ function set_post_category_ids($post_id)
         return $element->term_id;
     }, $categories);
 
-    update_post_meta($post_id, POST_CATS, $category_ids);
+    update_post_meta($post_id, Post_Meta::POST_CATS, $category_ids);
 
     return $category_ids;
 }
@@ -440,7 +440,7 @@ function get_post_main_cat_id($post_id)
 {
 
     //获取主分类
-    $main_cat_id = get_post_meta($post_id, POST_MAIN_CAT, true);
+    $main_cat_id = get_post_meta($post_id, Post_Meta::POST_MAIN_CAT, true);
     //如果主分类未设置
     if ($main_cat_id === '')
     {
@@ -482,7 +482,7 @@ function set_post_main_cat_id($post_id)
     if ($main_cat_id)
     {
         //保存
-        update_post_meta($post_id, POST_MAIN_CAT, $main_cat_id);
+        update_post_meta($post_id, Post_Meta::POST_MAIN_CAT, $main_cat_id);
     }
 
     return $main_cat_id;
@@ -499,7 +499,7 @@ function get_post_sub_cat_id($post_id)
 {
 
     //获取子分类
-    $sub_cat_id = get_post_meta($post_id, POST_SUB_CAT, true);
+    $sub_cat_id = get_post_meta($post_id, Post_Meta::POST_SUB_CAT, true);
     //如果子分类未设置
     if ($sub_cat_id === '')
     {
@@ -558,7 +558,7 @@ function set_post_sub_cat_id($post_id)
         $sub_cat_id = 0;
     }
     //储存
-    update_post_meta($post_id, POST_SUB_CAT, $sub_cat_id);
+    update_post_meta($post_id, Post_Meta::POST_SUB_CAT, $sub_cat_id);
 
     return $sub_cat_id;
 }
@@ -579,7 +579,7 @@ function get_new_post_count($date)
     $meta_key = 'new_post_count' . $date;
 
     //从缓存列表获取
-    $count = get_cache_meta($meta_key, CACHE_GROUP_USER, EXPIRED_1_DAY);
+    $count = File_Cache::get_cache_meta($meta_key, File_Cache::DIR_USER, Expired::EXP_1_DAY);
 
     //缓存无效的话 重新计算
     if ($count === '')
@@ -607,7 +607,7 @@ function get_new_post_count($date)
         $query = $wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_status='publish' AND post_type='post' AND post_date > %s ", $date_node);
         $count = $wpdb->get_var($query);
 
-        set_cache_meta($meta_key, CACHE_GROUP_USER,  $count);
+        File_Cache::set_cache_meta($meta_key, File_Cache::DIR_USER,  $count);
     }
 
     return $count;
@@ -637,7 +637,7 @@ function get_down_link_from_old_post($post_id)
 
         //提取下载1的地址
         $download = substr($post_content, $index + (strlen('<a class="dl" href="')));
-        $result[POST_DOWN] = stristr($download, '"', true);
+        $result[Post_Meta::POST_DOWN] = stristr($download, '"', true);
 
         //捕捉密码1位置
         $index_pw = stripos($post_content, '<span class="passw">');
@@ -645,7 +645,7 @@ function get_down_link_from_old_post($post_id)
         {
             //提取密码1
             $password_text = substr($post_content, $index_pw + (strlen('<span class="passw">')));
-            $result[POST_PASSWORD] = stristr($password_text, '<', true);
+            $result[Post_Meta::POST_PASSWORD] = stristr($password_text, '<', true);
         }
 
         //搜索第二个下载地址
@@ -655,7 +655,7 @@ function get_down_link_from_old_post($post_id)
         {
             //提取下载2的地址
             $download2 = substr($download, $index2 + (strlen('<a class="dl" href="')));
-            $result[POST_DOWN2] = stristr($download2, "\"", true);
+            $result[Post_Meta::POST_DOWN2] = stristr($download2, "\"", true);
 
             //捕捉密码2位置
             $index_pw2 = stripos($password_text, '<span class="passw">');
@@ -663,7 +663,7 @@ function get_down_link_from_old_post($post_id)
             {
                 //提取密码2
                 $password_text2 = substr($password_text, $index_pw2 + (strlen('<span class="passw">')));
-                $result[POST_PASSWORD2] = stristr($password_text2, '<', true);
+                $result[Post_Meta::POST_PASSWORD2] = stristr($password_text2, '<', true);
             }
         }
     }
@@ -812,13 +812,13 @@ function post_submit_action($post_id)
     } //如果不是高级用户, 让文章变成待审核状态
     else
     {
-        set_post_status($post_id, POST_STATUS_PENDING);
+        set_post_status($post_id, Post_Status::PENDING);
     }
 
     //清空bilibili视频缓存信息
     delete_bilibli_video_cache($post_id);
-    delete_cache_meta(POST_CONTENT_PART_1 . '_' . $post_id, CACHE_GROUP_POST);
-    delete_cache_meta(POST_CONTENT_PART_2 . '_' . $post_id, CACHE_GROUP_POST);
+    File_Cache::delete_cache_meta(File_Cache::POST_CONTENT_PART_1 . '_' . $post_id, File_Cache::DIR_POST);
+    File_Cache::delete_cache_meta(File_Cache::POST_CONTENT_PART_2 . '_' . $post_id, File_Cache::DIR_POST);
 }
 
 add_action('wpuf_add_post_after_insert', 'post_submit_action');
@@ -877,12 +877,12 @@ function post_publish_action($post_id)
             'mycred_default'
         );
 
-        //如果不是
+        //如果不是微博禁发分类
 
-        if (!in_array($main_cat_id, NOT_WEIBO_CATEGORY_IDS))
+        if (!in_array($main_cat_id, Category::get_array_not_weibo()))
         {
             //加入等待新浪微博同步标示
-            update_post_meta($post_id, POST_SHARE_TO_WEIBO, 0);
+            update_post_meta($post_id, Post_Meta::POST_SHARE_TO_WEIBO, 0);
         }
 
         //设置发布过的标识
@@ -901,9 +901,9 @@ function post_publish_action($post_id)
 function delete_bilibli_video_cache($post_id)
 {
 
-    $cache_key = POST_BILIBILI_VIDEO_INFO . '_' . $post_id;
-    delete_post_meta($post_id, POST_BILIBILI_VIDEO_INFO);
-    delete_cache_meta($cache_key, CACHE_GROUP_POST);
+    $cache_key = Post_Meta::POST_BILIBILI_VIDEO_INFO . '_' . $post_id;
+    delete_post_meta($post_id, Post_Meta::POST_BILIBILI_VIDEO_INFO);
+    File_Cache::delete_cache_meta($cache_key, File_Cache::DIR_POST);
 }
 
 
@@ -917,7 +917,7 @@ function delete_bilibli_video_cache($post_id)
 function get_thumbnail_id($post_id)
 {
 
-    $thumbnail_id = get_post_meta($post_id, POST_THUMBNAIL_ID, true);
+    $thumbnail_id = get_post_meta($post_id, Post_Meta::POST_THUMBNAIL_ID, true);
 
     //如果是空的
     if (empty($thumbnail_id))
@@ -948,7 +948,7 @@ function set_thumbnail_id($post_id)
     {
         //更新新的缩微图id
         $thumbnail_id = $image_ids[0];
-        update_post_meta($post_id, POST_THUMBNAIL_ID, $thumbnail_id);
+        update_post_meta($post_id, Post_Meta::POST_THUMBNAIL_ID, $thumbnail_id);
     }
 
     return $thumbnail_id;
@@ -965,7 +965,7 @@ function set_thumbnail_id($post_id)
 function get_thumbnail_src($post_id)
 {
 
-    $thumbnail_src = get_post_meta($post_id, POST_THUMBNAIL_SRC, true);
+    $thumbnail_src = get_post_meta($post_id, Post_Meta::POST_THUMBNAIL_SRC, true);
     //如果没有相关元数据
     if (empty($thumbnail_src))
     {
@@ -994,10 +994,10 @@ function set_thumbnail_src($post_id)
     //获取第一张图片
     $thumbnail_src = $thumbnails_src[0];
 
-    $array_search = array_merge(ARRAY_SITE_DOMAIN, ARRAY_FILE_DOMAIN);
+    $array_search = array_merge(Web_Domain::get_array_site_domain(), Web_Domain::get_array_file_domain());
 
     //获取当前网址
-    $origin_domain = SITE_DOMAIN_MAIN;
+    $origin_domain = Web_Domain::get_main_site_domain();
     //去除协议名称
     $origin_domain = str_replace(['http:', 'https:', '/'], '', $origin_domain);
 
@@ -1006,7 +1006,7 @@ function set_thumbnail_src($post_id)
     $thumbnail_src = str_replace($array_search, $origin_domain, $thumbnail_src);
 
     //更新封面预览图地址
-    update_post_meta($post_id, POST_THUMBNAIL_SRC, $thumbnail_src);
+    update_post_meta($post_id, Post_Meta::POST_THUMBNAIL_SRC, $thumbnail_src);
 
     //返回封面缩微图地址
     return $thumbnail_src;
@@ -1024,19 +1024,19 @@ function set_images_all_sizes_src($post_id)
         //缩微图版本
         [
             'src' => [],
-            'name' => POST_IMAGES_THUMBNAIL_SRC,
+            'name' => Post_Meta::POST_IMAGES_THUMBNAIL_SRC,
             'size' => 'thumbnail',
         ],
         //大图版本
         [
             'src' => [],
-            'name' => POST_IMAGES_SRC,
+            'name' => Post_Meta::POST_IMAGES_SRC,
             'size' => 'large',
         ],
         //原图版本
         [
             'src' => [],
-            'name' => POST_IMAGES_FULL_SRC,
+            'name' => Post_Meta::POST_IMAGES_FULL_SRC,
             'size' => 'full',
         ],
     ];
@@ -1075,8 +1075,8 @@ function set_images_all_sizes_src($post_id)
     {
         //修正储存的图片地址
         $array_src =  $images['src'];
-        $array_search = array_merge(ARRAY_SITE_DOMAIN, ARRAY_FILE_DOMAIN);
-        $origin_domain = SITE_DOMAIN_MAIN;
+        $array_search = array_merge(Web_Domain::get_array_site_domain(), Web_Domain::get_array_file_domain());
+        $origin_domain = Web_Domain::get_main_site_domain();
         $array_src = str_replace($array_search, $origin_domain, $array_src);
 
         update_post_meta($post_id, $images['name'], $array_src);
@@ -1119,8 +1119,8 @@ function set_images_src($post_id, $meta_name, $size)
         $images_src[] = first_img_src($post_id);
     }
 
-    $array_search = array_merge(ARRAY_SITE_DOMAIN, ARRAY_FILE_DOMAIN);
-    $origin_domain = SITE_DOMAIN_MAIN;
+    $array_search = array_merge(Web_Domain::get_array_site_domain(), Web_Domain::get_array_file_domain());
+    $origin_domain = Web_Domain::get_main_site_domain();
     $images_src = str_replace($array_search, $origin_domain, $images_src);
 
     //存储图片地址数组到数据库
@@ -1140,7 +1140,7 @@ function set_images_src($post_id, $meta_name, $size)
 function get_images_thumbnail_size($post_id)
 {
 
-    $meta_name = POST_IMAGES_THUMBNAIL_SRC;
+    $meta_name = Post_Meta::POST_IMAGES_THUMBNAIL_SRC;
     $size = 'thumbnail';
 
     //就从文章元数据中读取本地图片地址
@@ -1170,7 +1170,7 @@ function get_images_large_size($post_id)
 {
 
 
-    $meta_name = POST_IMAGES_SRC;
+    $meta_name = Post_Meta::POST_IMAGES_SRC;
     $size = 'large';
 
     //就从文章元数据中读取本地图片地址
@@ -1211,7 +1211,7 @@ function get_images_large_size($post_id)
 function get_images_full_size($post_id)
 {
 
-    $meta_name = POST_IMAGES_FULL_SRC;
+    $meta_name = Post_Meta::POST_IMAGES_FULL_SRC;
     $size = 'full';
 
     //就从文章元数据中读取本地图片地址
@@ -1255,7 +1255,7 @@ function get_image_ids_from_form_field_by_post_id($post_id)
     $image_ids = [];
 
     //获取文章图片id数组/矩阵
-    $array_image = get_post_meta($post_id, POST_PREVIEWS);
+    $array_image = get_post_meta($post_id, Post_Meta::POST_PREVIEWS);
 
     //只有在不是空值的情况下才会继续
     if ($array_image)
@@ -1329,7 +1329,7 @@ function set_post_status($post_id, $post_status)
     //获取文章所属分类ID数组
     $array_id_category = get_post_category_ids($post_id);
     //如果是动漫区
-    if (in_array(ANIME_CATEGORY_MAIN_ID, $array_id_category))
+    if (in_array(Category::ANIME, $array_id_category))
     {
         //更新创建时间+状态
         $time = current_time('mysql');
@@ -1457,7 +1457,7 @@ function add_sticky_posts($post_id)
 
 
     //获取置顶文章id数组
-    $sticky_posts = get_option(STICKY_POSTS);
+    $sticky_posts = get_option(Option_Meta::STICKY_POSTS);
 
     //如果id未曾置顶
     if (!in_array($post_id, $sticky_posts))
@@ -1467,7 +1467,7 @@ function add_sticky_posts($post_id)
     }
 
     //更新数组
-    return update_option(STICKY_POSTS, $sticky_posts);
+    return update_option(Option_Meta::STICKY_POSTS, $sticky_posts);
 }
 
 /**
@@ -1482,7 +1482,7 @@ function delete_sticky_posts($post_id)
 
 
     //获取置顶文章id数组
-    $sticky_posts = get_option(STICKY_POSTS);
+    $sticky_posts = get_option(Option_Meta::STICKY_POSTS);
 
     //搜索元素在数组中的位置
     $index = array_search($post_id, $sticky_posts);
@@ -1494,7 +1494,7 @@ function delete_sticky_posts($post_id)
     }
 
     //更新数组
-    return update_option(STICKY_POSTS, $sticky_posts);
+    return update_option(Option_Meta::STICKY_POSTS, $sticky_posts);
 }
 
 
@@ -1509,7 +1509,7 @@ function is_sticky_post($post_id)
     $is_sticky = false;
 
     //获取置顶文章id数组
-    $sticky_posts = get_option(STICKY_POSTS);
+    $sticky_posts = get_option(Option_Meta::STICKY_POSTS);
     if (is_array($sticky_posts) && in_array($post_id, $sticky_posts))
     {
         $is_sticky = true;
@@ -1590,11 +1590,11 @@ function send_reject_post_email($post_id, $reject_cause)
 
     $post_title = get_post_field('post_title', $post_id);
 
-    $cache_key = EMAIL_REJECT_POST . '_user_' . $user_id;
+    $cache_key = File_Cache::USER_REJECT_POST_EMAIL . '_user_' . $user_id;
 
     //检查是否有缓存 和 有效收件地址
     //使用内存缓存来避免短时间内重复邮件同个作者, 1天内只发送一次邮件
-    if (empty(get_cache_meta($cache_key, CACHE_GROUP_USER, EXPIRED_1_DAY)) && stripos($user->user_email, "@fake") !== false)
+    if (empty(File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_1_DAY)) && stripos($user->user_email, "@fake") !== false)
     {
 
 
@@ -1627,7 +1627,7 @@ HTML;
         wp_mail($user->user_email, $email_object, $email_content, $headers);
 
         //设置缓存
-        set_cache_meta($cache_key, CACHE_GROUP_USER, 1);
+        File_Cache::set_cache_meta($cache_key, File_Cache::DIR_USER, 1);
     }
 }
 
@@ -1641,10 +1641,10 @@ HTML;
  */
 function print_post_content($post_id = null)
 {
-    $cache_key_post_content_part_1 = POST_CONTENT_PART_1 . '_' . $post_id;
-    $cache_key_post_content_part_2 = POST_CONTENT_PART_2 . '_' . $post_id;
+    $cache_key_post_content_part_1 = File_Cache::POST_CONTENT_PART_1 . '_' . $post_id;
+    $cache_key_post_content_part_2 = File_Cache::POST_CONTENT_PART_2 . '_' . $post_id;
 
-    $post_content_part_1 = get_cache_meta($cache_key_post_content_part_1, CACHE_GROUP_POST, EXPIRED_1_DAY);
+    $post_content_part_1 = File_Cache::get_cache_meta($cache_key_post_content_part_1, File_Cache::DIR_POST, Expired::EXP_1_DAY);
     if (empty($post_content_part_1))
     {
 
@@ -1840,7 +1840,7 @@ function print_post_content($post_id = null)
 
 HTML;
 
-        set_cache_meta($cache_key_post_content_part_1, CACHE_GROUP_POST, $post_content_part_1);
+        File_Cache::set_cache_meta($cache_key_post_content_part_1, File_Cache::DIR_POST, $post_content_part_1);
     }
 
     /*if ($download_part)
@@ -1850,7 +1850,7 @@ HTML;
 
     $post_functional_part = post_functional_box();
 
-    $post_content_part_2 = get_cache_meta($cache_key_post_content_part_2, CACHE_GROUP_POST, EXPIRED_1_DAY);
+    $post_content_part_2 = File_Cache::get_cache_meta($cache_key_post_content_part_2, File_Cache::DIR_POST, Expired::EXP_1_DAY);
     if (empty($post_content_part_2))
     {
 
@@ -1989,7 +1989,7 @@ HTML;
             </div>
 HTML;
 
-        set_cache_meta($cache_key_post_content_part_2, CACHE_GROUP_POST, $post_content_part_2);
+        File_Cache::set_cache_meta($cache_key_post_content_part_2, File_Cache::DIR_POST, $post_content_part_2);
     }
 
     return <<<HTML
@@ -2168,7 +2168,7 @@ function post_functional_box()
     $post_id = get_the_ID();
     $post_like = get_post_like($post_id);
     $post_unlike = get_post_unlike($post_id);
-    $post_feedback_rank = Post_feedback_rank::get_rank($post_like, $post_unlike);
+    $Post_Feedback_Rank = Post_Feedback_Rank::get_rank($post_like, $post_unlike);
 
     //输出点赞按钮
     $like_button = <<<HTML
@@ -2178,8 +2178,8 @@ function post_functional_box()
                 <i class="fa-solid fa-thumbs-up  my-2 my-md-0"></i> 
                 <span class="text">好评</span> <br class="d-sm-none" /> ( <span class="count">{$post_like}</span> )
             </button>
-            <div class="btn btn-sm btn-secondary disabled text-bg-secondary fw-bold w-25 post_feedback_rank">
-                {$post_feedback_rank}
+            <div class="btn btn-sm btn-secondary disabled text-bg-secondary fw-bold w-25 Post_Feedback_Rank">
+                {$Post_Feedback_Rank}
             </div>
             <button class="btn btn-sm btn-secondary set-post-unlike  " data-post-id="{$post_id}">
                 <i class="fa-solid fa-thumbs-down  my-2 my-md-0"></i> 

@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 
 /**
  * 为 未登陆用户 移除魔法区文章的显示
@@ -25,34 +25,34 @@ function on_pre_get_main_posts($wp_query)
 
 
 		//只有在不是页面 + 有自定义排序变量 的时候
-		if (!is_page() && get_query_var(CUSTOM_ORDERBY))
+		if (!is_page() && get_query_var(Post_Query::CUSTOM_ORDERBY))
 		{
-			set_query_var('meta_key', get_query_var(CUSTOM_ORDERBY));
+			set_query_var('meta_key', get_query_var(Post_Query::CUSTOM_ORDERBY));
 			set_query_var('orderby', 'meta_value_num');
 		}
 
 		//只有在不是页面 + 有设置自定义日期范围
-		if (!is_page() && get_query_var(CUSTOM_ORDER_DATA_RANGE))
+		if (!is_page() && get_query_var(Post_Query::CUSTOM_ORDER_DATA_RANGE))
 		{
 			$date_query = [
 				[
-					'after' => get_query_var(CUSTOM_ORDER_DATA_RANGE) . ' month ago'
+					'after' => get_query_var(Post_Query::CUSTOM_ORDER_DATA_RANGE) . ' month ago'
 				]
 			];
 			set_query_var('date_query', $date_query);
 		}
 
 		//如果是作者页面 并且 设置了内部搜索键值
-		if (is_author() && get_query_var(AUTHOR_INTERNAL_SEARCH))
+		if (is_author() && get_query_var(Post_Query::AUTHOR_INTERNAL_SEARCH))
 		{
 			//添加搜索参数
-			set_query_var('s', get_query_var(AUTHOR_INTERNAL_SEARCH));
+			set_query_var('s', get_query_var(Post_Query::AUTHOR_INTERNAL_SEARCH));
 		}
 
 		//主页+未设置分类过滤 默认移除成人区分类
 		if (is_home() && (empty(get_query_var('page_type')) || get_query_var('page_type') == 'home'))
 		{
-			set_query_var('cat', -ADULT_CATEGORY_MAIN_ID);
+			set_query_var('cat', -Category::ADULT_CATEGORY);
 		}
 
 		//如果是搜索页
@@ -85,11 +85,11 @@ function exclude_adult_category_for_not_logged_user()
 		$cat = get_query_var('cat');
 		if ($cat)
 		{
-			$cat .= ',-' . ADULT_CATEGORY_MAIN_ID;
+			$cat .= ',-' . Category::ADULT_CATEGORY;
 		}
 		else
 		{
-			$cat = -ADULT_CATEGORY_MAIN_ID;
+			$cat = -Category::ADULT_CATEGORY;
 		}
 		set_query_var('cat', $cat);
 	}
@@ -118,16 +118,16 @@ function get_sticky_posts($number)
 	}
 
 	//缓存时间的键名
-	$cache_meta_key = STICKY_POSTS . '_' . $term_id . '_' . $number;
+	$cache_meta_key = Option_Meta::STICKY_POSTS . '_' . $term_id . '_' . $number;
 	//获取缓存
-	$output = get_cache_meta($cache_meta_key, CACHE_GROUP_POSTS, EXPIRED_2_HOURS);
+	$output = File_Cache::get_cache_meta($cache_meta_key, File_Cache::DIR_POSTS, Expired::EXP_2_HOURS);
 
 	//如果缓存无效, 就重新计算
 	if (empty($output))
 	{
 
 		//获取置顶文章id数组
-		$sticky = get_option(STICKY_POSTS);
+		$sticky = get_option(Option_Meta::STICKY_POSTS);
 
 		$output = [];
 
@@ -152,7 +152,7 @@ function get_sticky_posts($number)
 			}, $results);
 
 			//创建新缓存
-			set_cache_meta($cache_meta_key, CACHE_GROUP_POSTS, $output);
+			File_Cache::set_cache_meta($cache_meta_key, File_Cache::DIR_POSTS, $output);
 		}
 	}
 
@@ -183,12 +183,11 @@ function get_hot_post_list($term_id, $meta_key, $number, $range_day)
 	if (!$term_id)
 	{
 		//设置成 魔法区ID
-		$term_id = -ADULT_CATEGORY_MAIN_ID;
+		$term_id = -Category::ADULT_CATEGORY;
 	}
 
 	//缓存时间的键名
 	$cache_meta_key = [
-		HOT_POST_LIST,
 		$meta_key,
 		$term_id,
 		$number,
@@ -196,11 +195,11 @@ function get_hot_post_list($term_id, $meta_key, $number, $range_day)
 	];
 
 	$sanitize_file_name =  preg_replace('/[^a-z0-9-]+/', '_', strtolower(implode('_', array_values($cache_meta_key))));
-	$cache_meta_key =  HOT_POST_LIST . '_' . $sanitize_file_name;
+	$cache_meta_key =  File_Cache::HOT_POST_LIST . '_' . $sanitize_file_name;
 
 
 	//获取缓存
-	$output = get_cache_meta($cache_meta_key, CACHE_GROUP_POSTS, EXPIRED_2_HOURS);
+	$output = File_Cache::get_cache_meta($cache_meta_key, File_Cache::DIR_POSTS, Expired::EXP_2_HOURS);
 
 	//如果缓存已过期 将返回 空字符串
 	if (empty($output))
@@ -209,7 +208,7 @@ function get_hot_post_list($term_id, $meta_key, $number, $range_day)
 		//当前时间
 		$now = time();
 		//统计的周期长度 (秒数)
-		$time_range = EXPIRED_1_DAY * $range_day;
+		$time_range = Expired::EXP_1_DAY * $range_day;
 		//开始统计的周期
 		$after_time = $now - $time_range;
 
@@ -219,7 +218,7 @@ function get_hot_post_list($term_id, $meta_key, $number, $range_day)
 			'meta_key'       => $meta_key,
 			'order'          => 'DESC',
 			'orderby'        => 'meta_value_num',
-			'post_status'    => POST_STATUS_PUBLISH,
+			'post_status'    => Post_Status::PUBLISH,
 			'post_type'      => 'post',
 			'date_query'     => [
 				[
@@ -273,7 +272,7 @@ function get_hot_post_list($term_id, $meta_key, $number, $range_day)
 		}, $results);
 
 		//创建新缓存
-		set_cache_meta($cache_meta_key, CACHE_GROUP_POSTS, $output);
+		File_Cache::set_cache_meta($cache_meta_key, File_Cache::DIR_POSTS, $output);
 	}
 
 	return $output;
@@ -295,7 +294,7 @@ function get_cat_recently_post_list($cat_id, $count)
 	//文章查询参数
 	$args = [
 		'posts_per_page' => $count,
-		'post_status'    => POST_STATUS_PUBLISH,
+		'post_status'    => Post_Status::PUBLISH,
 		'post_type'      => 'post',
 	];
 
@@ -308,7 +307,7 @@ function get_cat_recently_post_list($cat_id, $count)
 	else
 	{
 		//排除成人区
-		$args['cat'] = -ADULT_CATEGORY_MAIN_ID;
+		$args['cat'] = -Category::ADULT_CATEGORY;
 	}
 
 	$results = get_posts($args);
@@ -333,15 +332,15 @@ function get_related_post_list($post_id, $count)
 {
 
 	//创建缓存键值
-	$cache_key = RELATED_POST_LIST . '_' . $post_id . '_' . $count;
+	$cache_key = File_Cache::RELATED_POST_LIST . '_' . $post_id . '_' . $count;
 	//获取缓存
-	$related_post_list = get_cache_meta($cache_key, CACHE_GROUP_POSTS, EXPIRED_7_DAYS);
+	$related_post_list = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_POSTS, Expired::EXP_7_DAYS);
 
 	if (empty($related_post_list))
 	{
 
 		$args = [
-			'post_status'         => POST_STATUS_PUBLISH,
+			'post_status'         => Post_Status::PUBLISH,
 			'ignore_sticky_posts' => 1,
 			'orderby'             => 'rand',
 			'posts_per_page'      => $count,
@@ -392,7 +391,7 @@ function get_related_post_list($post_id, $count)
 			return new My_Post_Hot($element);
 		}, $results);
 
-		set_cache_meta($cache_key, CACHE_GROUP_POSTS, $related_post_list);
+		File_Cache::set_cache_meta($cache_key, File_Cache::DIR_POSTS, $related_post_list);
 	}
 
 	return $related_post_list;
@@ -412,7 +411,7 @@ function get_fail_down_post_list()
 		'posts_per_page'      => 20,
 		'ignore_sticky_posts' => '1',
 		'orderby'             => 'meta_value_num',
-		'meta_key'            => POST_FAIL_TIMES,
+		'meta_key'            => Post_Meta::POST_FAIL_TIME,
 		'order'               => 'DESC',
 	];
 
@@ -464,12 +463,12 @@ function get_post_list($query_vars)
 
 
 	//创建缓存键值
-	$cache_key = POST_LIST . '_' . hash_xxh($query_vars);
+	$cache_key = File_Cache::POST_LIST . '_' . hash_xxh($query_vars);
 
 
 
 	//获取缓存
-	$my_post_slim_list = get_cache_meta($cache_key, CACHE_GROUP_POSTS, EXPIRED_15_MINUTES);
+	$my_post_slim_list = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_POSTS, Expired::EXP_15_MINUTE);
 
 	//如果不存在 或者 有禁用缓存参数 或者
 	if (empty($my_post_slim_list) || isset($query_vars['no_cache']))
@@ -490,7 +489,7 @@ function get_post_list($query_vars)
 		//只有在 没有设置搜索参数 或者 搜索参数短于100字 才会设置缓存
 		if (!isset($query_vars['s']) || (strlen($query_vars['s']) <= 100))
 		{
-			set_cache_meta($cache_key,  CACHE_GROUP_POSTS, $my_post_slim_list);
+			File_Cache::set_cache_meta($cache_key,  File_Cache::DIR_POSTS, $my_post_slim_list);
 		}
 	}
 
@@ -513,18 +512,18 @@ function fix_query_vars($query_vars)
 	//$query_vars['orderby']        = 'modified'; //使用最后修改时间作为默认排序
 
 	//如果有设置自定义排序
-	if (array_key_exists(CUSTOM_ORDERBY, $query_vars) && $query_vars[CUSTOM_ORDERBY])
+	if (array_key_exists(Post_Query::CUSTOM_ORDERBY, $query_vars) && $query_vars[Post_Query::CUSTOM_ORDERBY])
 	{
-		$query_vars['meta_key'] = $query_vars[CUSTOM_ORDERBY];
+		$query_vars['meta_key'] = $query_vars[Post_Query::CUSTOM_ORDERBY];
 		$query_vars['orderby']  = 'meta_value_num';
 	}
 
 	//如果有设置自定义日期范围
-	if (array_key_exists(CUSTOM_ORDER_DATA_RANGE, $query_vars) && $query_vars[CUSTOM_ORDER_DATA_RANGE])
+	if (array_key_exists(Post_Query::CUSTOM_ORDER_DATA_RANGE, $query_vars) && $query_vars[Post_Query::CUSTOM_ORDER_DATA_RANGE])
 	{
 		$date_query               = [
 			[
-				'after' => $query_vars[CUSTOM_ORDER_DATA_RANGE] . ' month ago'
+				'after' => $query_vars[Post_Query::CUSTOM_ORDER_DATA_RANGE] . ' month ago'
 			]
 		];
 		$query_vars['date_query'] = $date_query;
@@ -534,13 +533,13 @@ function fix_query_vars($query_vars)
 	//如果是主页. 排除魔法分类
 	if (array_key_exists('page_type', $query_vars) && $query_vars['page_type'] == 'home')
 	{
-		$query_vars['cat'] = -ADULT_CATEGORY_MAIN_ID;
+		$query_vars['cat'] = -Category::ADULT_CATEGORY;
 	}
 
 	//如果是作者页, 并且设置了内部搜索功能
-	if (array_key_exists('page_type', $query_vars) && $query_vars['page_type'] == 'author' && array_key_exists(AUTHOR_INTERNAL_SEARCH, $query_vars) &&  $query_vars[AUTHOR_INTERNAL_SEARCH])
+	if (array_key_exists('page_type', $query_vars) && $query_vars['page_type'] == 'author' && array_key_exists(Post_Query::AUTHOR_INTERNAL_SEARCH, $query_vars) &&  $query_vars[Post_Query::AUTHOR_INTERNAL_SEARCH])
 	{
-		$query_vars['s'] = $query_vars[AUTHOR_INTERNAL_SEARCH];
+		$query_vars['s'] = $query_vars[Post_Query::AUTHOR_INTERNAL_SEARCH];
 	}
 
 	//未登录用户 并且 不是首页
@@ -550,11 +549,11 @@ function fix_query_vars($query_vars)
 		//获取现有cat查询参数, 追加或者 重新设置
 		if ($query_vars['cat'])
 		{
-			$query_vars['cat'] .= ',-' . ADULT_CATEGORY_MAIN_ID;
+			$query_vars['cat'] .= ',-' . Category::ADULT_CATEGORY;
 		}
 		else
 		{
-			$query_vars['cat'] = -ADULT_CATEGORY_MAIN_ID;
+			$query_vars['cat'] = -Category::ADULT_CATEGORY;
 		}
 	}
 

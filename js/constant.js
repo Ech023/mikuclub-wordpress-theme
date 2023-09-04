@@ -2,7 +2,7 @@
 /// <reference path="function.js" />
 /// <reference path="function-ajax.js" />
 
-const POST_FEEDBACK_RANK = {
+const Post_Feedback_Rank = {
 
     positive: '好评如潮',
     very_positive: '特别好评',

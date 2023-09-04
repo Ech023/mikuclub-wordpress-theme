@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 /*
  * 顶部右上角菜单组件
  */
@@ -80,29 +80,29 @@ function top_right_menu_component() {
 
 					?>
                     <a class="<?php echo $has_message ? 'text-miku' : ''; ?> nav-link"
-                       href="<?php echo add_query_arg( 'type', CUSTOM_PRIVATE_MESSAGE, $message_page_link ); ?>"
+                       href="<?php echo add_query_arg( 'type', Message_Type::PRIVATE_MESSAGE, $message_page_link ); ?>"
                        title="消息" target="_blank">
                         <i class="fa-solid fa-envelope d-md-none"></i> <span class="d-none d-md-inline">消息</span> <span
                                 class="message_count"><?php echo $message_count; ?></span>
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item"
-                           href="<?php echo add_query_arg( 'type', CUSTOM_PRIVATE_MESSAGE, $message_page_link ); ?>"
+                           href="<?php echo add_query_arg( 'type', Message_Type::PRIVATE_MESSAGE, $message_page_link ); ?>"
                            target="_blank">
                             我的私信
                             <span>
-                                <?php if ( isset( $_SESSION[ CUSTOM_PRIVATE_MESSAGE_COUNT ] ) && $_SESSION[ CUSTOM_PRIVATE_MESSAGE_COUNT ] > 0 )
-	                                echo $_SESSION[ CUSTOM_PRIVATE_MESSAGE_COUNT ] ?>
+                                <?php if ( isset( $_SESSION[ Session_Cache::PRIVATE_MESSAGE_COUNT ] ) && $_SESSION[ Session_Cache::PRIVATE_MESSAGE_COUNT ] > 0 )
+	                                echo $_SESSION[ Session_Cache::PRIVATE_MESSAGE_COUNT ] ?>
                             </span>
                         </a>
 
                         <a class="dropdown-item"
-                           href="<?php echo add_query_arg( 'type', CUSTOM_COMMENT_REPLY, $message_page_link ); ?>"
+                           href="<?php echo add_query_arg( 'type', Message_Type::COMMENT_REPLY, $message_page_link ); ?>"
                            target="_blank">
                             评论回复
                             <span>
-                                <?php if ( isset( $_SESSION[ CUSTOM_COMMENT_REPLY_COUNT ] ) && $_SESSION[ CUSTOM_COMMENT_REPLY_COUNT ] > 0 )
-	                                echo $_SESSION[ CUSTOM_COMMENT_REPLY_COUNT ] ?>
+                                <?php if ( isset( $_SESSION[ Session_Cache::COMMENT_REPLY_COUNT ] ) && $_SESSION[ Session_Cache::COMMENT_REPLY_COUNT ] > 0 )
+	                                echo $_SESSION[ Session_Cache::COMMENT_REPLY_COUNT ] ?>
                             </span>
                         </a>
 
@@ -111,8 +111,8 @@ function top_right_menu_component() {
                            target="_blank">
                             论坛回帖
                             <span>
-                                <?php if ( isset( $_SESSION[ CUSTOM_FORUM_REPLY_COUNT ] ) && $_SESSION[ CUSTOM_FORUM_REPLY_COUNT ] > 0 )
-	                                echo $_SESSION[ CUSTOM_FORUM_REPLY_COUNT ] ?>
+                                <?php if ( isset( $_SESSION[ Session_Cache::FORUM_REPLY_COUNT ] ) && $_SESSION[ Session_Cache::FORUM_REPLY_COUNT ] > 0 )
+	                                echo $_SESSION[ Session_Cache::FORUM_REPLY_COUNT ] ?>
                             </span>
                         </a>
                     </div>

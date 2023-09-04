@@ -9,7 +9,7 @@ $pub_comment_element = '';
 if (is_single())
 {
     $pub_link = 'https://shop119340084.taobao.com/shop/view_shop.htm?spm=a230r.1.14.4.75dc14ecGDLY4r&user_number_id=1965847533&mm_sycmid=1_139544_204eb550d8889ed3be7ea07664a8ccf6';
-    $cdn_domain = CDN_MIKUCLUB_FUN;
+    $cdn_domain = Web_Domain::CDN_MIKUCLUB_FUN;
     $pub_comment_element = <<<HTML
 
     <!-- A酱的绅士玩具屋 评论区广告 -->

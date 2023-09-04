@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 /**
  * 检测分类是否有子分类
  *
@@ -34,7 +34,7 @@ function get_main_category_list()
 {
 
 	//获取缓存
-	$categories = get_cache_meta(MAIN_CATEGORY_LIST, '', EXPIRED_1_DAY);
+	$categories = File_Cache::get_cache_meta(File_Cache::MAIN_CATEGORY_LIST, '', Expired::EXP_1_DAY);
 	//无缓存的情况
 	if (empty($categories))
 	{
@@ -51,7 +51,7 @@ function get_main_category_list()
 			$categories[] = new My_Category($category);
 		}
 
-		set_cache_meta(MAIN_CATEGORY_LIST, '', $categories);
+		File_Cache::set_cache_meta(File_Cache::MAIN_CATEGORY_LIST, '', $categories);
 	}
 
 	return $categories;
@@ -68,7 +68,7 @@ function get_main_category_children($cat_id)
 
 	//获取缓存
 	$cache_key  = 'category_children_' . $cat_id;
-	$categories = get_cache_meta($cache_key, '', EXPIRED_7_DAYS);
+	$categories = File_Cache::get_cache_meta($cache_key, '', Expired::EXP_7_DAYS);
 	//无缓存的情况
 	if (empty($categories) && $cat_id)
 	{
@@ -83,7 +83,7 @@ function get_main_category_children($cat_id)
 			$categories[] = new My_Category($category);
 		}
 
-		set_cache_meta($cache_key, '', $categories);
+		File_Cache::set_cache_meta($cache_key, '', $categories);
 	}
 
 	return $categories;

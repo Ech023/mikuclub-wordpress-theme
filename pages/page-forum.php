@@ -3,12 +3,15 @@
 	template name: 论坛页面
 */
 
+use mikuclub\Session_Cache;
+
+use function mikuclub\adult_404_content_for_no_logging_user;
 
 get_header();
 
 //如果用户有登陆 清空论坛消息通知计数
 if(is_user_logged_in()){
-	$_SESSION[ CUSTOM_FORUM_REPLY_COUNT ] = 0;
+	$_SESSION[ Session_Cache::FORUM_REPLY_COUNT ] = 0;
 }
 
 

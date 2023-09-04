@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 /**
  * @deprecated  已废弃
  * 消息页面顶部切换菜单

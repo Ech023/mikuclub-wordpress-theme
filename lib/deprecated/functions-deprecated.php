@@ -1,5 +1,8 @@
 <?php
 
+use mikuclub\File_Cache;
+use mikuclub\Post_Meta;
+
 /**
  * 自定义文章时间显示格式
  *
@@ -58,10 +61,10 @@ function var_dump_wp_query( ) {
 /**
  * 生成文章列表的缓存ID字符串
  * @return string
- */
+ *//*
 function create_post_list_cache_key() {
 
-	$cache_key = [ POST_LIST ];
+	$cache_key = [ File_Cache::POST_LIST ];
 
 	if ( get_query_var( 'page_type' ) ) {
 		$cache_key[] = get_query_var( 'page_type' );
@@ -97,7 +100,7 @@ function create_post_list_cache_key() {
 
 	//转换成字符串返回
 	return implode( '_', $cache_key );
-}
+}*/
 
 
 

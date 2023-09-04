@@ -1,14 +1,17 @@
 <?php
 
+namespace mikuclub;
+
 /**
  * 文章列表自定义排序组件
+ * @return string
  */
 function post_list_order_component()
 {
 
 	//排序表单name名字
-	$orderby_name          = CUSTOM_ORDERBY;
-	$order_data_range_name = CUSTOM_ORDER_DATA_RANGE;
+	$orderby_name          = Post_Query::CUSTOM_ORDERBY;
+	$order_data_range_name = Post_Query::CUSTOM_ORDER_DATA_RANGE;
 
 	$orderby          = sanitize_text_field(get_query_var($orderby_name));
 	$order_data_range = sanitize_text_field(get_query_var($order_data_range_name));
@@ -22,15 +25,15 @@ function post_list_order_component()
 		],
 		[
 			'name'  => '查看次数',
-			'value' => POST_VIEWS,
+			'value' => Post_Meta::POST_VIEWS,
 		],
 		[
 			'name'  => '点赞次数',
-			'value' => POST_LIKE,
+			'value' => Post_Meta::POST_LIKE,
 		],
 		[
 			'name'  => '评论次数',
-			'value' => POST_COMMENTS,
+			'value' => Post_Meta::POST_COMMENT_COUNT,
 		],
 	];
 

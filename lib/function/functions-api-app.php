@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 
 /**
  * APK更新检测功能

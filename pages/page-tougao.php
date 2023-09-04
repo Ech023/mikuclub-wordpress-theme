@@ -4,6 +4,14 @@
   description: 新建投稿和编辑投稿页面
  */
 
+use mikuclub\Config;
+
+use function mikuclub\breadcrumbs_component;
+use function mikuclub\current_user_is_admin;
+use function mikuclub\is_sticky_post;
+use function mikuclub\isset_numeric;
+use function mikuclub\redirect_for_not_logged;
+
 $home = get_home_url();
 
 //如果未登陆 重定向回首页
@@ -66,10 +74,10 @@ get_header();
                             稿件状态: <span class="<?php echo $text_color_class; ?>"><?php echo $post_status_text; ?></span>
                         </div>
                         <div class="col-auto">
-                            创建时间: <span class="text-primary"><?php echo get_the_date(MY_DATE_FORMAT, $_GET['pid']); ?></span>
+                            创建时间: <span class="text-primary"><?php echo get_the_date(Config::DATE_FORMAT, $_GET['pid']); ?></span>
                         </div>
                         <div class="col-auto">
-                            更新时间: <span class="text-info"><?php echo get_the_modified_date(MY_DATE_FORMAT, $_GET['pid']); ?></span>
+                            更新时间: <span class="text-info"><?php echo get_the_modified_date(Config::DATE_FORMAT, $_GET['pid']); ?></span>
                         </div>
                         <?php
 

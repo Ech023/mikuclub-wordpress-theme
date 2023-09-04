@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 
 /**
  * 获取用户未读私信数量API

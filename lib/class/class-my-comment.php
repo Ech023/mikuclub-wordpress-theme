@@ -1,5 +1,6 @@
 <?php
 
+namespace mikuclub;
 
 /**
  * 自定义评论模型

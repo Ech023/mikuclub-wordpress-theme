@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 
 /**
  * 获取评论子回复数量
@@ -12,7 +12,7 @@ function get_comment_reply_count($comment_id)
 {
 
 
-    $count = get_comment_meta($comment_id, COMMENT_REPLIES_COUNT, true);
+    $count = get_comment_meta($comment_id, Comment_Meta::COMMENT_REPLIES_COUNT, true);
     //如果键值不存在
     if ($count === '')
     {
@@ -40,7 +40,7 @@ function update_comment_reply_count($comment_id)
     ];
     //查询评论数
     $count = get_comments($args);
-    update_comment_meta($comment_id, COMMENT_REPLIES_COUNT, $count);
+    update_comment_meta($comment_id, Comment_Meta::COMMENT_REPLIES_COUNT, $count);
 
     return $count;
 }
@@ -86,7 +86,7 @@ function get_comment_replies($paged = 1, $number_per_page = 20)
 
         $args = [
             'paged' => $paged,
-            'meta_key' => COMMENT_PARENT_USER_ID,
+            'meta_key' => Comment_Meta::COMMENT_PARENT_USER_ID,
             'meta_value' => get_current_user_id(),
             'status' => 'approve',
             'number' => $number_per_page,
@@ -115,7 +115,7 @@ function get_comment_replies($paged = 1, $number_per_page = 20)
  */
 function set_comment_as_read($comment_id)
 {
-    update_comment_meta($comment_id, COMMENT_PARENT_USER_READ, 1, 0);
+    update_comment_meta($comment_id, Comment_Meta::COMMENT_PARENT_USER_READ, 1, 0);
 }
 
 
@@ -146,8 +146,8 @@ function action_on_insert_comment($comment_id, $commentdata)
 
         //添加原文章作者id数据, 设置为作者未读评论
         $post_author_id = get_post_field('post_author', $post_id);
-        update_comment_meta($comment_id, COMMENT_PARENT_USER_ID, $post_author_id);
-        update_comment_meta($comment_id, COMMENT_PARENT_USER_READ, 0);
+        update_comment_meta($comment_id, Comment_Meta::COMMENT_PARENT_USER_ID, $post_author_id);
+        update_comment_meta($comment_id, Comment_Meta::COMMENT_PARENT_USER_READ, 0);
     }
     //如果是二级评论 (正在回复另外一个评论)
     else if ($commentdata->comment_parent > 0)
@@ -160,9 +160,9 @@ function action_on_insert_comment($comment_id, $commentdata)
         //添加父评论ID
         update_comment_meta($comment_id, 'parent_comment_id', $parent_comment_id);
         //添加父评论作者ID
-        update_comment_meta($comment_id, COMMENT_PARENT_USER_ID, $parent_user_id);
+        update_comment_meta($comment_id, Comment_Meta::COMMENT_PARENT_USER_ID, $parent_user_id);
         //通知父评论作者 未读回复
-        update_comment_meta($comment_id, COMMENT_PARENT_USER_READ, 0);
+        update_comment_meta($comment_id, Comment_Meta::COMMENT_PARENT_USER_READ, 0);
         //更新评论回复数
         update_comment_reply_count($parent_comment_id);
 
@@ -300,14 +300,14 @@ function get_comment_list($post_id, $offset, $number = 30)
                 'relation' => 'OR',
                 'comment_likes' =>
                 [
-                    'key' => COMMENT_LIKES,
+                    'key' => Comment_Meta::COMMENT_LIKES,
                     'value'   => 1,
                     'compare' => '>=',
                     'type' => 'NUMERIC',
                 ],
                 'comment_not_likes' =>
                 [
-                    'key' => COMMENT_LIKES,
+                    'key' => Comment_Meta::COMMENT_LIKES,
                     'compare' => 'NOT EXISTS',
                     'type' => 'NUMERIC',
                     'value' => ''
@@ -323,7 +323,7 @@ function get_comment_list($post_id, $offset, $number = 30)
                  'relation' => 'OR',
                  'comment_likes' =>
                      [
-                         'key' => COMMENT_LIKES,
+                         'key' => Comment_Meta::COMMENT_LIKES,
                          'value'   => '0',
                          'compare' => '>=',
                          'type' => 'NUMERIC',
@@ -380,7 +380,7 @@ function get_comment_list($post_id, $offset, $number = 30)
  */
 function get_comment_likes($comment_id)
 {
-    $count = get_comment_meta($comment_id, COMMENT_LIKES, true);;
+    $count = get_comment_meta($comment_id, Comment_Meta::COMMENT_LIKES, true);;
     if ($count === '')
     {
         $count = 0;
@@ -399,7 +399,7 @@ function add_comment_likes($comment_id)
 {
     $count = get_comment_likes($comment_id);
     $count++;
-    update_comment_meta($comment_id, COMMENT_LIKES, $count);
+    update_comment_meta($comment_id, Comment_Meta::COMMENT_LIKES, $count);
 
     return $count;
 }
@@ -423,7 +423,7 @@ function delete_comment_likes($comment_id)
         $count = 0;
     }
 
-    update_comment_meta($comment_id, COMMENT_LIKES, $count);
+    update_comment_meta($comment_id, Comment_Meta::COMMENT_LIKES, $count);
 
     return $count;
 }

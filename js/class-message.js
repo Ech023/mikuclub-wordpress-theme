@@ -46,7 +46,7 @@ class MyPrivateMessage {
         }
 
         //内容移除html标签
-        this.content = this.content.replace(/(<([^>]+)>)/ig,'');
+        this.content = this.content.replace(/(<([^>]+)>)/ig, '');
 
         return `
 
@@ -203,7 +203,7 @@ class MyCommentReply {
 
 
 }
-
+/*
 class MyForumReply {
 
     constructor(forumReply) {
@@ -249,7 +249,7 @@ class MyForumReply {
         }
 
         //内容移除html标签
-        this.post_content = this.post_content.replace(/(<([^>]+)>)/ig,'');
+        this.post_content = this.post_content.replace(/(<([^>]+)>)/ig, '');
 
 
         return `
@@ -282,7 +282,7 @@ class MyForumReply {
         `;
 
     }
-}
+}*/
 
 
 /**
@@ -318,9 +318,10 @@ class MyMessageList extends Array {
                     case MESSAGE_TYPE.commentReply:
                         myPrivateMessage = new MyCommentReply(message);
                         break;
+                    /*
                     case MESSAGE_TYPE.forumReply:
                         myPrivateMessage = new MyForumReply(message);
-                        break;
+                        break;*/
                 }
 
                 this.push(myPrivateMessage);
@@ -350,4 +351,4 @@ class MyMessageList extends Array {
 
 
 
-  
+

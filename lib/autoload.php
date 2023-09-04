@@ -1,8 +1,9 @@
 <?php
 
-//导入常量
-require_once 'constant/old_constants.php';
-require_once 'constant/constant.php';
+namespace mikuclub;
+
+//导入初始常量
+require_once 'constant' . DIRECTORY_SEPARATOR . 'constant.php';
 
 //导入后台管理员页面
 require_once 'admin/config.php';

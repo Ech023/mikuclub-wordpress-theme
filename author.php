@@ -1,5 +1,16 @@
 <?php
 
+use mikuclub\Post_Query;
+
+use function mikuclub\get_custom_author;
+use function mikuclub\get_user_fans_count;
+use function mikuclub\in_user_black_list;
+use function mikuclub\is_user_followed;
+use function mikuclub\post_list_component;
+use function mikuclub\print_author_statistics;
+use function mikuclub\print_user_avatar;
+use function mikuclub\print_user_badges;
+
 get_header();
 
 $current_user_id = get_current_user_id();
@@ -125,7 +136,7 @@ HTML;
 
             <div class="input-group author-internal-search ">
 
-                <input type="text" class="form-control search-value " placeholder="搜索该UP主的投稿" name="<?php echo AUTHOR_INTERNAL_SEARCH ?>" autocomplete="off" value="<?php echo sanitize_text_field(get_query_var(AUTHOR_INTERNAL_SEARCH)); ?>" />
+                <input type="text" class="form-control search-value " placeholder="搜索该UP主的投稿" name="<?php echo Post_Query::AUTHOR_INTERNAL_SEARCH ?>" autocomplete="off" value="<?php echo sanitize_text_field(get_query_var(Post_Query::AUTHOR_INTERNAL_SEARCH)); ?>" />
                 <button class="btn btn-miku"><i class="fa-solid fa-search"></i></button>
 
             </div>

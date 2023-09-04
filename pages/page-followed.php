@@ -4,6 +4,14 @@
 */
 
 //如果未登陆 重定向回首页
+
+use function mikuclub\breadcrumbs_component;
+use function mikuclub\get_my_user_avatar;
+use function mikuclub\get_user_followed;
+use function mikuclub\post_list_component;
+use function mikuclub\print_user_avatar;
+use function mikuclub\redirect_for_not_logged;
+
 redirect_for_not_logged();
 
 get_header();

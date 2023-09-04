@@ -71,10 +71,11 @@ function getMessageList() {
                 messageType = MESSAGE_TYPE.commentReply;
                 url = URLS.comments;
                 break;
-            case MESSAGE_TYPE.forumReply:
-                messageType = MESSAGE_TYPE.forumReply;
-                url = URLS.bbpressReply;
-                break;
+            /*
+        case MESSAGE_TYPE.forumReply:
+            messageType = MESSAGE_TYPE.forumReply;
+            url = URLS.bbpressReply;
+            break;*/
         }
 
     }

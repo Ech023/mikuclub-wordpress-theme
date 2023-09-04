@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 
 /**
  * 通过api获取文章列表

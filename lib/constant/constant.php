@@ -1,6 +1,6 @@
 <?php
 
-namespace mikuclub\lib;
+namespace mikuclub;
 
 use ReflectionClass;
 
@@ -21,9 +21,89 @@ class Constant
 }
 
 /**
+ * 网站全局设置
+ */
+class Config
+{
+    //默认时间格式
+    const DATE_FORMAT_SHORT = 'y-m-d';
+    const DATE_FORMAT = 'y-m-d H:i:s';
+
+    //启动文件缓存系统
+    const ENABLE_FILE_CACHE_SYSTEM = true;
+    //关闭文件缓存
+    //const ENABLE_FILE_CACHE_SYSTEM = false;
+
+}
+
+/**
+ * 网站相关的域名
+ */
+class Web_Domain
+{
+    //网站相关域名
+    const MIKUCLUB_CC = 'www.mikuclub.cc';
+    const MIKUCLUB_ONLINE = 'www.mikuclub.online';
+    const MIKUCLUB_WIN = 'www.mikuclub.win';
+    const MIKUCLUB_EU = 'www.mikuclub.eu';
+    const MIKUCLUB_UK = 'www.mikuclub.uk';
+
+    //CDN相关域名
+    const CDN_MIKUCLUB_FUN = 'cdn.mikuclub.fun';
+    const FILE1_MIKUCLUB_FUN = 'file1.mikuclub.fun';
+    const FILE2_MIKUCLUB_FUN = 'file2.mikuclub.fun';
+    const FILE3_MIKUCLUB_FUN = 'file3.mikuclub.fun';
+    const FILE4_MIKUCLUB_FUN = 'file4.mikuclub.fun';
+    const FILE5_MIKUCLUB_FUN = 'file5.mikuclub.fun';
+    //const FILE6_MIKUCLUB_FUN = 'file6.mikuclub.fun';
+
+    /**
+     * 获取当前主域名
+     * @return string
+     */
+    public static function get_main_site_domain()
+    {
+        return static::MIKUCLUB_CC;
+    }
+
+    /**
+     * 获取支持直接网站的域名数组
+     * @return string[]
+     */
+    public static function get_array_site_domain()
+    {
+        return [
+            static::MIKUCLUB_CC,
+            static::MIKUCLUB_ONLINE,
+            static::MIKUCLUB_WIN,
+            static::MIKUCLUB_EU,
+            static::MIKUCLUB_UK,
+        ];
+    }
+
+    /**
+     * 获取FILE-CDN相关的域名数组
+     * @return string[]
+     */
+    public static function get_array_file_domain()
+    {
+        return [
+            static::FILE1_MIKUCLUB_FUN,
+            static::FILE2_MIKUCLUB_FUN,
+            static::FILE3_MIKUCLUB_FUN,
+            static::FILE4_MIKUCLUB_FUN,
+            static::FILE5_MIKUCLUB_FUN,
+            //static::FILE6_MIKUCLUB_FUN,
+        ];
+    }
+}
+
+
+
+/**
  * 站内分类ID
  */
-class Category extends Constant
+class Category
 {
     //其他区
     const OTHER = 1;
@@ -86,7 +166,7 @@ class Category extends Constant
     }
 
     /**
-     * 获取所有不需要同步到微博的分类ID数组
+     * 获取禁止同步到微博的分类ID数组
      *
      * @return int[]
      */
@@ -105,4 +185,30 @@ class Category extends Constant
 
         ];
     }
+}
+
+/**
+ * 基础常用时间常量 (基础单位是 秒)
+ */
+class Expired
+{
+    const EXP_1_MINUTE = 60;
+    const EXP_5_MINUTE = 60 * 5;
+    const EXP_10_MINUTE = 60 * 10;
+    const EXP_15_MINUTE = 60 * 15;
+    const EXP_30_MINUTE = 60 * 30;
+    const EXP_1_HOUR = 3600; //60 * 60
+    const EXP_2_HOURS = 3600 * 2;
+    const EXP_4_HOURS = 3600 * 4;
+    const EXP_6_HOURS = 3600 * 6;
+    const EXP_1_DAY = 86400; //60 * 60 * 24
+    const EXP_3_DAYS = 86400 * 3;
+    const EXP_7_DAYS = 86400 * 7;
+    const EXP_10_DAYS = 86400 * 10;
+}
+
+class Message_Type
+{
+    const PRIVATE_MESSAGE = 'private_message';
+    const COMMENT_REPLY = 'comment_reply';
 }

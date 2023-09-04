@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 /**
  * 下一页按钮 HTML代码模板
  * @param string $button_text

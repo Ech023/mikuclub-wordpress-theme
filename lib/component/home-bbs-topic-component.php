@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 /**
  * 主页帖子列表 组件
  * @return string html内容

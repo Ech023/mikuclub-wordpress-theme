@@ -1,7 +1,10 @@
 <?php
 
+namespace mikuclub;
+
 /**
  * 文章列表组件
+ * @return string
  */
 function post_list_component()
 {

@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 
 /**
  * woforo论坛显示附件图片预览
@@ -282,11 +282,11 @@ function update_topic_attach_meta($args)
 		if (count($array_attach_url) > 0)
 		{
 
-			$new_post_meta['metakey'] = WPFORO_TOPIC_ATTACH_SRC;
+			$new_post_meta['metakey'] = Topic_meta::ARRAY_ATTACHMENT_SRC;
 			$new_post_meta['metavalue'] = $array_attach_url;
 
 			//检测是否已存在相关数据
-			$exist_post_meta = WPF()->postmeta->exists($postid, WPFORO_TOPIC_ATTACH_SRC);
+			$exist_post_meta = WPF()->postmeta->exists($postid, Topic_meta::ARRAY_ATTACHMENT_SRC);
 
 			//如果不存在
 			if ($exist_post_meta === false)
@@ -300,7 +300,7 @@ function update_topic_attach_meta($args)
 				//更新
 				$id_postmeta = WPF()->postmeta->edit($new_post_meta, [
 					'postid'        => $postid,
-					'metakey' => WPFORO_TOPIC_ATTACH_SRC,
+					'metakey' => Topic_meta::ARRAY_ATTACHMENT_SRC,
 				]);
 			}
 		}
@@ -309,7 +309,7 @@ function update_topic_attach_meta($args)
 			//删除对应的元数据
 			WPF()->postmeta->delete([
 				'postid'        => $postid,
-				'metakey' => WPFORO_TOPIC_ATTACH_SRC,
+				'metakey' => Topic_meta::ARRAY_ATTACHMENT_SRC,
 			]);
 		}
 
@@ -318,11 +318,11 @@ function update_topic_attach_meta($args)
 		if (count($array_attach_thumbnail_url) > 0)
 		{
 			//插入
-			$new_post_meta['metakey'] = WPFORO_TOPIC_ATTACH_THUMBNAIL_SRC;
+			$new_post_meta['metakey'] = Topic_meta::ARRAY_THUMBNAIL_SRC;
 			$new_post_meta['metavalue'] = $array_attach_thumbnail_url;
 
 			//检测是否已存在相关数据
-			$exist_post_meta = WPF()->postmeta->exists($postid, WPFORO_TOPIC_ATTACH_THUMBNAIL_SRC);
+			$exist_post_meta = WPF()->postmeta->exists($postid, Topic_meta::ARRAY_THUMBNAIL_SRC);
 
 			//如果不存在
 			if ($exist_post_meta === false)
@@ -336,7 +336,7 @@ function update_topic_attach_meta($args)
 				//更新
 				$id_postmeta = WPF()->postmeta->edit($new_post_meta, [
 					'postid'        => $postid,
-					'metakey' => WPFORO_TOPIC_ATTACH_THUMBNAIL_SRC,
+					'metakey' => Topic_meta::ARRAY_THUMBNAIL_SRC,
 				]);
 			}
 		}
@@ -345,7 +345,7 @@ function update_topic_attach_meta($args)
 			//删除对应的元数据
 			WPF()->postmeta->delete([
 				'postid'        => $postid,
-				'metakey' => WPFORO_TOPIC_ATTACH_THUMBNAIL_SRC,
+				'metakey' => Topic_meta::ARRAY_THUMBNAIL_SRC,
 			]);
 		}
 	}
@@ -412,7 +412,7 @@ HTML;
 
 	$result .= '<div class="col-12"><div class="d-flex overflow-hidden">';
 
-	$array_topic_thumbnail_src = WPF()->postmeta->get_postmeta($postid, WPFORO_TOPIC_ATTACH_THUMBNAIL_SRC, true);
+	$array_topic_thumbnail_src = WPF()->postmeta->get_postmeta($postid, Topic_meta::ARRAY_THUMBNAIL_SRC, true);
 
 	if (is_array($array_topic_thumbnail_src) && count($array_topic_thumbnail_src) > 0)
 	{

@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 
 /**
  * 输出最新文章列表

@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 /**
  * 首页组件
  * @return mixed|string
@@ -19,7 +19,7 @@ function home_main_page()
     $cat_list_length = 15;
 
     //获取过期间隔, 默认 15分钟
-    $expired = dopt('d_cache_system_home_time') ? dopt('d_cache_system_home_time') * 60 : EXPIRED_15_MINUTES;
+    $expired = dopt('d_cache_system_home_time') ? dopt('d_cache_system_home_time') * 60 : Expired::EXP_15_MINUTE;
     //分区id数组
     $cat_ids_list = [
         [
@@ -86,7 +86,7 @@ function home_main_page()
     ];
 
     //获取缓存
-    $home_content_output = get_cache_meta($cache_key, CACHE_GROUP_COMPONENTS, $expired);
+    $home_content_output = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_COMPONENTS, $expired);
 
     //如果缓存失效 则重新计算
     if (empty($home_content_output))
@@ -250,7 +250,7 @@ HTML;
         //=============================================================
 
         //创建缓存
-        set_cache_meta($cache_key, CACHE_GROUP_COMPONENTS, $home_content_output);
+        File_Cache::set_cache_meta($cache_key, File_Cache::DIR_COMPONENTS, $home_content_output);
     }
 
 

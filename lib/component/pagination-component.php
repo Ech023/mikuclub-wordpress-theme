@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 /**
  * 分页导航 组件
  */

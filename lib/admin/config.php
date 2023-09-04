@@ -1,5 +1,7 @@
 <?php
 
+namespace mikuclub;
+
 $theme_config_page_name = '初音社主题设置';
 //选项数组
 $options = [
@@ -80,10 +82,12 @@ $options = [
     'app_adindex_01_link',
 ];
 
+
 /**
  * 在后台主菜单里添加主题管理页面的链接
  * 处理保存请求
  * 重定向页面
+ * @return void
  */
 function add_theme_config_page()
 {
@@ -111,18 +115,18 @@ function add_theme_config_page()
                     update_option($option, $_REQUEST[$option]);
                 }
                 //如果不存在, 重置为空
-                else{
+                else
+                {
                     //更新对应设置
                     update_option($option, '');
                 }
-                
             }
 
             //如果有要求清空文件缓存
             if (isset($_REQUEST['d_cache_system_delete']))
             {
                 //清空缓存删除文件夹里的内容
-                delete_dir(CACHE_DIRECTORY);
+                File_Cache::clean_all();
             }
 
             //创建更新成功后的地址
@@ -160,48 +164,6 @@ function admin_custom_style()
 add_action('admin_enqueue_scripts', 'admin_custom_style');
 
 
-//清空文件夹函数和清空文件夹后删除空文件夹函数的处理
-/**
- * 递归删除文件
- * @param $path
- */
-function delete_dir($path)
-{
-
-    //如果结尾没有加分隔符
-    if (substr($path, -1) != DIRECTORY_SEPARATOR)
-    {
-        $path .= DIRECTORY_SEPARATOR;
-    }
-
-    //如果是目录则继续
-    if (is_dir($path))
-    {
-
-        //扫描一个文件夹内的所有文件夹和文件并返回数组
-        $p = scandir($path);
-        foreach ($p as $val)
-        {
-            //排除目录中的.和..
-            if ($val != "." && $val != "..")
-            {
-                //如果是目录则递归子目录，继续操作
-                if (is_dir($path . $val))
-                {
-                    //子目录中操作删除文件夹和文件
-                    delete_dir($path . $val . '/');
-                    //目录清空后删除空文件夹
-                    rmdir($path . $val . '/');
-                }
-                else
-                {
-                    //如果是文件直接删除
-                    unlink($path . $val);
-                }
-            }
-        }
-    }
-}
 
 
 

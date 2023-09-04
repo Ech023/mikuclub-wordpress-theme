@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 
 /**
  * 自定义用户模型

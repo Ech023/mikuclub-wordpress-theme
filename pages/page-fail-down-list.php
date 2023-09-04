@@ -1,6 +1,17 @@
 <?php
 
 //如果不是管理员
+
+use mikuclub\Post_Meta;
+
+use function mikuclub\breadcrumbs_component;
+use function mikuclub\convert_link_to_https;
+use function mikuclub\get_down_link_from_old_post;
+use function mikuclub\get_fail_down_post_list;
+use function mikuclub\get_post_fail_times;
+use function mikuclub\print_page_edit_link;
+use function mikuclub\redirect_for_not_admin;
+
 redirect_for_not_admin();
 
 /*
@@ -18,32 +29,32 @@ foreach ($post_list as $my_post)
 {
 
     //获取下载地址
-    $down1 = get_post_meta($my_post->id, POST_DOWN, true);
-    $down2 = get_post_meta($my_post->id, POST_DOWN2, true);
+    $down1 = get_post_meta($my_post->id, Post_Meta::POST_DOWN, true);
+    $down2 = get_post_meta($my_post->id, Post_Meta::POST_DOWN2, true);
     //获取密码
-    $password  = get_post_meta($my_post->id, POST_PASSWORD, true);
-    $password2 = get_post_meta($my_post->id, POST_PASSWORD2, true);
+    $password  = get_post_meta($my_post->id, Post_Meta::POST_PASSWORD, true);
+    $password2 = get_post_meta($my_post->id, Post_Meta::POST_PASSWORD2, true);
 
     //如果链接不存在, 尝试从文章内容中解析
     if (empty($down1) && empty($down2))
     {
 
         $result = get_down_link_from_old_post($my_post->id);
-        if (isset($result[POST_DOWN]))
+        if (isset($result[Post_Meta::POST_DOWN]))
         {
-            $down1 = $result[POST_DOWN];
+            $down1 = $result[Post_Meta::POST_DOWN];
         }
-        if (empty($down2) && isset($result[POST_DOWN2]))
+        if (empty($down2) && isset($result[Post_Meta::POST_DOWN2]))
         {
-            $down2 = $result[POST_DOWN2];
+            $down2 = $result[Post_Meta::POST_DOWN2];
         }
-        if (empty($password) && isset($result[POST_PASSWORD]))
+        if (empty($password) && isset($result[Post_Meta::POST_PASSWORD]))
         {
-            $password = $result[POST_PASSWORD];
+            $password = $result[Post_Meta::POST_PASSWORD];
         }
-        if (empty($password2) && isset($result[POST_PASSWORD2]))
+        if (empty($password2) && isset($result[Post_Meta::POST_PASSWORD2]))
         {
-            $password2 = $result[POST_PASSWORD2];
+            $password2 = $result[Post_Meta::POST_PASSWORD2];
         }
     }
 

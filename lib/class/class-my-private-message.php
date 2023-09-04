@@ -1,5 +1,6 @@
 <?php
 
+namespace mikuclub;
 
 /**
  * 自定义私信模型
@@ -52,7 +53,7 @@ if ( ! class_exists( 'My_Private_Message' )
 				$this->date = $message['date'];
 			} //未设置时间的话, 获取当前时间
 			else {
-				$this->date = date( MY_DATE_FORMAT );
+				$this->date = date( Config::DATE_FORMAT );
 			}
 		}
 	}

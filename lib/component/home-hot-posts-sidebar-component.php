@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 /**
  * 热门文章列表组件
  *
@@ -107,7 +107,7 @@ function get_home_hot_posts_sidebar_component_by_random($term_id, $number = 6)
 
 		$range_day = 21;
 		//统计的键名
-		$meta_key = POST_VIEWS;
+		$meta_key = Post_Meta::POST_VIEWS;
 
 		$title = '热门';
 		//标题的图标
@@ -128,7 +128,7 @@ function get_home_hot_posts_sidebar_component_by_random($term_id, $number = 6)
 
 		$range_day = 28;
 		//统计的键名
-		$meta_key = POST_LIKE;
+		$meta_key = Post_Meta::POST_LIKE;
 
 		$title = '推荐';
 		//标题的图标
@@ -151,7 +151,7 @@ function get_home_hot_posts_sidebar_component_by_random($term_id, $number = 6)
 		//统计基础周期 ;
 		$range_day = 28;
 		//统计的键名
-		$meta_key = POST_COMMENTS;
+		$meta_key = Post_Meta::POST_COMMENT_COUNT;
 
 		$title = '评论榜';
 		//标题的图标

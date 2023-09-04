@@ -23,7 +23,7 @@ const MESSAGE_TYPE = {
     privateMessage: 'private_message',
     privateMessageWithOneSender: 'private_message_with_one_sender',
     commentReply: 'comment_reply',
-    forumReply: 'bbpress_reply',
+    //forumReply: 'bbpress_reply',
 };
 
 //文章类型
@@ -69,7 +69,7 @@ const URLS = {
     postList: MY_SITE.apiRoot + UTILS_PATH + 'post_list',
     privateMessage: MY_SITE.apiRoot + UTILS_PATH + 'message',
     comments: MY_SITE.apiRoot + UTILS_PATH + 'comments',
-    bbpressReply: MY_SITE.apiRoot + UTILS_PATH + 'bbpress',
+    //bbpressReply: MY_SITE.apiRoot + UTILS_PATH + 'bbpress',
     qiandaoImg: MY_SITE.apiRoot + UTILS_PATH + 'qiandao_img',
     checkBaiduPan: MY_SITE.apiRoot + UTILS_PATH + 'check_baidu_pan_link',
     checkAliyunPan: MY_SITE.apiRoot + UTILS_PATH + 'check_aliyun_pan_link',

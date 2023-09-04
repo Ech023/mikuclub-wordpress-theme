@@ -1,5 +1,7 @@
 <?php
 
+namespace mikuclub;
+
 /**
  * 初始化用户数据
  */
@@ -25,12 +27,12 @@ function check_blocked_user()
 {
 
 	//如果还未初始化 检查记录
-	if (!isset($_SESSION[BLOCKED_USER_CHECK]))
+	if (!isset($_SESSION[Session_Cache::IS_REGULAR_USER]))
 	{
-		$_SESSION[BLOCKED_USER_CHECK] = current_user_can('read');
+		$_SESSION[Session_Cache::IS_REGULAR_USER] = current_user_can('read');
 	}
 	//如果是黑名单用户
-	if ($_SESSION[BLOCKED_USER_CHECK] === false)
+	if ($_SESSION[Session_Cache::IS_REGULAR_USER] === false)
 	{
 		//跳转
 		$redirect_site =  'https://www.mikuclub.com';
@@ -46,19 +48,19 @@ function init_user_unread_message_total_count()
 {
 
 	//设置未读私信数量
-	if (!isset($_SESSION[CUSTOM_PRIVATE_MESSAGE_COUNT]))
+	if (!isset($_SESSION[Session_Cache::PRIVATE_MESSAGE_COUNT]))
 	{
-		$_SESSION[CUSTOM_PRIVATE_MESSAGE_COUNT] = get_user_private_message_unread_count();
+		$_SESSION[Session_Cache::PRIVATE_MESSAGE_COUNT] = get_user_private_message_unread_count();
 	}
 	//设置未读评论数量
-	if (!isset($_SESSION[CUSTOM_COMMENT_REPLY_COUNT]))
+	if (!isset($_SESSION[Session_Cache::COMMENT_REPLY_COUNT]))
 	{
-		$_SESSION[CUSTOM_COMMENT_REPLY_COUNT] = get_user_unread_comment_reply_count();
+		$_SESSION[Session_Cache::COMMENT_REPLY_COUNT] = get_user_unread_comment_reply_count();
 	}
 	//设置未读论坛帖子回复数量
-	if (!isset($_SESSION[CUSTOM_FORUM_REPLY_COUNT]))
+	if (!isset($_SESSION[Session_Cache::FORUM_REPLY_COUNT]))
 	{
-		$_SESSION[CUSTOM_FORUM_REPLY_COUNT] = get_user_forum_notification_count();
+		$_SESSION[Session_Cache::FORUM_REPLY_COUNT] = get_user_forum_notification_count();
 	}
 }
 
@@ -75,7 +77,7 @@ function set_my_user_avatar_id($user_id, $attachment_id)
 
 	if ($user_id)
 	{
-		update_user_meta($user_id, MY_USER_AVATAR, $attachment_id);
+		update_user_meta($user_id, User_Meta::USER_AVATAR, $attachment_id);
 	}
 }
 
@@ -93,8 +95,8 @@ function get_my_user_avatar($user_id)
 	if ($user_id)
 	{
 		//获取内存缓存
-		$cache_key   = MY_USER_AVATAR . '_' . $user_id;
-		$user_avatar = get_cache_meta($cache_key, CACHE_GROUP_USER, EXPIRED_7_DAYS);
+		$cache_key   = User_Meta::USER_AVATAR . '_' . $user_id;
+		$user_avatar = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_7_DAYS);
 
 		//如果缓存不存在
 		if (empty($user_avatar))
@@ -102,7 +104,7 @@ function get_my_user_avatar($user_id)
 
 			//获取本地头像
 
-			$avatar_id = get_user_meta($user_id, MY_USER_AVATAR, true);
+			$avatar_id = get_user_meta($user_id, User_Meta::USER_AVATAR, true);
 			if ($avatar_id)
 			{
 
@@ -134,7 +136,7 @@ function get_my_user_avatar($user_id)
 				$user_avatar = get_my_user_default_avatar();
 			}
 
-			set_cache_meta($cache_key,  CACHE_GROUP_USER, $user_avatar);
+			File_Cache::set_cache_meta($cache_key,  File_Cache::DIR_USER, $user_avatar);
 		}
 
 		$user_avatar = fix_image_domain_with_file_5($user_avatar);
@@ -180,10 +182,10 @@ function action_on_update_avatar($user_id, $attachment_id)
 	{
 
 		//添加附件类型键值对数据 说明是 用户头像
-		update_post_meta($attachment_id, ATTACHMENT_WP_USER_AVATAR, $user_id);
+		update_post_meta($attachment_id, Post_Meta::ATTACHMENT_WP_USER_AVATAR, $user_id);
 
 		//获取旧头像ID
-		$old_avatar_id = get_user_meta($user_id, MY_USER_AVATAR, true);
+		$old_avatar_id = get_user_meta($user_id, User_Meta::USER_AVATAR, true);
 		//如果存在
 		if ($old_avatar_id)
 		{
@@ -192,11 +194,11 @@ function action_on_update_avatar($user_id, $attachment_id)
 		}
 
 		//保存新头像
-		update_user_meta($user_id, MY_USER_AVATAR, $attachment_id);
+		update_user_meta($user_id, User_Meta::USER_AVATAR, $attachment_id);
 
 		//清空旧头像文件缓存
-		$cache_key = MY_USER_AVATAR . '_' . $user_id;
-		delete_cache_meta($cache_key, CACHE_GROUP_USER);
+		$cache_key = User_Meta::USER_AVATAR . '_' . $user_id;
+		File_Cache::delete_cache_meta($cache_key, File_Cache::DIR_USER);
 	}
 }
 
@@ -210,7 +212,7 @@ function action_on_rest_after_insert_attachment($attachment, $request)
 {
 
 	//如果是上传更换新头像 的 动作
-	if ($request->has_param(ACTION_UPDATE_AVATAR))
+	if ($request->has_param(User_Meta::ACTION_UPDATE_AVATAR_BY_API))
 	{
 		action_on_update_avatar($attachment->post_author, $attachment->ID);
 	}
@@ -456,9 +458,9 @@ function get_user_post_count($user_id)
 	if ($user_id)
 	{
 
-		$cache_key = USER_POST_COUNT . '_' . $user_id;
+		$cache_key = File_Cache::USER_POST_COUNT . '_' . $user_id;
 
-		$count = get_cache_meta($cache_key, CACHE_GROUP_USER, EXPIRED_1_DAY);
+		$count = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_1_DAY);
 
 		if (!$count)
 		{
@@ -468,7 +470,7 @@ function get_user_post_count($user_id)
 			{
 				$count = 0;
 			}
-			set_cache_meta($cache_key, CACHE_GROUP_USER, $count);
+			File_Cache::set_cache_meta($cache_key, File_Cache::DIR_USER, $count);
 		}
 	}
 
@@ -495,9 +497,9 @@ function get_user_post_total_views($user_id)
 	if ($user_id)
 	{
 
-		$cache_key = USER_POST_TOTAL_VIEWS . '_' . $user_id;
+		$cache_key = File_Cache::USER_POST_TOTAL_VIEW . '_' . $user_id;
 
-		$count = get_cache_meta($cache_key, CACHE_GROUP_USER, EXPIRED_3_DAYS);
+		$count = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_3_DAYS);
 
 		if (!$count)
 		{
@@ -508,7 +510,7 @@ function get_user_post_total_views($user_id)
 			{
 				$count = '0';
 			}
-			set_cache_meta($cache_key, CACHE_GROUP_USER, $count);
+			File_Cache::set_cache_meta($cache_key, File_Cache::DIR_USER, $count);
 		}
 	}
 
@@ -531,9 +533,9 @@ function get_user_post_total_comments($user_id)
 	if ($user_id)
 	{
 
-		$cache_key = USER_POST_TOTAL_COMMENTS . '_' . $user_id;
+		$cache_key = File_Cache::USER_POST_TOTAL_COMMENT . '_' . $user_id;
 
-		$count = get_cache_meta($cache_key, CACHE_GROUP_USER, EXPIRED_3_DAYS);
+		$count = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_3_DAYS);
 
 		if ($count === '')
 		{
@@ -545,7 +547,7 @@ function get_user_post_total_comments($user_id)
 			{
 				$count = 0;
 			}
-			set_cache_meta($cache_key, CACHE_GROUP_USER, $count);
+			File_Cache::set_cache_meta($cache_key, File_Cache::DIR_USER, $count);
 		}
 	}
 
@@ -568,8 +570,8 @@ function get_user_post_total_likes($user_id)
 	if ($user_id)
 	{
 
-		$cache_key = USER_POST_TOTAL_LIKES . '_' . $user_id;
-		$count     = get_cache_meta($cache_key, CACHE_GROUP_USER, EXPIRED_3_DAYS);
+		$cache_key = File_Cache::USER_POST_TOTAL_LIKE . '_' . $user_id;
+		$count     = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_3_DAYS);
 
 		if (!$count)
 		{
@@ -581,7 +583,7 @@ function get_user_post_total_likes($user_id)
 			{
 				$count = 0;
 			}
-			set_cache_meta($cache_key, CACHE_GROUP_USER, $count);
+			File_Cache::set_cache_meta($cache_key, File_Cache::DIR_USER, $count);
 		}
 	}
 
@@ -605,14 +607,14 @@ function get_user_comment_count($user_id)
 	if ($user_id)
 	{
 
-		$cache_key = USER_COMMENT_COUNT . '_' . $user_id;
+		$cache_key = User_Meta::USER_COMMENT_COUNT . '_' . $user_id;
 
-		$count = get_cache_meta($cache_key, CACHE_GROUP_USER, EXPIRED_1_DAY);
+		$count = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_1_DAY);
 
 		if ($count === '')
 		{
 
-			$count = get_user_meta($user_id, USER_COMMENT_COUNT, true);
+			$count = get_user_meta($user_id, User_Meta::USER_COMMENT_COUNT, true);
 
 			if ($count === '')
 			{
@@ -625,10 +627,10 @@ function get_user_comment_count($user_id)
 					$count = 0;
 				}
 				//更新到用户列表里
-				update_user_meta($user_id, USER_COMMENT_COUNT, $count);
+				update_user_meta($user_id, User_Meta::USER_COMMENT_COUNT, $count);
 			}
 			//保存到缓存里
-			set_cache_meta($cache_key, CACHE_GROUP_USER, $count);
+			File_Cache::set_cache_meta($cache_key, File_Cache::DIR_USER, $count);
 		}
 	}
 
@@ -645,7 +647,7 @@ function add_user_comment_count($user_id)
 
 	$count = get_user_comment_count($user_id);
 	$count++;
-	update_user_meta($user_id, USER_COMMENT_COUNT, $count);
+	update_user_meta($user_id, User_Meta::USER_COMMENT_COUNT, $count);
 }
 
 
@@ -680,13 +682,13 @@ function get_user_unread_comment_reply_count()
 				'meta_query' => [
 					'relation' => 'AND',
 					[
-						'key'     => COMMENT_PARENT_USER_ID,
+						'key'     => Comment_Meta::COMMENT_PARENT_USER_ID,
 						'value'   => $user_id,
 						'compare' => '=',
 						'type'    => 'NUMERIC',
 					],
 					[
-						'key'     => COMMENT_PARENT_USER_READ,
+						'key'     => Comment_Meta::COMMENT_PARENT_USER_READ,
 						'value'   => 0,
 						'compare' => '=',
 						'type'    => 'NUMERIC',
@@ -717,7 +719,7 @@ function get_user_like_count($user_id)
 	if ($user_id)
 	{
 
-		$count = get_user_meta($user_id, USER_LIKE_COUNT, true);
+		$count = get_user_meta($user_id, User_Meta::USER_LIKE_COUNT, true);
 		//如果用户从未评过分
 		if ($count === "")
 		{
@@ -743,7 +745,7 @@ function add_user_like_count($user_id)
 
 		$count = get_user_like_count($user_id);
 		$count++;
-		update_user_meta($user_id, USER_LIKE_COUNT, (int) $count);
+		update_user_meta($user_id, User_Meta::USER_LIKE_COUNT, (int) $count);
 	}
 }
 
@@ -769,7 +771,7 @@ function delete_user_like_count($user_id)
 		{
 			$count = 0;
 		}
-		update_user_meta($user_id, USER_LIKE_COUNT, (int) $count);
+		update_user_meta($user_id, User_Meta::USER_LIKE_COUNT, (int) $count);
 	}
 }
 
@@ -1227,7 +1229,7 @@ function get_user_favorite()
 	//确保用户有登陆
 	if ($user_id)
 	{
-		$output = get_user_meta($user_id, MY_USER_FAVORITE_POST_LIST, true);
+		$output = get_user_meta($user_id, User_Meta::USER_FAVORITE_POST_LIST, true);
 		//如果收藏夹未初始化
 		if ($output === '')
 		{
@@ -1263,7 +1265,7 @@ function add_user_favorite($post_id)
 			//在头部添加新收藏的文章id
 			array_unshift($current_favorite, $post_id);
 			//更新数组
-			update_user_meta($user_id, MY_USER_FAVORITE_POST_LIST, $current_favorite);
+			update_user_meta($user_id, User_Meta::USER_FAVORITE_POST_LIST, $current_favorite);
 
 			//文章收藏数+1
 			add_post_favorites($post_id);
@@ -1300,7 +1302,7 @@ function delete_user_favorite($post_id)
 		{
 			array_splice($current_favorite, $index, 1);
 			//更新数组
-			update_user_meta($user_id, MY_USER_FAVORITE_POST_LIST, $current_favorite);
+			update_user_meta($user_id, User_Meta::USER_FAVORITE_POST_LIST, $current_favorite);
 			//文章收藏数-1
 			delete_post_favorites($post_id);
 		}
@@ -1322,17 +1324,17 @@ function get_user_unread_message_total_count()
 
 	$total_count = 0;
 
-	if (isset($_SESSION[CUSTOM_PRIVATE_MESSAGE_COUNT]))
+	if (isset($_SESSION[Session_Cache::PRIVATE_MESSAGE_COUNT]))
 	{
-		$total_count += $_SESSION[CUSTOM_PRIVATE_MESSAGE_COUNT];
+		$total_count += $_SESSION[Session_Cache::PRIVATE_MESSAGE_COUNT];
 	}
-	if (isset($_SESSION[CUSTOM_COMMENT_REPLY_COUNT]))
+	if (isset($_SESSION[Session_Cache::COMMENT_REPLY_COUNT]))
 	{
-		$total_count += $_SESSION[CUSTOM_COMMENT_REPLY_COUNT];
+		$total_count += $_SESSION[Session_Cache::COMMENT_REPLY_COUNT];
 	}
-	if (isset($_SESSION[CUSTOM_FORUM_REPLY_COUNT]))
+	if (isset($_SESSION[Session_Cache::FORUM_REPLY_COUNT]))
 	{
-		$total_count += $_SESSION[CUSTOM_FORUM_REPLY_COUNT];
+		$total_count += $_SESSION[Session_Cache::FORUM_REPLY_COUNT];
 	}
 
 	return $total_count;
@@ -1343,9 +1345,9 @@ function get_user_unread_message_total_count()
  */
 function delete_user_unread_message_total_count_session()
 {
-	unset($_SESSION[CUSTOM_PRIVATE_MESSAGE_COUNT]);
-	unset($_SESSION[CUSTOM_COMMENT_REPLY_COUNT]);
-	unset($_SESSION[CUSTOM_FORUM_REPLY_COUNT]);
+	unset($_SESSION[Session_Cache::PRIVATE_MESSAGE_COUNT]);
+	unset($_SESSION[Session_Cache::COMMENT_REPLY_COUNT]);
+	unset($_SESSION[Session_Cache::FORUM_REPLY_COUNT]);
 }
 
 
@@ -1401,7 +1403,7 @@ function get_user_followed()
 	//确保用户有登陆
 	if ($user_id)
 	{
-		$output = get_user_meta($user_id, MY_USER_FOLLOWED, true);
+		$output = get_user_meta($user_id, User_Meta::USER_FOLLOW_LIST, true);
 		//如果不存在 重设为空数组
 		if ($output === '')
 		{
@@ -1437,7 +1439,7 @@ function set_user_followed($user_id_to_follow, $is_add)
 			//添加
 			$user_followed[] = $user_id_to_follow;
 			//更新
-			$result = update_user_meta($user_id, MY_USER_FOLLOWED, $user_followed);
+			$result = update_user_meta($user_id, User_Meta::USER_FOLLOW_LIST, $user_followed);
 		}
 		//如果是取消关注, 确保在数组中已存在相关元素
 		else if (!$is_add && in_array($user_id_to_follow, $user_followed))
@@ -1449,7 +1451,7 @@ function set_user_followed($user_id_to_follow, $is_add)
 				return  $element !== 0 && $element !== $user_id_to_follow;
 			});
 			//更新
-			$result = update_user_meta($user_id, MY_USER_FOLLOWED, $user_followed);
+			$result = update_user_meta($user_id, User_Meta::USER_FOLLOW_LIST, $user_followed);
 		}
 	}
 
@@ -1492,7 +1494,7 @@ function get_user_fans_count($user_id)
 	//确保用户有登陆
 	if ($user_id)
 	{
-		$output = get_user_meta($user_id, MY_USER_FANS_COUNT, true);
+		$output = get_user_meta($user_id, User_Meta::USER_FANS_COUNT, true);
 		//如果不存在 重设为0
 		if ($output === '')
 		{
@@ -1536,7 +1538,7 @@ function set_user_fans_count($user_id, $is_add)
 		}
 
 		//更新
-		$result = update_user_meta($user_id, MY_USER_FANS_COUNT, $fans_count);
+		$result = update_user_meta($user_id, User_Meta::USER_FANS_COUNT, $fans_count);
 	}
 
 	return $result == true;
@@ -1558,7 +1560,7 @@ function get_user_black_list($user_id)
 	//确保用户有登陆
 	if ($user_id)
 	{
-		$output = get_user_meta($user_id, MY_USER_BLACK_LIST, true);
+		$output = get_user_meta($user_id, User_Meta::USER_BLACK_LIST, true);
 		//如果不存在 重设为空数组
 		if (empty($output))
 		{
@@ -1617,7 +1619,7 @@ function add_user_black_list($user_id, $target_user_id)
 			//添加ID到黑名单里
 			$black_list[] = $target_user_id;
 			//更新黑名单
-			$result = update_user_meta($user_id, MY_USER_BLACK_LIST, $black_list);
+			$result = update_user_meta($user_id, User_Meta::USER_BLACK_LIST, $black_list);
 
 			//增加目标用户的被拉黑数
 			add_user_blacked_count($target_user_id);
@@ -1661,7 +1663,7 @@ function delete_user_black_list($user_id, $target_user_id)
 		});
 
 		//更新黑名单
-		$result = update_user_meta($user_id, MY_USER_BLACK_LIST, $new_black_list);
+		$result = update_user_meta($user_id, User_Meta::USER_BLACK_LIST, $new_black_list);
 
 		//如果新旧黑名单有变化
 		if (count($new_black_list) !== count($black_list))
@@ -1689,7 +1691,7 @@ function get_user_blacked_count($user_id)
 	if ($user_id)
 	{
 		//如果不存在 重设为0
-		$result = get_user_meta($user_id, MY_USER_BLACKED_COUNT, true) ?: 0;
+		$result = get_user_meta($user_id, User_Meta::USER_BLACKED_COUNT, true) ?: 0;
 	}
 
 	return $result;
@@ -1707,7 +1709,7 @@ function add_user_blacked_count($user_id)
 		$result = get_user_blacked_count($user_id);
 		$result++;
 		//更新
-		update_user_meta($user_id, MY_USER_BLACKED_COUNT, $result);
+		update_user_meta($user_id, User_Meta::USER_BLACKED_COUNT, $result);
 	}
 }
 
@@ -1724,7 +1726,7 @@ function delete_user_blacked_count($user_id)
 		//如果次数大于0, 减1, 否则重置为0
 		$result = $result > 0 ? $result - 1 : 0;
 		//更新
-		update_user_meta($user_id, MY_USER_BLACKED_COUNT, $result);
+		update_user_meta($user_id, User_Meta::USER_BLACKED_COUNT, $result);
 	}
 }
 

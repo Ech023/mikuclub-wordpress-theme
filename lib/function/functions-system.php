@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 /**
  *  基础系统函数
  */
@@ -1039,7 +1039,7 @@ function get_custom_cached_alloptions($alloptions = null, $force_cache = false)
 		
 	
 		//读取文件缓存 60秒
-		$result = get_cache_meta($meta_cache_key, '', 60);
+		$result = File_Cache::get_cache_meta($meta_cache_key, '', 60);
 		//如果不存在
 		if (!$result)
 		{
@@ -1058,7 +1058,7 @@ function get_custom_cached_alloptions($alloptions = null, $force_cache = false)
 				$result[$o->option_name] = $o->option_value;
 			}
 			//保存文件缓存
-			set_cache_meta($meta_cache_key, '', $result);
+			File_Cache::set_cache_meta($meta_cache_key, '', $result);
 		}
 	}
 
@@ -1076,7 +1076,7 @@ function site_posts_total_count()
 	$cache_key = 'count_total_post';
 
 	//从内存中获取
-	$count = get_cache_meta($cache_key, '', EXPIRED_7_DAYS);
+	$count = File_Cache::get_cache_meta($cache_key, '', Expired::EXP_7_DAYS);
 
 	//如果缓存失效
 	if (empty($count))
@@ -1084,7 +1084,7 @@ function site_posts_total_count()
 
 		//重新计算
 		$count = wp_count_posts()->publish;
-		set_cache_meta($cache_key, '', $count);
+		File_Cache::set_cache_meta($cache_key, '', $count);
 	}
 
 	return $count;
@@ -1099,7 +1099,7 @@ function site_tags_total_count()
 	$cache_key = 'count_total_tag';
 
 	//从内存中获取
-	$count = get_cache_meta($cache_key, '', EXPIRED_7_DAYS);
+	$count = File_Cache::get_cache_meta($cache_key, '', Expired::EXP_7_DAYS);
 
 	//如果缓存失效
 	if (empty($count))
@@ -1107,7 +1107,7 @@ function site_tags_total_count()
 
 		//重新计算
 		$count = wp_count_terms('post_tag');
-		set_cache_meta($cache_key, '', $count);
+		File_Cache::set_cache_meta($cache_key, '', $count);
 	}
 
 	return $count;
@@ -1122,7 +1122,7 @@ function site_categories_total_count()
 	$cache_key = 'count_total_category';
 
 	//从内存中获取
-	$count = get_cache_meta($cache_key, '', EXPIRED_7_DAYS);
+	$count = File_Cache::get_cache_meta($cache_key, '', Expired::EXP_7_DAYS);
 
 	//如果缓存失效
 	if (empty($count))
@@ -1130,7 +1130,7 @@ function site_categories_total_count()
 
 		//重新计算
 		$count = wp_count_terms('category');
-		set_cache_meta($cache_key, '', $count);
+		File_Cache::set_cache_meta($cache_key, '', $count);
 	}
 
 	return $count;
@@ -1142,10 +1142,10 @@ function site_categories_total_count()
 function site_comments_total_count()
 {
 
-	$cache_key = 'count_total_comment';
+	$cache_key = File_Cache::SITE_COMMENT_COUNT;
 
 	//从内存中获取
-	$count = get_cache_meta($cache_key, '', EXPIRED_7_DAYS);
+	$count = File_Cache::get_cache_meta($cache_key, '', Expired::EXP_7_DAYS);
 
 	//如果缓存失效
 	if (empty($count))
@@ -1153,7 +1153,7 @@ function site_comments_total_count()
 
 		//重新计算
 		$count = wp_count_comments()->total_comments;
-		set_cache_meta($cache_key, '', $count);
+		File_Cache::set_cache_meta($cache_key, '', $count);
 	}
 
 	return $count;
@@ -1180,154 +1180,6 @@ function set_my_cookie($key, $value, $expired = 31104000)
 	}
 }
 
-
-/**
- * 过滤 文件名用的字符串
- *
- * @param string $string
- * @return void
- */
-function sanitizer_string_for_file_name($string)
-{
-
-	return preg_replace('/[^a-z0-9_]+/', '-', strtolower($string));
-}
-
-
-/**
- * 创建缓存文件
- *
- * @param string $meta_key
- * @param string $group
- * @param mixed $meta_value
- */
-function set_cache_meta($meta_key, $group, $meta_value)
-{
-
-	//文件缓存系统有开启
-	if (dopt('d_cache_system'))
-	{
-		$directory = CACHE_DIRECTORY . $group;
-
-		$filepath = $directory . sanitizer_string_for_file_name($meta_key);
-
-		//如果缓存目录不存在就创建新目录
-		if (!file_exists($directory))
-		{
-			mkdir($directory, 0777, true);
-		}
-
-		file_put_contents($filepath, serialize($meta_value));
-	}
-}
-
-/**
- * 从文件里获取缓存
- *
- * @param string $meta_key
- * @param string $group
- * @param int $expired 有效时间
- *
- * @return mixed 键值, 空值如果无效
- */
-function get_cache_meta($meta_key, $group, $expired)
-{
-
-	$meta_value = '';
-	//如果有开启缓存系统
-	if (dopt('d_cache_system'))
-	{
-		$directory = CACHE_DIRECTORY . $group;
-
-		$filepath = $directory . sanitizer_string_for_file_name($meta_key);
-
-		//有开启缓存系统  和 缓存文件存在 和 未过期
-		if (file_exists($filepath) && filemtime($filepath) + $expired > time())
-		{
-
-			$meta_value = unserialize(file_get_contents($filepath));
-			//如果反序列化错误, 重设为空字符串
-			if ($meta_value === false)
-			{
-				$meta_value = '';
-			}
-		}
-	}
-
-	return $meta_value;
-}
-
-/**
- * 删除缓存文件
- *
- * @param string $meta_key
- * @param string $group
- * 
- */
-function delete_cache_meta($meta_key, $group = '')
-{
-	$directory = CACHE_DIRECTORY . $group;
-
-	$filepath = $directory . sanitizer_string_for_file_name($meta_key);
-
-	//如果文件存在
-	if (file_exists($filepath))
-	{
-		//删除它
-		unlink($filepath);
-	}
-}
-
-
-/**
- * 创建内存缓存文件
- *
- * @param string $meta_key 键名
- * @param mixed $meta_value 键值
- * @param int $expire 过期时间
- *
- * @return bool 是否创建成功
- */
-function set_transient_cache_meta($meta_key, $meta_value, $expire)
-{
-
-	$result = false;
-
-	//文件缓存系统有开启
-	if (dopt('d_transient_cache_system'))
-	{
-
-		$result = set_transient($meta_key, $meta_value, $expire);
-	}
-
-	return $result;
-}
-
-/**
- * 获取数据库缓存
- *
- * @param string $meta_key 键名
- *
- * @return mixed 键值, 如果无缓存返回 空字符串
- */
-function get_transient_cache_meta($meta_key)
-{
-
-	$meta_value = '';
-	//如果有开启缓存系统
-	if (dopt('d_transient_cache_system'))
-	{
-
-		$meta_value = get_transient($meta_key);
-
-		if ($meta_value === false || $meta_value === null)
-		{
-			$meta_value = '';
-		}
-	}
-
-	return $meta_value;
-}
 
 /**
  * 删除数据库缓存

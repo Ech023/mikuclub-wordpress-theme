@@ -6,6 +6,12 @@
 */
 
 //如果未登陆 重定向回首页
+
+use function mikuclub\breadcrumbs_component;
+use function mikuclub\next_page_button;
+use function mikuclub\print_author_statistics;
+use function mikuclub\redirect_for_not_logged;
+
 redirect_for_not_logged();
 
 

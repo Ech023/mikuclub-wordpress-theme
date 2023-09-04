@@ -1,7 +1,10 @@
 <?php
 
+namespace mikuclub;
+
 /**
  * 侧边栏浮动菜单组件
+ * @return string
  */
 function sidebar_menu_component()
 {

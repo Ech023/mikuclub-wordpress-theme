@@ -22,10 +22,10 @@ get_header(); ?>
 						<div class="entry-meta d-flex flex-wrap my-2">
 
                             <div class="post-date me-3">
-                                发布时间 <?php echo get_the_date(MY_DATE_FORMAT); ?>
+                                发布时间 <?php echo get_the_date(Config::DATE_FORMAT); ?>
                             </div>
                             <div class="post-date me-3">
-                                更新时间 <?php echo get_the_modified_date(MY_DATE_FORMAT ); ?>
+                                更新时间 <?php echo get_the_modified_date(Config::DATE_FORMAT ); ?>
                             </div>
                             <div class="me-3">
                                 <a href="<?php echo wp_get_attachment_url(); ?>" title="查看原始大小"> 查看原图 </a>

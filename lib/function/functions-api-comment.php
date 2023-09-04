@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 
 /**
  * 获取用户未读的评论数量
@@ -271,8 +271,8 @@ function register_custom_comment_metadata()
 		'show_in_rest' => true,
 	];
 
-	register_meta('comment', COMMENT_PARENT_USER_ID, $integer_meta_args);
-	register_meta('comment', COMMENT_PARENT_USER_READ, $integer_meta_args);
+	register_meta('comment', Comment_Meta::COMMENT_PARENT_USER_ID, $integer_meta_args);
+	register_meta('comment', Comment_Meta::COMMENT_PARENT_USER_READ, $integer_meta_args);
 }
 
 

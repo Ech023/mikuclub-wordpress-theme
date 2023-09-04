@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 /**
  * rest api函数
  * ========================
@@ -201,7 +201,7 @@ function test_function($data)
 	$args = [
 		'posts_per_page' => $data['number'],
 		'ignore_sticky_posts' => 1,
-		'post_status'         => POST_STATUS_PUBLISH,
+		'post_status'         => Post_Status::PUBLISH,
 		'paged' => $data['paged'],
 		'orderby' => 'ID',
 	];

@@ -5,6 +5,17 @@ template name: 用户个人信息页
 */
 
 //如果未登陆 重定向回首页
+
+use mikuclub\My_User;
+
+use function mikuclub\breadcrumbs_component;
+use function mikuclub\get_my_user_avatar;
+use function mikuclub\get_user_black_list;
+use function mikuclub\get_user_level;
+use function mikuclub\get_user_points;
+use function mikuclub\print_user_avatar;
+use function mikuclub\redirect_for_not_logged;
+
 redirect_for_not_logged();
 
 

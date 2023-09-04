@@ -1,4 +1,6 @@
 <?php
+
+namespace mikuclub;
 /**
  * WP Bootstrap Navwalker
  * 让wordpress菜单支持 bootstrap

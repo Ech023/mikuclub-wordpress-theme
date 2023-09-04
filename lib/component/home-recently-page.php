@@ -1,4 +1,5 @@
 <?php
+namespace mikuclub;
 /**
  * 主页 第一页 最新发布 组件
  */

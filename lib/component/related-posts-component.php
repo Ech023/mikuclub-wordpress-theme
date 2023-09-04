@@ -1,8 +1,10 @@
 <?php
 
+namespace mikuclub;
 
 /**
  * 相关文章组件
+ * @return string
  */
 function related_posts_component()
 {

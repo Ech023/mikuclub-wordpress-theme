@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 
 /**
  * JWT API 登陆跳过极验证专用
@@ -28,7 +28,7 @@ function modify_jwt_auth_expire()
 
 	$expire_days = 180;
 
-	return time() + (EXPIRED_1_DAY * $expire_days);
+	return time() + (Expired::EXP_1_DAY * $expire_days);
 }
 
 add_action('jwt_auth_expire', 'modify_jwt_auth_expire');

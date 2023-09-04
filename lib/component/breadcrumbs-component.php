@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 /**
  * 面包屑导航
  * @return string

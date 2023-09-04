@@ -5,6 +5,14 @@
 */
 
 //如果未登陆 重定向回首页
+
+use mikuclub\Message_Type;
+use mikuclub\Session_Cache;
+
+use function mikuclub\breadcrumbs_component;
+use function mikuclub\next_page_button;
+use function mikuclub\redirect_for_not_logged;
+
 redirect_for_not_logged();
 
 get_header();
@@ -16,26 +24,26 @@ $current_type = filter_input( INPUT_GET, 'type' );
 $nav_items = [
 	[
         'type_key' => 'type',
-		'type'      => CUSTOM_PRIVATE_MESSAGE,
+		'type'      => Message_Type::PRIVATE_MESSAGE,
 		'name'      => '我的私信',
-		'count'     => $_SESSION[ CUSTOM_PRIVATE_MESSAGE_COUNT ],
-		'count_key' => CUSTOM_PRIVATE_MESSAGE_COUNT,
+		'count'     => $_SESSION[ Session_Cache::PRIVATE_MESSAGE_COUNT ],
+		'count_key' => Session_Cache::PRIVATE_MESSAGE_COUNT,
         'page_link' => get_page_link(),
 	],
 	[
 		'type_key' => 'type',
-		'type'      => CUSTOM_COMMENT_REPLY,
+		'type'      => Message_Type::COMMENT_REPLY,
 		'name'      => '评论回复',
-		'count'     => $_SESSION[ CUSTOM_COMMENT_REPLY_COUNT ],
-		'count_key' => CUSTOM_COMMENT_REPLY_COUNT,
+		'count'     => $_SESSION[ Session_Cache::COMMENT_REPLY_COUNT ],
+		'count_key' => Session_Cache::COMMENT_REPLY_COUNT,
 		'page_link' => get_page_link(),
 	],
 	[
 		'type_key' => 'show_notification',
 		'type'      => 1,
 		'name'      => '论坛回复',
-		'count'     => $_SESSION[ CUSTOM_FORUM_REPLY_COUNT ],
-		'count_key' => CUSTOM_FORUM_REPLY_COUNT,
+		'count'     => $_SESSION[ Session_Cache::FORUM_REPLY_COUNT ],
+		'count_key' => Session_Cache::FORUM_REPLY_COUNT,
 		'page_link' => get_home_url().'/forums',
 	]
 

@@ -1,5 +1,5 @@
 <?php
-
+namespace mikuclub;
 
 /**
  * 获取用户收到的未读私信数量
@@ -214,7 +214,7 @@ function send_private_message($recipient_id, $message_content, $respond = 0, $is
 		'content'      => $message_content,
 		'respond'      => $respond,
 		'status'       => 0,
-		'date'         => date(MY_DATE_FORMAT),
+		'date'         => date(Config::DATE_FORMAT),
 	];
 
 	$result_sql = $wpdb->insert('mm_message', $new_message, ['%d', '%d', '%s', '%d', '%d', '%s']);

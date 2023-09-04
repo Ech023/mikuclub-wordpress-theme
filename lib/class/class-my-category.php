@@ -1,5 +1,7 @@
 <?php
 
+namespace mikuclub;
+
 /**
  * 自定义分类模型
  */
