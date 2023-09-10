@@ -1,5 +1,9 @@
 <?php
+
 namespace mikuclub;
+
+use WP_User;
+
 /**
  *  基础系统函数
  */
@@ -32,6 +36,8 @@ function dopt($option_name)
 
 /**
  * 去除冗余代码
+ * 
+ * @return void
  */
 function action_after_setup_theme()
 {
@@ -59,7 +65,9 @@ function action_after_setup_theme()
 
 
 	/**
-	 *    生成页面关键字 给搜索引擎使用
+	 * 生成页面关键字 给搜索引擎使用
+	 *
+	 * @return void
 	 */
 	function print_keywords()
 	{
@@ -115,11 +123,12 @@ function action_after_setup_theme()
 		}
 	}
 
-	add_action('wp_head', 'print_keywords');
+	add_action('wp_head', 'mikuclub\print_keywords');
 
 
 	/**
 	 * 网站页面 给搜索引擎用的描述
+	 * @return void
 	 */
 	function deel_description()
 	{
@@ -183,9 +192,14 @@ function action_after_setup_theme()
 	}
 
 	//生成页面描述
-	add_action('wp_head', 'deel_description');
+	add_action('wp_head', 'mikuclub\deel_description');
 
-	//阻止站内文章Pingback
+	/**
+	 * 阻止站内文章Pingback
+	 *
+	 * @param string[] $links
+	 * @return void
+	 */
 	function deel_noself_ping(&$links)
 	{
 		$home = get_home_url();
@@ -197,19 +211,20 @@ function action_after_setup_theme()
 			}
 		}
 	}
-
 	//阻止站内PingBack
-	add_action('pre_ping', 'deel_noself_ping');
+	add_action('pre_ping', 'mikuclub\deel_noself_ping');
 
-
+	/**
+	 * @param array<string, mixed> $methods
+	 * @return array<string, mixed>
+	 */
 	function remove_xmlrpc_pingback_ping($methods)
 	{
 		unset($methods['pingback.ping']);
 
 		return $methods;
 	}
-
-	add_filter('xmlrpc_methods', 'remove_xmlrpc_pingback_ping');
+	add_filter('xmlrpc_methods', 'mikuclub\remove_xmlrpc_pingback_ping');
 
 
 	//定义 网站菜单导航栏
@@ -228,7 +243,7 @@ function action_after_setup_theme()
 	add_filter('login_display_language_dropdown', '__return_false');
 }
 
-add_action('after_setup_theme', 'action_after_setup_theme');
+add_action('after_setup_theme', 'mikuclub\action_after_setup_theme');
 
 
 //WordPress禁用XML-RPC接口服务
@@ -237,6 +252,7 @@ add_filter('xmlrpc_enabled', '__return_false');
 
 /**
  * 替换原版默认表情
+ * @return void
  */
 function custom_emojis()
 {
@@ -249,11 +265,15 @@ function custom_emojis()
 	remove_filter('the_content_feed', 'wp_staticize_emoji');
 	remove_filter('comment_text_rss', 'wp_staticize_emoji');
 	remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
-	add_filter('tiny_mce_plugins', 'disable_emojis_tinymce');
-	add_filter('smilies_src', 'custom_smilies_src', 10, 2);
+	add_filter('tiny_mce_plugins', 'mikuclub\disable_emojis_tinymce');
+	add_filter('smilies_src', 'mikuclub\custom_smilies_src', 10, 2);
 
-
-	//默认表情修正
+	/**
+	 * 默认表情修正
+	 *
+	 * @param array<string, mixed>|null $plugins
+	 * @return array<string, mixed>
+	 */
 	function disable_emojis_tinymce($plugins)
 	{
 		if (is_array($plugins))
@@ -267,76 +287,86 @@ function custom_emojis()
 	}
 
 	//自定义表情地址
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $old
+	 * @param string $img
+	 * @return string
+	 */
 	function custom_smilies_src($old, $img)
 	{
 		return get_bloginfo('template_directory') . '/img/smilies/' . $img;
 	}
 
-	//自定义表情对应图片
-	function init_new_smilies()
-	{
-		global $wpsmiliestrans;
-		//默认表情文本与表情图片的对应关系(可自定义修改)
-		$wpsmiliestrans = [
-			':mrgreen:' => 'icon_mrgreen.gif',
-			':neutral:' => 'icon_neutral.gif',
-			':twisted:' => 'icon_twisted.gif',
-			':arrow:'   => 'icon_arrow.gif',
-			':shock:'   => 'icon_eek.gif',
-			':smile:'   => 'icon_smile.gif',
-			':???:'     => 'icon_confused.gif',
-			':cool:'    => 'icon_cool.gif',
-			':evil:'    => 'icon_evil.gif',
-			':grin:'    => 'icon_biggrin.gif',
-			':idea:'    => 'icon_idea.gif',
-			':oops:'    => 'icon_redface.gif',
-			':razz:'    => 'icon_razz.gif',
-			':roll:'    => 'icon_rolleyes.gif',
-			':wink:'    => 'icon_wink.gif',
-			':cry:'     => 'icon_cry.gif',
-			':eek:'     => 'icon_surprised.gif',
-			':lol:'     => 'icon_lol.gif',
-			':mad:'     => 'icon_mad.gif',
-			':sad:'     => 'icon_sad.gif',
-			'8-)'       => 'icon_01.gif',
-			'8-O'       => 'icon_02.gif',
-			':-('       => 'icon_03.gif',
-			':-)'       => 'icon_04.gif',
-			':-?'       => 'icon_05.gif',
-			':-D'       => 'icon_06.gif',
-			':-P'       => 'icon_07.gif',
-			':-o'       => 'icon_08.gif',
-			':-x'       => 'icon_09.gif',
-			':-|'       => 'icon_10.gif',
-			';-)'       => 'icon_11.gif',
-			'8O'        => 'icon_eek.gif',
-			':('        => 'icon_sad.gif',
-			':)'        => 'icon_smile.gif',
-			':?'        => 'icon_confused.gif',
-			':D'        => 'icon_biggrin.gif',
-			':P'        => 'icon_razz.gif',
-			':o'        => 'icon_surprised.gif',
-			':x'        => 'icon_mad.gif',
-			':|'        => 'icon_neutral.gif',
-			';)'        => 'icon_wink.gif',
-			':!:'       => 'icon_exclaim.gif',
-			':?:'       => 'icon_question.gif',
-		];
-	}
+
 
 	init_new_smilies();
 }
+add_action('init', 'mikuclub\custom_emojis');
 
-add_action('init', 'custom_emojis');
-
+/**
+ * 自定义表情对应图片
+ *
+ * @return void
+ */
+function init_new_smilies()
+{
+	global $wpsmiliestrans;
+	//默认表情文本与表情图片的对应关系(可自定义修改)
+	$wpsmiliestrans = [
+		':mrgreen:' => 'icon_mrgreen.gif',
+		':neutral:' => 'icon_neutral.gif',
+		':twisted:' => 'icon_twisted.gif',
+		':arrow:'   => 'icon_arrow.gif',
+		':shock:'   => 'icon_eek.gif',
+		':smile:'   => 'icon_smile.gif',
+		':???:'     => 'icon_confused.gif',
+		':cool:'    => 'icon_cool.gif',
+		':evil:'    => 'icon_evil.gif',
+		':grin:'    => 'icon_biggrin.gif',
+		':idea:'    => 'icon_idea.gif',
+		':oops:'    => 'icon_redface.gif',
+		':razz:'    => 'icon_razz.gif',
+		':roll:'    => 'icon_rolleyes.gif',
+		':wink:'    => 'icon_wink.gif',
+		':cry:'     => 'icon_cry.gif',
+		':eek:'     => 'icon_surprised.gif',
+		':lol:'     => 'icon_lol.gif',
+		':mad:'     => 'icon_mad.gif',
+		':sad:'     => 'icon_sad.gif',
+		'8-)'       => 'icon_01.gif',
+		'8-O'       => 'icon_02.gif',
+		':-('       => 'icon_03.gif',
+		':-)'       => 'icon_04.gif',
+		':-?'       => 'icon_05.gif',
+		':-D'       => 'icon_06.gif',
+		':-P'       => 'icon_07.gif',
+		':-o'       => 'icon_08.gif',
+		':-x'       => 'icon_09.gif',
+		':-|'       => 'icon_10.gif',
+		';-)'       => 'icon_11.gif',
+		'8O'        => 'icon_eek.gif',
+		':('        => 'icon_sad.gif',
+		':)'        => 'icon_smile.gif',
+		':?'        => 'icon_confused.gif',
+		':D'        => 'icon_biggrin.gif',
+		':P'        => 'icon_razz.gif',
+		':o'        => 'icon_surprised.gif',
+		':x'        => 'icon_mad.gif',
+		':|'        => 'icon_neutral.gif',
+		';)'        => 'icon_wink.gif',
+		':!:'       => 'icon_exclaim.gif',
+		':?:'       => 'icon_question.gif',
+	];
+}
 
 /**
  * 修改前台富文本编辑器的默认字体
  * tiny编辑器默认字体
  *
- * @param array $in
- *
- * @return array
+ * @param array<string,mixed> $in
+ * @return array<string,mixed>
  **/
 function editor_custom_font($in)
 {
@@ -346,7 +376,7 @@ function editor_custom_font($in)
 	return $in;
 }
 
-add_filter('tiny_mce_before_init', 'editor_custom_font');
+add_filter('tiny_mce_before_init', 'mikuclub\editor_custom_font');
 
 
 /* 邮件功能管理开始*/
@@ -359,9 +389,8 @@ add_filter('wp_new_user_notification_email', '__return_false'); //关闭新用�
 /**
  * 修改默认发信人名称
  *
- * @param $email
- *
- * @return bool|mixed|void
+ * @param mixed $email
+ * @return mixed
  */
 function deel_res_from_name($email)
 {
@@ -370,7 +399,7 @@ function deel_res_from_name($email)
 	return $wp_from_name;
 }
 
-add_filter('wp_mail_from_name', 'deel_res_from_name');
+add_filter('wp_mail_from_name', 'mikuclub\deel_res_from_name');
 
 /**
  * 自定义忘记密码邮件通知
@@ -378,7 +407,7 @@ add_filter('wp_mail_from_name', 'deel_res_from_name');
  * @param string $message 默认重置邮件文本
  * @param string $key 重置密钥
  *
- * @return string
+ * @return bool
  */
 function reset_password_message($message, $key)
 {
@@ -450,7 +479,7 @@ HTML;
 	return false;
 }
 
-add_filter('retrieve_password_message', 'reset_password_message', null, 2);
+add_filter('retrieve_password_message', 'mikuclub\reset_password_message', 10, 2);
 
 
 /**
@@ -458,17 +487,22 @@ add_filter('retrieve_password_message', 'reset_password_message', null, 2);
  */
 if (!function_exists('remove_wp_open_sans') && !function_exists('remove_wp_open_sans2'))
 {
-
+	/**
+	 * @return void
+	 */
 	function remove_wp_open_sans()
 	{
 		wp_deregister_style('open-sans');
 		wp_register_style('open-sans', false);
 	}
 
-	add_action('admin_enqueue_scripts', 'remove_wp_open_sans');
-	add_action('login_init', 'remove_wp_open_sans');
+	add_action('admin_enqueue_scripts', 'mikuclub\remove_wp_open_sans');
+	add_action('login_init', 'mikuclub\remove_wp_open_sans');
 
-	//去除谷歌字体2
+	/**
+	 * 去除谷歌字体2
+	 * @return void
+	 */
 	function remove_wp_open_sans2()
 	{
 		wp_deregister_style('open-sans');
@@ -476,17 +510,15 @@ if (!function_exists('remove_wp_open_sans') && !function_exists('remove_wp_open_
 		wp_enqueue_style('open-sans', '');
 	}
 
-
-	add_action('init', 'remove_wp_open_sans2');
+	add_action('init', 'mikuclub\remove_wp_open_sans2');
 }
 
 
 /**
  * 评论过滤纯英文和外语功能
  *
- * @param array $comment_data
- *
- * @return array
+ * @param array<string,string> $comment_data
+ * @return array<string,string>
  */
 function refused_spam_comments($comment_data)
 {
@@ -494,30 +526,31 @@ function refused_spam_comments($comment_data)
 	$pattern = '/[一-龥]/u';
 	if (!preg_match($pattern, $comment_data['comment_content']))
 	{
-		err('comment_custom_span_filter', '评论需要包含中文字体', 400);
+		err('comment_custom_span_filter', '评论需要包含中文字体');
 	}
 
 	return $comment_data;
 }
 
 //if ( dopt( 'd_spamComments_b' ) ) {
-//add_filter( 'preprocess_comment', 'refused_spam_comments' );
+//add_filter( 'preprocess_comment', 'mikuclub\refused_spam_comments' );
 //}
 
 /**
  * 自定义错误
  *
- * @param $title
- * @param $message
- * @param $code
+ * @param string $code
+ * @param string $message
+ * @param string $data
+ * @return void
  */
-function err($title, $message, $code)
+function err($code = '', $message = '', $data = '')
 {
 	header('HTTP/1.1 400 Bad Request');
 	echo json_encode([
-		'code'    => $title,
-		'message' => $message,
 		'code'    => $code,
+		'message' => $message,
+		'data' => $data,
 	]);
 	exit;
 }
@@ -526,7 +559,7 @@ function err($title, $message, $code)
 /**
  * 在RSS自定义文章输出格式
  *
- * @param $content
+ * @param string $content
  *
  * @return string
  */
@@ -554,10 +587,15 @@ HTML;
 	return $content;
 }
 
-add_filter('the_content_feed', 'print_post_for_rss');
+add_filter('the_content_feed', 'mikuclub\print_post_for_rss');
 
 
-//移除自动保存
+
+/**
+ * 移除自动保存
+ *
+ * @return void
+ */
 function deel_disable_autosave()
 {
 	wp_deregister_script('autosave');
@@ -566,8 +604,8 @@ function deel_disable_autosave()
 //移除自动保存和修订版本
 if (dopt('d_autosave_b'))
 {
-	add_action('wp_print_scripts', 'deel_disable_autosave');
-	remove_action('pre_post_update', 'wp_save_post_revision');
+	add_action('wp_print_scripts', 'mikuclub\deel_disable_autosave');
+	remove_action('pre_post_update', 'mikuclub\wp_save_post_revision');
 }
 
 
@@ -575,7 +613,12 @@ if (dopt('d_autosave_b'))
 class RRHE
 {
 
-	// Register the column - Registered
+	/**
+	 * Register the column - Registered
+	 *
+	 * @param array<string, mixed> $columns
+	 * @return array<string, mixed>
+	 */
 	public static function registerdate($columns)
 	{
 		$columns['registerdate'] = __('注册时间', 'registerdate');
@@ -583,7 +626,16 @@ class RRHE
 		return $columns;
 	}
 
-	// Display the column content
+
+	/**
+	 * Display the column content
+	 * 
+	 * @param string $value      Custom column output. Default empty.
+	 * @param string $column_name Column name.
+	 * @param int    $user_id     ID of the currently-listed user.
+	 * @return string
+	 * 
+	 */
 	public static function registerdate_columns($value, $column_name, $user_id)
 	{
 		if ('registerdate' != $column_name)
@@ -596,6 +648,10 @@ class RRHE
 		return $registerdate;
 	}
 
+	/**
+	 * @param array<string, mixed> $columns
+	 * @return array<string, mixed>
+	 */
 	public static function registerdate_column_sortable($columns)
 	{
 		$custom = [
@@ -606,6 +662,10 @@ class RRHE
 		return wp_parse_args($custom, $columns);
 	}
 
+	/**
+	 * @param array<string, mixed> $vars
+	 * @return array<string, mixed>
+	 */
 	public static function registerdate_column_orderby($vars)
 	{
 		if (isset($vars['orderby']) && 'registerdate' == $vars['orderby'])
@@ -622,19 +682,19 @@ class RRHE
 
 // Actions
 add_filter('manage_users_columns', [
-	'RRHE',
+	'mikuclub\RRHE',
 	'registerdate'
 ]);
 add_action('manage_users_custom_column', [
-	'RRHE',
+	'mikuclub\RRHE',
 	'registerdate_columns'
 ], 15, 3);
 add_filter('manage_users_sortable_columns', [
-	'RRHE',
+	'mikuclub\RRHE',
 	'registerdate_column_sortable'
 ]);
 add_filter('request', [
-	'RRHE',
+	'mikuclub\RRHE',
 	'registerdate_column_orderby'
 ]);
 
@@ -642,8 +702,9 @@ add_filter('request', [
 /**
  * 更新用户最后一次登录等时间
  *
- * @param $user_login
- * @param $user
+ * @param string  $user_login Username.
+ * @param WP_User $user       WP_User object of the logged-in user.
+ * @return void
  */
 function update_user_last_login_time($user_login, $user)
 {
@@ -651,10 +712,15 @@ function update_user_last_login_time($user_login, $user)
 	update_user_meta($user->ID, 'last_login', current_time('mysql'));
 }
 
-add_action('wp_login', 'update_user_last_login_time', 10, 2);
+add_action('wp_login', 'mikuclub\update_user_last_login_time', 10, 2);
 
 
-// 添加一个新栏目“上次登录”
+/**
+ * 添加一个新栏目“上次登录”
+ *
+ * @param array<string, mixed> $columns
+ * @return array<string, mixed>
+ */
 function add_last_login_column($columns)
 {
 	$columns['last_login'] = '上次登录';
@@ -663,9 +729,17 @@ function add_last_login_column($columns)
 	return $columns;
 }
 
-add_filter('manage_users_columns', 'add_last_login_column');
+add_filter('manage_users_columns', 'mikuclub\add_last_login_column');
 
-// 显示登录时间到新增栏目
+
+/**
+ * 显示登录时间到新增栏目
+ * 
+ * @param string $value      Custom column output. Default empty.
+ * @param string $column_name Column name.
+ * @param int    $user_id     ID of the currently-listed user.
+ * @return string
+ */
 function add_last_login_column_value($value, $column_name, $user_id)
 {
 
@@ -680,11 +754,13 @@ function add_last_login_column_value($value, $column_name, $user_id)
 	return $value;
 }
 
-add_action('manage_users_custom_column', 'add_last_login_column_value', 10, 3);
+add_action('manage_users_custom_column', 'mikuclub\add_last_login_column_value', 10, 3);
 
 
 /**
  * 忘记密码页 自定义提示信息
+ * 
+ * @return void
  */
 function custom_lostpassword_message()
 {
@@ -697,12 +773,14 @@ function custom_lostpassword_message()
 	</p>';
 }
 
-add_action('lostpassword_form', 'custom_lostpassword_message');
+add_action('lostpassword_form', 'mikuclub\custom_lostpassword_message');
 
 
 //WordPress 仪表盘显示待审核的文章列表
 /**
  * 在仪表盘主页显示自定义文章列表
+ * 
+ * @return void
  */
 function custom_dashboard_widgets()
 {
@@ -715,11 +793,12 @@ function custom_dashboard_widgets()
 	}
 }
 
-add_action('wp_dashboard_setup', 'custom_dashboard_widgets');
+add_action('wp_dashboard_setup', 'mikuclub\custom_dashboard_widgets');
 
 
 /**
  * 待审文章列表
+ * @return void
  */
 function pending_posts_dashboard_widget_function()
 {
@@ -824,6 +903,7 @@ HTML;
 
 /**
  * 下载失效文章列表
+ * @return void
  */
 function fail_down_posts_dashboard_widget_function()
 {
@@ -943,7 +1023,7 @@ function make_filename_hash($filename)
 	return $filename;
 }
 
-add_filter('sanitize_file_name', 'make_filename_hash', 10);
+add_filter('sanitize_file_name', 'mikuclub\make_filename_hash', 10);
 
 
 /**
@@ -958,7 +1038,7 @@ function disable_srcset($sources)
 	return false;
 }
 
-add_filter('wp_calculate_image_srcset', 'disable_srcset');
+add_filter('wp_calculate_image_srcset', 'mikuclub\disable_srcset');
 
 /**
  * 禁用缩放尺寸
@@ -969,9 +1049,8 @@ add_filter('big_image_size_threshold', '__return_false');
 /**
  *  移除不常用的图片尺寸, 节省硬盘空间
  *
- * @param array $sizes
- *
- * @return array
+ * @param array<string, mixed> $sizes
+ * @return array<string, mixed>
  */
 function disable_unused_image_sizes($sizes)
 {
@@ -983,11 +1062,16 @@ function disable_unused_image_sizes($sizes)
 	return $sizes;
 }
 
-add_filter('intermediate_image_sizes_advanced', 'disable_unused_image_sizes');
+add_filter('intermediate_image_sizes_advanced', 'mikuclub\disable_unused_image_sizes');
 
 
 
-//禁止用户上传GIF
+/**
+ * 禁止用户上传GIF
+ * 
+ * @param array<string, mixed> $existing_mimes
+ * @return array<string, mixed>
+ */
 function custom_upload_mimes($existing_mimes = array())
 {
 
@@ -995,11 +1079,13 @@ function custom_upload_mimes($existing_mimes = array())
 
 	return $existing_mimes;
 }
-add_filter('upload_mimes', 'custom_upload_mimes');
+add_filter('upload_mimes', 'mikuclub\custom_upload_mimes');
 
 
 /**
  * 关闭投稿管理页面的REST API 缓存
+ * @param bool $skip
+ * @return bool
  */
 function wprc_do_not_cache_user_post($skip)
 {
@@ -1010,7 +1096,7 @@ function wprc_do_not_cache_user_post($skip)
 	}
 	return $skip;
 }
-add_filter('wp_rest_cache/skip_caching', 'wprc_do_not_cache_user_post', 10, 1);
+add_filter('wp_rest_cache/skip_caching', 'mikuclub\wprc_do_not_cache_user_post', 10, 1);
 
 
 
@@ -1064,11 +1150,12 @@ function get_custom_cached_alloptions($alloptions = null, $force_cache = false)
 
 	return $result;
 }*/
-//add_filter('pre_wp_load_alloptions', 'get_custom_cached_alloptions', 10, 2);
+//add_filter('pre_wp_load_alloptions', 'mikuclub\get_custom_cached_alloptions', 10, 2);
 
 
 /**
  * 获取网站发布的文章总数
+ * @return int
  */
 function site_posts_total_count()
 {
@@ -1091,7 +1178,8 @@ function site_posts_total_count()
 }
 
 /**
- *  获取网站标签总数
+ * 获取网站标签总数
+ * @return int
  */
 function site_tags_total_count()
 {
@@ -1115,6 +1203,7 @@ function site_tags_total_count()
 
 /**
  * 获取网站分类总数
+ * @return int
  */
 function site_categories_total_count()
 {
@@ -1138,6 +1227,7 @@ function site_categories_total_count()
 
 /**
  * 获取网站评论总数
+ * @return int
  */
 function site_comments_total_count()
 {
@@ -1168,6 +1258,7 @@ function site_comments_total_count()
  * @param string $key
  * @param mixed $value
  * @param int $expired 有效时间 默认数值  60 * 60 * 24 * 360 一年时间
+ * @return void
  */
 function set_my_cookie($key, $value, $expired = 31104000)
 {
@@ -1185,6 +1276,7 @@ function set_my_cookie($key, $value, $expired = 31104000)
  * 删除数据库缓存
  *
  * @param string $meta_key 键名
+ * @return void
  **/
 function delete_transient_cache_meta($meta_key)
 {
@@ -1292,4 +1384,25 @@ function remove_provider_from_sitemap($provider, $name)
 
 	return $provider;
 }
-add_filter('wp_sitemaps_add_provider', 'remove_provider_from_sitemap', 10, 2);*/
+add_filter('wp_sitemaps_add_provider', 'mikuclub\remove_provider_from_sitemap', 10, 2);*/
+
+
+/**
+ * 关闭 RSS Feeds.
+ *
+ * @return void
+ */
+function disable_feed() {
+    wp_die('No feed available');
+}
+ 
+// Replace all feeds with the message above.
+add_action( 'do_feed_rdf', 'mikuclub\disable_feed', 1 );
+add_action( 'do_feed_rss', 'mikuclub\disable_feed', 1 );
+add_action( 'do_feed_rss2', 'mikuclub\disable_feed', 1 );
+add_action( 'do_feed_atom', 'mikuclub\disable_feed', 1 );
+add_action( 'do_feed_rss2_comments', 'mikuclub\disable_feed', 1 );
+add_action( 'do_feed_atom_comments', 'mikuclub\disable_feed', 1 );
+// Remove links to feed from the header.
+remove_action( 'wp_head', 'feed_links_extra', 3 );
+remove_action( 'wp_head', 'feed_links', 2 );

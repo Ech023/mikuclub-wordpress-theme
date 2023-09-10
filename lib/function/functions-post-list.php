@@ -1,10 +1,14 @@
 <?php
+
 namespace mikuclub;
+
+use WP_Query;
 
 /**
  * 为 未登陆用户 移除魔法区文章的显示
  *
  * @param WP_Query $wp_query
+ * @return void
  */
 function on_pre_get_main_posts($wp_query)
 {
@@ -67,11 +71,13 @@ function on_pre_get_main_posts($wp_query)
 	}
 }
 
-add_action('pre_get_posts', 'on_pre_get_main_posts');
+add_action('pre_get_posts', 'mikuclub\on_pre_get_main_posts');
 
 
 /**
  * 主查询内 如果用户未登陆 排除魔法区分类
+ * 
+ * @return void
  **/
 function exclude_adult_category_for_not_logged_user()
 {
@@ -164,12 +170,12 @@ function get_sticky_posts($number)
  *
  * 获取特定分类下的文章id列表
  *
- * @param $term_id //分类ID 或者 标签ID
- * @param $meta_key //要统计的元数据名称
- * @param $number //文章数量
- * @param $range_day int 统计周期
+ * @param int|null $term_id 分类ID 或者 标签ID
+ * @param string $meta_key 要统计的元数据名称
+ * @param int $number 文章数量
+ * @param int $range_day 统计周期
  *
- * @return My_Post_Slim[] 文章数组
+ * @return My_Post_Hot[] 文章数组
  */
 function get_hot_post_list($term_id, $meta_key, $number, $range_day)
 {
@@ -447,7 +453,7 @@ function get_fail_down_post_list()
  * 获取通用文章列表
  * 转换成自定义文章格式
  *
- * @param array $query_vars 查询参数
+ * @param array<string, mixed> $query_vars 查询参数
  *
  * @return My_Post_Slim[]
  */
@@ -500,9 +506,8 @@ function get_post_list($query_vars)
 /**
  * 修正请求参数
  *
- * @param $query_vars
- *
- * @return array
+ * @param array<string, mixed> $query_vars
+ * @return array<string, mixed>
  */
 function fix_query_vars($query_vars)
 {

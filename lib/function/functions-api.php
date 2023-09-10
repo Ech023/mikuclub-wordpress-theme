@@ -1,23 +1,14 @@
 <?php
 namespace mikuclub;
-/**
- * rest api函数
- * ========================
- */
 
-require_once 'functions-api-post-list.php';
-require_once 'functions-api-post.php';
-require_once 'functions-api-message.php';
-require_once 'functions-api-comment.php';
-require_once 'functions-api-user.php';
-require_once 'functions-api-bbpress.php';
-require_once 'functions-api-app.php';
+use WP_Error;
+use WP_REST_Request;
 
 
 /**
  * API转发文章到微博
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return bool|mixed|string|WP_Error
  */
@@ -39,9 +30,9 @@ function api_share_to_sina($data)
 /**
  *通过B站API获取视频相关信息
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
- * @return array | WP_Error
+ * @return array<string,string>|WP_Error
  */
 function api_get_bilibili_video_info($data)
 {
@@ -76,7 +67,7 @@ function api_get_bilibili_video_info($data)
 /**
  *获取百度盘分享页面HTML
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return string | WP_Error
  */
@@ -104,7 +95,7 @@ function check_baidu_pan_link($data)
 /**
  *检测阿里云盘链接有效性
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return string | WP_Error
  */
@@ -146,6 +137,7 @@ function check_aliyun_pan_link($data)
 
 /**
  * 给谷歌广告蜘蛛登陆用的小号
+ * @return bool
  */
 function login_adsense_account()
 {
@@ -194,7 +186,11 @@ function delete_trash_post()
 }
 
 
-
+/**
+ *
+ * @param WP_REST_Request $data
+ * @return array<mixed, mixed>
+ */
 function test_function($data)
 {
 
@@ -261,6 +257,8 @@ function test_function($data)
 
 /**
  * 注册自定义 api 接口
+ * 
+ * @return void
  */
 function register_custom_api()
 {
@@ -307,4 +305,4 @@ function register_custom_api()
 
 
 /* 挂载函数到系统中*/
-add_action('rest_api_init', 'register_custom_api');
+add_action('rest_api_init', 'mikuclub\register_custom_api');

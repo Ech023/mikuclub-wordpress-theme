@@ -18,8 +18,8 @@ function home_main_page()
     //分类列表长度
     $cat_list_length = 15;
 
-    //获取过期间隔, 默认 15分钟
-    $expired = dopt('d_cache_system_home_time') ? dopt('d_cache_system_home_time') * 60 : Expired::EXP_15_MINUTE;
+    //获取过期时间
+    $expired = Expired::get_home_exp_time();
     //分区id数组
     $cat_ids_list = [
         [

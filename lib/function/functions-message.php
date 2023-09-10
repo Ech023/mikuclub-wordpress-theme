@@ -1,6 +1,8 @@
 <?php
 namespace mikuclub;
 
+use WP_Error;
+
 /**
  * 获取用户收到的未读私信数量
  * @return int 数量
@@ -144,6 +146,7 @@ function get_user_private_message_list_with_one_sender($sender_id, $paged = 1, $
  * 设置私信为已读
  *
  * @param int $recipient_id 收件人ID
+ * @return void
  */
 function set_user_private_message_as_read($recipient_id)
 {
@@ -170,7 +173,8 @@ function set_user_private_message_as_read($recipient_id)
 }
 
 
-/**发送私信
+/**
+ * 发送私信
  *
  * @param int $recipient_id 收件人id
  * @param string $message_content 私信内容,

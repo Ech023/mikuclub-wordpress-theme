@@ -1,12 +1,15 @@
 <?php
 namespace mikuclub;
 
+use WP_Error;
+use WP_REST_Request;
+
 /**
  * 通过api获取文章列表
  *
  * @param WP_REST_Request $data
  *
- * @return array
+ * @return My_Post_Slim[]
  */
 function api_get_post_list( $data ) {
 
@@ -25,7 +28,7 @@ function api_get_post_list( $data ) {
 	if ( isset( $data['page_type'] ) && $data['page_type'] == 'author' ) {
 		//清空文章列表中的作者信息
 		foreach ( $post_list as $my_post_slim ) {
-			$my_post_slim->post_author = '';
+			$my_post_slim->post_author = null;
 		}
 	}
 
@@ -40,7 +43,7 @@ function api_get_post_list( $data ) {
  *
  * @param WP_REST_Request $data
  *
- * @return array
+ * @return My_Post_Slim[]
  */
 function api_get_my_favorite_post_list( $data ) {
 
@@ -60,9 +63,9 @@ function api_get_my_favorite_post_list( $data ) {
 /*获取从当前 到 特定时间 之间新发布的文章数量 API接口*/
 /**
  *
- * @param $data
+ * @param WP_REST_Request $data
  *
- * @return int | WP_Error
+ * @return int|WP_Error
  */
 function api_get_new_post_count( $data ) {
 
@@ -87,6 +90,8 @@ function api_get_new_post_count( $data ) {
 
 /**
  * 注册自定义 api 接口
+ * 
+ * @return void
  */
 function register_custom_post_list_api() {
 
@@ -108,6 +113,6 @@ function register_custom_post_list_api() {
 }
 
 /* 挂载函数到系统中*/
-add_action( 'rest_api_init', 'register_custom_post_list_api' );
+add_action( 'rest_api_init', 'mikuclub\register_custom_post_list_api' );
 
 

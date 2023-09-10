@@ -1,5 +1,16 @@
 <?php
 
+use mikuclub\Web_Domain;
+
+use function mikuclub\dopt;
+use function mikuclub\get_main_menu;
+use function mikuclub\get_random_head_background_image;
+use function mikuclub\get_top_left_menu;
+use function mikuclub\init_user_data;
+use function mikuclub\is_adult_category;
+use function mikuclub\top_right_menu_component;
+use function mikuclub\wpforo_custom_editor_smiley_js_code;
+
 global $paged;
 
 

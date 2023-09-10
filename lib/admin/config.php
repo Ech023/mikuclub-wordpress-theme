@@ -142,7 +142,7 @@ function add_theme_config_page()
     }
 }
 
-add_action('admin_menu', 'add_theme_config_page');
+add_action('admin_menu', 'mikuclub\add_theme_config_page');
 
 /**
  * 在后台页面添加自定义CSS
@@ -161,7 +161,7 @@ function admin_custom_style()
         wp_enqueue_style('theme-bootstrap', 'https://cdn.staticfile.org/bootstrap/5.1.3/css/bootstrap.min.css');
     }
 }
-add_action('admin_enqueue_scripts', 'admin_custom_style');
+add_action('admin_enqueue_scripts', 'mikuclub\admin_custom_style');
 
 
 

@@ -188,7 +188,7 @@ class Category
 }
 
 /**
- * 基础常用时间常量 (基础单位是 秒)
+ * 常用过期时间常量 (基础单位是 秒)
  */
 class Expired
 {
@@ -205,6 +205,15 @@ class Expired
     const EXP_3_DAYS = 86400 * 3;
     const EXP_7_DAYS = 86400 * 7;
     const EXP_10_DAYS = 86400 * 10;
+
+    /**
+     * 获取首页过期时间
+     *
+     * @return int
+     */
+    public static function get_home_exp_time(){
+        return static::EXP_15_MINUTE;
+    }
 }
 
 class Message_Type

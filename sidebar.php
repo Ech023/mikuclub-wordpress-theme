@@ -1,6 +1,8 @@
 <aside class="sidebar">
 	<?php
-	
+
+use function mikuclub\dopt;
+
 	?>
 			<div class="widget widget_text">
 				<div class="textwidget">

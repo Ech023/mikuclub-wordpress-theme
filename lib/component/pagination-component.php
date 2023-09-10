@@ -2,6 +2,7 @@
 namespace mikuclub;
 /**
  * 分页导航 组件
+ * @return string
  */
 function pagination_component()
 {
@@ -131,7 +132,7 @@ HTML;
 /**
  * 根据查询变量 创建对应的 隐藏表单
  *
- * @param $query_vars array
+ * @param array<string, string> $query_vars 
  *
  * @return string HTML input表单
  */

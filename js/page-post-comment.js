@@ -319,6 +319,9 @@ function sendComment(event) {
             else if (wpError.code === 'comment_flood') {
                 errorText = '发送评论的速度太快了，请稍后再发表评论!';
             }
+            else if (wpError.code === 'comment_custom_span_filter') {
+                errorText = '评论需要包含中文!';
+            }
             else if (wpError.data) {
                 errorText = wpError.data;
             }

@@ -1,13 +1,18 @@
 <?php
+
 namespace mikuclub;
+
+use WP_Error;
+use WP_REST_Request;
+use WP_User;
 
 /**
  * JWT API 登陆跳过极验证专用
  * 通过使用 session变量 来跳过极验证
  *
- * @param $default_header
+ * @param string $default_header
  *
- * @return mixed
+ * @return string
  */
 function api_pass_gee_test($default_header)
 {
@@ -17,11 +22,13 @@ function api_pass_gee_test($default_header)
 	return $default_header;
 }
 
-add_action('jwt_auth_cors_allow_headers', 'api_pass_gee_test', 100, 1);
+add_action('jwt_auth_cors_allow_headers', 'mikuclub\api_pass_gee_test', 100, 1);
 
 /**
  * 修改 JWT API登陆 token令牌的过期时间
  * 默认为 7天,  改为180天
+ * 
+ * @return int
  */
 function modify_jwt_auth_expire()
 {
@@ -31,16 +38,16 @@ function modify_jwt_auth_expire()
 	return time() + (Expired::EXP_1_DAY * $expire_days);
 }
 
-add_action('jwt_auth_expire', 'modify_jwt_auth_expire');
+add_action('jwt_auth_expire', 'mikuclub\modify_jwt_auth_expire');
 
 
 /**
  * 修改 JWT API登陆后 返回的数据
  *
- * @param array $data
- * @param array $user
+ * @param array<string, mixed> $data
+ * @param WP_User $user
  *
- * @return array
+ * @return array<string, mixed>
  */
 function modify_jwt_auth_response($data, $user)
 {
@@ -52,7 +59,7 @@ function modify_jwt_auth_response($data, $user)
 	return $data;
 }
 
-add_action('jwt_auth_token_before_dispatch', 'modify_jwt_auth_response', 10, 2);
+add_action('jwt_auth_token_before_dispatch', 'mikuclub\modify_jwt_auth_response', 10, 2);
 
 
 
@@ -63,9 +70,9 @@ add_action('jwt_auth_token_before_dispatch', 'modify_jwt_auth_response', 10, 2);
  * 因为官方users接口有访问权限限制
  * 所以再自定义一个用户接口来获取作者信息
  *
- * @param $data ['id'=>作者id, 'full_view'=>是否要获取额外信息]
+ * @param WP_REST_Request $data ['id'=>作者id, 'full_view'=>是否要获取额外信息]
  *
- * @return My_User | My_System_User | WP_Error
+ * @return My_User|My_System_User|WP_Error
  */
 function api_get_author($data)
 {
@@ -89,7 +96,7 @@ function api_get_author($data)
 
 /**
  * API 获取用户收藏夹 (文章id列表)
- * @return array
+ * @return int[]
  */
 function api_get_user_favorite()
 {
@@ -99,7 +106,7 @@ function api_get_user_favorite()
 /**
  * API添加文章id到收藏夹
  *
- * @param array $data ['post_id' => xxx]
+ * @param WP_REST_Request $data ['post_id' => xxx]
  *
  * @return int[]|WP_Error
  */
@@ -117,7 +124,7 @@ function api_add_user_favorite($data)
 /**
  * API从收藏夹删除文章id
  *
- * @param array $data ['post_id' => xxx]
+ * @param WP_REST_Request $data ['post_id' => xxx]
  *
  * @return int[]|WP_Error
  */
@@ -136,9 +143,9 @@ function api_delete_user_favorite($data)
 /**
  * 在wp/v2/users  回复中增加自定义 metadata数据
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
- * @return array
+ * @return array<string, mixed>
  */
 function api_custom_user_metadata($data)
 {
@@ -154,11 +161,11 @@ function api_custom_user_metadata($data)
 
 /**
  * API获取用户关注
- * @return int[]|WP_Error
+ * 
+ * @return int[]
  */
 function api_get_user_followed()
 {
-
 	return get_user_followed();
 }
 
@@ -166,7 +173,7 @@ function api_get_user_followed()
 /**
  * API添加用户关注
  *
- * @param array $data ['user_id' => xxx]
+ * @param WP_REST_Request $data ['user_id' => xxx]
  *
  * @return boolean | WP_Error
  */
@@ -190,7 +197,7 @@ function api_add_user_followed($data)
 /**
  * API取消用户关注
  *
- * @param array $data ['user_id' => xxx]
+ * @param WP_REST_Request $data ['user_id' => xxx]
  *
  * @return boolean | WP_Error
  */
@@ -213,7 +220,7 @@ function api_delete_user_followed($data)
 
 /**
  * API获取用户黑名单
- * @return int[]|WP_Error
+ * @return int[]
  */
 function api_get_user_black_list()
 {
@@ -226,7 +233,7 @@ function api_get_user_black_list()
 /**
  * API添加ID到用户黑名单
  *
- * @param array $data ['target_user_id' => xxx]
+ * @param WP_REST_Request $data ['target_user_id' => xxx]
  *
  * @return boolean | WP_Error
  */
@@ -249,7 +256,7 @@ function api_add_user_black_list($data)
 /**
  * API 从用户黑名单里移除ID
  *
- * @param array $data ['target_user_id' => xxx]
+ * @param WP_REST_Request $data ['target_user_id' => xxx]
  *
  * @return boolean | WP_Error
  */
@@ -274,6 +281,8 @@ function api_delete_user_black_list($data)
 
 /**
  * 在API中给user添加自定义meta元数据支持
+ * 
+ * @return void
  **/
 function register_custom_user_metadata()
 {
@@ -285,7 +294,7 @@ function register_custom_user_metadata()
 		'show_in_rest' => true,
 	];
 
-	register_meta('user', MY_USER_AVATAR, $integer_meta_args);
+	register_meta('user', User_Meta::USER_AVATAR, $integer_meta_args);
 
 	register_rest_route('utils/v2', '/author/(?P<id>\d+)', [
 		'methods'  => 'GET',
@@ -358,4 +367,4 @@ function register_custom_user_metadata()
 }
 
 
-add_action('rest_api_init', 'register_custom_user_metadata');
+add_action('rest_api_init', 'mikuclub\register_custom_user_metadata');

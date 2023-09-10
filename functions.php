@@ -7,13 +7,18 @@
 
 namespace mikuclub;
 
+use WP_Bootstrap_Navwalker;
+use WP_Error;
+
 //导入加载器
 require_once 'lib/autoload.php';
 
-/*
- * 在前台加载自定义脚本和CSS
- */
 
+/**
+ * 在前台加载自定义脚本和CSS
+ *
+ * @return void
+ */
 function setup_front_script()
 {
 
@@ -148,7 +153,7 @@ function setup_front_script()
         [
             'name' => 'js-class-message',
             'path' => '/js/class-message.js',
-            'version' => '1.05',
+            'version' => '1.07',
             'in_footer' => false,
         ],
         //自定义JS 评论类
@@ -333,7 +338,7 @@ function setup_front_script()
         'is_admin' => current_user_is_admin(),
         'is_premium_user' => current_user_can_publish_posts(),
         User_Meta::USER_BLACK_LIST => get_user_black_list(get_current_user_id()),
-        MY_USER_FAVORITE_POST_LIST => get_user_favorite(),
+        User_Meta::USER_FAVORITE_POST_LIST => get_user_favorite(),
     ];
     //如果是文章页
     if (is_single())
@@ -355,11 +360,12 @@ function setup_front_script()
     wp_add_inline_script('js-base', 'const MY_SITE =' . json_encode($dynamic_variable) . ';', 'before');
 }
 
-add_action('wp_enqueue_scripts', 'setup_front_script');
+add_action('wp_enqueue_scripts', 'mikuclub\setup_front_script');
 
 
 /**
  *  后台自定义CSS和JS
+ * @return void
  */
 function custom_admin_script()
 {
@@ -367,25 +373,30 @@ function custom_admin_script()
     wp_enqueue_style('custom-admin-css', get_template_directory_uri() . '/css/style-admin.css', [], '1.03');
 }
 
-add_action('admin_enqueue_scripts', 'custom_admin_script');
+add_action('admin_enqueue_scripts', 'mikuclub\custom_admin_script');
 
 
-//登陆页面 自定义css
+
+/**
+ * 登陆页面 自定义css
+ *
+ * @return void
+ */
 function custom_login_script()
 {
 
     //bootstrap css
-    wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.staticfile.org/twitter-bootstrap/4.5.0/css/bootstrap.min.css', false, '4.50');
+    wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.staticfile.org/twitter-bootstrap/4.5.0/css/bootstrap.min.css', [], '4.50');
 
     $version = '1.14';
-    wp_enqueue_style('custom-system-css', get_template_directory_uri() . '/css/style-system.css', false, $version);
-    wp_enqueue_style('custom-login-css', get_template_directory_uri() . '/css/style-login.css', false, $version);
+    wp_enqueue_style('custom-system-css', get_template_directory_uri() . '/css/style-system.css', [], $version);
+    wp_enqueue_style('custom-login-css', get_template_directory_uri() . '/css/style-login.css', [], $version);
 
 
-    wp_enqueue_script('custom-login-js', get_template_directory_uri() . '/js/login.js', false, $version, true);
+    wp_enqueue_script('custom-login-js', get_template_directory_uri() . '/js/login.js', [], $version, true);
 }
 
-add_action('login_enqueue_scripts', 'custom_login_script');
+add_action('login_enqueue_scripts', 'mikuclub\custom_login_script');
 
 
 /**
@@ -424,6 +435,7 @@ function is_adult_category()
  * 通过API上传图片的时候 添加自定义元数据
  *
  * @param int $post_id
+ * @return void
  **/
 function action_on_add_attachment($post_id)
 {
@@ -436,7 +448,7 @@ function action_on_add_attachment($post_id)
 }
 
 //在上传图片的时候激活挂钩
-add_action('add_attachment', 'action_on_add_attachment');
+add_action('add_attachment', 'mikuclub\action_on_add_attachment');
 
 
 /**
@@ -497,18 +509,18 @@ function get_top_left_menu()
     $menu_item_list = '';
     //$menu_item_list = get_transient_cache_meta( $meta_cache_key );
     //如果缓存无效
-    if (!$menu_item_list)
-    {
-        $menu_item_list = wp_nav_menu([
-            'theme_location' => 'top_left_menu',
-            'menu_class' => 'navbar-nav',
-            'container' => '',
-            'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
-            'walker' => new WP_Bootstrap_Navwalker(),
-            'echo' => false,
-        ]);
-        //set_transient_cache_meta( $meta_cache_key, $menu_item_list, Expired::EXP_1_HOUR );
-    }
+    // if (!$menu_item_list)
+    // {
+    $menu_item_list = wp_nav_menu([
+        'theme_location' => 'top_left_menu',
+        'menu_class' => 'navbar-nav',
+        'container' => '',
+        'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
+        'walker' => new WP_Bootstrap_Navwalker(),
+        'echo' => false,
+    ]);
+    //set_transient_cache_meta( $meta_cache_key, $menu_item_list, Expired::EXP_1_HOUR );
+    // }
 
     return $menu_item_list;
 }
@@ -527,21 +539,21 @@ function get_main_menu()
     $menu_item_list = '';
 
     //如果缓存无效
-    if (!$menu_item_list)
-    {
+    // if (!$menu_item_list)
+    // {
 
-        $menu_item_list = wp_nav_menu([
-            'theme_location' => 'nav',
-            'echo' => false,
-            'container' => '',
-            'depth' => 2,
-            'menu_class' => 'navbar-nav flex-fill flex-wrap',
-            'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
-            'walker' => new WP_Bootstrap_Navwalker(),
-        ]);
+    $menu_item_list = wp_nav_menu([
+        'theme_location' => 'nav',
+        'echo' => false,
+        'container' => '',
+        'depth' => 2,
+        'menu_class' => 'navbar-nav flex-fill flex-wrap',
+        'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
+        'walker' => new WP_Bootstrap_Navwalker(),
+    ]);
 
-        //set_transient_cache_meta( $meta_cache_key, $menu_item_list, Expired::EXP_1_HOUR );
-    }
+    //set_transient_cache_meta( $meta_cache_key, $menu_item_list, Expired::EXP_1_HOUR );
+    // }
 
     return $menu_item_list;
 }
@@ -558,18 +570,18 @@ function get_bottom_menu()
     //$menu_item_list = get_transient_cache_meta( $meta_cache_key );
     $menu_item_list = '';
     //如果缓存无效
-    if (!$menu_item_list)
-    {
-        $menu_item_list = wp_nav_menu([
-            'theme_location' => 'bottom_menu',
-            'menu_class' => 'nav',
-            'container' => '',
-            'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
-            'walker' => new WP_Bootstrap_Navwalker(),
-            'echo' => false,
-        ]);
-        //set_transient_cache_meta( $meta_cache_key, $menu_item_list, Expired::EXP_1_HOUR );
-    }
+    // if (!$menu_item_list)
+    // {
+    $menu_item_list = wp_nav_menu([
+        'theme_location' => 'bottom_menu',
+        'menu_class' => 'nav',
+        'container' => '',
+        'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
+        'walker' => new WP_Bootstrap_Navwalker(),
+        'echo' => false,
+    ]);
+    //set_transient_cache_meta( $meta_cache_key, $menu_item_list, Expired::EXP_1_HOUR );
+    // }
 
     return $menu_item_list;
 }
@@ -671,9 +683,8 @@ function get_current_page_type()
  * 添加自定义地址栏query变量
  * 这样wp query将会存储到自己的变量里
  *
- * @param array $query_vars
- *
- * @return mixed
+ * @param string[] $query_vars
+ * @return string[]
  */
 function add_custom_query_vars($query_vars)
 {
@@ -684,11 +695,13 @@ function add_custom_query_vars($query_vars)
     return $query_vars;
 }
 
-add_filter('query_vars', 'add_custom_query_vars');
+add_filter('query_vars', 'mikuclub\add_custom_query_vars');
 
 
 /**
  * 显示每个query的耗时
+ * 
+ * @return void
  */
 function check_query_cost()
 {
@@ -736,7 +749,8 @@ function convert_link_to_https($link)
 
 
 /**
- *输出页面编辑链接
+ * 输出页面编辑链接
+ * @return string
  */
 function print_page_edit_link()
 {
@@ -756,7 +770,7 @@ function print_page_edit_link()
 
 /**
  * 转发文章到微博
- * @return mixed
+ * @return string|bool
  */
 function share_to_sina()
 {
@@ -1006,10 +1020,10 @@ HTML;
 /**
  *通过B站API获取视频相关信息
  *
- * @param array $query_params
+ * @param array<string, string> $query_params
  * @param int $post_id
  *
- * @return array | WP_Error
+ * @return array<string, string> | WP_Error
  */
 function get_bilibili_video_info($query_params, $post_id)
 {
@@ -1172,8 +1186,8 @@ HTML;
 /**
  * 使用file1 替换默认图片域名
  *
- * @param array|string $image_src
- * @return array|string
+ * @param string|string[] $image_src
+ * @return string|string[]
  */
 function fix_image_domain_with_file_1($image_src)
 {
@@ -1189,8 +1203,8 @@ function fix_image_domain_with_file_1($image_src)
 /**
  * 使用file2 替换默认图片域名
  *
- * @param array|string $image_src
- * @return array|string
+ * @param string|string[] $image_src
+ * @return string|string[]
  */
 function fix_image_domain_with_file_2($image_src)
 {
@@ -1207,8 +1221,8 @@ function fix_image_domain_with_file_2($image_src)
 /**
  * 使用file3 替换默认图片域名
  *
- * @param array|string $image_src
- * @return array|string
+ * @param string|string[] $image_src
+ * @return string|string[]
  */
 function fix_image_domain_with_file_3($image_src)
 {
@@ -1225,8 +1239,8 @@ function fix_image_domain_with_file_3($image_src)
 /**
  * 使用file4 替换默认图片域名
  *
- * @param array|string $image_src
- * @return array|string
+ * @param string|string[] $image_src
+ * @return string|string[]
  */
 function fix_image_domain_with_file_4($image_src)
 {
@@ -1242,8 +1256,8 @@ function fix_image_domain_with_file_4($image_src)
 /**
  * 使用file5 替换默认图片域名
  *
- * @param array|string $image_src
- * @return array|string
+ * @param string|string[] $image_src
+ * @return string|string[]
  */
 function fix_image_domain_with_file_5($image_src)
 {
@@ -1259,8 +1273,8 @@ function fix_image_domain_with_file_5($image_src)
 /**
  * 使用file6 替换默认图片域名
  *
- * @param array|string $image_src
- * @return array|string
+ * @param string|string[] $image_src
+ * @return string|string[]
  */
 function fix_image_domain_with_file_6($image_src)
 {

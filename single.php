@@ -1,6 +1,26 @@
 <?php
 
+use mikuclub\Config;
 use mikuclub\Post_Feedback_Rank;
+
+use function mikuclub\adult_404_content_for_no_logging_user;
+use function mikuclub\breadcrumbs_component;
+use function mikuclub\current_user_is_admin;
+use function mikuclub\dopt;
+use function mikuclub\get_custom_author;
+use function mikuclub\get_post_favorites;
+use function mikuclub\get_post_like;
+use function mikuclub\get_post_shares;
+use function mikuclub\get_post_unlike;
+use function mikuclub\get_post_views;
+use function mikuclub\get_user_fans_count;
+use function mikuclub\in_user_black_list;
+use function mikuclub\is_adult_category;
+use function mikuclub\is_user_followed;
+use function mikuclub\print_post_content;
+use function mikuclub\print_user_avatar;
+use function mikuclub\print_user_badges;
+use function mikuclub\related_posts_component;
 
 get_header();
 
@@ -31,7 +51,7 @@ if ($access_allowed)
         //增加文章点击数 (已改成通过JS增加)
         //add_post_views( $post_id );
 
-        $author_id = get_post_field('post_author', $post_id);
+        $author_id = intval(get_post_field('post_author', $post_id));
         $author = get_custom_author($author_id);
         $is_user_followed = is_user_followed($author->id);
 

@@ -1,4 +1,9 @@
 <?php
+
+use function mikuclub\breadcrumbs_component;
+use function mikuclub\post_list_component;
+use function mikuclub\print_categoria_radio_box;
+
 get_header();
 
 ?>

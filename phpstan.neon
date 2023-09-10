@@ -21,6 +21,7 @@ parameters:
 
 	excludePaths:
 		analyse:
+			- lib/class/class-wp-bootstrap-navwalker.php
 			- lib/ignore
 			- lib/deprecated
 			#- lib/class

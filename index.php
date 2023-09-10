@@ -1,4 +1,9 @@
-<?php get_header();
+<?php
+
+use function mikuclub\home_main_page;
+use function mikuclub\home_recently_page;
+
+ get_header();
 
 ?>
 

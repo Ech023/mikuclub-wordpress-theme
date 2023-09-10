@@ -95,7 +95,7 @@ class MyPrivateMessageWithOneSender extends MyPrivateMessage {
         let textDirection;
 
         //如果是用户自己发送的私信
-        if (MY_SITE.user_id === this.sender_id) {
+        if (MY_SITE.user_id === parseInt(this.sender_id)) {
             //改变元素位置
             itemDirection = 'justify-content-end';
             textDirection = 'text-end';

@@ -248,7 +248,7 @@ function Bing_admin_lettering() {
         </style>';
 }
 
-add_action( 'admin_head', 'Bing_admin_lettering' );*/
+add_action( 'admin_head', 'mikuclub\Bing_admin_lettering' );*/
 
 
 /*==========================================================================*/

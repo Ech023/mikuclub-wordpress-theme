@@ -33,7 +33,7 @@ global $post;
 			$max         = 1136;
 			$rand_image = rand( 1, $max );
             //在左方添加0
-            $rand_image = str_pad($rand_image, 3, '0', STR_PAD_LEFT);
+            $rand_image = str_pad(strval($rand_image), 3, '0', STR_PAD_LEFT);
 
             $link = 'https://'.Web_Domain::CDN_MIKUCLUB_FUN.'/project_sekai_cg/'.$rand_image.'.jpg';
 

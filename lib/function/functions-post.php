@@ -2,6 +2,10 @@
 
 namespace mikuclub;
 
+use WP_Error;
+use WP_Post;
+use WP_REST_Request;
+
 /**
  * 获取文章点击数
  *
@@ -261,6 +265,7 @@ function get_post_comments($post_id = 0)
 /**
  * 更新文章评论数元数据
  * @param int $post_id
+ * @return void
  */
 function update_post_comments($post_id = 0)
 {
@@ -432,8 +437,7 @@ function set_post_category_ids($post_id)
 /**
  * 获取文章主分类id
  *
- * @param $post_id
- *
+ * @param int $post_id
  * @return int
  */
 function get_post_main_cat_id($post_id)
@@ -455,8 +459,7 @@ function get_post_main_cat_id($post_id)
 /**
  * 设置文章主分类id
  *
- * @param $post_id
- *
+ * @param int $post_id
  * @return int
  */
 function set_post_main_cat_id($post_id)
@@ -491,8 +494,7 @@ function set_post_main_cat_id($post_id)
 /**
  * 获取文章子分类id
  *
- * @param $post_id
- *
+ * @param int $post_id
  * @return int
  */
 function get_post_sub_cat_id($post_id)
@@ -514,8 +516,7 @@ function get_post_sub_cat_id($post_id)
 /**
  * 设置文章子分类id
  *
- * @param $post_id
- *
+ * @param int $post_id
  * @return int
  */
 function set_post_sub_cat_id($post_id)
@@ -538,6 +539,7 @@ function set_post_sub_cat_id($post_id)
     foreach ($categories as $category)
     {
         //如果数组中存在父分类id
+        //@phpstan-ignore-next-line
         $index = array_search($category->category_parent, $cat_ids);
 
         if ($index !== false)
@@ -568,7 +570,7 @@ function set_post_sub_cat_id($post_id)
  * 获取从当前 到 特定时间 之间新发布的文章数量,
  * 可以指定天数 或者 时间字符串
  *
- * @param string $date 指定天数 或者 时间字符串
+ * @param int|string $date 指定天数 或者 时间字符串
  *
  * @return int 文章数量
  */
@@ -619,7 +621,7 @@ function get_new_post_count($date)
  *
  * @param int $post_id
  *
- * @return array
+ * @return array<string, string>
  */
 function get_down_link_from_old_post($post_id)
 {
@@ -658,7 +660,7 @@ function get_down_link_from_old_post($post_id)
             $result[Post_Meta::POST_DOWN2] = stristr($download2, "\"", true);
 
             //捕捉密码2位置
-            $index_pw2 = stripos($password_text, '<span class="passw">');
+            $index_pw2 = stripos($password_text ?? '', '<span class="passw">');
             if ($index_pw2 != false)
             {
                 //提取密码2
@@ -678,6 +680,7 @@ function get_down_link_from_old_post($post_id)
  *
  * @param WP_Post $post Inserted or updated post object.
  * @param WP_REST_Request $request Request object.
+ * @return void
  **/
 function action_on_api_insert_post($post, $request)
 {
@@ -785,13 +788,14 @@ function action_on_api_insert_post($post, $request)
     }
 }
 
-add_action('rest_insert_post', 'action_on_api_insert_post', 10, 2);
+add_action('rest_insert_post', 'mikuclub\action_on_api_insert_post', 10, 2);
 
 
 /**
  * 用表单新建文章和更新文章后的动作
  *
- * @param $post_id
+ * @param int $post_id
+ * @return void
  */
 function post_submit_action($post_id)
 {
@@ -816,19 +820,20 @@ function post_submit_action($post_id)
     }
 
     //清空bilibili视频缓存信息
-    delete_bilibli_video_cache($post_id);
+    delete_bilibili_video_cache($post_id);
     File_Cache::delete_cache_meta(File_Cache::POST_CONTENT_PART_1 . '_' . $post_id, File_Cache::DIR_POST);
     File_Cache::delete_cache_meta(File_Cache::POST_CONTENT_PART_2 . '_' . $post_id, File_Cache::DIR_POST);
 }
 
-add_action('wpuf_add_post_after_insert', 'post_submit_action');
-add_action('wpuf_edit_post_after_update', 'post_submit_action');
+add_action('wpuf_add_post_after_insert', 'mikuclub\post_submit_action');
+add_action('wpuf_edit_post_after_update', 'mikuclub\post_submit_action');
 
 
 /**
  * 文章发布动作
  *
  * @param int $post_id
+ * @return void
  */
 function post_publish_action($post_id)
 {
@@ -897,8 +902,9 @@ function post_publish_action($post_id)
  * 删除bilibili视频缓存信息
  *
  * @param int $post_id
+ * @return void
  */
-function delete_bilibli_video_cache($post_id)
+function delete_bilibili_video_cache($post_id)
 {
 
     $cache_key = Post_Meta::POST_BILIBILI_VIDEO_INFO . '_' . $post_id;
@@ -1016,6 +1022,7 @@ function set_thumbnail_src($post_id)
  * 更新全部版本的图片地址
  *
  * @param int $post_id
+ * @return void
  */
 function set_images_all_sizes_src($post_id)
 {
@@ -1091,7 +1098,7 @@ function set_images_all_sizes_src($post_id)
  * @param string $meta_name 储存数据名
  * @param string $size 图片尺寸名
  *
- * @return array
+ * @return string[]
  */
 function set_images_src($post_id, $meta_name, $size)
 {
@@ -1135,7 +1142,7 @@ function set_images_src($post_id, $meta_name, $size)
  *
  * @param int $post_id
  *
- * @return array
+ * @return string[]
  */
 function get_images_thumbnail_size($post_id)
 {
@@ -1164,7 +1171,7 @@ function get_images_thumbnail_size($post_id)
  *
  * @param int $post_id
  *
- * @return array
+ * @return string[]
  */
 function get_images_large_size($post_id)
 {
@@ -1206,7 +1213,7 @@ function get_images_large_size($post_id)
  *
  * @param int $post_id
  *
- * @return array
+ * @return string[]
  */
 function get_images_full_size($post_id)
 {
@@ -1246,7 +1253,7 @@ function get_images_full_size($post_id)
  *
  * @param int $post_id
  *
- * @return array
+ * @return int[]
  */
 
 function get_image_ids_from_form_field_by_post_id($post_id)
@@ -1319,6 +1326,7 @@ function first_img_src($post_id)
  *
  * @param int $post_id
  * @param string $post_status
+ * @return void
  */
 function set_post_status($post_id, $post_status)
 {
@@ -1381,6 +1389,7 @@ function set_post_status($post_id, $post_status)
  *
  * @param int|int[] $post_id
  * @param int $post_parent_id
+ * @return void
  */
 function set_post_parent($post_id, $post_parent_id)
 {
@@ -1421,7 +1430,7 @@ function set_post_parent($post_id, $post_parent_id)
  *
  * @param int $post_id
  *
- * @return int |WP_Error
+ * @return int|WP_Error
  */
 function update_post_date($post_id)
 {
@@ -1450,7 +1459,7 @@ function update_post_date($post_id)
  *
  * @param int $post_id
  *
- * @return bool |WP_Error
+ * @return bool
  * */
 function add_sticky_posts($post_id)
 {
@@ -1475,7 +1484,7 @@ function add_sticky_posts($post_id)
  *
  * @param int $post_id
  *
- * @return bool |WP_Error
+ * @return bool
  * */
 function delete_sticky_posts($post_id)
 {
@@ -1502,6 +1511,7 @@ function delete_sticky_posts($post_id)
  * 检测是否是置顶文章
  *
  * @param int $post_id
+ * @return bool
  */
 function is_sticky_post($post_id)
 {
@@ -1524,11 +1534,12 @@ function is_sticky_post($post_id)
  *
  * @param int $post_id
  * @param string $reject_cause 驳回原因 默认为下载地址失效
+ * @return void
  */
 function reject_post($post_id, $reject_cause = '下载地址失效')
 {
 
-    $user_id = get_post_field('post_author', $post_id);
+    $user_id = intval(get_post_field('post_author', $post_id));
     $post_title = get_post_field('post_title', $post_id);
 
     //发送退稿邮件
@@ -1556,15 +1567,17 @@ function reject_post($post_id, $reject_cause = '下载地址失效')
  * 转为草稿
  *
  * @param int $post_id
+ * @return null|WP_Error
  */
 function draft_post($post_id)
 {
+    $result = null;
 
     $author_id = get_post_field('post_author', $post_id);
     //如果不是管理员 并且 不是用户自己的投稿
     if (!current_user_is_admin() && get_current_user_id() != $author_id)
     {
-        return new WP_Error(401, __FUNCTION__ . ' : 无权进行该项操作');
+        $result = new WP_Error(401, __FUNCTION__ . ' : 无权进行该项操作');
     }
 
     wp_update_post(
@@ -1573,6 +1586,8 @@ function draft_post($post_id)
             'post_status' => 'draft',
         ]
     );
+
+    return $result;
 }
 
 
@@ -1581,11 +1596,12 @@ function draft_post($post_id)
  *
  * @param int $post_id
  * @param string $reject_cause
+ * @return void
  */
 function send_reject_post_email($post_id, $reject_cause)
 {
 
-    $user_id = get_post_field('post_author', $post_id);
+    $user_id = intval(get_post_field('post_author', $post_id));
     $user = get_userdata($user_id);
 
     $post_title = get_post_field('post_title', $post_id);
@@ -1635,7 +1651,7 @@ HTML;
 /**
  * 输出文章HTML内容
  *
- * @param int | null $post_id
+ * @param int|null $post_id
  *
  * @return string
  */
@@ -1801,7 +1817,7 @@ function print_post_content($post_id = null)
             //转换为base64编码 给一键秒传使用
             $baidu_fast_link_base_64 = base64_encode($baidu_fast_link);
 
-            $download_part .= '<h4 class="mt-3">秒传链接 (秒传脚本已全部失效)</h4>
+            $download_part .= '<h4 class="mt-3">秒传链接 (暂时复活, 请更新脚本到3.1.6版本)</h4>
 
 			<div class="my-3 " style="/*white-space: pre-line;word-break: break-all;*/">
                 <textarea class="baidu-fast-link form-control small bg-white" readonly rows="3" style="font-size: 0.75rem;">'
@@ -2304,6 +2320,8 @@ HTML;
 
 /**
  * 输出下载提示信息
+ * 
+ * @return string
  */
 function print_download_help()
 {
@@ -2317,6 +2335,11 @@ function print_download_help()
 </div>';
 }
 
+/**
+ * 输出解压说明
+ * 
+ * @return string
+ */
 function print_unzip_help()
 {
     return '
@@ -2342,7 +2365,7 @@ function print_unzip_help()
 
 /**
  * 为未登录用户显示 404成人内容
- * @retrun string
+ * @return string
  */
 function adult_404_content_for_no_logging_user()
 {

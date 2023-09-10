@@ -1,10 +1,13 @@
 <?php
 namespace mikuclub;
 
+use WP_Error;
+use WP_REST_Request;
+
 /**
  * 增加文章查看次数
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return int|WP_Error
  */
@@ -27,7 +30,7 @@ function api_add_post_views($data)
 /**
  * 增加文章分享次数
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return int|WP_Error
  **/
@@ -47,7 +50,7 @@ function api_add_post_shares($data)
 /**
  * 设置文章点赞次数
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return int|WP_Error
  **/
@@ -77,7 +80,7 @@ function api_set_post_like($data)
 /**
  * 设置文章差评次数
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return int|WP_Error
  **/
@@ -108,7 +111,7 @@ function api_set_post_unlike($data)
 /**
  * API刷新文章的创建时间
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return int|WP_Error 成功的情况 返回文章id \ 错误的情况 返回0 或者 WpError对象
  */
@@ -128,7 +131,7 @@ function api_update_post_date($data)
 /**
  * 设置文章置顶
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return boolean | WP_Error
  **/
@@ -147,7 +150,7 @@ function api_add_sticky_posts($data)
 /**
  * 取消文章置顶
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return boolean | WP_Error
  **/
@@ -167,7 +170,7 @@ function api_delete_sticky_posts($data)
 /**
  * API 驳回稿件
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return bool | WP_Error
  */
@@ -198,7 +201,7 @@ function api_reject_post($data)
 
 /**
  * API 设置失效次数
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return int|WP_Error
  */
@@ -237,7 +240,7 @@ function api_set_post_fail_times($data)
 /**
  *API 更新文章元数据 (包括 文章 和 附件图片)
  *
- * @param array $data ['post_id'=>文章或附件id, 'meta_key'=>元数据键名, 'meta_value'=>元数据键值]
+ * @param WP_REST_Request $data ['post_id'=>文章或附件id, 'meta_key'=>元数据键名, 'meta_value'=>元数据键值]
  *
  * @return bool | WP_Error
  */
@@ -284,7 +287,7 @@ function api_update_post_meta($data)
 /**
  * API 撤回稿件
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return bool | WP_Error
  */
@@ -306,8 +309,8 @@ function api_draft_post($data)
 
 /**
  * 在wp/v2/posts  回复中增加自定义 metadata数据
- * @param array $data
- * @return array
+ * @param WP_REST_Request $data
+ * @return array<string, mixed>
  */
 function api_custom_post_metadata($data)
 {
@@ -352,7 +355,7 @@ function api_custom_post_metadata($data)
 	//$metadata[Post_Meta::POST_IMAGES_FULL_SRC] = str_replace($array_search, $replace, $metadata[Post_Meta::POST_IMAGES_FULL_SRC]);
 
 
-	//替换为 suger虚拟机CDN2号的地址
+	//替换为 sugar虚拟机CDN2号的地址
 	//$metadata[Post_Meta::POST_THUMBNAIL_SRC] = str_replace('www.mikuclub.cc', 'static.mikuclub.fun', $metadata[Post_Meta::POST_THUMBNAIL_SRC] );
 	//$metadata[Post_Meta::POST_IMAGES_THUMBNAIL_SRC] = str_replace('www.mikuclub.cc', 'static.mikuclub.fun', $metadata[Post_Meta::POST_IMAGES_THUMBNAIL_SRC] );
 	//$metadata[Post_Meta::POST_IMAGES_SRC] = str_replace('www.mikuclub.cc', 'static.mikuclub.fun', $metadata[Post_Meta::POST_IMAGES_SRC] );
@@ -379,6 +382,8 @@ function api_custom_post_metadata($data)
 
 /**
  * 注册自定义 api 接口
+ * 
+ * @return void
  */
 function register_custom_post_api()
 {
@@ -456,4 +461,4 @@ function register_custom_post_api()
 }
 
 /* 挂载函数到系统中*/
-add_action('rest_api_init', 'register_custom_post_api');
+add_action('rest_api_init', 'mikuclub\register_custom_post_api');

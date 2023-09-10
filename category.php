@@ -1,4 +1,19 @@
-<?php get_header(); ?>
+<?php
+
+use function mikuclub\adult_404_content_for_no_logging_user;
+use function mikuclub\breadcrumbs_component;
+use function mikuclub\dopt;
+use function mikuclub\get_hot_list_by_random;
+use function mikuclub\get_main_category_children;
+use function mikuclub\has_sub_categories;
+use function mikuclub\hot_posts_most_comments;
+use function mikuclub\hot_posts_most_rating;
+use function mikuclub\is_adult_category;
+use function mikuclub\post_list_component;
+use function mikuclub\sticky_posts_component;
+use function mikuclub\top_hot_posts_component;
+
+ get_header(); ?>
 
 <?php
 //分类页 顶端广告位

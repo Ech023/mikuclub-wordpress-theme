@@ -1,5 +1,8 @@
 <?php
 
+use function mikuclub\breadcrumbs_component;
+use function mikuclub\print_page_edit_link;
+
 get_header();
 
 

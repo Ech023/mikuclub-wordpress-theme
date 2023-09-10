@@ -1,12 +1,15 @@
 <?php
 namespace mikuclub;
 
+use WP_Error;
+use WP_REST_Request;
+
 /**
  * 获取用户未读私信数量API
  *
- * @param array
+ * @param WP_REST_Request $data
  *
- * @return string 私信数量
+ * @return int 私信数量
  */
 function api_get_user_private_message_unread_count($data)
 {
@@ -18,12 +21,14 @@ function api_get_user_private_message_unread_count($data)
 /**
  *  获取私信列表API
  *
- * @param array $data [
- * 'paged' => 页数, '
- * number'=> 每页数据数量, '
- * sender_id'=>是否只要当前用户和sender之间互相写的私信]
+ * @param WP_REST_Request $data 
+ * [
+ * 	'paged' => 页数, 
+ * 	'number' => 每页数据数量, 
+ * 	'sender_id' =>是否只要当前用户和sender之间互相写的私信
+ * ]
  *
- * @return My_Private_Message[] | WP_Error
+ * @return My_Private_Message[]|WP_Error
  */
 function api_get_private_messages($data)
 {
@@ -70,7 +75,7 @@ function api_get_private_messages($data)
 /**
  * 发送私信API
  *
- * @param array $data
+ * @param WP_REST_Request $data
  * 'recipient_id' => 收件人id,
  * 'content' => 私信内容,
  * 'respond' =>是否在回复另外一条私信]
@@ -117,7 +122,7 @@ function api_send_private_message($data)
 /**
  * 删除私信API
  *
- * @param array $data ['id' => 私信id]
+ * @param WP_REST_Request $data ['id' => 私信id]
  *
  * @return bool  | WP_Error 是否删除成功 或者 报错
  */
@@ -152,7 +157,7 @@ function api_delete_private_message($data)
 /**
  * API发送投诉信息
  *
- * @param array $data
+ * @param WP_REST_Request $data
  * 'recipient_id' => 收件人id,
  * 'content' => 私信内容,
  * 'respond' =>是否在回复另外一条私信]
@@ -210,6 +215,8 @@ HTML;
 
 /**
  * 注册自定义 api 接口
+ * 
+ * @return void
  */
 function register_custom_private_message_api()
 {
@@ -255,4 +262,4 @@ function register_custom_private_message_api()
 }
 
 /* 挂载函数到系统中*/
-add_action('rest_api_init', 'register_custom_private_message_api');
+add_action('rest_api_init', 'mikuclub\register_custom_private_message_api');

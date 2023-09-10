@@ -2,8 +2,13 @@
 
 namespace mikuclub;
 
+use WP_Post;
+use WP_REST_Request;
+use WP_User;
+
 /**
  * 初始化用户数据
+ * @return void
  */
 function init_user_data()
 {
@@ -22,6 +27,7 @@ function init_user_data()
 
 /**
  * 检查是否是黑名单用户, 如果是, 直接跳转到其他网站
+ * @return void
  */
 function check_blocked_user()
 {
@@ -43,6 +49,7 @@ function check_blocked_user()
 
 /**
  * 初始化 第一次访问的时候统计用户未读消息数
+ * @return void
  */
 function init_user_unread_message_total_count()
 {
@@ -71,6 +78,7 @@ function init_user_unread_message_total_count()
  *
  * @param int $user_id
  * @param int $attachment_id
+ * @return void
  */
 function set_my_user_avatar_id($user_id, $attachment_id)
 {
@@ -174,6 +182,7 @@ function print_user_avatar($avatar_src, $size = 50)
  *
  * @param int $user_id
  * @param int $attachment_id
+ * @return void
  */
 function action_on_update_avatar($user_id, $attachment_id)
 {
@@ -207,6 +216,7 @@ function action_on_update_avatar($user_id, $attachment_id)
  *
  * @param WP_Post $attachment Inserted or updated attachment object.
  * @param WP_REST_Request $request Request object.
+ * @return void
  */
 function action_on_rest_after_insert_attachment($attachment, $request)
 {
@@ -214,11 +224,11 @@ function action_on_rest_after_insert_attachment($attachment, $request)
 	//如果是上传更换新头像 的 动作
 	if ($request->has_param(User_Meta::ACTION_UPDATE_AVATAR_BY_API))
 	{
-		action_on_update_avatar($attachment->post_author, $attachment->ID);
+		action_on_update_avatar(intval($attachment->post_author), $attachment->ID);
 	}
 }
 
-add_action('rest_after_insert_attachment', 'action_on_rest_after_insert_attachment', 10, 2);
+add_action('rest_after_insert_attachment', 'mikuclub\action_on_rest_after_insert_attachment', 10, 2);
 
 
 /**
@@ -275,10 +285,7 @@ function get_user_points($user_id)
  *
  * @param int $user_id
  *
- * @return array<int, array[]> 勋章数组
- * [
- * 	
- * ]
+ * @return array<int, array<string, mixed>> 勋章数组
  */
 function get_user_badges($user_id)
 {
@@ -288,7 +295,7 @@ function get_user_badges($user_id)
 	$user_like_count    = get_user_like_count($user_id);
 
 	$user = get_userdata($user_id);
-	$timestamp = strtotime($user->user_registered) ?? strtotime('now');
+	$timestamp = strtotime($user->user_registered) ?: strtotime('now');
 	//计算用户注册年份
 	$user_old = date("Y") - date("Y", $timestamp);
 
@@ -448,7 +455,7 @@ function print_user_badges($user_id, $badge_class = '')
  *
  * @param int $user_id
  *
- * @return string 文章数量
+ * @return int 文章数量
  */
 function get_user_post_count($user_id)
 {
@@ -483,9 +490,9 @@ function get_user_post_count($user_id)
  * 获取用户发布的文章的查看总次数
  * 先使用缓存, 无缓存的话再重新获取
  *
- * @param int user_id
+ * @param int $user_id
  *
- * @return string 查看总次数
+ * @return int 查看总次数
  */
 function get_user_post_total_views($user_id)
 {
@@ -508,7 +515,7 @@ function get_user_post_total_views($user_id)
 			//如果结果NULL, 则重设为0
 			if (!$count)
 			{
-				$count = '0';
+				$count = 0;
 			}
 			File_Cache::set_cache_meta($cache_key, File_Cache::DIR_USER, $count);
 		}
@@ -522,7 +529,7 @@ function get_user_post_total_views($user_id)
  * 获取用户发布的文章收到的总评论数
  * 先使用缓存, 无缓存的话再重新获取
  *
- * @param int user_id
+ * @param int $user_id
  *
  * @return string 总评论数
  */
@@ -559,9 +566,9 @@ function get_user_post_total_comments($user_id)
  * 获取用户发布的文章收到的总点赞数
  * 先使用缓存, 无缓存的话再重新获取
  *
- * @param int user_id
+ * @param int $user_id
  *
- * @return string 总点赞数
+ * @return int 总点赞数
  */
 function get_user_post_total_likes($user_id)
 {
@@ -597,7 +604,7 @@ function get_user_post_total_likes($user_id)
  *
  * @param int $user_id
  *
- * @return string 评论总数
+ * @return int 评论总数
  */
 function get_user_comment_count($user_id)
 {
@@ -641,6 +648,7 @@ function get_user_comment_count($user_id)
  * 增加用户评论总数
  *
  * @param int $user_id
+ * @return void
  */
 function add_user_comment_count($user_id)
 {
@@ -735,6 +743,7 @@ function get_user_like_count($user_id)
  * 增加用户点赞总次数
  *
  * @param int $user_id
+ * @return void
  */
 function add_user_like_count($user_id)
 {
@@ -745,7 +754,7 @@ function add_user_like_count($user_id)
 
 		$count = get_user_like_count($user_id);
 		$count++;
-		update_user_meta($user_id, User_Meta::USER_LIKE_COUNT, (int) $count);
+		update_user_meta($user_id, User_Meta::USER_LIKE_COUNT, intval(($count)));
 	}
 }
 
@@ -753,6 +762,7 @@ function add_user_like_count($user_id)
  * 减少用户点赞总次数
  *
  * @param int $user_id
+ * @return void
  */
 function delete_user_like_count($user_id)
 {
@@ -771,7 +781,7 @@ function delete_user_like_count($user_id)
 		{
 			$count = 0;
 		}
-		update_user_meta($user_id, User_Meta::USER_LIKE_COUNT, (int) $count);
+		update_user_meta($user_id, User_Meta::USER_LIKE_COUNT, intval($count));
 	}
 }
 
@@ -818,7 +828,7 @@ function current_user_is_regular()
 function get_custom_author($user_id)
 {
 
-	$author = '';
+	$author = null;
 	//如果是0, 创建系统用户实例
 	if ($user_id == 0)
 	{
@@ -839,23 +849,15 @@ function get_custom_author($user_id)
 		}
 	}
 
-
-	//旧版安卓app需要的数据
-	//全部升级到安卓1.2后可以删除=====================
-	$author->author_id  = $author->id;
-	$author->name       = $author->display_name;
-	$author->avatar_src = $author->user_image;
-
-	//=====================
 	return $author;
 }
 
 /**
  * 获取评论作者信息
  *
- * @param $user_id
+ * @param int $user_id
  *
- * @return bool| My_Custom_Comment_User
+ * @return My_Custom_Comment_User|My_Custom_Deleted_User
  */
 function get_custom_comment_user($user_id)
 {
@@ -876,231 +878,6 @@ function get_custom_comment_user($user_id)
 	return $user;
 }
 
-
-/**
- * 输出用户系统和游览器信息
- *
- * @param $ua
- *
- * @return string
- */
-function get_useragent($ua)
-{
-
-	$browser = get_browsers($ua);
-	$os      = get_os($ua);
-
-	return '<span class="useragent"><i class="fa-brands ' . $browser[1] . '"></i> ' . $browser[0] . ' <i class="fa-brands ' . $os[1] . '"></i> ' . $os[0] . '</span>';
-}
-
-/**
- * 获取用户游览器信息
- *
- * @param string $ua
- *
- * @return string[]
- */
-function get_browsers($ua)
-{
-
-	$title = '未知';
-	$icon  = 'fa-internet-explorer';
-
-	//谷歌浏览器
-	if (preg_match('#Chrome/([a-zA-Z0-9.]+)#i', $ua, $matches))
-	{
-		//$title = 'Google Chrome ' . $matches[1];
-		$title = 'Chrome';
-		$icon  = 'fa-chrome';
-		//opera浏览器
-		if (preg_match('#OPR/([a-zA-Z0-9.]+)#i', $ua, $matches))
-		{
-			$title = 'Opera';
-			$icon  = 'fa-opera';
-		}
-	}
-	else if (preg_match('#UCWEB([a-zA-Z0-9.]+)#i', $ua, $matches))
-	{
-		$title = 'UC';
-	}
-	else if (preg_match('#Safari/([a-zA-Z0-9.]+)#i', $ua, $matches))
-	{
-		$title = 'Safari';
-		$icon  = 'fa-safari';
-	}
-	else if (preg_match('#QQBrowser/([a-zA-Z0-9.]+)#i', $ua, $matches))
-	{
-		$title = 'QQ';
-		$icon  = 'fa-qq';
-	} // 增加 安卓APP客户端的判断
-	else if (strpos($ua, 'Dalvik') !== false)
-	{
-		$title = '安卓APP客户端 ';
-		$icon  = 'fa-android';
-	}
-	else if (preg_match('#SE 2([a-zA-Z0-9.]+)#i', $ua, $matches))
-	{
-		$title = '搜狗';
-	}
-	else if (preg_match('#Firefox/([a-zA-Z0-9.]+)#i', $ua, $matches))
-	{
-		$title = 'Firefox';
-		$icon  = 'fa-firefox';
-	}
-	else if (preg_match('#Edge/([a-zA-Z0-9.]+)#i', $ua, $matches))
-	{
-		$title = 'Edge';
-		$icon  = 'fa-edge';
-	}
-	else if (preg_match('#360([a-zA-Z0-9.]+)#i', $ua, $matches))
-	{
-		$title = '360';
-	}
-	else if (preg_match('#MSIE ([a-zA-Z0-9.]+)#i', $ua, $matches))
-	{
-		$title = 'IE';
-		$icon  = 'fa-internet-explorer';
-	}
-	else if (preg_match('/rv:(11.0)/i', $ua, $matches))
-	{
-		$title = 'IE';
-		$icon  = 'fa-internet-explorer';
-	}
-	else if (preg_match('#Opera.(.*)Version[ /]([a-zA-Z0-9.]+)#i', $ua, $matches))
-	{
-		$title = 'Opera';
-		$icon  = 'opera';
-	}
-
-	return [
-		$title,
-		$icon,
-	];
-}
-
-/**
- * 获取系统信息
- *
- * @param string $ua
- *
- * @return array
- */
-function get_os($ua)
-{
-	$title = '未知';
-	$icon  = 'fa-windows';
-
-	if (preg_match('/Linux/i', $ua))
-	{
-		$title = 'Linux';
-		$icon  = 'fa-linux';
-		if (preg_match('/Android.([0-9. _]+)/i', $ua, $matches))
-		{
-			$title = '安卓';
-			$icon  = "fa-android";
-		}
-	}
-	elseif (preg_match('/win/i', $ua) || preg_match('/WinNT/i', $ua) || preg_match('/Win32/i', $ua) || preg_match('/Windows/i', $ua))
-	{
-
-		$icon = "fa-windows";
-
-		if (preg_match('/Windows NT 10.0; Win64; x64/i', $ua) || preg_match('/Windows NT 10.0; WOW64/i', $ua))
-		{
-			$title = "Win 10";
-		}
-		elseif (preg_match('/Windows NT 10.0/i', $ua))
-		{
-			$title = "Win 10";
-		}
-		elseif (preg_match('/Windows NT 6.4; Win64; x64/i', $ua) || preg_match('/Windows NT 6.4; WOW64/i', $ua))
-		{
-			$title = "Win 10";
-		}
-		elseif (preg_match('/Windows NT 6.4/i', $ua))
-		{
-			$title = "Win 10";
-		}
-		elseif (preg_match('/Windows NT 6.1; Win64; x64/i', $ua) || preg_match('/Windows NT 6.1; WOW64/i', $ua))
-		{
-			$title = "Win 7";
-		}
-		elseif (preg_match('/Windows NT 6.1/i', $ua))
-		{
-			$title = "Win 7";
-		}
-		elseif (preg_match('/Windows NT 5.1/i', $ua))
-		{
-			$title = "XP";
-		}
-		elseif (preg_match('/Windows NT 6.2; Win64; x64/i', $ua) || preg_match('/Windows NT 6.2; WOW64/i', $ua))
-		{
-			$title = "Win 8";
-		}
-		elseif (preg_match('/Windows NT 6.2/i', $ua))
-		{
-			$title = "Win 8";
-		}
-		elseif (preg_match('/Windows NT 6.3; Win64; x64/i', $ua) || preg_match('/Windows NT 6.3; WOW64/i', $ua))
-		{
-			$title = "Win 8.1";
-		}
-		elseif (preg_match('/Windows NT 6.3/i', $ua))
-		{
-			$title = "Win 8.1";
-		}
-		elseif (preg_match('/Windows NT 6.0/i', $ua))
-		{
-			$title = "Vista";
-		}
-		elseif (preg_match('/Windows NT 5.2/i', $ua))
-		{
-
-			$title = "XP";
-		}
-		elseif (preg_match('/Windows Phone/i', $ua))
-		{
-			$matches = explode(';', $ua);
-			$title   = 'Win Phone';
-		}
-	}
-	elseif (preg_match('#iPhone OS ([a-zA-Z0-9.( _)]+)#i', $ua, $matches))
-	{ // 1.2 修改成 iphone os 来判断
-		$title = 'Iphone';
-		$icon  = "fa-apple";
-	}
-	elseif (preg_match('#iPod.*.CPU.([a-zA-Z0-9.( _)]+)#i', $ua, $matches))
-	{
-		$title = "iPod";
-		$icon  = "fa-apple";
-	}
-	elseif (preg_match('#iPad.*.CPU.([a-zA-Z0-9.( _)]+)#i', $ua, $matches))
-	{
-		$title = "iPad";
-		$icon  = "fa-apple";
-	}
-	elseif (preg_match('/Mac OS X.([0-9. _]+)/i', $ua, $matches))
-	{
-		$title = "Mac OSX";
-		$icon  = "fa-apple";
-	}
-	elseif (preg_match('/Macintosh/i', $ua))
-	{
-		$title = "Mac OS";
-		$icon  = "fa-apple";
-	}
-	elseif (preg_match('/CrOS/i', $ua))
-	{
-		$title = "Google Chrome OS";
-		$icon  = "fa-chrome";
-	}
-
-
-	return [
-		$title,
-		$icon,
-	];
-}
 
 
 /**
@@ -1125,11 +902,13 @@ function profile_custom_contact_fields($contact_methods)
 	return $contact_methods;
 }
 
-add_filter('user_contactmethods', 'profile_custom_contact_fields');
+add_filter('user_contactmethods', 'mikuclub\profile_custom_contact_fields');
 
 
 /**
  * 移除普通用户在后台的菜单选项
+ * 
+ * @return void
  */
 function remove_menus()
 {
@@ -1147,10 +926,12 @@ function remove_menus()
 	}
 }
 
-add_action('admin_menu', 'remove_menus');
+add_action('admin_menu', 'mikuclub\remove_menus');
 
 /**
  * 后台屏蔽普通用户导航栏LOGO, 评论, 新文章
+ * 
+ * @return void
  */
 function annointed_admin_bar_remove()
 {
@@ -1164,11 +945,13 @@ function annointed_admin_bar_remove()
 	}
 }
 
-//add_action( 'wp_before_admin_bar_render', 'annointed_admin_bar_remove', 0 );
+//add_action( 'wp_before_admin_bar_render', 'mikuclub\annointed_admin_bar_remove', 0 );
 
 
 /**
  * 禁止普通用户进入后台特定页面
+ * 
+ * @return void
  */
 function bandUserRedirection()
 {
@@ -1180,13 +963,13 @@ function bandUserRedirection()
 	}
 }
 
-add_action('admin_print_scripts-index.php', 'bandUserRedirection', 10, 0);
-add_action('admin_print_scripts-post-new.php', 'bandUserRedirection', 10, 0);
-add_action('admin_print_scripts-edit.php', 'bandUserRedirection', 10, 0);
-add_action('admin_print_scripts-edit-comments.php', 'bandUserRedirection', 10, 0);
-add_action('admin_print_scripts-upload.php', 'bandUserRedirection', 10, 0);
-add_action('admin_print_scripts-media-new.php', 'bandUserRedirection', 10, 0);
-add_action('admin_print_scripts-profile.php', 'bandUserRedirection', 10, 0);
+add_action('admin_print_scripts-index.php', 'mikuclub\bandUserRedirection', 10, 0);
+add_action('admin_print_scripts-post-new.php', 'mikuclub\bandUserRedirection', 10, 0);
+add_action('admin_print_scripts-edit.php', 'mikuclub\bandUserRedirection', 10, 0);
+add_action('admin_print_scripts-edit-comments.php', 'mikuclub\bandUserRedirection', 10, 0);
+add_action('admin_print_scripts-upload.php', 'mikuclub\bandUserRedirection', 10, 0);
+add_action('admin_print_scripts-media-new.php', 'mikuclub\bandUserRedirection', 10, 0);
+add_action('admin_print_scripts-profile.php', 'mikuclub\bandUserRedirection', 10, 0);
 
 
 /*=============================================================*/
@@ -1197,15 +980,19 @@ add_action('admin_print_scripts-profile.php', 'bandUserRedirection', 10, 0);
  *
  * @param string $user_name
  * @param WP_User | int $user , 因为还有通过API给客户端调用, 所以可能会是 int
+ * 
+ * @return void
  */
 function action_on_user_login($user_name, $user)
 {
 }
 
-add_action('wp_login', 'action_on_user_login', 10, 2);
+add_action('wp_login', 'mikuclub\action_on_user_login', 10, 2);
 
 /**
  * 用户退出登陆时触发的动作
+ * 
+ * @return void
  */
 function action_on_user_logout()
 {
@@ -1213,7 +1000,7 @@ function action_on_user_logout()
 	delete_user_unread_message_total_count_session();
 }
 
-add_action('wp_logout', 'action_on_user_logout');
+add_action('wp_logout', 'mikuclub\action_on_user_logout');
 
 
 /**
@@ -1342,6 +1129,8 @@ function get_user_unread_message_total_count()
 
 /**
  * 移除用户未读消息数的session变量
+ * 
+ * @return void
  */
 function delete_user_unread_message_total_count_session()
 {
@@ -1355,6 +1144,7 @@ function delete_user_unread_message_total_count_session()
  * 如果用户未登陆 重定向到其他页面 (默认回到首页)
  *
  * @param string $location
+ * @return void
  */
 function redirect_for_not_logged($location = '')
 {
@@ -1374,6 +1164,7 @@ function redirect_for_not_logged($location = '')
  * 如果用户不是管理员 重定向到其他页面 (默认回到首页)
  *
  * @param string $location
+ * @return void
  */
 function redirect_for_not_admin($location = '')
 {
@@ -1392,7 +1183,7 @@ function redirect_for_not_admin($location = '')
 
 /**
  * 获取用户的关注数组
- * @return  array
+ * @return int[]
  */
 function get_user_followed()
 {
@@ -1531,7 +1322,7 @@ function set_user_fans_count($user_id, $is_add)
 			$fans_count++;
 		}
 		//如果是删除粉丝数
-		else if (!$is_add)
+		else
 		{
 			//粉丝数-1
 			$fans_count--;
@@ -1700,6 +1491,7 @@ function get_user_blacked_count($user_id)
 /**
  * 增加用户被拉黑的次数
  * @param int $user_id 当前登陆的用户ID
+ * @return void
  */
 function add_user_blacked_count($user_id)
 {
@@ -1716,6 +1508,7 @@ function add_user_blacked_count($user_id)
 /**
  * 减少用户被拉黑的次数
  * @param int $user_id 当前登陆的用户ID
+ * @return void
  */
 function delete_user_blacked_count($user_id)
 {
@@ -1799,10 +1592,11 @@ HTML;
  * @param int $expiration
  * @param int $user_id
  * @param bool $remember
+ * @return int
  */
 function set_default_auth_cookie_expiration($expiration, $user_id, $remember)
 {
 	//3个月过期一次
 	return 7776000;
 }
-add_filter('auth_cookie_expiration', 'set_default_auth_cookie_expiration', 10, 3);
+add_filter('auth_cookie_expiration', 'mikuclub\set_default_auth_cookie_expiration', 10, 3);

@@ -1,4 +1,5 @@
 <?php
+
 namespace mikuclub;
 
 /**
@@ -33,7 +34,7 @@ function wpforo_default_attachment_image_embed($content)
 	return $content;
 }
 
-add_filter('wpforo_content_after', 'wpforo_default_attachment_image_embed', 11);
+add_filter('wpforo_content_after', 'mikuclub\wpforo_default_attachment_image_embed', 11);
 
 
 /**
@@ -54,9 +55,9 @@ function wpforo_attach_file_suggestion($forumid = null)
 	}
 }*/
 
-//add_action('wpforo_topic_form_extra_fields_after', 'wpforo_attach_file_suggestion');
-//add_action('wpforo_reply_form_extra_fields_after', 'wpforo_attach_file_suggestion');
-//add_action('wpforo_portable_form_extra_fields_after', 'wpforo_attach_file_suggestion');
+//add_action('wpforo_topic_form_extra_fields_after', 'mikuclub\wpforo_attach_file_suggestion');
+//add_action('wpforo_reply_form_extra_fields_after', 'mikuclub\wpforo_attach_file_suggestion');
+//add_action('wpforo_portable_form_extra_fields_after', 'mikuclub\wpforo_attach_file_suggestion');
 
 /**
  * 获取论坛通知统计数
@@ -123,9 +124,9 @@ function get_recent_forums_topic($posts_per_page = 8)
 /**
  * 自定义 wpforo 文本编辑器的按钮, 添加自定义表情按钮
  *
- * @param array $settings
+ * @param array<string, mixed> $settings
  * @param string $editor
- * @return array
+ * @return array<string, mixed>
  */
 function wpforo_custom_editors($settings, $editor)
 {
@@ -144,12 +145,12 @@ function wpforo_custom_editors($settings, $editor)
 	return $settings;
 }
 
-add_filter('wpforo_editor_settings', 'wpforo_custom_editors', 2, 2);
+add_filter('wpforo_editor_settings', 'mikuclub\wpforo_custom_editors', 2, 2);
 
 /**
  * 输出 wpforo 自定义表情按钮要用到的 js代码
  *
- * @return void
+ * @return string
  */
 function wpforo_custom_editor_smiley_js_code()
 {
@@ -176,46 +177,48 @@ function wpforo_custom_editor_smiley_js_code()
 /**
  * 在创建新主题的时候保存对应的附近图片数据
  *
- * @param array $args
+ * @param array<string,mixed> $args
  * [
  * 	'body' => 内容,
  * 	'topicid' => 主题ID,
  * 	'forumid' => 论坛板块ID,
  * 	'first_postid' => 帖子ID,
  * ]
- * @param [type] $forum
+ * @param array<string,mixed> $forum
  * @return void
  */
 function wpforo_custom_add_post($args, $forum)
 {
 	update_topic_attach_meta($args);
 }
-add_action('wpforo_after_add_topic', 'wpforo_custom_add_post', 10, 2);
+add_action('wpforo_after_add_topic', 'mikuclub\wpforo_custom_add_post', 10, 2);
 
 /**
  * 在更新主题的时候保存对应的附近图片数据
  *
- * @param array $args
+ * 
+ * @param array<string,mixed> $a
  * [
  * 	'body' => 内容,
  * 	'topicid' => 主题ID,
  * 	'forumid' => 论坛板块ID,
  * 	'first_postid' => 帖子ID,
  * ]
- * @param [type] $forum
+ * @param array<string,mixed> $args
+ * @param array<string,mixed> $forum
  * @return void
  */
 function wpforo_custom_edit_post($a, $args, $forum)
 {
 	update_topic_attach_meta($a);
 }
-add_action('wpforo_after_edit_topic', 'wpforo_custom_edit_post', 10, 3);
+add_action('wpforo_after_edit_topic', 'mikuclub\wpforo_custom_edit_post', 10, 3);
 
 
 /**
  * 更新主题的元数据来保存预览图信息
  *
- * @param array $args
+ * @param array<string,mixed> $args
  * @return void
  */
 function update_topic_attach_meta($args)
@@ -239,6 +242,7 @@ function update_topic_attach_meta($args)
 		{
 
 			//获取图片附件
+			//@phpstan-ignore-next-line
 			$attach = WPF_ATTACH()->get_attach($id_attach);
 			//如果附件存在
 			if ($attach)
@@ -364,7 +368,7 @@ do_action( 'wpforo_after_merge_topic', $target, $current, $postids, $to_target_t
 /**
  * 获取主题的附近图片预览
  *
- * @param array $thread
+ * @param array<string,mixed> $thread
  * [
  * 	"topicid": "22",
  *  "forumid": "4",
@@ -372,8 +376,7 @@ do_action( 'wpforo_after_merge_topic', $target, $current, $postids, $to_target_t
  * 	"last_post" : array['body']
  * ]
  * 
- * 
- * @return void
+ * @return string
  */
 function get_wpforo_post_excerpt_and_thumbnail_images($thread)
 {
@@ -484,15 +487,15 @@ function add_filter_on_wpforo_get_option($value, $option, $default, $cache)
 			{
 				$wpforo_version_result = false;
 			}
-			else{
+			else
+			{
 				$wpforo_version_result = $value;
 			}
 
 			$result = $wpforo_version_result;
 		}
-
 	}
 
 	return $result;
 }
-//add_filter('wpforo_get_option', 'add_filter_on_wpforo_get_option', 10, 4);
+//add_filter('wpforo_get_option', 'mikuclub\add_filter_on_wpforo_get_option', 10, 4);

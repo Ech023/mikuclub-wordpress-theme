@@ -89,7 +89,7 @@ HTML;
 /**
  * 随机获取一种热门类型的列表
  *
- * @param int $term_id //分类ID 或者 标签ID
+ * @param int|null $term_id //分类ID 或者 标签ID
  * @param int $number //文章数量
  *
  * @return string HTML内容

@@ -1,4 +1,10 @@
-<?php get_header(); ?>
+<?php
+
+use function mikuclub\breadcrumbs_component;
+use function mikuclub\dopt;
+use function mikuclub\post_list_component;
+
+ get_header(); ?>
 
     <div class="content">
         <header class="archive-header tag-header">

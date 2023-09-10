@@ -2,7 +2,20 @@
 </section>
 
 
-<?php $home = get_home_url(); ?>
+<?php
+
+use function mikuclub\current_user_is_admin;
+use function mikuclub\dopt;
+use function mikuclub\get_bottom_menu;
+use function mikuclub\get_friends_links;
+use function mikuclub\get_new_post_count;
+use function mikuclub\sidebar_menu_component;
+use function mikuclub\site_categories_total_count;
+use function mikuclub\site_comments_total_count;
+use function mikuclub\site_posts_total_count;
+use function mikuclub\site_tags_total_count;
+
+ $home = get_home_url(); ?>
 
 <footer id="footer" class="footer mt-5 px-3 px-sm-5">
 

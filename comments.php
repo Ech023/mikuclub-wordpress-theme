@@ -3,6 +3,13 @@
 
 
 //当前用户ID
+
+use mikuclub\Web_Domain;
+
+use function mikuclub\get_my_user_avatar;
+use function mikuclub\get_post_comments;
+use function mikuclub\print_user_avatar;
+
 $user_id = get_current_user_id();
 $pub_comment_element = '';
 

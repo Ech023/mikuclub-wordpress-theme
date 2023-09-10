@@ -1,9 +1,12 @@
 <?php
 namespace mikuclub;
 
+use WP_REST_Request;
+use WP_REST_Response;
+
 /**
  * APK更新检测功能
- * @return array
+ * @return array<string, mixed>
  */
 function api_check_app_update() {
 
@@ -33,7 +36,7 @@ function api_check_app_update() {
 /**
  * 通过api 获取菜单
  * 获取安卓应用专用菜单
- * @return array
+ * @return array<int, array<string, string>>
  */
 function api_get_menu() {
 
@@ -75,7 +78,7 @@ function api_get_menu() {
 
 /**
  * 获取app端的公告和广告信息
- * @return array
+ * @return array<string, mixed>
  */
 function api_get_app_communication() {
 
@@ -87,20 +90,12 @@ function api_get_app_communication() {
 	];
 }
 
-/**全部升级到安卓 1.1后可以删除=============================================
- *旧版获取网站通知信息
- **/
-function api_get_site_communication() {
-	$option_name = 'd_tui_android';
-
-	return dopt( $option_name );
-}
 
 /**
  * APP专用获取收藏文章列表
- * @param $data
- *
- * @return array
+ * 
+ * @param WP_REST_Request $data
+ * @return WP_REST_Response
  */
 function api_get_my_favorite_post_list_for_app($data){
 
@@ -126,6 +121,8 @@ function api_get_my_favorite_post_list_for_app($data){
 
 /**
  * 注册自定义 api 接口
+ * 
+ * @return void
  */
 function register_custom_app_api() {
 
@@ -151,16 +148,10 @@ function register_custom_app_api() {
 		'callback' => 'api_get_app_communication',
 	] );
 
-	/**全部升级到安卓 1.1后可以删除=============================================*/
-	register_rest_route( 'utils/v2', '/get_site_communication', [
-		'methods'  => 'GET',
-		'callback' => 'api_get_site_communication',
-	] );
-	/*===============================================================*/
 
 
 
 }
 
 
-add_action( 'rest_api_init', 'register_custom_app_api' );
+add_action( 'rest_api_init', 'mikuclub\register_custom_app_api' );

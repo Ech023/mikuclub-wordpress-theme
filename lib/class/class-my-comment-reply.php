@@ -2,74 +2,86 @@
 
 namespace mikuclub;
 
+use WP_Comment;
+
 /**
  * 自定义评论回复模型
  */
 
 
-if ( ! class_exists( 'My_Comment_Reply' )
-
-
-) {
+if (!class_exists('My_Comment_Reply'))
+{
 
 	/**
 	 * 基础评论回复类型
 	 */
-	class My_Comment_Reply {
+	class My_Comment_Reply
+	{
 
-		public $comment_id = '';
-		public $comment_content = '';
-		public $comment_date = '';
-		public $comment_parent = '';
+		/**
+		 * Undocumented variable
+		 *
+		 * @var int
+		 */
+		public $comment_id;
+
+		/**
+		 * @var string
+		 */
+		public $comment_content;
+
+		/**
+		 * @var string
+		 */
+		public $comment_date;
+
+		/**
+		 * Parent comment ID
+		 * @var int
+		 */
+		public $comment_parent;
+
+		/**
+		 * @var int
+		 */
 		public $comment_parent_user_read;
-		public $comment_post_id = '';
-		public $comment_post_title = '';
-		public $comment_post_href = '';
-		public $author = '';
+
+		/**
+		 * @var int
+		 */
+		public $comment_post_id;
+
+		/**
+		 * @var string
+		 */
+		public $comment_post_title;
+
+		/**
+		 * @var string
+		 */
+		public $comment_post_href;
+
+		/**
+		 *
+		 * @var My_System_User|My_User
+		 */
+		public $author;
 
 
-		/*
-		 * 全部升级到安卓1.2后可以删除=====================*/
-		public $id = '';
-		public $content = '';
-		public $date = '';
-		public $parent = '';
-		public $post = '';
-		public $post_title = '';
-		public $status = '';
+		function __construct(WP_Comment $comment)
+		{
 
-		/*========================*/
+			$this->comment_id      = intval($comment->comment_ID);
+			$this->comment_content = $comment->comment_content;
+			$this->comment_date    = $comment->comment_date;
+			$this->comment_parent  = intval($comment->comment_parent);
+			$this->comment_post_id = intval($comment->comment_post_ID);
 
+			$this->comment_parent_user_read = get_comment_meta($this->comment_id, Comment_Meta::COMMENT_PARENT_USER_READ, true) ? 1 : 0;
+			$this->comment_post_title       = get_the_title($this->comment_post_id);
+			$this->comment_post_href        = get_permalink($this->comment_post_id);
 
-		function __construct( WP_Comment $comment ) {
-
-
-
-				$this->comment_id      = $comment->comment_ID;
-				$this->comment_content = $comment->comment_content;
-				$this->comment_date    = $comment->comment_date;
-				$this->comment_parent  = $comment->comment_parent;
-				$this->comment_post_id = $comment->comment_post_ID;
-
-				$this->comment_parent_user_read = get_comment_meta( $comment->comment_ID, Comment_Meta::COMMENT_PARENT_USER_READ, true );
-				$this->comment_post_title       = get_the_title( $comment->comment_post_ID );
-				$this->comment_post_href        = get_permalink( $comment->comment_post_ID );
-
-				$this->author = get_custom_author( $comment->user_id );
-
-
-				/* 全部升级到安卓1.2后可以删除=====================*/
-				$this->id         = $comment->comment_ID;
-				$this->content    = $comment->comment_content;
-				$this->date       = $comment->comment_date;
-				$this->parent     = $comment->comment_parent;
-				$this->post       = $comment->comment_post_ID;
-				$this->post_title = $this->comment_post_title;
-				$this->status     = $this->comment_parent_user_read;
-				/*========================*/
-
+			$this->author = get_custom_author(intval($comment->user_id));
 		}
 	}
-
-
 }

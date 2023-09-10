@@ -1,10 +1,15 @@
 <?php
+
 namespace mikuclub;
+
+use stdClass;
+use WP_Error;
+use WP_REST_Request;
 
 /**
  * 获取用户未读的评论数量
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return int
  */
@@ -17,9 +22,9 @@ function api_get_user_unread_comment_reply_count($data)
 /**
  * API获取评论回复
  *
- * @param array $data ['paged' => 页数, number' => 每页数据数量]
+ * @param WP_REST_Request $data ['paged' => 页数, number' => 每页数据数量]
  *
- * @return My_Comment_Reply[] | WP_Error
+ * @return My_Comment_Reply[]|WP_Error
  */
 function api_get_comment_replies($data)
 {
@@ -54,9 +59,9 @@ function api_get_comment_replies($data)
 /**
  * 删除评论
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
- * @return bool| WP_Error
+ * @return bool|WP_Error
  */
 function api_delete_comment($data)
 {
@@ -74,8 +79,8 @@ function api_delete_comment($data)
 	$comment =  get_comment($comment_id);
 
 	//获取文章作者ID
-	$post_id = $comment->comment_post_ID;
-	$post_author_id = (int) get_post_field('post_author', $post_id);
+	$post_id = intval($comment->comment_post_ID);
+	$post_author_id = intval(get_post_field('post_author', $post_id));
 
 	//评论人ID
 	$author_id  = $comment->user_id;
@@ -112,7 +117,7 @@ function api_delete_comment($data)
 
 /**
  * API 获取文章的评论列表
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return My_Comment[]|WP_Error
  */
@@ -148,7 +153,7 @@ function api_get_comment_list($data)
 /**
  * 增加评论点赞次数
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return int|WP_Error
  **/
@@ -166,7 +171,7 @@ function api_add_comment_likes($data)
 /**
  * 减少评论点赞次数
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return int|WP_Error
  **/
@@ -186,7 +191,7 @@ function api_delete_comment_likes($data)
 
 /**
  * 创建评论
- * @param array $data
+ * @param WP_REST_Request $data
  *
  * @return bool|mixed|My_Comment|WP_Error
  */
@@ -220,9 +225,9 @@ function api_insert_custom_comment($data)
 /**
  * API在回复中 添加自定义 数据
  *
- * @param array $data
+ * @param WP_REST_Request $data
  *
- * @return array | object
+ * @return array<string, mixed>
  */
 function api_add_custom_comment_metadata($data)
 {
@@ -247,10 +252,10 @@ function api_add_custom_comment_metadata($data)
 
 
 	//如果为空 创建 一个 空对象返回,  不然返回空数组 app端会崩溃
-	if (empty($output))
-	{
-		$output = new stdClass();
-	}
+	// if (empty($output))
+	// {
+	// 	$output = new stdClass();
+	// }
 
 	return $output;
 }
@@ -260,6 +265,8 @@ function api_add_custom_comment_metadata($data)
 
 /**
  * 在API中给comment添加自定义meta元数据支持
+ * 
+ * @return void
  **/
 function register_custom_comment_metadata()
 {
@@ -279,6 +286,8 @@ function register_custom_comment_metadata()
 
 /**
  * 注册自定义 api 接口
+ * 
+ * @return void
  */
 function register_custom_comment_api()
 {
@@ -345,4 +354,4 @@ function register_custom_comment_api()
 	register_custom_comment_metadata();
 }
 
-add_action('rest_api_init', 'register_custom_comment_api');
+add_action('rest_api_init', 'mikuclub\register_custom_comment_api');
