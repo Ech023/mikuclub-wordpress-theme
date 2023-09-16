@@ -3,9 +3,10 @@
 use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Web_Domain;
 
-use function mikuclub\dopt;
+
 use function mikuclub\get_main_menu;
 use function mikuclub\get_random_head_background_image;
+use function mikuclub\get_theme_option;
 use function mikuclub\get_top_left_menu;
 use function mikuclub\init_user_data;
 use function mikuclub\is_adult_category;
@@ -105,10 +106,10 @@ else
 
     //页面头部公共代码
 
-    if (dopt(Admin_Meta::SITE_TOP_CODE_ENABLE))
+    if (get_theme_option(Admin_Meta::SITE_TOP_CODE_ENABLE))
     {
         echo '<!-- 顶部公共代码 -->';
-        echo dopt(Admin_Meta::SITE_TOP_CODE);
+        echo get_theme_option(Admin_Meta::SITE_TOP_CODE);
     }
 
 
@@ -304,13 +305,13 @@ else
 
                 <div class="speedbar <?php echo !is_home() ? 'd-none d-sm-block' : '' ?> my-2 p-2 px-3 rounded">
                     <span class=""><i class="fa-solid fa-bullhorn"></i> 公告:</span>
-                    <?php echo dopt(Admin_Meta::SITE_ANNOUNCEMENT_TOP); ?>
+                    <?php echo get_theme_option(Admin_Meta::SITE_ANNOUNCEMENT_TOP); ?>
 
                 </div>
 
                 <!-- 输出默认折叠区域 (qq群信息)-->
                 <div id="qq-group-info" class="my-2 collapse border rounded px-3">
-                    <?php echo dopt(Admin_Meta::SITE_ANNOUNCEMENT_TOP_COLLAPSE); ?>
+                    <?php echo get_theme_option(Admin_Meta::SITE_ANNOUNCEMENT_TOP_COLLAPSE); ?>
                 </div>
 
             <?php } ?>
@@ -322,13 +323,13 @@ else
             if (is_home() || is_single() || is_category() || is_tag())
             {
 
-                if (dopt(Admin_Meta::SITE_TOP_ADSENSE_PC_ENABLE))
+                if (get_theme_option(Admin_Meta::SITE_TOP_ADSENSE_PC_ENABLE))
                 {
-                    echo '<div class="pop-banner d-none d-md-block text-center my-3 py-2">' . dopt(Admin_Meta::SITE_TOP_ADSENSE_PC) . '</div>';
+                    echo '<div class="pop-banner d-none d-md-block text-center my-3 py-2">' . get_theme_option(Admin_Meta::SITE_TOP_ADSENSE_PC) . '</div>';
                 }
-                if (dopt(Admin_Meta::SITE_TOP_ADSENSE_PHONE_ENABLE))
+                if (get_theme_option(Admin_Meta::SITE_TOP_ADSENSE_PHONE_ENABLE))
                 {
-                    echo '<div class="pop-banner d-block d-md-none text-center my-3">' . dopt(Admin_Meta::SITE_TOP_ADSENSE_PHONE) . '</div>';
+                    echo '<div class="pop-banner d-block d-md-none text-center my-3">' . get_theme_option(Admin_Meta::SITE_TOP_ADSENSE_PHONE) . '</div>';
                 }
             }
 
@@ -336,13 +337,13 @@ else
             //首页-主菜单下方广告位
             if (is_home() && !get_query_var('paged'))
             {
-                if (dopt(Admin_Meta::HOME_TOP_ADSENSE_PC_ENABLE))
+                if (get_theme_option(Admin_Meta::HOME_TOP_ADSENSE_PC_ENABLE))
                 {
-                    echo '<div class="pop-banner d-none d-md-block text-center my-3 py-2">' . dopt(Admin_Meta::HOME_TOP_ADSENSE_PC) . '</div>';
+                    echo '<div class="pop-banner d-none d-md-block text-center my-3 py-2">' . get_theme_option(Admin_Meta::HOME_TOP_ADSENSE_PC) . '</div>';
                 }
-                if (dopt(Admin_Meta::HOME_TOP_ADSENSE_PHONE_ENABLE))
+                if (get_theme_option(Admin_Meta::HOME_TOP_ADSENSE_PHONE_ENABLE))
                 {
-                    echo '<div class="pop-banner d-block d-md-none text-center my-3">' . dopt(Admin_Meta::HOME_TOP_ADSENSE_PHONE) . '</div>';
+                    echo '<div class="pop-banner d-block d-md-none text-center my-3">' . get_theme_option(Admin_Meta::HOME_TOP_ADSENSE_PHONE) . '</div>';
                 }
             }
         

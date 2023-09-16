@@ -1880,15 +1880,15 @@ HTML;
 
         $pc_adsense = '';
         //PC端 文章页 - 正文中间
-        if (dopt(Admin_Meta::POST_CONTENT_ADSENSE_PC_ENABLE))
+        if (get_theme_option(Admin_Meta::POST_CONTENT_ADSENSE_PC_ENABLE))
         {
-            $pc_adsense = '<div class="pop-banner text-center my-4 d-none d-md-block">' . dopt(Admin_Meta::POST_CONTENT_ADSENSE_PC) . '</div>';
+            $pc_adsense = '<div class="pop-banner text-center my-4 d-none d-md-block">' . get_theme_option(Admin_Meta::POST_CONTENT_ADSENSE_PC) . '</div>';
         }
         $mobile_adsense = '';
         //手机端 文章页 - 正文中间
-        if (dopt(Admin_Meta::POST_CONTENT_ADSENSE_PHONE_ENABLE))
+        if (get_theme_option(Admin_Meta::POST_CONTENT_ADSENSE_PHONE_ENABLE))
         {
-            $mobile_adsense = '<div class="pop-banner text-center my-3 d-md-none">' . dopt(Admin_Meta::POST_CONTENT_ADSENSE_PHONE) . '</div>';
+            $mobile_adsense = '<div class="pop-banner text-center my-3 d-md-none">' . get_theme_option(Admin_Meta::POST_CONTENT_ADSENSE_PHONE) . '</div>';
         }
 
 

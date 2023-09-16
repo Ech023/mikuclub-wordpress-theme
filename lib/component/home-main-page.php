@@ -117,13 +117,13 @@ HTML;
 
 
         //首页 幻灯片下方横幅
-        if (dopt(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC_ENABLE))
+        if (get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC_ENABLE))
         {
-            $home_content_output .= '<div class="pop-banner d-none d-md-block text-center my-4 py-2">' . dopt(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC) . '</div>';
+            $home_content_output .= '<div class="pop-banner d-none d-md-block text-center my-4 py-2">' . get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC) . '</div>';
         }
-        if (dopt(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE_ENABLE))
+        if (get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE_ENABLE))
         {
-            $home_content_output .= '<div class="pop-banner d-block d-md-none text-center my-3">' . dopt(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE) . '</div>';
+            $home_content_output .= '<div class="pop-banner d-block d-md-none text-center my-3">' . get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE) . '</div>';
         }
 
         //最新主题帖子
@@ -139,13 +139,13 @@ HTML;
         //$home_content_output      .= recently_posts_component( $followed_post_list, $followed_post_list_title, $followed_post_list_link, '' );
 
         // 首页 - 最新发布上方横幅 广告
-        if (dopt(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PC_ENABLE))
+        if (get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PC_ENABLE))
         {
-            $home_content_output .= '<div class="pop-banner d-none d-md-block text-center my-4 py-2">' . dopt(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PC) . '</div>';
+            $home_content_output .= '<div class="pop-banner d-none d-md-block text-center my-4 py-2">' . get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PC) . '</div>';
         }
-        if (dopt(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PHONE_ENABLE))
+        if (get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PHONE_ENABLE))
         {
-            $home_content_output .= '<div class="pop-banner d-block d-md-none text-center my-3">' . dopt(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PHONE) . '</div>';
+            $home_content_output .= '<div class="pop-banner d-block d-md-none text-center my-3">' . get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PHONE) . '</div>';
         }
 
         //输出最新文章列表

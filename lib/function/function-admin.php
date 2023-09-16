@@ -1,4 +1,5 @@
 <?php
+
 namespace mikuclub;
 
 use mikuclub\constant\Admin_Meta;
@@ -116,6 +117,25 @@ function update_theme_config()
         //更新option数据
         update_option($option, $value);
     }
+}
+
+/**
+ * 获取主题相关的元数据 (如果数值是字符串 额外进行反引用处理)
+ *
+ * @param string $option_name 键名
+ * @return string|bool 键值, 如果未找到则返回false
+ */
+function get_theme_option($option_name)
+{
+
+    $result = get_option($option_name);
+    //如果键值 是 字符串 进行额外反引用处理
+    if (is_string($result))
+    {
+        $result = stripslashes($result);
+    }
+
+    return $result;
 }
 
 /**
@@ -281,7 +301,7 @@ function create_component($description, $type, $option)
 {
 
 
-    $value = dopt($option);
+    $value = get_theme_option($option);
 
 
     $input = '';
@@ -351,7 +371,7 @@ function create_check_box_component($description, $array_option, $array_option_d
     {
 
 
-        $checked = dopt($array_option[$i]) ? 'checked' : '';
+        $checked = get_theme_option($array_option[$i]) ? 'checked' : '';
 
         $input .= <<<HTML
 
@@ -394,9 +414,9 @@ function create_code_component($description, $check_option, $option)
 {
 
     //获取对应的开关状态
-    $checked = dopt($check_option) ? 'checked' : '';
+    $checked = get_theme_option($check_option) ? 'checked' : '';
     //获取内容
-    $value = dopt($option);
+    $value = get_theme_option($option);
 
 
     $input = <<<HTML

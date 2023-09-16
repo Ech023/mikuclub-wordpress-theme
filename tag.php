@@ -3,7 +3,8 @@
 use mikuclub\constant\Admin_Meta;
 
 use function mikuclub\breadcrumbs_component;
-use function mikuclub\dopt;
+
+use function mikuclub\get_theme_option;
 use function mikuclub\post_list_component;
 
  get_header(); ?>
@@ -17,8 +18,8 @@ use function mikuclub\post_list_component;
 
         <?php
 
-            if ( dopt( Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE ) ) {
-                echo '<div class="pop-banner  text-center my-4">' . dopt( Admin_Meta::CATEGORY_TOP_ADSENSE ) . '</div>';
+            if ( get_theme_option( Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE ) ) {
+                echo '<div class="pop-banner  text-center my-4">' . get_theme_option( Admin_Meta::CATEGORY_TOP_ADSENSE ) . '</div>';
             }
 
         ?>

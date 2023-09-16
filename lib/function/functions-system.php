@@ -10,31 +10,6 @@ use WP_User;
  *  网站系统相关函数
  */
 
-/**
- * 解义输出 网站选项值
- *
- * @param string $option_name 键名
- *
- * @return string|bool 键值, 如果未找到则返回false
- */
-function dopt($option_name)
-{
-	$result = false;
-	//如果 键名 存在
-	if ($option_name)
-	{
-		$result = get_option($option_name);
-		//如果键值 是 字符串 进行额外反引用处理
-		if (is_string($result) /*|| is_numeric($option) || is_bool($option)*/)
-		{
-			$result = stripslashes($result);
-		}
-		
-	}
-
-
-	return $result;
-}
 
 
 /**
@@ -101,7 +76,7 @@ function action_after_setup_theme()
 		}
 		elseif (is_home())
 		{
-			$keywords = dopt(Admin_Meta::SITE_KEYWORDS);
+			$keywords = get_theme_option(Admin_Meta::SITE_KEYWORDS);
 		}
 		elseif (is_tag())
 		{
@@ -158,7 +133,7 @@ function action_after_setup_theme()
 		}
 		elseif (is_home())
 		{
-			$description = dopt(Admin_Meta::SITE_DESCRIPTION); // 首頁要自己加
+			$description = get_theme_option(Admin_Meta::SITE_DESCRIPTION); // 首頁要自己加
 		}
 		elseif (is_tag())
 		{

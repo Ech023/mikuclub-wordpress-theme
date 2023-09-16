@@ -4,9 +4,10 @@ use mikuclub\constant\Admin_Meta;
 
 use function mikuclub\adult_404_content_for_no_logging_user;
 use function mikuclub\breadcrumbs_component;
-use function mikuclub\dopt;
+
 use function mikuclub\get_hot_list_by_random;
 use function mikuclub\get_main_category_children;
+use function mikuclub\get_theme_option;
 use function mikuclub\has_sub_categories;
 use function mikuclub\hot_posts_most_comments;
 use function mikuclub\hot_posts_most_rating;
@@ -62,9 +63,9 @@ use function mikuclub\top_hot_posts_component;
 
 				<?php
 
-				if (dopt(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
+				if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 				{
-					echo '<div class="pop-banner  text-center my-4">' . dopt(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
+					echo '<div class="pop-banner  text-center my-4">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
 				}
 
 				$sub_categories = get_main_category_children(get_queried_object_id());
@@ -105,9 +106,9 @@ use function mikuclub\top_hot_posts_component;
 			{
 				//随机输出一种热门文章
 				echo get_hot_list_by_random(8);
-				if (dopt(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
+				if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 				{
-					echo '<div class="pop-banner  text-center my-4">' . dopt(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
+					echo '<div class="pop-banner  text-center my-4">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
 				}
 
 			}
@@ -117,9 +118,9 @@ use function mikuclub\top_hot_posts_component;
 		{
 
 
-			if (dopt(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
+			if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 			{
-				echo '<div class="pop-banner  text-center my-4">' . dopt(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
+				echo '<div class="pop-banner  text-center my-4">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
 			}
 		}
 

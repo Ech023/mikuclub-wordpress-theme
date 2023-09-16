@@ -102,22 +102,5 @@ class Admin_Meta extends Constant
     const APP_ADSENSE_TEXT = 'app_adindex_01_text';
     const APP_ADSENSE_LINK = 'app_adindex_01_link';
 
-    /**
-     * 获取admin元数据
-     *
-     * @param string $option_name 键名
-     * @return string|bool 键值, 如果未找到则返回false
-     */
-    public static function get_option($option_name)
-    {
-
-        $result = get_option($option_name);
-        //如果键值 是 字符串 进行额外反引用处理
-        if (is_string($result))
-        {
-            $result = stripslashes($result);
-        }
-
-        return $result;
-    }
+ 
 }

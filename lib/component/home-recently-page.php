@@ -32,8 +32,8 @@ function home_recently_page() {
 
 	$ad_banner = '';
 	//PC端+手机端
-	if ( dopt( Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE ) ) {
-		$ad_banner .= '<div class="pop-banner  text-center my-4">' . dopt( Admin_Meta::CATEGORY_TOP_ADSENSE ) . '</div>';
+	if ( get_theme_option( Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE ) ) {
+		$ad_banner .= '<div class="pop-banner  text-center my-4">' . get_theme_option( Admin_Meta::CATEGORY_TOP_ADSENSE ) . '</div>';
 	}
 
 

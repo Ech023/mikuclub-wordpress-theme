@@ -7,10 +7,11 @@
 use mikuclub\constant\Admin_Meta;
 
 use function mikuclub\current_user_is_admin;
-use function mikuclub\dopt;
+
 use function mikuclub\get_bottom_menu;
 use function mikuclub\get_friends_links;
 use function mikuclub\get_new_post_count;
+use function mikuclub\get_theme_option;
 use function mikuclub\sidebar_menu_component;
 use function mikuclub\site_categories_total_count;
 use function mikuclub\site_comments_total_count;
@@ -40,7 +41,7 @@ use function mikuclub\site_tags_total_count;
                 <div class="my-2">
 
 					<?php 
-						echo dopt( Admin_Meta::SITE_ANNOUNCEMENT_BOTTOM);
+						echo get_theme_option( Admin_Meta::SITE_ANNOUNCEMENT_BOTTOM);
 					 ?>
 
                 </div>
@@ -122,17 +123,17 @@ wp_footer();
 
 
 //流量统计代码.
-if (dopt(Admin_Meta::SITE_BOTTOM_TRACK_CODE_ENABLE))
+if (get_theme_option(Admin_Meta::SITE_BOTTOM_TRACK_CODE_ENABLE))
 {
     echo '<!-- 底部流量统计代码 -->';
-    echo dopt(Admin_Meta::SITE_BOTTOM_TRACK_CODE);
+    echo get_theme_option(Admin_Meta::SITE_BOTTOM_TRACK_CODE);
 }
 
 //底部公共代码
-if (dopt(Admin_Meta::SITE_BOTTOM_CODE_ENABLE))
+if (get_theme_option(Admin_Meta::SITE_BOTTOM_CODE_ENABLE))
 {
     echo '<!-- 底部公共代码 -->';
-    echo dopt(Admin_Meta::SITE_BOTTOM_CODE);
+    echo get_theme_option(Admin_Meta::SITE_BOTTOM_CODE);
 }
 
 ?>

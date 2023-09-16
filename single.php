@@ -7,7 +7,7 @@ use mikuclub\constant\Post_Feedback_Rank;
 use function mikuclub\adult_404_content_for_no_logging_user;
 use function mikuclub\breadcrumbs_component;
 use function mikuclub\current_user_is_admin;
-use function mikuclub\dopt;
+
 use function mikuclub\get_custom_author;
 use function mikuclub\get_post_favorites;
 use function mikuclub\get_post_like;
@@ -294,15 +294,15 @@ HTML;
 
         <?php
         //电脑端 文章页 - 页面标题下
-        if (dopt(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC_ENABLE))
+        if (get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC_ENABLE))
         {
-            echo '<div class="pop-banner text-center my-4  d-md-block">' . dopt(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC) . '</div>';
+            echo '<div class="pop-banner text-center my-4  d-md-block">' . get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC) . '</div>';
         }
 
         //手机端 文章页 - 页面标题下
-        if (dopt(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE_ENABLE))
+        if (get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE_ENABLE))
         {
-            echo '<div class="pop-banner text-center my-3 d-md-none">' . dopt(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE) . '</div>';
+            echo '<div class="pop-banner text-center my-3 d-md-none">' . get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE) . '</div>';
         }
 
         ?>
@@ -330,15 +330,15 @@ HTML;
 <?php
 
     //广告：文章页 - 评论区上方
-    if (dopt(Admin_Meta::POST_COMMENT_ADSENSE_PC_ENABLE))
+    if (get_theme_option(Admin_Meta::POST_COMMENT_ADSENSE_PC_ENABLE))
     {
-        echo '<div class="pop-banner  text-center  my-4 d-none d-md-block">' . dopt(Admin_Meta::POST_COMMENT_ADSENSE_PC) . '</div>';
+        echo '<div class="pop-banner  text-center  my-4 d-none d-md-block">' . get_theme_option(Admin_Meta::POST_COMMENT_ADSENSE_PC) . '</div>';
     }
 
     //手机广告 - 评论区上方
-    if (dopt(Admin_Meta::POST_COMMENT_ADSENSE_PHONE_ENABLE))
+    if (get_theme_option(Admin_Meta::POST_COMMENT_ADSENSE_PHONE_ENABLE))
     {
-        echo '<div class="pop-banner text-center my-3 d-md-none">' . dopt(Admin_Meta::POST_COMMENT_ADSENSE_PHONE) . '</div>';
+        echo '<div class="pop-banner text-center my-3 d-md-none">' . get_theme_option(Admin_Meta::POST_COMMENT_ADSENSE_PHONE) . '</div>';
     }
 
     comments_template('', true);

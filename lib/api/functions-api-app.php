@@ -84,10 +84,10 @@ function api_get_menu() {
 function api_get_app_communication() {
 
 	return [
-		'communication'       => dopt( Admin_Meta::APP_ANNOUNCEMENT),
-		Admin_Meta::APP_ADSENSE_TEXT => dopt( Admin_Meta::APP_ADSENSE_TEXT),
-		Admin_Meta::APP_ADSENSE_LINK => dopt( Admin_Meta::APP_ADSENSE_LINK),
-		Admin_Meta::APP_ADSENSE_ENABLE => dopt( Admin_Meta::APP_ADSENSE_ENABLE),
+		'communication'       => get_theme_option( Admin_Meta::APP_ANNOUNCEMENT),
+		Admin_Meta::APP_ADSENSE_TEXT => get_theme_option( Admin_Meta::APP_ADSENSE_TEXT),
+		Admin_Meta::APP_ADSENSE_LINK => get_theme_option( Admin_Meta::APP_ADSENSE_LINK),
+		Admin_Meta::APP_ADSENSE_ENABLE => get_theme_option( Admin_Meta::APP_ADSENSE_ENABLE),
 	];
 }
 
