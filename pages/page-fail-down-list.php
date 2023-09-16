@@ -2,7 +2,7 @@
 
 //如果不是管理员
 
-use mikuclub\Post_Meta;
+use mikuclub\constant\Post_Meta;
 
 use function mikuclub\breadcrumbs_component;
 use function mikuclub\convert_link_to_https;

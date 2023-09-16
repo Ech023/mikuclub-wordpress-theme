@@ -1,9 +1,9 @@
 <?php
 
-namespace mikuclub;
+namespace mikuclub\constant;
 
 /**
- * 文章的元数据
+ * 网站设置的元数据
  */
 class Option_Meta
 {

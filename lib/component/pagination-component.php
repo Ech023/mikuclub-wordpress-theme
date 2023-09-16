@@ -1,5 +1,7 @@
 <?php
+
 namespace mikuclub;
+
 /**
  * 分页导航 组件
  * @return string
@@ -91,22 +93,11 @@ function pagination_component()
 		}
 
 		//如果有开启动态加载下一页
-		if (dopt('d_ajaxpager_b'))
-		{
+		$the_next_page = next_page_button('下一页');
 
-			$the_next_page = next_page_button('下一页');
+		//根据查询变量 创建对应的input隐藏表单
+		$the_next_page .= insertQueryInputForms($wp_query->query);
 
-			//根据查询变量 创建对应的input隐藏表单
-			$the_next_page .= insertQueryInputForms($wp_query->query);
-		} //如果没开启, 则使用传送 跳转切换下一页
-		else
-		{
-
-			$the_next_page = '
-			<a class=" btn btn-lg btn-miku w-100 my-3" href="' . next_posts(0, false) . '">
-				下一页
-			</a>';
-		}
 
 		//最终输出
 		$pagination_output = <<< HTML

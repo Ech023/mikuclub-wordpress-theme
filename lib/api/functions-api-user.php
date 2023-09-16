@@ -2,6 +2,8 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Expired;
+use mikuclub\constant\User_Meta;
 use WP_Error;
 use WP_REST_Request;
 use WP_User;

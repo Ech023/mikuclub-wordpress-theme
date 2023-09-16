@@ -1,5 +1,8 @@
 <?php
 namespace mikuclub;
+
+use mikuclub\constant\Post_Meta;
+
 /**
  * 热门文章列表组件
  *

@@ -4,6 +4,8 @@
 
 <?php
 
+use mikuclub\constant\Admin_Meta;
+
 use function mikuclub\current_user_is_admin;
 use function mikuclub\dopt;
 use function mikuclub\get_bottom_menu;
@@ -37,9 +39,9 @@ use function mikuclub\site_tags_total_count;
 
                 <div class="my-2">
 
-					<?php if ( dopt( 'd_tui_bottom' ) ) {
-						echo dopt( 'd_tui_bottom' );
-					} ?>
+					<?php 
+						echo dopt( Admin_Meta::SITE_ANNOUNCEMENT_BOTTOM);
+					 ?>
 
                 </div>
 
@@ -117,15 +119,22 @@ use function mikuclub\site_tags_total_count;
 <?php
 wp_footer();
 
-//流量统计代码
-if ( dopt( 'd_track_b' ) ) {
-	echo '<div class="trackcode">' . dopt( 'd_track' ) . '</div>';
+
+
+//流量统计代码.
+if (dopt(Admin_Meta::SITE_BOTTOM_TRACK_CODE_ENABLE))
+{
+    echo '<!-- 底部流量统计代码 -->';
+    echo dopt(Admin_Meta::SITE_BOTTOM_TRACK_CODE);
 }
 
 //底部公共代码
-if ( dopt( 'd_footcode_b' ) ) {
-	echo dopt( 'd_footcode' );
+if (dopt(Admin_Meta::SITE_BOTTOM_CODE_ENABLE))
+{
+    echo '<!-- 底部公共代码 -->';
+    echo dopt(Admin_Meta::SITE_BOTTOM_CODE);
 }
+
 ?>
 
 <script>

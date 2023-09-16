@@ -1,6 +1,6 @@
 <?php
 
-namespace mikuclub;
+namespace mikuclub\constant;
 
 /**
  * 用户的元数据 键名
@@ -30,4 +30,14 @@ class User_Meta
 
     //特殊键名 用来识别 通过官方API上传用户头像的请求
     const ACTION_UPDATE_AVATAR_BY_API = 'action_update_avatar';
+}
+
+/**
+ * 用户权限 常量
+ */
+class User_Capability{
+
+    //编辑主题的权限
+    const EDIT_THEMES = 'edit_themes';
+
 }

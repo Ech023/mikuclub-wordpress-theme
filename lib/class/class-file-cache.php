@@ -2,6 +2,8 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Config;
+
 /**
  * 文件缓存系统
  */

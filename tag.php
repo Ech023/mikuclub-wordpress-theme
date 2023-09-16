@@ -1,5 +1,7 @@
 <?php
 
+use mikuclub\constant\Admin_Meta;
+
 use function mikuclub\breadcrumbs_component;
 use function mikuclub\dopt;
 use function mikuclub\post_list_component;
@@ -15,8 +17,8 @@ use function mikuclub\post_list_component;
 
         <?php
 
-            if ( dopt( 'd_adindex_02_b' ) ) {
-                echo '<div class="pop-banner  text-center my-4">' . dopt( 'd_adindex_02' ) . '</div>';
+            if ( dopt( Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE ) ) {
+                echo '<div class="pop-banner  text-center my-4">' . dopt( Admin_Meta::CATEGORY_TOP_ADSENSE ) . '</div>';
             }
 
         ?>

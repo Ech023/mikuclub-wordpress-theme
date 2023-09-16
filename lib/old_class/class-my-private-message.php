@@ -2,6 +2,8 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Config;
+
 /**
  * 自定义私信模型
  */

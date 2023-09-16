@@ -84,7 +84,7 @@ if (!class_exists('My_Comment'))
 			$this->comment_agent    = $comment->comment_agent;
 			$this->comment_parent   = intval($comment->comment_parent);
 
-			$this->author = get_custom_comment_user($comment->user_id);
+			$this->author = get_custom_comment_user(intval($comment->user_id));
 
 			$this->children = [];
 			//获取子评论

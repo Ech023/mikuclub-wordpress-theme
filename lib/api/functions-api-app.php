@@ -1,6 +1,7 @@
 <?php
 namespace mikuclub;
 
+use mikuclub\constant\Admin_Meta;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -83,10 +84,10 @@ function api_get_menu() {
 function api_get_app_communication() {
 
 	return [
-		'communication'       => dopt( 'd_tui_android' ),
-		'app_adindex_01_text' => dopt( 'app_adindex_01_text' ),
-		'app_adindex_01_link' => dopt( 'app_adindex_01_link' ),
-		'app_adindex_01_show' => dopt( 'app_adindex_01_b' ),
+		'communication'       => dopt( Admin_Meta::APP_ANNOUNCEMENT),
+		Admin_Meta::APP_ADSENSE_TEXT => dopt( Admin_Meta::APP_ADSENSE_TEXT),
+		Admin_Meta::APP_ADSENSE_LINK => dopt( Admin_Meta::APP_ADSENSE_LINK),
+		Admin_Meta::APP_ADSENSE_ENABLE => dopt( Admin_Meta::APP_ADSENSE_ENABLE),
 	];
 }
 

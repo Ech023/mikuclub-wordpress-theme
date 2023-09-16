@@ -1,6 +1,7 @@
 <?php
 namespace mikuclub;
 
+use mikuclub\constant\Config;
 use WP_Error;
 
 /**

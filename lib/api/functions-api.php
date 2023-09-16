@@ -1,6 +1,7 @@
 <?php
 namespace mikuclub;
 
+use mikuclub\constant\Post_Status;
 use WP_Error;
 use WP_REST_Request;
 

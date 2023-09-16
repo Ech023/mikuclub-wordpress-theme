@@ -1,6 +1,6 @@
 <?php
 
-namespace mikuclub;
+namespace mikuclub\constant;
 
 /**
  * 论坛帖子的元数据 键名

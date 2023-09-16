@@ -2,6 +2,8 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Message_Type;
+
 /**
  * 顶部右上角菜单组件
  * @return void

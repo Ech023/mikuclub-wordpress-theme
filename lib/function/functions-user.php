@@ -2,6 +2,10 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Comment_Meta;
+use mikuclub\constant\Expired;
+use mikuclub\constant\Post_Meta;
+use mikuclub\constant\User_Meta;
 use WP_Post;
 use WP_REST_Request;
 use WP_User;

@@ -1,7 +1,8 @@
 <?php
 
-use mikuclub\Config;
-use mikuclub\Post_Feedback_Rank;
+use mikuclub\constant\Admin_Meta;
+use mikuclub\constant\Config;
+use mikuclub\constant\Post_Feedback_Rank;
 
 use function mikuclub\adult_404_content_for_no_logging_user;
 use function mikuclub\breadcrumbs_component;
@@ -121,12 +122,7 @@ HTML;
 HTML;
         }
 
-
-        //手机广告 标题上方
-        if (dopt('Mobiled_adpost_00_b'))
-        {
-            echo '<div class="d-md-none">' . dopt('Mobiled_adpost_00') . '</div>';
-        } ?>
+        ?>
 
 
         <header class="article-header">
@@ -147,10 +143,7 @@ HTML;
                         <!-- 网站面包屑-->
                         <div class="col-12 col-xl-auto">
                             <?php
-                            //if (dopt('d_singleMenu_b'))
-                            // {
                             echo breadcrumbs_component();
-                            // } 
 
                             $post_like = get_post_like($post_id);
                             $post_unlike = get_post_unlike($post_id);
@@ -301,15 +294,15 @@ HTML;
 
         <?php
         //电脑端 文章页 - 页面标题下
-        if (dopt('d_adpost_01_b'))
+        if (dopt(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC_ENABLE))
         {
-            echo '<div class="pop-banner text-center my-4  d-md-block">' . dopt('d_adpost_01') . '</div>';
+            echo '<div class="pop-banner text-center my-4  d-md-block">' . dopt(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC) . '</div>';
         }
 
         //手机端 文章页 - 页面标题下
-        if (dopt('Mobiled_adpost_01_b'))
+        if (dopt(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE_ENABLE))
         {
-            echo '<div class="pop-banner text-center my-3 d-md-none">' . dopt('Mobiled_adpost_01') . '</div>';
+            echo '<div class="pop-banner text-center my-3 d-md-none">' . dopt(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE) . '</div>';
         }
 
         ?>
@@ -318,24 +311,7 @@ HTML;
         <!-- 文章内容 -->
         <article class="article-content">
 
-            <?php
-
-            echo print_post_content($post_id);
-
-            //广告：文章页 - 内容下方
-            if (dopt('d_adpost_03_b'))
-            {
-                echo '<div class="pop-banner text-center   my-4 d-none d-md-block">' . dopt('d_adpost_03') . '</div>';
-            }
-
-            //手机广告 - 内容下方
-            if (dopt('Mobiled_adpost_03_b'))
-            {
-                echo '<div class="pop-banner text-center my-3 d-md-none">' . dopt('Mobiled_adpost_03') . '</div>';
-            }
-
-            ?>
-
+            <?php echo print_post_content($post_id); ?>
 
         </article>
 
@@ -354,15 +330,15 @@ HTML;
 <?php
 
     //广告：文章页 - 评论区上方
-    if (dopt('d_adpost_04_b'))
+    if (dopt(Admin_Meta::POST_COMMENT_ADSENSE_PC_ENABLE))
     {
-        echo '<div class="pop-banner  text-center  my-4 d-none d-md-block">' . dopt('d_adpost_04') . '</div>';
+        echo '<div class="pop-banner  text-center  my-4 d-none d-md-block">' . dopt(Admin_Meta::POST_COMMENT_ADSENSE_PC) . '</div>';
     }
 
     //手机广告 - 评论区上方
-    if (dopt('Mobiled_adpost_04_b'))
+    if (dopt(Admin_Meta::POST_COMMENT_ADSENSE_PHONE_ENABLE))
     {
-        echo '<div class="pop-banner text-center my-3 d-md-none">' . dopt('Mobiled_adpost_04') . '</div>';
+        echo '<div class="pop-banner text-center my-3 d-md-none">' . dopt(Admin_Meta::POST_COMMENT_ADSENSE_PHONE) . '</div>';
     }
 
     comments_template('', true);

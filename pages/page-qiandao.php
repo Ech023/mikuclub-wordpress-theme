@@ -3,7 +3,7 @@
 	template name: 签到页面
 */
 
-use mikuclub\Web_Domain;
+use mikuclub\constant\Web_Domain;
 
 use function mikuclub\breadcrumbs_component;
 use function mikuclub\print_page_edit_link;

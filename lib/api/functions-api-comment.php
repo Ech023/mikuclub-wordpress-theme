@@ -2,6 +2,7 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Comment_Meta;
 use stdClass;
 use WP_Error;
 use WP_REST_Request;

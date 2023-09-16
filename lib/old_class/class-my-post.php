@@ -2,6 +2,7 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Config;
 use WP_Post;
 
 /**

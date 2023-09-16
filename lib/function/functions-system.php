@@ -2,10 +2,12 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Admin_Meta;
+use mikuclub\constant\Expired;
 use WP_User;
 
 /**
- *  基础系统函数
+ *  网站系统相关函数
  */
 
 /**
@@ -13,20 +15,21 @@ use WP_User;
  *
  * @param string $option_name 键名
  *
- * @return string 键值, 如果未找到则返回空字符串
+ * @return string|bool 键值, 如果未找到则返回false
  */
 function dopt($option_name)
 {
-	$result = '';
+	$result = false;
 	//如果 键名 存在
 	if ($option_name)
 	{
-		$option = get_option($option_name);
-		//如果键值 是 字符串, 数字, boolean 反引用键值字符串 
-		if (is_string($option) || is_numeric($option) || is_bool($option))
+		$result = get_option($option_name);
+		//如果键值 是 字符串 进行额外反引用处理
+		if (is_string($result) /*|| is_numeric($option) || is_bool($option)*/)
 		{
-			$result = stripslashes(get_option($option_name));
+			$result = stripslashes($result);
 		}
+		
 	}
 
 
@@ -98,7 +101,7 @@ function action_after_setup_theme()
 		}
 		elseif (is_home())
 		{
-			$keywords = dopt('d_keywords');
+			$keywords = dopt(Admin_Meta::SITE_KEYWORDS);
 		}
 		elseif (is_tag())
 		{
@@ -155,7 +158,7 @@ function action_after_setup_theme()
 		}
 		elseif (is_home())
 		{
-			$description = dopt('d_description'); // 首頁要自己加
+			$description = dopt(Admin_Meta::SITE_DESCRIPTION); // 首頁要自己加
 		}
 		elseif (is_tag())
 		{
@@ -514,46 +517,7 @@ if (!function_exists('remove_wp_open_sans') && !function_exists('remove_wp_open_
 }
 
 
-/**
- * 评论过滤纯英文和外语功能
- *
- * @param array<string,string> $comment_data
- * @return array<string,string>
- */
-function refused_spam_comments($comment_data)
-{
 
-	$pattern = '/[一-龥]/u';
-	if (!preg_match($pattern, $comment_data['comment_content']))
-	{
-		err('comment_custom_span_filter', '评论需要包含中文字体');
-	}
-
-	return $comment_data;
-}
-
-//if ( dopt( 'd_spamComments_b' ) ) {
-//add_filter( 'preprocess_comment', 'mikuclub\refused_spam_comments' );
-//}
-
-/**
- * 自定义错误
- *
- * @param string $code
- * @param string $message
- * @param string $data
- * @return void
- */
-function err($code = '', $message = '', $data = '')
-{
-	header('HTTP/1.1 400 Bad Request');
-	echo json_encode([
-		'code'    => $code,
-		'message' => $message,
-		'data' => $data,
-	]);
-	exit;
-}
 
 
 /**
@@ -591,22 +555,6 @@ add_filter('the_content_feed', 'mikuclub\print_post_for_rss');
 
 
 
-/**
- * 移除自动保存
- *
- * @return void
- */
-function deel_disable_autosave()
-{
-	wp_deregister_script('autosave');
-}
-
-//移除自动保存和修订版本
-if (dopt('d_autosave_b'))
-{
-	add_action('wp_print_scripts', 'mikuclub\deel_disable_autosave');
-	remove_action('pre_post_update', 'mikuclub\wp_save_post_revision');
-}
 
 
 //WordPress 后台用户列表显示注册时间
@@ -788,8 +736,8 @@ function custom_dashboard_widgets()
 	//必须是管理员 才能看到
 	if (current_user_is_admin())
 	{
-		add_meta_box('pending_posts_dashboard_widget', '待审文章', 'pending_posts_dashboard_widget_function', 'dashboard', 'normal', 'core');
-		add_meta_box('fail_down_posts_dashboard_widget', '失效文章', 'fail_down_posts_dashboard_widget_function', 'dashboard', 'normal', 'core');
+		add_meta_box('pending_posts_dashboard_widget', '待审文章', 'mikuclub\pending_posts_dashboard_widget_function', 'dashboard', 'normal', 'core');
+		add_meta_box('fail_down_posts_dashboard_widget', '失效文章', 'mikuclub\fail_down_posts_dashboard_widget_function', 'dashboard', 'normal', 'core');
 	}
 }
 

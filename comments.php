@@ -4,7 +4,7 @@
 
 //当前用户ID
 
-use mikuclub\Web_Domain;
+use mikuclub\constant\Web_Domain;
 
 use function mikuclub\get_my_user_avatar;
 use function mikuclub\get_post_comments;

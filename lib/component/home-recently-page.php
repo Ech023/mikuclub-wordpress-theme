@@ -1,6 +1,8 @@
 <?php
 namespace mikuclub;
 
+use mikuclub\constant\Admin_Meta;
+
 /**
  * 主页 第一页 最新发布 组件
  * @return string
@@ -30,8 +32,8 @@ function home_recently_page() {
 
 	$ad_banner = '';
 	//PC端+手机端
-	if ( dopt( 'd_adindex_02_b' ) ) {
-		$ad_banner .= '<div class="pop-banner  text-center my-4">' . dopt( 'd_adindex_02' ) . '</div>';
+	if ( dopt( Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE ) ) {
+		$ad_banner .= '<div class="pop-banner  text-center my-4">' . dopt( Admin_Meta::CATEGORY_TOP_ADSENSE ) . '</div>';
 	}
 
 

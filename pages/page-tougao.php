@@ -4,7 +4,7 @@
   description: 新建投稿和编辑投稿页面
  */
 
-use mikuclub\Config;
+use mikuclub\constant\Config;
 
 use function mikuclub\breadcrumbs_component;
 use function mikuclub\current_user_is_admin;

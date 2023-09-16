@@ -1,6 +1,6 @@
 <?php
 
-namespace mikuclub;
+namespace mikuclub\constant;
 
 use ReflectionClass;
 
@@ -25,6 +25,8 @@ class Constant
  */
 class Config
 {
+   
+
     //默认时间格式
     const DATE_FORMAT_SHORT = 'y-m-d';
     const DATE_FORMAT = 'y-m-d H:i:s';
@@ -34,6 +36,11 @@ class Config
     //关闭文件缓存
     //const ENABLE_FILE_CACHE_SYSTEM = false;
 
+
+    //幻灯片里显示的文章数量
+    const STICKY_POST_COUNT = 6;
+    //内容页底部相关推荐里的文章数量
+    const RELATED_POST_COUNT = 8;
 }
 
 /**
@@ -211,7 +218,8 @@ class Expired
      *
      * @return int
      */
-    public static function get_home_exp_time(){
+    public static function get_home_exp_time()
+    {
         return static::EXP_15_MINUTE;
     }
 }

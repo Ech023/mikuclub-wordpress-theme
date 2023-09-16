@@ -1,6 +1,6 @@
 <?php
 
-use mikuclub\Post_Query;
+use mikuclub\constant\Post_Query;
 
 use function mikuclub\get_custom_author;
 use function mikuclub\get_user_fans_count;

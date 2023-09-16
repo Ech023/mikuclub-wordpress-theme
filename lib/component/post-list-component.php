@@ -9,16 +9,6 @@ namespace mikuclub;
 function post_list_component()
 {
 
-
-	//是否显示相关文章信息
-	/*
-	$_author = dopt('d_post_author_b');
-	$_time = dopt('d_post_time_b');
-	$_views = dopt('d_post_views_b');
-	$_comment = dopt('d_post_comment_b');
-	$_like = dopt('d_post_like_b');
-	*/
-
 	//获取默认文章列表
 	$post_list = get_default_post_list();
 

@@ -1,5 +1,7 @@
 <?php
 
+use mikuclub\constant\Admin_Meta;
+
 use function mikuclub\adult_404_content_for_no_logging_user;
 use function mikuclub\breadcrumbs_component;
 use function mikuclub\dopt;
@@ -15,18 +17,6 @@ use function mikuclub\top_hot_posts_component;
 
  get_header(); ?>
 
-<?php
-//分类页 顶端广告位
-if (dopt('d_adcategory_01_b'))
-{
-	echo '<div class="pop-banner d-none d-md-block text-center my-4">' . dopt('d_adcategory_01') . '</div>';
-}
-if (dopt('Mobiled_adcategory_01_b'))
-{
-	echo '<div class="pop-banner d-block d-md-none text-center my-3">' . dopt('Mobiled_adcategory_01') . '</div>';
-}
-
-?>
 
 <div class="content my-4">
 
@@ -72,9 +62,9 @@ if (dopt('Mobiled_adcategory_01_b'))
 
 				<?php
 
-				if (dopt('d_adindex_02_b'))
+				if (dopt(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 				{
-					echo '<div class="pop-banner  text-center my-4">' . dopt('d_adindex_02') . '</div>';
+					echo '<div class="pop-banner  text-center my-4">' . dopt(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
 				}
 
 				$sub_categories = get_main_category_children(get_queried_object_id());
@@ -115,9 +105,9 @@ if (dopt('Mobiled_adcategory_01_b'))
 			{
 				//随机输出一种热门文章
 				echo get_hot_list_by_random(8);
-				if (dopt('d_adindex_02_b'))
+				if (dopt(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 				{
-					echo '<div class="pop-banner  text-center my-4">' . dopt('d_adindex_02') . '</div>';
+					echo '<div class="pop-banner  text-center my-4">' . dopt(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
 				}
 
 			}
@@ -127,9 +117,9 @@ if (dopt('Mobiled_adcategory_01_b'))
 		{
 
 
-			if (dopt('d_adindex_02_b'))
+			if (dopt(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 			{
-				echo '<div class="pop-banner  text-center my-4">' . dopt('d_adindex_02') . '</div>';
+				echo '<div class="pop-banner  text-center my-4">' . dopt(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
 			}
 		}
 

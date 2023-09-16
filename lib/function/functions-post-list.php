@@ -2,6 +2,12 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Category;
+use mikuclub\constant\Expired;
+use mikuclub\constant\Option_Meta;
+use mikuclub\constant\Post_Meta;
+use mikuclub\constant\Post_Query;
+use mikuclub\constant\Post_Status;
 use WP_Query;
 
 /**

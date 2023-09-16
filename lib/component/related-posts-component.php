@@ -2,6 +2,8 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Config;
+
 /**
  * 相关文章组件
  * @return string
@@ -9,11 +11,7 @@ namespace mikuclub;
 function related_posts_component()
 {
 
-    $count   = dopt('d_related_count');
-    if (empty($count))
-    {
-        $count = 8;
-    }
+    $count = Config::RELATED_POST_COUNT;
 
     $post_id = get_the_ID();
 

@@ -6,7 +6,7 @@
 
 //如果未登陆 重定向回首页
 
-use mikuclub\Message_Type;
+use mikuclub\constant\Message_Type;
 use mikuclub\Session_Cache;
 
 use function mikuclub\breadcrumbs_component;

@@ -9,7 +9,7 @@
  * @since Twenty Twelve 1.0
  */
 
-use mikuclub\Config;
+use mikuclub\constant\Config;
 
 get_header(); ?>
 

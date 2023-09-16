@@ -1,6 +1,8 @@
 <?php
 namespace mikuclub;
 
+use mikuclub\constant\Web_Domain;
+
 /**
  * 主页顶部热门列表 组件
  * @return string html内容

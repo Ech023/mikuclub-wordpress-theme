@@ -2,6 +2,8 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Topic_meta;
+
 /**
  * woforo论坛显示附件图片预览
  *

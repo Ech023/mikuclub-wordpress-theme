@@ -1,6 +1,7 @@
 <?php
 
-use mikuclub\Web_Domain;
+use mikuclub\constant\Admin_Meta;
+use mikuclub\constant\Web_Domain;
 
 use function mikuclub\dopt;
 use function mikuclub\get_main_menu;
@@ -103,10 +104,13 @@ else
 
 
     //页面头部公共代码
-    if (dopt('d_headcode_b'))
+
+    if (dopt(Admin_Meta::SITE_TOP_CODE_ENABLE))
     {
-        echo dopt('d_headcode');
+        echo '<!-- 顶部公共代码 -->';
+        echo dopt(Admin_Meta::SITE_TOP_CODE);
     }
+
 
     //判断当前是否是 页面
     if (is_page())
@@ -300,61 +304,48 @@ else
 
                 <div class="speedbar <?php echo !is_home() ? 'd-none d-sm-block' : '' ?> my-2 p-2 px-3 rounded">
                     <span class=""><i class="fa-solid fa-bullhorn"></i> 公告:</span>
-                    <?php echo dopt('d_tui'); ?>
+                    <?php echo dopt(Admin_Meta::SITE_ANNOUNCEMENT_TOP); ?>
 
                 </div>
 
                 <!-- 输出默认折叠区域 (qq群信息)-->
                 <div id="qq-group-info" class="my-2 collapse border rounded px-3">
-                    <?php echo dopt('d_tui_qq_collapse'); ?>
+                    <?php echo dopt(Admin_Meta::SITE_ANNOUNCEMENT_TOP_COLLAPSE); ?>
                 </div>
 
             <?php } ?>
 
 
-            <!-- 全站顶部横屏栏广告位-->
+
             <?php
+            //全站-主菜单下方广告位
             if (is_home() || is_single() || is_category() || is_tag())
             {
 
-                if (dopt('d_adsite_01_b'))
+                if (dopt(Admin_Meta::SITE_TOP_ADSENSE_PC_ENABLE))
                 {
-                    echo '<div class="pop-banner d-none d-md-block text-center my-3 py-2">' . dopt('d_adsite_01') . '</div>';
+                    echo '<div class="pop-banner d-none d-md-block text-center my-3 py-2">' . dopt(Admin_Meta::SITE_TOP_ADSENSE_PC) . '</div>';
                 }
-                if (dopt('Mobiled_adindex_01_b'))
+                if (dopt(Admin_Meta::SITE_TOP_ADSENSE_PHONE_ENABLE))
                 {
-                    echo '<div class="pop-banner d-block d-md-none text-center my-3">' . dopt('Mobiled_adindex_01') . '</div>';
+                    echo '<div class="pop-banner d-block d-md-none text-center my-3">' . dopt(Admin_Meta::SITE_TOP_ADSENSE_PHONE) . '</div>';
                 }
             }
 
 
-            //首页 主菜单下方广告位
+            //首页-主菜单下方广告位
             if (is_home() && !get_query_var('paged'))
             {
-                if (dopt('d_adindex_00_b'))
+                if (dopt(Admin_Meta::HOME_TOP_ADSENSE_PC_ENABLE))
                 {
-                    echo '<div class="pop-banner d-none d-md-block text-center my-3 py-2">' . dopt('d_adindex_00') . '</div>';
+                    echo '<div class="pop-banner d-none d-md-block text-center my-3 py-2">' . dopt(Admin_Meta::HOME_TOP_ADSENSE_PC) . '</div>';
                 }
-                if (dopt('Mobiled_adindex_00_b'))
+                if (dopt(Admin_Meta::HOME_TOP_ADSENSE_PHONE_ENABLE))
                 {
-                    echo '<div class="pop-banner d-block d-md-none text-center my-3">' . dopt('Mobiled_adindex_00') . '</div>';
-                }
-            }
-            else if (is_single())
-            {
-
-                //广告：文章页 - 主菜单下方
-                if (dopt('d_adpost_05_b'))
-                {
-                    echo '<div class=" pop-banner  my-3 py-2 d-none d-md-block">' . dopt('d_adpost_05') . '</div>';
-                }
-
-                //手机广告 - 主菜单下方
-                if (dopt('Mobiled_adpost_05_b'))
-                {
-                    echo '<div class="pop-banner text-center my-3 d-md-none">' . dopt('Mobiled_adpost_05') . '</div>';
+                    echo '<div class="pop-banner d-block d-md-none text-center my-3">' . dopt(Admin_Meta::HOME_TOP_ADSENSE_PHONE) . '</div>';
                 }
             }
+        
 
 
             ?>

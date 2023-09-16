@@ -1,5 +1,8 @@
 <?php
 namespace mikuclub;
+
+use mikuclub\constant\Expired;
+
 /**
  * 检测分类是否有子分类
  *

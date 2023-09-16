@@ -2,6 +2,14 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Admin_Meta;
+use mikuclub\constant\Category;
+use mikuclub\constant\Expired;
+use mikuclub\constant\Option_Meta;
+use mikuclub\constant\Post_Feedback_Rank;
+use mikuclub\constant\Post_Meta;
+use mikuclub\constant\Post_Status;
+use mikuclub\constant\Web_Domain;
 use WP_Error;
 use WP_Post;
 use WP_REST_Request;
@@ -1872,15 +1880,15 @@ HTML;
 
         $pc_adsense = '';
         //PC端 文章页 - 正文中间
-        if (dopt('d_adpost_02_b'))
+        if (dopt(Admin_Meta::POST_CONTENT_ADSENSE_PC_ENABLE))
         {
-            $pc_adsense = '<div class="pop-banner text-center my-4 d-none d-md-block">' . dopt('d_adpost_02') . '</div>';
+            $pc_adsense = '<div class="pop-banner text-center my-4 d-none d-md-block">' . dopt(Admin_Meta::POST_CONTENT_ADSENSE_PC) . '</div>';
         }
         $mobile_adsense = '';
         //手机端 文章页 - 正文中间
-        if (dopt('Mobiled_adpost_02_b'))
+        if (dopt(Admin_Meta::POST_CONTENT_ADSENSE_PHONE_ENABLE))
         {
-            $mobile_adsense = '<div class="pop-banner text-center my-3 d-md-none">' . dopt('Mobiled_adpost_02') . '</div>';
+            $mobile_adsense = '<div class="pop-banner text-center my-3 d-md-none">' . dopt(Admin_Meta::POST_CONTENT_ADSENSE_PHONE) . '</div>';
         }
 
 
