@@ -17,7 +17,7 @@ function api_add_post_views($data)
 
 
 	//如果缺少必要参数
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
@@ -39,7 +39,7 @@ function api_add_post_shares($data)
 {
 
 	//如果缺少必要参数
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
@@ -59,7 +59,7 @@ function api_set_post_like($data)
 {
 
 	//如果缺少必要参数
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
@@ -120,7 +120,7 @@ function api_update_post_date($data)
 {
 
 	//如果缺少必要参数
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
@@ -140,7 +140,7 @@ function api_add_sticky_posts($data)
 {
 
 	//如果缺少必要参数
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
@@ -159,7 +159,7 @@ function api_delete_sticky_posts($data)
 {
 
 	//如果缺少必要参数
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
@@ -179,7 +179,7 @@ function api_reject_post($data)
 {
 
 	//如果缺少必要参数
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
@@ -210,7 +210,7 @@ function api_set_post_fail_times($data)
 {
 
 	//如果缺少必要参数
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
@@ -249,7 +249,7 @@ function api_update_post_meta($data)
 {
 
 	//如果缺少必要参数
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
@@ -296,7 +296,7 @@ function api_draft_post($data)
 {
 
 	//如果缺少必要参数
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
@@ -391,65 +391,65 @@ function register_custom_post_api()
 
 	register_rest_route('utils/v2', '/post_view_count', [
 		'methods'  => 'GET',
-		'callback' => 'api_add_post_views',
+		'callback' => 'mikuclub\api_add_post_views',
 	]);
 
 	register_rest_route('utils/v2', '/post_sharing_count', [
 		'methods'  => 'GET',
-		'callback' => 'api_add_post_shares',
+		'callback' => 'mikuclub\api_add_post_shares',
 	]);
 
 	register_rest_route('utils/v2', '/post_like_count', [
 		'methods'  => 'POST',
-		'callback' => 'api_set_post_like',
+		'callback' => 'mikuclub\api_set_post_like',
 	]);
 
 	register_rest_route('utils/v2', '/post_unlike_count', [
 		'methods'  => 'POST',
-		'callback' => 'api_set_post_unlike',
+		'callback' => 'mikuclub\api_set_post_unlike',
 	]);
 
 	register_rest_route('utils/v2', '/update_post_date', [
 		'methods'             => 'POST',
-		'callback'            => 'api_update_post_date',
-		'permission_callback' => 'is_user_logged_in',
+		'callback'            => 'mikuclub\api_update_post_date',
+		'permission_callback' => 'mikuclub\is_user_logged_in',
 	]);
 
 
 	register_rest_route('utils/v2', '/sticky_posts', [
 		[
 			'methods'             => 'POST',
-			'callback'            => 'api_add_sticky_posts',
-			'permission_callback' => 'current_user_is_admin',
+			'callback'            => 'mikuclub\api_add_sticky_posts',
+			'permission_callback' => 'mikuclub\current_user_is_admin',
 		],
 		[
 			'methods'             => 'DELETE',
-			'callback'            => 'api_delete_sticky_posts',
-			'permission_callback' => 'current_user_is_admin',
+			'callback'            => 'mikuclub\api_delete_sticky_posts',
+			'permission_callback' => 'mikuclub\current_user_is_admin',
 		],
 	]);
 
 	register_rest_route('utils/v2', '/reject_post', [
 		'methods'             => 'POST',
-		'callback'            => 'api_reject_post',
-		'permission_callback' => 'current_user_is_admin',
+		'callback'            => 'mikuclub\api_reject_post',
+		'permission_callback' => 'mikuclub\current_user_is_admin',
 	]);
 
 	register_rest_route('utils/v2', '/draft_post', [
 		'methods'             => 'POST',
-		'callback'            => 'api_draft_post',
-		'permission_callback' => 'is_user_logged_in',
+		'callback'            => 'mikuclub\api_draft_post',
+		'permission_callback' => 'mikuclub\is_user_logged_in',
 	]);
 
 	register_rest_route('utils/v2', '/fail_down', [
 		'methods'  => 'GET',
-		'callback' => 'api_set_post_fail_times',
+		'callback' => 'mikuclub\api_set_post_fail_times',
 	]);
 
 	register_rest_route('utils/v2', '/post_meta', [
 		'methods'             => 'POST',
-		'callback'            => 'api_update_post_meta',
-		'permission_callback' => 'is_user_logged_in',
+		'callback'            => 'mikuclub\api_update_post_meta',
+		'permission_callback' => 'mikuclub\is_user_logged_in',
 	]);
 
 	register_rest_field(

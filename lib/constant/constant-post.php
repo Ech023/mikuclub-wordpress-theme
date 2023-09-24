@@ -65,6 +65,31 @@ class Post_Query
     const CUSTOM_ORDERBY = 'custom_orderby';
     const CUSTOM_ORDER_DATA_RANGE = 'custom_order_data_range';
     const AUTHOR_INTERNAL_SEARCH = 'author_internal_search';
+
+    /**
+     * 添加 自定义query变量支持 到系统Wp_query里
+     *
+     * @param string[] $query_vars
+     * @return string[]
+     */
+    public static function add_custom_query_vars($query_vars)
+    {
+        $query_vars[] = Post_Query::CUSTOM_ORDERBY;
+        $query_vars[] = Post_Query::CUSTOM_ORDER_DATA_RANGE;
+        $query_vars[] = Post_Query::AUTHOR_INTERNAL_SEARCH;
+
+        return $query_vars;
+    }
+}
+
+/**
+ * 文章类型
+ */
+class Post_Type
+{
+    const POST = 'post';
+    const PAGE = 'page';
+    const ATTACHMENT = 'attachment';
 }
 
 /**

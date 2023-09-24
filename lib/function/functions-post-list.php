@@ -62,7 +62,7 @@ function on_pre_get_main_posts($wp_query)
 		//主页+未设置分类过滤 默认移除成人区分类
 		if (is_home() && (empty(get_query_var('page_type')) || get_query_var('page_type') == 'home'))
 		{
-			set_query_var('cat', -Category::ADULT_CATEGORY);
+			set_query_var('cat', Category::NO_ADULT_CATEGORY);
 		}
 
 		//如果是搜索页
@@ -101,7 +101,7 @@ function exclude_adult_category_for_not_logged_user()
 		}
 		else
 		{
-			$cat = -Category::ADULT_CATEGORY;
+			$cat = Category::NO_ADULT_CATEGORY;
 		}
 		set_query_var('cat', $cat);
 	}
@@ -195,7 +195,7 @@ function get_hot_post_list($term_id, $meta_key, $number, $range_day)
 	if (!$term_id)
 	{
 		//设置成 魔法区ID
-		$term_id = -Category::ADULT_CATEGORY;
+		$term_id = Category::NO_ADULT_CATEGORY;
 	}
 
 	//缓存时间的键名
@@ -319,7 +319,7 @@ function get_cat_recently_post_list($cat_id, $count)
 	else
 	{
 		//排除成人区
-		$args['cat'] = -Category::ADULT_CATEGORY;
+		$args['cat'] = Category::NO_ADULT_CATEGORY;
 	}
 
 	$results = get_posts($args);
@@ -428,17 +428,17 @@ function get_fail_down_post_list()
 	];
 
 	//如果有设置作者ID
-	if (isset($_GET['author_id']) && isset_numeric($_GET['author_id']))
+	if (isset($_GET['author_id']) && isset($_GET['author_id']))
 	{
 		$args['author'] = $_GET['author_id'];
 	}
 
-	if (isset($_GET['offset']) && isset_numeric($_GET['offset']))
+	if (isset($_GET['offset']) && isset($_GET['offset']))
 	{
 		$args['paged'] = $_GET['offset'];
 	}
 
-	if (isset($_GET['category']) && isset_numeric($_GET['category']))
+	if (isset($_GET['category']) && isset($_GET['category']))
 	{
 		$args['cat'] = $_GET['category'];
 	}
@@ -475,7 +475,7 @@ function get_post_list($query_vars)
 
 
 	//创建缓存键值
-	$cache_key = File_Cache::POST_LIST . '_' . hash_xxh($query_vars);
+	$cache_key = File_Cache::POST_LIST . '_' . create_hash_string($query_vars);
 
 
 
@@ -544,7 +544,7 @@ function fix_query_vars($query_vars)
 	//如果是主页. 排除魔法分类
 	if (array_key_exists('page_type', $query_vars) && $query_vars['page_type'] == 'home')
 	{
-		$query_vars['cat'] = -Category::ADULT_CATEGORY;
+		$query_vars['cat'] = Category::NO_ADULT_CATEGORY;
 	}
 
 	//如果是作者页, 并且设置了内部搜索功能
@@ -564,7 +564,7 @@ function fix_query_vars($query_vars)
 		}
 		else
 		{
-			$query_vars['cat'] = -Category::ADULT_CATEGORY;
+			$query_vars['cat'] = Category::NO_ADULT_CATEGORY;
 		}
 	}
 

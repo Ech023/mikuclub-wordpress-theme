@@ -8,25 +8,22 @@
 namespace mikuclub;
 
 use mikuclub\constant\Category;
-use mikuclub\constant\Expired;
-use mikuclub\constant\Post_Meta;
-use mikuclub\constant\Post_Query;
-use mikuclub\constant\Post_Status;
+use mikuclub\constant\Config;
 use mikuclub\constant\User_Meta;
 use mikuclub\constant\Web_Domain;
-use WP_Bootstrap_Navwalker;
-use WP_Error;
+
 
 //导入加载器
 require_once 'lib/autoload.php';
 
 
+
 /**
- * 在前台加载自定义脚本和CSS
+ * 在前台加载 第三方脚本和CSS
  *
  * @return void
  */
-function setup_front_script()
+function setup_front_end_external_css_and_script()
 {
 
     //移除现有js脚本
@@ -34,7 +31,6 @@ function setup_front_script()
     wp_deregister_script('jquery');
 
     /*七牛云 staticfile CDN库*/
-
 
     //jquery库
     wp_enqueue_script('jquery', 'https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js', [], '3.5.1', false);
@@ -64,60 +60,68 @@ function setup_front_script()
     wp_enqueue_script('cropper-js', 'https://cdn.staticfile.org/cropperjs/2.0.0-alpha.1/cropper.min.js', [], '2.0.0', true);
     wp_enqueue_style('cropper-css', 'https://cdn.staticfile.org/cropperjs/2.0.0-alpha.1/cropper.min.css', [], '2.0.0');
     wp_enqueue_script('jquery-cropper', 'https://cdn.staticfile.org/jquery-cropper/1.0.1/jquery-cropper.min.js', [], '1.0.1', true);
+}
 
-
-
-
+/**
+ * 在前台加载自定义CSS
+ *
+ * @return void
+ */
+function setup_front_end_css()
+{
 
     $custom_styles = [
         //基础CSS
         [
             'name' => 'style-system',
             'path' => '/css/style-system.css',
-            'version' => '3.08'
         ],
         //自定义CSS
         [
             'name' => 'style',
             'path' => '/style.css',
-            'version' => '3.12'
         ],
         //论坛CSS
         [
             'name' => 'style-forums',
             'path' => '/css/style-forums.css',
-            'version' => '3.23'
         ],
         //主页CSS
         [
             'name' => 'style-home',
             'path' => '/css/style-home.css',
-            'version' => '3.03'
         ],
         //投稿页CSS
         [
             'name' => 'style-tougao',
             'path' => '/css/style-tougao.css',
-            'version' => '1.07'
         ],
         //手机CSS
         [
             'name' => 'style-wap',
             'path' => '/css/style-wap.css',
-            'version' => '1.02'
         ],
         //夜间模式CSS
         [
             'name' => 'style-darkmode',
             'path' => '/css/style-darkmode.css',
-            'version' => '1.18'
         ],
     ];
 
     foreach ($custom_styles as $style)
     {
-        wp_enqueue_style($style['name'], get_template_directory_uri() . $style['path'], [], $style['version']);
+        wp_enqueue_style($style['name'], get_template_directory_uri() . $style['path'], [], Config::CSS_JS_VERSION);
     }
+}
+
+
+/**
+ * 在前台加载自定义脚本
+ *
+ * @return void
+ */
+function setup_front_end_script()
+{
 
     $custom_scripts = [
 
@@ -125,70 +129,60 @@ function setup_front_script()
         [
             'name' => 'js-constant',
             'path' => '/js/constant.js',
-            'version' => '1.00',
             'in_footer' => false,
         ],
         //自定义JS 小弹窗类
         [
             'name' => 'js-class-toast',
             'path' => '/js/class-toast.js',
-            'version' => '1.06',
             'in_footer' => false,
         ],
         //自定义JS 模态窗类
         [
             'name' => 'js-class-modal',
             'path' => '/js/class-modal.js',
-            'version' => '1.06',
             'in_footer' => false,
         ],
         //自定义JS 文章类
         [
             'name' => 'js-class-post',
             'path' => '/js/class-post.js',
-            'version' => '1.10',
             'in_footer' => false,
         ],
         //自定义JS 用户类
         [
             'name' => 'js-class-user',
             'path' => '/js/class-user.js',
-            'version' => '1.04',
             'in_footer' => false,
         ],
         //自定义JS 消息类
         [
             'name' => 'js-class-message',
             'path' => '/js/class-message.js',
-            'version' => '1.07',
             'in_footer' => false,
         ],
         //自定义JS 评论类
         [
             'name' => 'js-class-comment',
             'path' => '/js/class-comment.js',
-            'version' => '1.20',
             'in_footer' => false,
         ],
         //自定义JS 评论类
         [
             'name' => 'js-class-ua-parser',
             'path' => '/js/class-ua-parser.js',
-            'version' => '1.04',
             'in_footer' => false,
         ],
         //自定义基础JS函数和变量
         [
             'name' => 'js-base',
             'path' => '/js/base.js',
-            'version' => '1.23',
             'in_footer' => false,
         ],
         //名言名句变量
         [
             'name' => 'js-phrases',
             'path' => '/js/phrases.js',
-            'version' => '1.03',
             'in_footer' => false,
         ],
 
@@ -196,84 +190,72 @@ function setup_front_script()
         [
             'name' => 'js-function',
             'path' => '/js/function.js',
-            'version' => '1.49',
             'in_footer' => false,
         ],
         //通用JS AJAX的函数
         [
             'name' => 'js-function-ajax',
             'path' => '/js/function-ajax.js',
-            'version' => '1.18',
             'in_footer' => false,
         ],
         //JS 页面加载完成后自动运行
         [
             'name' => 'js-on-load',
             'path' => '/js/script-on-load.js',
-            'version' => '1.05',
             'in_footer' => false,
         ],
         //JS 监听
         [
             'name' => 'js-listener',
             'path' => '/js/listener.js',
-            'version' => '1.30',
             'in_footer' => false,
         ],
         //JS 广告
         [
             'name' => 'js-pub',
             'path' => '/js/pub.js',
-            'version' => '1.14',
             'in_footer' => false,
         ],
         //JS 投稿页面
         [
             'name' => 'js-tougao',
             'path' => '/js/page-tougao.js',
-            'version' => '1.40',
             'in_footer' => false,
         ],
         //JS 失效列表 页面
         [
             'name' => 'js-fail-down-list',
             'path' => '/js/page-fail-down-list.js',
-            'version' => '1.09',
             'in_footer' => false,
         ],
         //JS 作者页面
         [
             'name' => 'js-author',
             'path' => '/js/page-author.js',
-            'version' => '1.06',
             'in_footer' => false,
         ],
         //JS 收藏页面
         [
             'name' => 'js-favorite',
             'path' => '/js/page-favorite.js',
-            'version' => '1.11',
             'in_footer' => false,
         ],
         //JS 消息页面
         [
             'name' => 'js-message',
             'path' => '/js/page-message.js',
-            'version' => '1.10',
             'in_footer' => false,
         ],
         //JS 文章页面
         [
             'name' => 'js-post',
             'path' => '/js/page-post.js',
-            'version' => '1.26',
             'in_footer' => false,
         ],
         //JS 文章页面评论功能
         [
             'name' => 'js-post-comment',
             'path' => '/js/page-post-comment.js',
-            'version' => '1.13',
             'in_footer' => false,
         ],
 
@@ -281,49 +263,42 @@ function setup_front_script()
         [
             'name' => 'js-uploader',
             'path' => '/js/page-uploader.js',
-            'version' => '1.16',
             'in_footer' => false,
         ],
         //JS 用户个人信息页
         [
             'name' => 'js-profile',
             'path' => '/js/page-profile.js',
-            'version' => '1.08',
             'in_footer' => false,
         ],
         //JS 签到页
         [
             'name' => 'js-qiandao',
             'path' => '/js/page-qiandao.js',
-            'version' => '1.07',
             'in_footer' => false,
         ],
         //JS 浏览历史
         [
             'name' => 'js-history',
             'path' => '/js/page-history.js',
-            'version' => '1.11',
             'in_footer' => false,
         ],
         //JS 关注页
         [
             'name' => 'js-followed',
             'path' => '/js/page-followed.js',
-            'version' => '1.00',
             'in_footer' => false,
         ],
         //JS 论坛
         [
             'name' => 'js-forums',
             'path' => '/js/page-forums.js',
-            'version' => '1.05',
             'in_footer' => false,
         ],
         //JS 暗夜模式
         [
             'name' => 'js-darkmode',
             'path' => '/js/darkmode.js',
-            'version' => '1.10',
             'in_footer' => false, //必须在顶部, 不然会有视觉延时
         ],
 
@@ -331,9 +306,18 @@ function setup_front_script()
 
     foreach ($custom_scripts as $script)
     {
-        wp_enqueue_script($script['name'], get_template_directory_uri() . $script['path'], [], $script['version'], $script['in_footer']);
+        wp_enqueue_script($script['name'], get_template_directory_uri() . $script['path'], [], Config::CSS_JS_VERSION, $script['in_footer']);
     }
+}
 
+
+/**
+ * 在前台添加自定义JS变量
+ *
+ * @return void
+ */
+function setup_front_end_script_variable()
+{
 
     //动态生成js数据
     $dynamic_variable = [
@@ -361,393 +345,41 @@ function setup_front_script()
         $dynamic_variable['category_id'] = get_queried_object_id();
     }
 
-
-
     //wp_localize_script('js-base', 'MY_SITE', $dynamic_variable);
     wp_add_inline_script('js-base', 'const MY_SITE =' . json_encode($dynamic_variable) . ';', 'before');
 }
 
-add_action('wp_enqueue_scripts', 'mikuclub\setup_front_script');
-
-
-/**
- *  后台自定义CSS和JS
- * @return void
- */
-function custom_admin_script()
-{
-
-    wp_enqueue_style('custom-admin-css', get_template_directory_uri() . '/css/style-admin.css', [], '1.03');
-}
-
-add_action('admin_enqueue_scripts', 'mikuclub\custom_admin_script');
 
 
 
-/**
- * 登陆页面 自定义css
- *
- * @return void
- */
-function custom_login_script()
-{
-
-    //bootstrap css
-    wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.staticfile.org/twitter-bootstrap/4.5.0/css/bootstrap.min.css', [], '4.50');
-
-    $version = '1.14';
-    wp_enqueue_style('custom-system-css', get_template_directory_uri() . '/css/style-system.css', [], $version);
-    wp_enqueue_style('custom-login-css', get_template_directory_uri() . '/css/style-login.css', [], $version);
-
-
-    wp_enqueue_script('custom-login-js', get_template_directory_uri() . '/js/login.js', [], $version, true);
-}
-
-add_action('login_enqueue_scripts', 'mikuclub\custom_login_script');
-
-
-/**
- * 检测是否在魔法区分类页或者文章页
- * 如果是, 并且没有登录 则使用js跳转页面
- */
-
-/**
- * 检测是否是成人区分类
- * @return bool
- */
-function is_adult_category()
-{
-
-    $is_adult_category = false;
-
-
-
-    if (is_category())
-    {
-        $is_adult_category = (array_search(get_queried_object_id(), Category::get_array_adult()) !== false);
-    }
-
-    else if (is_single())
-    {
-        //如果是在魔法区分类页和文章页
-        $is_adult_category = in_category(Category::get_array_adult());
-    }
-
-
-    return $is_adult_category;
-}
-
-
-/**
- * 通过API上传图片的时候 添加自定义元数据
- *
- * @param int $post_id
- * @return void
- **/
-function action_on_add_attachment($post_id)
-{
-
-    if (isset($_POST['meta_key']) && $_POST['meta_key'] && isset($_POST['meta_value']) && $_POST['meta_value'])
-    {
-        //添加元数据到对应的附件里
-        update_post_meta($post_id, $_POST['meta_key'], $_POST['meta_value']);
-    }
-}
-
-//在上传图片的时候激活挂钩
-add_action('add_attachment', 'mikuclub\action_on_add_attachment');
-
-
-/**
- * 输出子分类列表
- *
- * @param int $cat_id
- *
- * @return string
- */
-function print_sub_categories($cat_id)
-{
-
-    $output = '';
-    $args = ['parent' => $cat_id];
-    //获取子分类数组不是空
-    $sub_categories = get_categories($args);
-    //如果子分类数组
-    if ($sub_categories)
-    {
-
-        $output = '<div class="sub-categories-container">
-                                <h2><i class="fa-solid fa-th-large" aria-hidden="true"></i> 子分区</h2>
-                                <div class="sub-categories">
-                            ';
-
-        foreach ($sub_categories as $sub_category)
-        {
-            $link = get_category_link($sub_category->term_id);
-            $name = $sub_category->name;
-            $post_count = $sub_category->count;
-            $output .= "<div class=\"sub-category\">
-                                    <a href=\"{$link}\">
-                                        {$name}
-                                        <span class=\"post-count\">( {$post_count} )</span>
-                                    </a>
-                                    
-                                </div>";
-        }
-
-        $output .= '</div>
-                        </div>';
-    }
-
-    return $output;
-}
-
-
-/**
- * 获取顶部左菜单
- * @return string 菜单html列表
- */
-function get_top_left_menu()
-{
-
-
-    $meta_cache_key = 'top_left_menu';
-    //获取缓存
-    $menu_item_list = '';
-    //$menu_item_list = get_transient_cache_meta( $meta_cache_key );
-    //如果缓存无效
-    // if (!$menu_item_list)
-    // {
-    $menu_item_list = wp_nav_menu([
-        'theme_location' => 'top_left_menu',
-        'menu_class' => 'navbar-nav',
-        'container' => '',
-        'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
-        'walker' => new WP_Bootstrap_Navwalker(),
-        'echo' => false,
-    ]);
-    //set_transient_cache_meta( $meta_cache_key, $menu_item_list, Expired::EXP_1_HOUR );
-    // }
-
-    return $menu_item_list;
-}
-
-
-/**
- * 获取顶主菜单
- * @return string 菜单html列表
- */
-function get_main_menu()
-{
-
-    $meta_cache_key = 'main_menu';
-    //获取缓存
-    //$menu_item_list = get_transient_cache_meta( $meta_cache_key );
-    $menu_item_list = '';
-
-    //如果缓存无效
-    // if (!$menu_item_list)
-    // {
-
-    $menu_item_list = wp_nav_menu([
-        'theme_location' => 'nav',
-        'echo' => false,
-        'container' => '',
-        'depth' => 2,
-        'menu_class' => 'navbar-nav flex-fill flex-wrap',
-        'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
-        'walker' => new WP_Bootstrap_Navwalker(),
-    ]);
-
-    //set_transient_cache_meta( $meta_cache_key, $menu_item_list, Expired::EXP_1_HOUR );
-    // }
-
-    return $menu_item_list;
-}
-
-/**
- * 获取底部菜单
- * @return string 菜单html列表
- */
-function get_bottom_menu()
-{
-
-    $meta_cache_key = 'bottom_menu';
-    //获取缓存
-    //$menu_item_list = get_transient_cache_meta( $meta_cache_key );
-    $menu_item_list = '';
-    //如果缓存无效
-    // if (!$menu_item_list)
-    // {
-    $menu_item_list = wp_nav_menu([
-        'theme_location' => 'bottom_menu',
-        'menu_class' => 'nav',
-        'container' => '',
-        'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
-        'walker' => new WP_Bootstrap_Navwalker(),
-        'echo' => false,
-    ]);
-    //set_transient_cache_meta( $meta_cache_key, $menu_item_list, Expired::EXP_1_HOUR );
-    // }
-
-    return $menu_item_list;
-}
-
-/**
- *输出友情链接列表
- * @return string 友情链接 html 代码
- */
-function get_friends_links()
-{
-
-
-    $meta_cache_key = 'friends_links';
-    //获取缓存
-    $links_list_html = File_Cache::get_cache_meta($meta_cache_key, '', Expired::EXP_1_DAY);
-    //如果缓存无效
-    if (!$links_list_html)
-    {
-
-        //获取链接列表
-        $links_list = get_bookmarks();
-        $links_list_html = '';
-        foreach ($links_list as $link)
-        {
-
-            $links_list_html .= <<< HTML
-
-                        <li class="nav-item">
-                            <a class="nav-link" title="{$link->link_name}" href="{$link->link_url}" target="_blank">
-                                {$link->link_name}
-                            </a> 
-                        </li>
-HTML;
-        }
-
-        //最终输出
-        $links_list_html = <<<HTML
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#">友情链接: </a> 
-                    </li>
-					{$links_list_html}
-                </ul>
-	
-HTML;
-
-        File_Cache::set_cache_meta($meta_cache_key, '', $links_list_html);
-    }
-
-    return $links_list_html;
-}
-
-
-/**
- * 获取当前页面的类型
- * @return string 类型名
- */
-function get_current_page_type()
-{
-
-    $output = 'unknown';
-    //判断当前页面类型
-    if (is_home())
-    {
-        $output = 'home';
-    }
-    else if (is_category())
-    {
-        $output = 'category';
-    }
-    else if (is_tag())
-    {
-        $output = 'tag';
-    }
-    else if (is_search())
-    {
-        $output = 'search';
-    }
-    else if (is_author())
-    {
-        $output = 'author';
-    }
-    else if (is_single())
-    {
-        $output = 'single';
-    }
-    else if (is_page())
-    {
-        $output = 'page';
-    }
-
-    return $output;
-}
 
 
 
 
 /**
- * 添加自定义地址栏query变量
- * 这样wp query将会存储到自己的变量里
- *
- * @param string[] $query_vars
- * @return string[]
- */
-function add_custom_query_vars($query_vars)
-{
-    $query_vars[] = Post_Query::CUSTOM_ORDERBY;
-    $query_vars[] = Post_Query::CUSTOM_ORDER_DATA_RANGE;
-    $query_vars[] = Post_Query::AUTHOR_INTERNAL_SEARCH;
-
-    return $query_vars;
-}
-
-add_filter('query_vars', 'mikuclub\add_custom_query_vars');
-
-
-/**
- * 显示每个query的耗时
- * 
- * @return void
- */
-function check_query_cost()
-{
-    if (current_user_can('level_10'))
-    {
-        echo "Made " . get_num_queries() . " queries in " . timer_stop(0) . " seconds";
-        global $wpdb;
-        echo "<pre style='position: relative;'>";
-        for ($i = 0; $i < count($wpdb->queries); $i++)
-        {
-            if ($wpdb->queries[$i][1] > 0.01)
-            {
-                print_r($wpdb->queries[$i]);
-            }
-            //echo $wpdb->queries[$i][1] ;
-        }
-        echo "</pre>";
-    }
-}
-
-/**
- * 把链接替换成https格式
+ * 把http格式的链接转换成https格式
  *
  * @param string $link
- *
  * @return string
  */
 function convert_link_to_https($link)
 {
+    $http_start = 'http:';
+    $https_start = 'https:';
 
     //链接不是空
     if ($link)
     {
-        //统一https头部
-        $link = str_replace("http://", "https://", $link);
+        //如果链接是 // 斜杠开头, 需要手动添加头部
         if (stripos($link, "//") === 0)
         {
             //添加头部
-            $link = "https:" . $link;
+            $link = $https_start . $link;
+        }
+        else
+        {
+            //把http转换成https
+            $link = str_replace($http_start, $https_start, $link);
         }
     }
 
@@ -756,7 +388,7 @@ function convert_link_to_https($link)
 
 
 /**
- * 输出页面编辑链接
+ * 输出页面的编辑链接
  * @return string
  */
 function print_page_edit_link()
@@ -764,6 +396,7 @@ function print_page_edit_link()
     global $post;
 
     $output = '';
+
     if (current_user_is_admin())
     {
         $post_type_object = get_post_type_object($post->post_type);
@@ -775,344 +408,25 @@ function print_page_edit_link()
 }
 
 
-/**
- * 转发文章到微博
- * @return string|bool
- */
-function share_to_sina()
-{
-
-
-    $args = [
-        'post_type' => 'post',
-        'post_status' => Post_Status::PUBLISH,
-        'meta_query' => [
-            [
-                'key' => Post_Meta::POST_SHARE_TO_WEIBO,
-                'value' => '3',
-                'compare' => '<',
-                'type' => 'NUMERIC',
-            ],
-        ],
-        'cat' => -Category::ADULT_CATEGORY, // 排除魔法区文章
-        'posts_per_page' => 1,
-        'ignore_sticky_posts' => 1,
-
-    ];
-    //查询文章
-    $result = get_posts($args);
-    //如果结果不是空
-    if ($result)
-    {
-
-        $post = $result[0];
-        //获取文章id
-        $post_id = $post->ID;
-        //获取文章标题
-        $post_title = $post->post_title;
-        //获取文章内容
-        $post_content = get_post_content_for_weibo($post_id);
-
-
-        $appkey = '173298400';
-        $username = 'hexie2108@sina.com';
-        $userpassword = 'Wenjie2108@@';
-
-
-        /* 获取文章标签关键词 */
-        $tags = wp_get_post_tags($post_id);
-        $keywords = '';
-        foreach ($tags as $tag)
-        {
-            //拼接标签
-            $keywords = $keywords . '#' . $tag->name . "# ";
-        }
-
-        //去除标签后的标题
-        $title = strip_tags($post_title);
-        //限制长度
-        $title = mb_substr($title, 0, 32, 'utf-8');
-
-
-        $top_image = get_images_full_size($post_id)[0];
-
-
-        $body = [
-            'title' => $title, //头条的标题
-            'content' => $post_content, //头条的正文
-            'cover' => $top_image, //头条的封面
-            'summary' => $title, //头条的导语
-            'text' => $title . '   ' . $keywords . '    全文地址: ' . get_permalink($post_id), //简介的内容
-            'source' => $appkey
-        ];
-
-        $headers = ['Authorization' => 'Basic ' . base64_encode("$username:$userpassword")];
-
-        //微博接口地址
-        $api_url = 'https://api.weibo.com/proxy/article/publish.json';
-        //发送请求
-        $response = wp_remote_post($api_url, ['body' => $body, 'headers' => $headers]);
-
-        $responseBody = wp_remote_retrieve_body($response);
-
-        //如果内容获取正确
-        if ($responseBody)
-        {
-            $msg = json_decode($responseBody);
-            //如果状态码 正确, 说明转发成功,
-            if ($msg->code == '100000')
-            {
-                //删除 meta标识
-                delete_post_meta($post_id, Post_Meta::POST_SHARE_TO_WEIBO);
-
-                return true;
-            }
-            //如果状态码异常
-            else
-            {
-                //更新失败计数器
-                $count = get_post_meta($post_id, Post_Meta::POST_SHARE_TO_WEIBO, true);
-                $count++;
-                update_post_meta($post_id, Post_Meta::POST_SHARE_TO_WEIBO, $count);
-
-                return $msg;
-            }
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    return 'all posts are shared';
-}
-
-/**
- * 输出weibo文章内容
- *
- * @param int $post_id
- *
- * @return string
- */
-function get_post_content_for_weibo($post_id)
-{
-
-    $post = get_post($post_id);  //获取文章主体
-    $post_title = $post->post_title; //获取文章标题
-
-    $post_link = get_permalink($post_id); // 获取文章链接
-
-    //以数组x数组的方式返回元数据 [ 'meta_key' => [meta_value] ]
-    $metadata = get_post_meta($post_id);
-    //获取图片地址数组
-    $images_src = get_images_large_size($post_id);
-    $images_full_src = get_images_full_size($post_id);
-
-
-    //获取来源url变量
-    $source_url = trim($metadata['source'][0]);
-    //获取来源说明
-    $source_text = trim($metadata['source_name'][0]);
-
-    //bilibili视频地址
-    $bilibili_video = trim($metadata['bilibili'][0]);
-
-    $post_content_part = $post->post_content; //描述部分
-    $source_part = ''; //来源部分
-    $preview_images_part = ''; //图片预览部分
-    $video_part = ''; //视频部分
-    $download_part = ''; //下载部分
-
-    //来源部分------------------------------------------------------------------------------------------
-
-    //有来源地址
-    if ($source_url)
-    {
-        //没有来源说明 就使用来源地址当做说明
-        if (empty($source_text))
-        {
-            $source_text = $source_url;
-        }
-        $source_part = '<a href="' . $source_url . '"  target="_blank" rel="external nofollow">' . $source_text . '</a>';
-    }
-    //只有来源说明的情况
-    else if ($source_text)
-    {
-        $source_part = $source_text;
-    }
-
-    //如果来源信息不是空的 添加前置词
-    if ($source_part)
-    {
-        $source_part = '©来源:  ' . $source_part;
-    }
-
-    //预览图片部分------------------------------------------------------------------------------------------
-    for ($i = 1; $i < count($images_src); $i++) //从第二张图开始 循环输出剩下的图片
-    {
-        $preview_images_part .= '<div class="preview-image m-1 ">
-														<a href="' . $images_full_src[$i] . '" data-lightbox="images">
-															<img class="preview img-fluid"  src="' . $images_src[$i] . '" alt="' . $post_title . '"  />
-														</a>
-												</div>';
-    }
-    //如果有预览图存在, 添加前置标题
-    if ($preview_images_part)
-    {
-        $preview_images_part = '
-		<h4>预览</h4>
-		<div class=" py-2 py-md-0">'
-            . $preview_images_part
-            . '</div> ';
-    }
-
-    if ($bilibili_video)
-    {
-        $video_part = '
-		<h4>在线播放</h4>
-		<div class=" py-2 py-md-0">
-		  <h2>
-            <a class="btn btn-miku w-100 w-md-50" href="https://www.bilibili.com/video/' . $bilibili_video . '" target="_blank" rel="external nofollow"> 点击观看</a>
-            </h2>
-        </div>';
-    }
-
-    $download_part = '
-	<h4>下载地址</h4>
-		<div class=" py-2 py-md-0">
-		    <h2>
-		    	<a href="' . $post_link . '" target="_blank">
-		    	点击查看下载地址
-				</a>
-            </h2>
-        </div>';
-
-
-    return <<<HTML
-
-		<div class="first-image-part my-4">
-		    <a href="{$images_full_src[0]}" data-lightbox="images">
-                <img class="preview img-fluid"  src="{$images_src[0]}" alt="{$post_title}"  />
-            </a>
-		</div>
-		<br/>
-		<div class="source-part my-4">
-			{$source_part}
-		</div>
-		<br/>
-		<div class="content-part my-4">
-			{$post_content_part}
-		</div>
-        <br/>
-		<div class="preview-images-part my-4" id="preview-images-part">
-			{$preview_images_part}
-		</div>
-        <br/>
-        <div class="video-part my-4"">
-			{$video_part}
-		</div>
-        <br/>
-		<div  class="download-part my-4">
-            {$download_part}
-		</div>
-        <br/>
-		<div>
-			<small>本帖内容来自于服务器的自动推送, 如果涉及侵权或禁转, 麻烦请通知我, 邮箱地址 hexie2109@gmail.com</small>
-		</div>
-		
-HTML;
-}
-
-
-/**
- *通过B站API获取视频相关信息
- *
- * @param array<string, string> $query_params
- * @param int $post_id
- *
- * @return array<string, string> | WP_Error
- */
-function get_bilibili_video_info($query_params, $post_id)
-{
-
-
-    //请求地址
-    $url = 'https://api.bilibili.com/x/web-interface/view';
-
-    $cache_key = Post_Meta::POST_BILIBILI_VIDEO_INFO . '_' . $post_id;
-
-    //尝试用缓存
-    $result = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_POST, Expired::EXP_7_DAYS);
-    if (empty($result))
-    {
-
-        //尝试从数据库查询
-        $result = get_post_meta($post_id, Post_Meta::POST_BILIBILI_VIDEO_INFO, true);
-
-        //都没有 则重新远程请求
-        if (empty($result))
-        {
-
-            //转换成url参数字符串
-            $query_string = http_build_query($query_params);
-
-            $response = wp_remote_get($url . '?' . $query_string);
-            $body = wp_remote_retrieve_body($response);
-            if (!$body)
-            {
-                return new WP_Error(500, __FUNCTION__ . ' : 请求失败');
-            }
-
-            $body = json_decode($body, true);
-            //如果相关数据不存在
-            if (!isset($body['data']) || !isset($body['data']['aid']) || !isset($body['data']['bvid']) || !isset($body['data']['pages']) || count($body['data']['pages']) == 0 || !isset($body['data']['pages'][0]['cid']) || !$body['data']['pages'][0]['cid'])
-            {
-                return new WP_Error(500, __FUNCTION__ . ' : 获取AID,BVID 和 CID失败');
-            }
-
-            $result = [
-                'aid' => $body['data']['aid'],
-                'bvid' => $body['data']['bvid'],
-                'cid' => $body['data']['pages'][0]['cid'],
-            ];
-
-            //保存到数据库
-            update_post_meta($post_id, Post_Meta::POST_BILIBILI_VIDEO_INFO, $result);
-        }
-
-        //保存为内存缓存
-        File_Cache::set_cache_meta($cache_key, File_Cache::DIR_POST, $result);
-    }
-
-
-    return $result;
-}
-
-
-
-
 
 
 /**
  * 获取随机顶部封面图地址
+ * @param int $index 可选 支持指定数字
  * @return string
  */
-function get_random_head_background_image()
+function get_random_head_background_image($index = null)
 {
+    //图片数量
+    $image_count = 79;
+    //如果未指定
+    if ($index === null)
+    {
+        //通过	一年中的第几天 + 当前小时 然后 除余 图片数量 得出 随机数
+        $index = (date('z') + date('G')) % $image_count + 1;
+    }
 
-
-    //	一年中的第几天 + 当前小时 然后 除余 图片数量 得出 随机数
-    //$random_index = ( date( 'z' ) + date( 'G' ) ) % count( $array_image_link );
-    //$random_index = rand(0 , count( $array_image_link ));
-
-    //返回对应的图片地址
-    //return $array_image_link[ $random_index ];
-
-    $number = 79;
-    //	一年中的第几天 + 当前小时 然后 除余 图片数量 得出 随机数
-    $random_index = (date('z') + date('G')) % $number + 1;
-
-    return 'https://' . Web_Domain::CDN_MIKUCLUB_FUN . '/top/' . $random_index . '.webp';
+    return 'https://' . Web_Domain::CDN_MIKUCLUB_FUN . '/top/' . $index . '.webp';
 }
 
 /**

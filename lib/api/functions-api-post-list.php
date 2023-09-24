@@ -17,7 +17,7 @@ function api_get_post_list( $data ) {
 	$data = $data->get_params();
 
 	//如果没有设置页数, 就重设为2
-	if (isset($data['paged']) && ! isset_numeric( $data['paged'] ) ) {
+	if (isset($data['paged']) && ! isset( $data['paged'] ) ) {
 		$data['paged'] = 2;
 	}
 
@@ -75,7 +75,7 @@ function api_get_new_post_count( $data ) {
 	}
 
 	$count = 0;
-	if (isset($data['days']) &&  isset_numeric( $data['days'] ) ) {
+	if (isset($data['days']) &&  isset( $data['days'] ) ) {
 		$count = get_new_post_count( $data['days'] );
 	}
 	else if ( isset( $data['date'] ) ) {
@@ -97,17 +97,17 @@ function register_custom_post_list_api() {
 
 	register_rest_route( 'utils/v2', '/post_list', [
 		'methods'  => 'GET, POST',
-		'callback' => 'api_get_post_list',
+		'callback' => 'mikuclub\api_get_post_list',
 	] );
 
 	register_rest_route( 'utils/v2', '/favorite_post_list', [
 		'methods'  => 'GET',
-		'callback' => 'api_get_my_favorite_post_list',
+		'callback' => 'mikuclub\api_get_my_favorite_post_list',
 	] );
 
 	register_rest_route( 'utils/v2', '/new_post_count', [
 		'methods'  => 'GET',
-		'callback' => 'api_get_new_post_count',
+		'callback' => 'mikuclub\api_get_new_post_count',
 	] );
 
 }

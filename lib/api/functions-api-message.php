@@ -37,7 +37,7 @@ function api_get_private_messages($data)
 	$paged  = 1;
 	$number = 20;
 
-	if (isset_numeric($data['paged']))
+	if (isset($data['paged']))
 	{
 		$paged = $data['paged'];
 	}
@@ -46,7 +46,7 @@ function api_get_private_messages($data)
 		return new WP_Error(400, __FUNCTION__ . ' : paged 参数错误');
 	}
 
-	if (isset_numeric($data['number']))
+	if (isset($data['number']))
 	{
 		$number = $data['number'];
 	}
@@ -57,7 +57,7 @@ function api_get_private_messages($data)
 
 
 	//如果未指定特定 发件人,
-	if (!isset_numeric($data['sender_id']))
+	if (!isset($data['sender_id']))
 	{
 		//进行普通分类查询 获取只包含所有发件人最后消息的私信列表
 		$result = get_user_private_message_list_grouped($paged, $number);
@@ -86,7 +86,7 @@ function api_send_private_message($data)
 {
 
 
-	if (!isset_numeric($data['recipient_id']))
+	if (!isset($data['recipient_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : recipient_id 参数错误');
 	}
@@ -168,7 +168,7 @@ function api_send_report_message($data)
 {
 
 
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
@@ -225,38 +225,38 @@ function register_custom_private_message_api()
 	register_rest_route('utils/v2', '/message', [
 		[
 			'methods'             => 'GET',
-			'callback'            => 'api_get_private_messages',
-			'permission_callback' => 'is_user_logged_in',
+			'callback'            => 'mikuclub\api_get_private_messages',
+			'permission_callback' => 'mikuclub\is_user_logged_in',
 		],
 		[
 			'methods'             => 'POST',
-			'callback'            => 'api_send_private_message',
-			'permission_callback' => 'current_user_is_regular',
+			'callback'            => 'mikuclub\api_send_private_message',
+			'permission_callback' => 'mikuclub\current_user_is_regular',
 		],
 		[
 			'methods'             => 'delete',
-			'callback'            => 'api_delete_private_message',
-			'permission_callback' => 'is_user_logged_in',
+			'callback'            => 'mikuclub\api_delete_private_message',
+			'permission_callback' => 'mikuclub\is_user_logged_in',
 		],
 	]);
 	register_rest_route('utils/v2', '/message/(?P<id>\d+)', [
 		[
 			'methods'             => 'DELETE',
-			'callback'            => 'api_delete_private_message',
-			'permission_callback' => 'is_user_logged_in',
+			'callback'            => 'mikuclub\api_delete_private_message',
+			'permission_callback' => 'mikuclub\is_user_logged_in',
 		],
 	]);
 
 	register_rest_route('utils/v2', '/message_count', [
 		'methods'             => 'GET',
-		'callback'            => 'api_get_user_private_message_unread_count',
-		'permission_callback' => 'is_user_logged_in',
+		'callback'            => 'mikuclub\api_get_user_private_message_unread_count',
+		'permission_callback' => 'mikuclub\is_user_logged_in',
 	]);
 
 	register_rest_route('utils/v2', '/message_report', [
 		[
 			'methods'             => 'POST',
-			'callback'            => 'api_send_report_message',
+			'callback'            => 'mikuclub\api_send_report_message',
 		],
 	]);
 }

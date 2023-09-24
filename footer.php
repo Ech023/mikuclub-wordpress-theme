@@ -13,10 +13,10 @@ use function mikuclub\get_friends_links;
 use function mikuclub\get_new_post_count;
 use function mikuclub\get_theme_option;
 use function mikuclub\sidebar_menu_component;
-use function mikuclub\site_categories_total_count;
-use function mikuclub\site_comments_total_count;
-use function mikuclub\site_posts_total_count;
-use function mikuclub\site_tags_total_count;
+use function mikuclub\get_site_category_count;
+use function mikuclub\get_site_comment_count;
+use function mikuclub\get_site_post_count;
+use function mikuclub\get_site_tag_count;
 
  $home = get_home_url(); ?>
 
@@ -71,16 +71,16 @@ use function mikuclub\site_tags_total_count;
                         站点统计:
                     </li>
                     <li class="list-group-item">
-						<?php echo site_posts_total_count(); ?> 篇投稿
+						<?php echo get_site_post_count(); ?> 篇投稿
                     </li>
                     <li class="list-group-item">
-						<?php echo site_comments_total_count() ?> 条评论
+						<?php echo get_site_comment_count() ?> 条评论
                     </li>
                     <li class="list-group-item">
-						<?php echo site_categories_total_count(); ?> 个分类
+						<?php echo get_site_category_count(); ?> 个分类
                     </li>
                     <li class="list-group-item">
-						<?php echo site_tags_total_count(); ?> 个标签
+						<?php echo get_site_tag_count(); ?> 个标签
                     </li>
                     <li class="list-group-item">
 						<?php echo timer_stop( 0 ); ?> 响应时间
@@ -179,9 +179,6 @@ HTML;
 </script>
 
 
-<?php
-//check_query_cost();
-?>
 
 <!--关闭网页主体-->
 </div>

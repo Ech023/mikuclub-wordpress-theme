@@ -3,6 +3,75 @@
 use mikuclub\File_Cache;
 use mikuclub\Post_Meta;
 
+
+
+
+/**
+ * 在RSS自定义文章输出格式
+ *
+ * @param string $content
+ *
+ * @return string
+ */
+function print_post_for_rss($content)
+{
+
+	global $post;
+	$thumbnail_src = get_thumbnail_src($post->ID); //获取缩略图
+	$post_link     = get_permalink($post);
+
+	$content = <<< HTML
+
+	<div>
+		<div>
+			<img src="{$thumbnail_src}" alt="{$post->post_title}" />
+		</div>
+		<h3>
+			<a href="{$post_link}" title="{$post->post_title}">{$post->post_title}</a>
+		</h3>
+	</div>
+
+HTML;
+
+
+	return $content;
+}
+
+add_filter('the_content_feed', 'mikuclub\print_post_for_rss');
+
+
+
+/**
+ * 移除谷歌字体
+ */
+if (!function_exists('remove_wp_open_sans') && !function_exists('remove_wp_open_sans2'))
+{
+	/**
+	 * @return void
+	 */
+	function remove_wp_open_sans()
+	{
+		wp_deregister_style('open-sans');
+		wp_register_style('open-sans', false);
+	}
+
+	// add_action('admin_enqueue_scripts', 'mikuclub\remove_wp_open_sans');
+	// add_action('login_init', 'mikuclub\remove_wp_open_sans');
+
+	/**
+	 * 去除谷歌字体2
+	 * @return void
+	 */
+	function remove_wp_open_sans2()
+	{
+		wp_deregister_style('open-sans');
+		wp_register_style('open-sans', false);
+		wp_enqueue_style('open-sans', '');
+	}
+
+	// add_action('init', 'mikuclub\remove_wp_open_sans2');
+}
+
 /**
  * 自定义文章时间显示格式
  *
@@ -69,7 +138,7 @@ function create_post_list_cache_key() {
 	if ( get_query_var( 'page_type' ) ) {
 		$cache_key[] = get_query_var( 'page_type' );
 	} else {
-		$cache_key[] = get_current_page_type();
+		$cache_key[] = Page_Type::get_current_type()();
 	}
 
 	$cache_key[] = get_query_var( 'cat' );

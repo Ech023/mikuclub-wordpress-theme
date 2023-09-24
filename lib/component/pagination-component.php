@@ -2,6 +2,8 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Page_Type;
+
 /**
  * 分页导航 组件
  * @return string
@@ -132,7 +134,7 @@ function insertQueryInputForms($query_vars)
 
 	$output = '';
 
-	$query_vars['page_type'] = get_current_page_type();
+	$query_vars['page_type'] = Page_Type::get_current_type();
 
 	//如果未设置初始分页
 	if (!array_key_exists('paged', $query_vars) || !$query_vars['paged'])

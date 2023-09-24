@@ -828,9 +828,11 @@ function post_submit_action($post_id)
     }
 
     //清空bilibili视频缓存信息
-    delete_bilibili_video_cache($post_id);
+    Bilibili_Video::delete_video_meta($post_id);
     File_Cache::delete_cache_meta(File_Cache::POST_CONTENT_PART_1 . '_' . $post_id, File_Cache::DIR_POST);
     File_Cache::delete_cache_meta(File_Cache::POST_CONTENT_PART_2 . '_' . $post_id, File_Cache::DIR_POST);
+
+    File_Cache::delete_cache_meta(File_Cache::POST_META_DESCRIPTION, File_Cache::DIR_POST . DIRECTORY_SEPARATOR . $post_id);
 }
 
 add_action('wpuf_add_post_after_insert', 'mikuclub\post_submit_action');
@@ -904,20 +906,6 @@ function post_publish_action($post_id)
 
     //发布文章
     wp_publish_post($post_id);
-}
-
-/**
- * 删除bilibili视频缓存信息
- *
- * @param int $post_id
- * @return void
- */
-function delete_bilibili_video_cache($post_id)
-{
-
-    $cache_key = Post_Meta::POST_BILIBILI_VIDEO_INFO . '_' . $post_id;
-    delete_post_meta($post_id, Post_Meta::POST_BILIBILI_VIDEO_INFO);
-    File_Cache::delete_cache_meta($cache_key, File_Cache::DIR_POST);
 }
 
 

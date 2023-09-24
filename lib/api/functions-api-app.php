@@ -11,24 +11,20 @@ use WP_REST_Response;
  */
 function api_check_app_update() {
 
-	$output = [];
-
-    $output['versionCode'] = 28;
-
-    $output['versionName'] = 'v2.8版本 [21年12月24号发布]';
-
-    $output['description'] = '' .
+	$output = [
+		'versionCode' => 28,
+		'versionName' => 'v2.8版本 [21年12月24号发布]',
+		'forceUpdate' => false,
+		'downUrl' => 'https://cdn.mikuclub.fun/mikuclub_v2.8.apk',
+		'description' => '' .
         '- 修复 无法打开站内投稿链接的问题\n'.
 		'- 修复 微博登陆问题\n'.
 		'- 增加 投稿页面秒传链接的文本框\n'.
 		'- 支持直接唤起阿里云盘 (失败)\n'.
 		'- 增加开屏广告-每30分钟最多显示一次 (成功)\n'.
-        '[如果无法打开下载页, 请到初音社网站下载: mikuclub.cc]';
+        '[如果无法打开下载页, 请到初音社网站下载: mikuclub.cc]',
 
-    $output['forceUpdate'] = false;
-
-    $output['downUrl'] = 'https://cdn.mikuclub.cc/mikuclub_v2.8.apk';
-
+	];
 
 	return $output;
 }
@@ -129,24 +125,24 @@ function register_custom_app_api() {
 
 	register_rest_route( 'utils/v2', '/app_update', [
 		'methods'  => 'GET',
-		'callback' => 'api_check_app_update',
+		'callback' => 'mikuclub\api_check_app_update',
 	] );
 
 
 	register_rest_route( 'utils/v2', '/get_menu', [
 		'methods'  => 'GET',
-		'callback' => 'api_get_menu',
+		'callback' => 'mikuclub\api_get_menu',
 	] );
 
 	register_rest_route( 'utils/v2', '/app_favorite_post_list', [
 		'methods'  => 'GET',
-		'callback' => 'api_get_my_favorite_post_list_for_app',
+		'callback' => 'mikuclub\api_get_my_favorite_post_list_for_app',
 	] );
 
 
 	register_rest_route( 'utils/v2', '/get_app_communication', [
 		'methods'  => 'GET',
-		'callback' => 'api_get_app_communication',
+		'callback' => 'mikuclub\api_get_app_communication',
 	] );
 
 

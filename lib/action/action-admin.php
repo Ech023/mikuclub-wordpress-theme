@@ -12,3 +12,39 @@ add_action('admin_menu', 'mikuclub\add_theme_config_page');
 
 //添加自定义CSS
 add_action('admin_enqueue_scripts', 'mikuclub\admin_custom_style');
+
+//添加主题菜单
+add_action('after_setup_theme', 'mikuclub\add_theme_nav_menus');
+
+//在仪表盘主页添加自定义部件
+add_action('wp_dashboard_setup', 'mikuclub\custom_dashboard_widgets');
+
+//后台自定义CSS和JS
+add_action('admin_enqueue_scripts', 'mikuclub\custom_admin_script');
+
+
+
+/*添加后台用户列表自定义数据列*/
+add_filter('manage_users_columns', [
+    'mikuclub\User_Extra_Data_Column',
+    'add_new_column_head'
+]);
+add_action('manage_users_custom_column', [
+    'mikuclub\User_Extra_Data_Column',
+    'add_new_column_body'
+], 15, 3);
+
+add_filter('manage_users_sortable_columns', [
+    'mikuclub\User_Extra_Data_Column',
+    'add_new_column_sortable'
+]);
+
+add_filter('request', [
+    'mikuclub\User_Extra_Data_Column',
+    'add_new_column_orderby'
+]);
+//更新用户最后登陆时间
+add_action('wp_login', ['mikuclub\User_Extra_Data_Column', 'update_user_last_login_time'], 10, 2);
+/*=============================*/
+
+

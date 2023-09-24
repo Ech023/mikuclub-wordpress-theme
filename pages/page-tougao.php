@@ -9,7 +9,6 @@ use mikuclub\constant\Config;
 use function mikuclub\breadcrumbs_component;
 use function mikuclub\current_user_is_admin;
 use function mikuclub\is_sticky_post;
-use function mikuclub\isset_numeric;
 use function mikuclub\redirect_for_not_logged;
 
 $home = get_home_url();
@@ -29,7 +28,7 @@ get_header();
         </h4>
 
         <?php
-        if (array_key_exists('pid', $_GET) && isset_numeric($_GET['pid']))
+        if (array_key_exists('pid', $_GET) && isset($_GET['pid']))
         {
 
             $post_id = $_GET['pid'];
@@ -217,7 +216,7 @@ get_header();
 
             <div class="fixed-submit-button-div position-fixed bottom-0 start-0 end-0 bg-white text-center p-4 border-top shadow" style="z-index: 99">
                 <button class="btn btn-large btn-miku w-75">
-                    <?php echo array_key_exists('pid', $_GET) && isset_numeric($_GET['pid']) ? "更新" : "提交审核"; ?>
+                    <?php echo array_key_exists('pid', $_GET) && isset($_GET['pid']) ? "更新" : "提交审核"; ?>
                 </button>
             </div>
 

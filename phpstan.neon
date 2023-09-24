@@ -31,5 +31,5 @@ parameters:
 			- lib/ignore/wp-admin/includes/noop.php
 
 	ignoreErrors:
-		- '#callback of function .* expects callable\(\)#'
-		- '#Strict comparison using === between true and false will always evaluate to false#'
+		#- '#callback of function .* expects callable\(\)#'
+		#- '#Strict comparison using === between true and false will always evaluate to false#'

@@ -2,10 +2,12 @@
 
 namespace mikuclub;
 
+use Exception;
 use mikuclub\constant\Comment_Meta;
 use stdClass;
 use WP_Error;
 use WP_REST_Request;
+
 
 /**
  * 获取用户未读的评论数量
@@ -34,7 +36,7 @@ function api_get_comment_replies($data)
 	$paged  = 1;
 	$number = 20;
 
-	if (isset_numeric($data['paged']))
+	if (isset($data['paged']))
 	{
 		$paged = $data['paged'];
 	}
@@ -43,7 +45,7 @@ function api_get_comment_replies($data)
 		return new WP_Error(400, __FUNCTION__ . ' : paged 参数错误');
 	}
 
-	if (isset_numeric($data['number']))
+	if (isset($data['number']))
 	{
 		$number = $data['number'];
 	}
@@ -66,51 +68,58 @@ function api_get_comment_replies($data)
  */
 function api_delete_comment($data)
 {
-
-	if (!isset_numeric($data['id']))
+	try
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : id参数错误');
-	}
+		//获取 id 参数
+		$comment_id = Input_Validator::get_request_value('id', Input_Validator::TYPE_INT, true);
 
-	//当前登陆用户ID
-	$user_id = get_current_user_id();
+		//当前登陆用户ID
+		$user_id = get_current_user_id();
 
-	//获取评论主体
-	$comment_id = $data['id'];
-	$comment =  get_comment($comment_id);
-
-	//获取文章作者ID
-	$post_id = intval($comment->comment_post_ID);
-	$post_author_id = intval(get_post_field('post_author', $post_id));
-
-	//评论人ID
-	$author_id  = $comment->user_id;
-
-	//如果是高级用户和当前文章的作者
-	$is_premium_user_and_post_author = current_user_can_publish_posts() && $user_id === $post_author_id;
-
-	//检测权限, 只有管理员 和 评论作者自己 有权限删除评论
-	if (
-		//如果是管理员
-		current_user_is_admin()
-		||
-		//如果是高级用户和文章的作者ID
-		$is_premium_user_and_post_author
-		||
-		//如果是评论人本ID
-		$user_id == $author_id
-	)
-	{
-		//如果是文章作者就只把评论移到回收站, 其他情况 完全删除
-		$result = wp_delete_comment($comment_id, $is_premium_user_and_post_author ? false : true);
-		if (!$result)
+		//获取评论主体
+		$comment =  get_comment($comment_id);
+		if (empty($comment))
 		{
-			$result = new WP_Error(500, __FUNCTION__ . ' : 删除失败');
+			throw new Empty_Exception('评论');
+		}
+
+		//获取文章作者ID
+		$post_id = intval($comment->comment_post_ID);
+		$post_author_id = intval(get_post_field('post_author', $post_id));
+
+		//评论人ID
+		$author_id  = intval($comment->user_id);
+
+		//如果是高级用户和当前文章的作者
+		$is_premium_user_and_post_author = current_user_can_publish_posts() && $user_id === $post_author_id;
+
+		//检测权限, 只有管理员 和 评论作者自己 有权限删除评论
+		if (
+			//如果是管理员
+			current_user_is_admin()
+			||
+			//如果是高级用户和文章的作者ID
+			$is_premium_user_and_post_author
+			||
+			//如果是评论人本ID
+			$user_id === $author_id
+		)
+		{
+			//如果是文章作者就只把评论移到回收站, 其他情况 完全删除
+			$result = wp_delete_comment($comment_id, $is_premium_user_and_post_author ? false : true);
+			if ($result === false)
+			{
+				throw new Exception('删除失败');
+			}
+		}
+		else
+		{
+			throw new Exception('无权操作');
 		}
 	}
-	else
+	catch (Exception $e)
 	{
-		$result = new WP_Error(500, __FUNCTION__ . ' : 权限不足');
+		$result = new WP_Error(400, $e->getMessage(), __FUNCTION__);
 	}
 
 	return $result;
@@ -125,11 +134,11 @@ function api_delete_comment($data)
 function api_get_comment_list($data)
 {
 
-	if (!isset_numeric($data['post_id']))
+	if (!isset($data['post_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
-	if (!isset_numeric($data['offset']))
+	if (!isset($data['offset']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : offset 参数错误');
 	}
@@ -162,7 +171,7 @@ function api_add_comment_likes($data)
 {
 
 	//如果缺少必要参数
-	if (!isset_numeric($data['comment_id']))
+	if (!isset($data['comment_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : comment_id 参数错误');
 	}
@@ -180,7 +189,7 @@ function api_delete_comment_likes($data)
 {
 
 	//如果缺少必要参数
-	if (!isset_numeric($data['comment_id']))
+	if (!isset($data['comment_id']))
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : comment_id 参数错误');
 	}
@@ -296,36 +305,36 @@ function register_custom_comment_api()
 	//添加自定义接口
 	register_rest_route('utils/v2', '/comments_count', [
 		'methods'             => 'GET',
-		'callback'            => 'api_get_user_unread_comment_reply_count',
-		'permission_callback' => 'is_user_logged_in',
+		'callback'            => 'mikuclub\api_get_user_unread_comment_reply_count',
+		'permission_callback' => 'mikuclub\is_user_logged_in',
 
 	]);
 
 	register_rest_route('utils/v2', '/comments', [
 		[
 			'methods'             => 'GET',
-			'callback'            => 'api_get_comment_replies',
-			'permission_callback' => 'is_user_logged_in',
+			'callback'            => 'mikuclub\api_get_comment_replies',
+			'permission_callback' => 'mikuclub\is_user_logged_in',
 		],
 	]);
 
 	register_rest_route('utils/v2', '/comment_list', [
 		[
 			'methods'             => 'GET',
-			'callback'            => 'api_get_comment_list',
+			'callback'            => 'mikuclub\api_get_comment_list',
 		],
 		[
 			'methods'             => 'POST',
-			'callback'            => 'api_insert_custom_comment',
-			'permission_callback' => 'current_user_is_regular',
+			'callback'            => 'mikuclub\api_insert_custom_comment',
+			'permission_callback' => 'mikuclub\current_user_is_regular',
 		],
 	]);
 
 	register_rest_route('utils/v2', '/comments/(?P<id>\d+)', [
 		[
 			'methods'             => 'DELETE',
-			'callback'            => 'api_delete_comment',
-			'permission_callback' => 'is_user_logged_in',
+			'callback'            => 'mikuclub\api_delete_comment',
+			'permission_callback' => 'mikuclub\is_user_logged_in',
 		],
 	]);
 
@@ -333,11 +342,11 @@ function register_custom_comment_api()
 	register_rest_route('utils/v2', '/comment_likes', [
 		[
 			'methods'             => 'POST',
-			'callback'            => 'api_add_comment_likes',
+			'callback'            => 'mikuclub\api_add_comment_likes',
 		],
 		[
 			'methods'             => 'DELETE',
-			'callback'            => 'api_delete_comment_likes',
+			'callback'            => 'mikuclub\api_delete_comment_likes',
 		],
 	]);
 

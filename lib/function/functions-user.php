@@ -822,6 +822,7 @@ function current_user_is_regular()
 	return current_user_can('edit_posts');
 }
 
+
 /**
  * 根据id获取用户信息
  *

@@ -150,6 +150,7 @@ else
 
     <div class="container-fluid px-0">
 
+
         <header id="header" class="header mx-auto">
 
             <div class="top-menu-bar row mx-0 px-3 px-sm-5">
@@ -206,7 +207,7 @@ else
 
             </div>
 
-            <div class="image-windows  d-none d-md-block " style="background-image: url('<?php echo get_random_head_background_image() ?>')">
+            <div class="image-windows  d-none d-md-block " style="background-image: url('<?php echo get_random_head_background_image() ?>'), url('<?php echo get_random_head_background_image(1) ?>')">
                 <div class="image-windows-view w-75 m-auto d-flex flex-column h-100">
                     <div class="site-title flex-fill d-flex align-items-center position-relative">
 

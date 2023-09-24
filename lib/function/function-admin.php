@@ -4,7 +4,12 @@ namespace mikuclub;
 
 use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Admin_Page;
+use mikuclub\constant\Config;
+use mikuclub\constant\Post_Meta;
+use mikuclub\constant\Post_Status;
+use mikuclub\constant\Post_Type;
 use mikuclub\constant\User_Capability;
+use WP_Term;
 
 /**
  * 主题设置页的 相关的函数
@@ -72,12 +77,8 @@ function add_theme_config_page()
         //更新主题设置
         update_theme_config();
 
-        //如果有清空文件缓存的参数
-        if (isset($_REQUEST['d_cache_system_delete']))
-        {
-            //清空缓存删除文件夹里的内容
-            File_Cache::clean_all();
-        }
+        //删除缓存文件
+        delete_theme_cache();
 
         //创建更新成功后的跳转地址
         $url = 'admin.php?' . http_build_query([
@@ -98,7 +99,35 @@ function add_theme_config_page()
     }
 }
 
+/**
+ * 根据请求参数删除对应缓存文件
+ *
+ * @return void
+ */
+function delete_theme_cache()
+{
 
+    $clean_cache_key = 'clean_cache_';
+    //缓存类型
+    $array_type_cache = [
+        '',
+        File_Cache::DIR_COMPONENTS,
+        File_Cache::DIR_USER,
+        File_Cache::DIR_POST,
+        File_Cache::DIR_POSTS,
+        File_Cache::DIR_COMMENTS,
+    ];
+    //遍历每个缓存类型
+    foreach ($array_type_cache as $type)
+    {
+        //如果有要求删除
+        if (isset($_REQUEST[$clean_cache_key . $type]))
+        {
+            //清空对应缓存
+            File_Cache::clean_cache($type);
+        }
+    }
+}
 
 /**
  * 更新主题设置
@@ -156,6 +185,30 @@ function admin_custom_style()
 
 
 /**
+ * 添加主题可用的菜单
+ * 
+ * @return void
+ */
+function add_theme_nav_menus()
+{
+
+    //注册网站的菜单
+    if (function_exists('register_nav_menus'))
+    {
+        register_nav_menus([
+            'nav'           => __('网站导航'),
+            'pagemenu'      => __('页面导航'),
+            'top_left_menu' => __('顶部左菜单'),
+            'bottom_menu'   => __('底部菜单'),
+        ]);
+    }
+}
+
+
+
+
+
+/**
  * 输出设置页面的内容
  *
  * @return void
@@ -190,16 +243,41 @@ function print_theme_config_page()
 
     $components .= $tag_hr;
 
+    $clean_cache_key = 'clean_cache_';
+
     //添加删除文件缓存的选项
     $components .= create_check_box_component(
-        '删除文件缓存系统',
+        '缓存管理',
         [
-            'd_cache_system_delete'
-        ],
-        [
-            '删除缓存'
+            [
+                'name' => $clean_cache_key,
+                'text' => '删除所有缓存'
+            ],
+            [
+                'name' => $clean_cache_key . File_Cache::DIR_COMPONENTS,
+                'text' => '删除组件缓存',
+            ],
+            [
+                'name' => $clean_cache_key . File_Cache::DIR_USER,
+                'text' => '删除用户缓存',
+            ],
+            [
+                'name' => $clean_cache_key . File_Cache::DIR_POST,
+                'text' => '删除文章缓存',
+            ],
+            [
+                'name' => $clean_cache_key . File_Cache::DIR_POSTS,
+                'text' => '删除文章列表缓存',
+            ],
+            [
+                'name' => $clean_cache_key . File_Cache::DIR_COMMENTS,
+                'text' => '删除评论列表缓存',
+            ],
+
         ]
     );
+
+
 
     $components .= $tag_hr;
 
@@ -357,31 +435,39 @@ HTML;
  * 创建check box组件
  *
  * @param string $description
- * @param string[] $array_option
- * @param string[] $array_option_description
+ * @param array<int, array<string, mixed>> $array_option
+ * [
+ *  'name' => string,
+ *  'text' => string,
+ * ]
  * @return string
  */
-function create_check_box_component($description, $array_option, $array_option_description)
+function create_check_box_component($description, $array_option)
 {
 
 
-
     $input = '';
-    for ($i = 0; $i < count($array_option); $i++)
+
+    foreach ($array_option as $option)
     {
 
+        $name = $option['name'];
+        $text = $option['text'];
+        //$value = $option['value'] ? 'value=' . $option['value'] : '';
 
-        $checked = get_theme_option($array_option[$i]) ? 'checked' : '';
+        $checked = get_theme_option($name) ? 'checked' : '';
 
         $input .= <<<HTML
 
         <div class="form-check form-check-inline">
-            <input type="checkbox" class="form-check-input mt-1" id="{$array_option[$i]}" name="{$array_option[$i]}" {$checked}/>
-            <label class="form-check-label" for="{$array_option[$i]}">{$array_option_description[$i]}</label>
+            <input type="checkbox" class="form-check-input mt-1" id="{$name}" name="{$name}"  {$checked}/>
+            <label class="form-check-label" for="{$name}">{$text}</label>
         </div>
 
 HTML;
     }
+
+
 
     $output = <<<HTML
 
@@ -446,4 +532,218 @@ HTML;
 HTML;
 
     return $output;
+}
+
+
+
+/**
+ *  后台自定义CSS和JS
+ * @return void
+ */
+function custom_admin_script()
+{
+    wp_enqueue_style('custom-admin-css', get_template_directory_uri() . '/css/style-admin.css', [], Config::CSS_JS_VERSION);
+}
+
+
+
+/**
+ * 在仪表盘主页添加自定义部件
+ * 
+ * @return void
+ */
+function custom_dashboard_widgets()
+{
+
+    //必须是管理员 才能看到
+    if (current_user_is_admin())
+    {
+        add_meta_box('pending_posts_dashboard_widget', '待审文章', 'mikuclub\pending_posts_dashboard_widget_function', 'dashboard', 'normal', 'core');
+        add_meta_box('fail_down_posts_dashboard_widget', '失效文章', 'mikuclub\fail_down_posts_dashboard_widget_function', 'dashboard', 'normal', 'core');
+    }
+}
+
+
+
+
+/**
+ * 待审文章列表
+ * @return void
+ */
+function pending_posts_dashboard_widget_function()
+{
+
+    $args = [
+        'posts_per_page' => 20,
+        'post_type'      => Post_Type::POST,
+        'post_status'    => Post_Status::PENDING,
+    ];
+
+    $post_list = get_posts($args);
+
+    //判断是否有待审文章
+    if ($post_list)
+    {
+
+        $post_list_html = '';
+
+        //储存文章编辑地址 数组
+        $array_post_edit_link = [];
+
+        foreach ($post_list as $post)
+        {
+
+            $my_post = new My_Post_Slim($post);
+            //获取文章编辑地址
+            //如果是普通文章
+            if ($post->post_type == Post_Type::POST)
+            {
+                $edit_url = get_home_url() . '/edit?pid=' . $my_post->id;
+            }
+            //如果是其他类型  论坛主题, 回帖等
+            else
+            {
+                $edit_url = $my_post->post_href;
+            }
+            //获取文章所属分类数组
+            $array_category     = get_the_category($my_post->id);
+            //把分类转换成 分类名称数组
+            $array_cat_name = array_map(function (WP_Term $cat)
+            {
+                return $cat->name;
+            }, $array_category);
+            $cat_name_concatenated = implode(',', $array_cat_name);
+
+            $post_list_html .= <<<HTML
+
+				<div style="border: 1px solid #c3c4c7; padding: 5px; margin-top: 5px">
+					<h4>
+						<a href="{$edit_url}" target="_blank" style="text-decoration:none;">{$my_post->post_title}</a>
+					</h4>
+					<div>
+						作者: <a href="{$my_post->post_author->user_href}" target="_blank" style="text-decoration:none;">{$my_post->post_author->display_name}</a> 分类:  {$cat_name_concatenated}
+					</div>
+					<div style="margin-top: 5px;">
+						<span>投稿时间: {$my_post->post_date}</span>
+						<span>更新时间: {$my_post->post_modified_date}</span>
+					</div>
+				</div>
+
+HTML;
+            //储存文章id
+            $array_post_edit_link[] = $edit_url;
+        }
+
+        //转换为json格式
+        $array_post_edit_link_json = json_encode($array_post_edit_link);
+
+        $output = <<<HTML
+            <div>
+               
+                <div style="text-align: right; margin-bottom: 15px;">
+                    <a href="javascript:void(0)" onclick="open_all_post()">打开所有</a>
+                </div>
+                
+                <div>{$post_list_html}</div>
+                <script>
+                function open_all_post(){
+                    let array_post_edit_link = {$array_post_edit_link_json};
+                    array_post_edit_link.forEach(function(edit_link){
+                            setTimeout(function(){
+                                window.open(edit_link,'_blank');
+                            }, 500);
+                    });
+
+                }
+                </script>
+            </div>
+HTML;
+    }
+    else
+    {
+        $output = '<div>目前没有待审文章</div>';
+    }
+
+    echo $output;
+}
+
+/**
+ * 下载失效文章列表
+ * @return void
+ */
+function fail_down_posts_dashboard_widget_function()
+{
+
+    $args = [
+        'posts_per_page' => 10,
+        'orderby'        => 'meta_value_num',
+        'meta_key'       => Post_Meta::POST_FAIL_TIME
+    ];
+
+    $post_list = get_posts($args);
+
+    //判断是否有失效文章
+    if ($post_list)
+    {
+
+        $post_list_html = '';
+
+        foreach ($post_list as $post)
+        {
+
+            $my_post = new My_Post_Slim($post);
+
+            //获取文章所属分类数组
+            $array_category     = get_the_category($my_post->id);
+            //把分类转换成 分类名称数组
+            $array_cat_name = array_map(function (WP_Term $cat)
+            {
+                return $cat->name;
+            }, $array_category);
+            $cat_name_concatenated = implode(',', $array_cat_name);
+
+            //失效次数
+            $fail_time = get_post_fail_times($post->ID);
+
+            $post_list_html .= <<<HTML
+
+                <div style="border: 1px solid #c3c4c7; padding: 5px; margin-top: 5px">
+					<h4>
+						<a href="{$my_post->post_href}" target="_blank" style="text-decoration:none;">
+							{$my_post->post_title} <span class="badge bg-danger">{$fail_time}</span>
+						</a>
+					</h4>
+					<div>
+						作者: <a href="{$my_post->post_author->user_href}" target="_blank" style="text-decoration:none;">{$my_post->post_author->display_name}</a> 分类:  {$cat_name_concatenated}
+					</div>
+					<div>
+						<span>投稿时间: {$my_post->post_date}</span>
+						<span>更新时间: {$my_post->post_modified_date}</span>
+					</div>
+                </div>
+
+HTML;
+        }
+
+        $fail_down_page_link = get_home_url() . '/fail_down_list';
+
+        $output = <<<HTML
+
+            <div>
+                <h2 class="text-center">
+                    <a href="{$fail_down_page_link}" target="_blank">进入失效管理页面</a>
+                </h2>
+                <div>{$post_list_html}</div>
+            </div>
+
+HTML;
+
+    }
+    else
+    {
+
+        $output = '<div>目前没有失效文章</div>';
+    }
+
+    echo $output;
 }

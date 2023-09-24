@@ -1,6 +1,8 @@
 <?php
+
 namespace mikuclub;
 
+use Exception;
 use mikuclub\constant\Post_Status;
 use WP_Error;
 use WP_REST_Request;
@@ -17,12 +19,12 @@ function api_share_to_sina($data)
 {
 
 	//如果 密钥错误
-	if (!isset_numeric($data['appkey']) && $data['appkey'] != 173298400)
+	if (!isset($data['appkey']) && $data['appkey'] != 173298400)
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : appkey 参数错误');
 	}
 
-	return share_to_sina();
+	return Weibo_Share::share_to_sina();
 }
 
 
@@ -38,30 +40,25 @@ function api_share_to_sina($data)
 function api_get_bilibili_video_info($data)
 {
 
-	if (!isset($data['aid']) && !isset($data['bvid']))
+	try
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : aid和bvid参数 必须有其中一个');
+		$post_id = Input_Validator::get_request_value('post_id', Input_Validator::TYPE_INT, true);
+		$aid = Input_Validator::get_request_value('aid', Input_Validator::TYPE_STRING);
+		$bvid = Input_Validator::get_request_value('bvid', Input_Validator::TYPE_STRING);
+
+		if (empty($aid) && empty($bvid))
+		{
+			throw new Empty_Exception('aid和bvid参数');
+		}
+
+		$result = Bilibili_Video::get_video_meta($post_id, $aid, $bvid);
 	}
-	if (!isset_numeric($data['post_id']))
+	catch (Exception $e)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id参数错误');
+		$result = new WP_Error(400, $e->getMessage(), __FUNCTION__);
 	}
 
-	//生成请求参数数组
-	if (isset($data['aid']))
-	{
-		$query = [
-			'aid' => $data['aid']
-		];
-	}
-	else
-	{
-		$query = [
-			'bvid' => $data['bvid']
-		];
-	}
-
-	return get_bilibili_video_info($query, $data['post_id']);
+	return $result;
 }
 
 
@@ -266,41 +263,41 @@ function register_custom_api()
 
 	register_rest_route('utils/v2', '/sharing_to_sina', [
 		'methods'  => 'POST',
-		'callback' => 'api_share_to_sina',
+		'callback' => 'mikuclub\api_share_to_sina',
 	]);
 
 	register_rest_route('utils/v2', '/get_bilibili_video_info', [
 		'methods'  => 'GET',
-		'callback' => 'api_get_bilibili_video_info',
+		'callback' => 'mikuclub\api_get_bilibili_video_info',
 	]);
 
 
 	register_rest_route('utils/v2', '/check_baidu_pan_link', [
 		'methods'  => 'GET',
-		'callback' => 'check_baidu_pan_link',
+		'callback' => 'mikuclub\check_baidu_pan_link',
 	]);
 
 	register_rest_route('utils/v2', '/check_aliyun_pan_link', [
 		'methods'  => 'GET',
-		'callback' => 'check_aliyun_pan_link',
+		'callback' => 'mikuclub\check_aliyun_pan_link',
 	]);
 
 	register_rest_route('utils/v2', '/login_adsense_account', [
 		'methods'  => 'POST',
-		'callback' => 'login_adsense_account',
+		'callback' => 'mikuclub\login_adsense_account',
 	]);
 
 
 	register_rest_route('utils/v2', '/delete_trash_post', [
 		'methods'  => 'DELETE',
-		'callback' => 'delete_trash_post',
+		'callback' => 'mikuclub\delete_trash_post',
 	]);
 
 
 
 	register_rest_route('utils/v2', '/test', [
 		'methods'  => 'POST',
-		'callback' => 'test_function',
+		'callback' => 'mikuclub\test_function',
 	]);
 }
 

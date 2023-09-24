@@ -19,11 +19,16 @@ class File_Cache
     const DIR_COMMENTS = 'comments';
     const DIR_COMPONENTS = 'components';
 
+
     /*全站相关缓存 键名*/
+    const SITE_POST_COUNT = 'count_total_post';
     const SITE_COMMENT_COUNT = 'count_total_comment';
+    const SITE_CATEGORY_COUNT = 'count_total_category';
+    const SITE_TAG_COUNT = 'count_total_tag';
+
+    const SITE_FRIEND_LINK = 'friend_link';
+
     const MAIN_CATEGORY_LIST = 'main_category_list';
-
-
 
 
     /*用户相关缓存 键名*/
@@ -53,11 +58,8 @@ class File_Cache
     const POST_CONTENT_PART_1 = 'post_content_part_1';
     const POST_CONTENT_PART_2 = 'post_content_part_2';
 
-
-
-
-
-
+    //文章关键词
+    const POST_META_DESCRIPTION = 'post_meta_description';
 
 
 
@@ -67,29 +69,29 @@ class File_Cache
      * @param string $meta_key
      * @param string $sub_directory
      * @param int $expired 文件有效时间
-     * @return mixed 如果不存在则返回空字符串
+     * @return mixed|null 如果不存在则返回NULL
      */
     public static function get_cache_meta($meta_key, $sub_directory, $expired)
     {
-        $result = '';
+        $result = null;
 
-        //如果缓存系统未激活
-        if (Config::ENABLE_FILE_CACHE_SYSTEM === false)
+        //如果缓存系统有激活
+        //@phpstan-ignore-next-line
+        if (Config::ENABLE_FILE_CACHE_SYSTEM)
         {
-            return;
-        }
 
-        //创建完整文件路径
-        $file_path =  static::build_file_path($sub_directory, $meta_key);
+            //创建完整文件路径
+            $file_path =  static::build_file_path($sub_directory, $meta_key);
 
-        //如果缓存存在, 并且没有过期
-        if (file_exists($file_path) && filemtime($file_path) + $expired > time())
-        {
-            //如果反序列化或者文件读取错误, 重设结果为空字符串
-            $result = unserialize(file_get_contents($file_path));
-            if ($result === false)
+            //如果缓存存在, 并且没有过期
+            if (file_exists($file_path) && filemtime($file_path) + $expired > time())
             {
-                $result = '';
+                //如果反序列化或者文件读取错误, 重设结果为空字符串
+                $result = unserialize(file_get_contents($file_path));
+                if ($result === false)
+                {
+                    $result = null;
+                }
             }
         }
 
@@ -106,16 +108,15 @@ class File_Cache
      */
     public static function set_cache_meta($meta_key, $sub_directory, $meta_value)
     {
-        //如果缓存系统未激活
-        if (Config::ENABLE_FILE_CACHE_SYSTEM === false)
+        //如果缓存系统有激活
+        //@phpstan-ignore-next-line
+        if (Config::ENABLE_FILE_CACHE_SYSTEM)
         {
-            return;
+            //创建完整文件路径
+            $file_path =  static::build_file_path($sub_directory, $meta_key);
+            //新建文件
+            file_put_contents($file_path, serialize($meta_value));
         }
-
-        //创建完整文件路径
-        $file_path =  static::build_file_path($sub_directory, $meta_key);
-        //新建文件
-        file_put_contents($file_path, serialize($meta_value));
     }
 
     /**
@@ -127,20 +128,19 @@ class File_Cache
      */
     public static function delete_cache_meta($meta_key, $sub_directory = '')
     {
-        //如果缓存系统未激活
-        if (Config::ENABLE_FILE_CACHE_SYSTEM === false)
+        //如果缓存系统有激活
+        //@phpstan-ignore-next-line
+        if (Config::ENABLE_FILE_CACHE_SYSTEM)
         {
-            return;
-        }
+            //创建完整文件路径
+            $file_path =  static::build_file_path($sub_directory, $meta_key);
 
-        //创建完整文件路径
-        $file_path =  static::build_file_path($sub_directory, $meta_key);
-
-        //如果文件存在
-        if (file_exists($file_path))
-        {
-            //删除它
-            unlink($file_path);
+            //如果文件存在
+            if (file_exists($file_path))
+            {
+                //删除它
+                unlink($file_path);
+            }
         }
     }
 
@@ -148,11 +148,12 @@ class File_Cache
 
     /**
      * 清空文件缓存系统
+     * @param string $sub_directory
      * @return void
      */
-    public static function clean_all()
+    public static function clean_cache($sub_directory = '')
     {
-        $path = static::ROOT_DIRECTORY;
+        $path = static::ROOT_DIRECTORY . $sub_directory;
         static::delete_recursive_file($path);
     }
 

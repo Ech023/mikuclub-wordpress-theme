@@ -25,7 +25,8 @@ class Constant
  */
 class Config
 {
-   
+    //CSS和JS版本号
+    const CSS_JS_VERSION = '1.00';
 
     //默认时间格式
     const DATE_FORMAT_SHORT = 'y-m-d';
@@ -132,6 +133,10 @@ class Category
 
     //魔法区(主分区)
     const ADULT_CATEGORY = 1120;
+    //不包含魔法区
+    const NO_ADULT_CATEGORY = -1120;
+
+
     //魔法MMD-3D区
     const ADULT_3D = 211;
     //魔法同人音声
@@ -150,6 +155,7 @@ class Category
     const ADULT_FICTION = 6713;
     //魔法手机游戏/应用
     const ADULT_PHONE_GAME = 7476;
+
 
     /**
      * 获取所有成人分区的ID数组
@@ -212,6 +218,8 @@ class Expired
     const EXP_3_DAYS = 86400 * 3;
     const EXP_7_DAYS = 86400 * 7;
     const EXP_10_DAYS = 86400 * 10;
+    const EXP_1_MONTH = 86400 * 30;
+    const EXP_1_YEAR = 86400 * 365;
 
     /**
      * 获取首页过期时间
@@ -224,6 +232,71 @@ class Expired
     }
 }
 
+/**
+ * 页面类型
+ */
+class Page_Type
+{
+
+    //主页
+    const HOME = 'home';
+    //分类页
+    const CATEGORY = 'category';
+    //标签页
+    const TAG = 'tag';
+    //搜索页
+    const SEARCH = 'search';
+    //作者页
+    const AUTHOR = 'author';
+    //文章页
+    const SINGLE = 'single';
+    //标准页
+    const PAGE = 'page';
+
+    /**
+     * 获取当前页面的类型
+     * @return string 类型名
+     */
+    public static function get_current_type()
+    {
+        $result = 'unknown';
+
+        if (is_home())
+        {
+            $result = 'home';
+        }
+        else if (is_single())
+        {
+            $result = 'single';
+        }
+        else if (is_page())
+        {
+            $result = 'page';
+        }
+        else if (is_category())
+        {
+            $result = 'category';
+        }
+        else if (is_tag())
+        {
+            $result = 'tag';
+        }
+        else if (is_author())
+        {
+            $result = 'author';
+        }
+        else if (is_search())
+        {
+            $result = 'search';
+        }
+
+        return $result;
+    }
+}
+
+/**
+ * 消息类型
+ */
 class Message_Type
 {
     const PRIVATE_MESSAGE = 'private_message';

@@ -14,6 +14,7 @@ use function mikuclub\get_post_like;
 use function mikuclub\get_post_shares;
 use function mikuclub\get_post_unlike;
 use function mikuclub\get_post_views;
+use function mikuclub\get_theme_option;
 use function mikuclub\get_user_fans_count;
 use function mikuclub\in_user_black_list;
 use function mikuclub\is_adult_category;
