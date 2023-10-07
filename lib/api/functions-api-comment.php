@@ -225,7 +225,7 @@ function api_delete_comment_like($data)
  *
  * @return bool|mixed|My_Comment_Model|WP_Error
  */
-function api_insert_custom_comment($data)
+function api_insert_comment($data)
 {
 
 	if (!isset($data['comment_post_ID']))
@@ -249,7 +249,7 @@ function api_insert_custom_comment($data)
 
 	$comment_content = trim($data['comment_content']);
 
-	return insert_custom_comment($comment_content, $data['comment_post_ID'], $comment_parent);
+	return insert_comment($comment_content, $data['comment_post_ID'], $comment_parent);
 }
 
 /**
@@ -345,7 +345,7 @@ function register_custom_comment_api()
 		],
 		[
 			'methods'             => 'POST',
-			'callback'            => 'mikuclub\api_insert_custom_comment',
+			'callback'            => 'mikuclub\api_insert_comment',
 			'permission_callback' => 'mikuclub\current_user_is_regular',
 		],
 	]);

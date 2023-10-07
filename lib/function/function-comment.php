@@ -374,3 +374,166 @@ function delete_comment_file_cache($comment_id, $post_id = null)
         File_Cache::delete_directory(File_Cache::DIR_COMMENTS . DIRECTORY_SEPARATOR . $post_id);
     }
 }
+
+
+/**
+ * 给新评论 添加自定义评论元数据
+ * 如果评论需要@作者, 添加meta通知
+ * 获取评论的回复的父评论id, 父评论作者id和最顶层的父评论id
+ * 使用 $_REQUEST['notify_author'] 来判断是否需要通知作者
+ *
+ * @param int $comment_id
+ * @param WP_Comment $commentdata
+ * 
+ * @return void
+ */
+function add_custom_comment_meta($comment_id, $commentdata)
+{
+    //根据 notify_author 参数, 来判断是否需要通知文章作者
+    $notify_author = isset($_REQUEST['notify_author']) ? true : false;
+    //文章ID
+    $post_id = intval($commentdata->comment_post_ID);
+    //文章作者ID
+    $post_author_id = intval(get_post_field('post_author', $post_id));
+
+    //评论发送人ID
+    $user_id = intval($commentdata->user_id);
+    //父评论ID
+    $comment_parent_id = intval($commentdata->comment_parent);
+
+    //增加用户评论数统计
+    add_user_comment_count($user_id);
+    //更新文章评论数统计
+    update_post_comments($post_id);
+
+    //如果勾选了通知作者 并且是一级评论
+    if ($notify_author && $comment_parent_id === 0)
+    {
+        //通知文章作者 有未读评论 
+        update_comment_meta($comment_id, Comment_Meta::COMMENT_PARENT_USER_ID, $post_author_id);
+        update_comment_meta($comment_id, Comment_Meta::COMMENT_PARENT_USER_READ, 0);
+    }
+    //如果是子评论 (正在回复另外一个评论)
+    else if ($comment_parent_id > 0)
+    {
+        //获取对应的父评论
+        $comment_parent = get_comment($comment_parent_id);
+        if ($comment_parent)
+        {
+            //父评论ID
+            $comment_parent_id = intval($comment_parent->comment_ID);
+            //对应的父评论发送人ID
+            $comment_parent_user_id = $comment_parent->user_id;
+
+            //添加父评论ID
+            update_comment_meta($comment_id, Comment_Meta::COMMENT_PARENT_ID, $comment_parent_id);
+            //添加父评论作者ID
+            update_comment_meta($comment_id, Comment_Meta::COMMENT_PARENT_USER_ID, $comment_parent_user_id);
+            //通知父评论作者 未读回复
+            update_comment_meta($comment_id, Comment_Meta::COMMENT_PARENT_USER_READ, 0);
+
+            //更新父评论的子评论总数
+            update_comment_reply_count($comment_parent_id);
+            //更新子评论ID数组
+            update_array_children_comment_id($comment_parent_id);
+
+
+            //递归获取父评论的父评论
+            while (intval($comment_parent->comment_parent) > 0)
+            {
+                $comment_parent = get_comment(intval($comment_parent->comment_parent));
+            }
+            //获取顶级父评论的id
+            $top_parent_comment_id = intval($comment_parent->comment_ID);
+            //添加顶级父评论的ID
+            update_comment_meta($comment_id, Comment_Meta::TOP_COMMENT_PARENT_ID, $top_parent_comment_id);
+        }
+    }
+
+    //清空该文章的所有评论缓存
+    delete_comment_file_cache($comment_id, $post_id);
+}
+
+/**
+ * 在插入评论之前 进行权限检测
+ *
+ * @param array<string,mixed> $prepared_comment The prepared comment data for `wp_insert_comment`.
+ * @param WP_REST_Request $request          The current request.
+ * @return array<string,mixed>|WP_Error 将要插入的评论 或者 WP_Error 错误
+ */
+function check_pre_insert_comment($prepared_comment, $request)
+{
+
+    $user_id = get_current_user_id();
+
+    $comment_post_id =  isset($prepared_comment['comment_post_ID']) ? intval($prepared_comment['comment_post_ID']) : null;
+
+    //如果相关联的文章id存在
+    if ($comment_post_id)
+    {
+
+        $post_author_id = intval(get_post_field('post_author', $comment_post_id));
+
+        //如果当前用户是封禁用户
+        if (current_user_is_regular() === false)
+        {
+            $prepared_comment = new WP_Error(400, __FUNCTION__ . ' : 该账号已被封禁',  '无法发送 该账号已被封禁');
+        }
+        //如果评论人已经被文章作者拉黑
+        else if (in_user_black_list($post_author_id, $user_id))
+        {
+            $prepared_comment = new WP_Error(400, __FUNCTION__ . ' : 你已被投稿作者拉黑',  '无法发送 你已被投稿作者拉黑');
+        }
+    }
+
+    return $prepared_comment;
+}
+
+/**
+ * 插入评论
+ * 
+ * @param string $comment_content
+ * @param int $comment_post_id
+ * @param int $comment_parent
+ *
+ * @return My_Comment_Model|WP_Error
+ */
+function insert_comment($comment_content, $comment_post_id, $comment_parent = 0)
+{
+
+    $user = wp_get_current_user();
+
+    $args = [
+        'comment_author' => $user->display_name,
+        'comment_author_email' => $user->user_email,
+        'comment_author_url' => '',
+        'comment_content' => $comment_content,
+        'comment_parent' => $comment_parent,
+        'comment_post_ID' => $comment_post_id,
+        'user_id' => $user->ID,
+    ];
+
+    //获取文章作者ID
+    $post_author_id = intval(get_post_field('post_author', $comment_post_id));
+    //如果评论人已经被文章作者拉黑
+    if (in_user_black_list($post_author_id, $user->ID))
+    {
+        $result = new WP_Error(400, __FUNCTION__ . ' : 你已被投稿作者拉黑',  '无法发送 你已被投稿作者拉黑');
+    }
+    else
+    {
+        $result = wp_new_comment($args, true);
+        //$result = wp_handle_comment_submission($args);
+
+        if ($result && !is_wp_error($result))
+        {
+            $result = new My_Comment_Model(get_comment($result));
+        }
+        else if ($result === false)
+        {
+            $result = new WP_Error(500, __FUNCTION__ . ' : 评论发送失败',  '无法发送 原因未知');
+        }
+    }
+
+    return $result;
+}
