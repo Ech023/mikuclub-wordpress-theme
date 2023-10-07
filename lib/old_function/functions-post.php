@@ -590,9 +590,9 @@ function get_new_post_count($date)
 
     //从缓存列表获取
     $count = File_Cache::get_cache_meta($meta_key, File_Cache::DIR_USER, Expired::EXP_1_DAY);
-
+ 
     //缓存无效的话 重新计算
-    if ($count === '')
+    if (empty($count))
     {
 
         global $wpdb;
@@ -620,7 +620,8 @@ function get_new_post_count($date)
         File_Cache::set_cache_meta($meta_key, File_Cache::DIR_USER,  $count);
     }
 
-    return $count;
+    
+    return intval($count);
 }
 
 
@@ -1329,14 +1330,17 @@ function set_post_status($post_id, $post_status)
 
     global $wpdb;
 
+    //判断文章是否已经公开过
+    $first_published = get_post_meta($post_id, 'first_published', true);
 
     //获取文章所属分类ID数组
     $array_id_category = get_post_category_ids($post_id);
-    //如果是动漫区
-    if (in_array(Category::ANIME, $array_id_category))
+    //如果是动漫区或者视频区或者从未公开过
+    if (in_array(Category::ANIME, $array_id_category) || in_array(Category::VIDEO, $array_id_category) || empty($first_published))
     {
         //更新创建时间+状态
         $time = current_time('mysql');
+       
 
         $wpdb->update(
             $wpdb->posts,
@@ -2142,6 +2146,16 @@ function print_download_button($name, $href, $password_id, $password)
     else if (stripos($href, 'quark') !== false)
     {
         $name .= ' (夸克网盘)';
+
+        //如果存在访问密码 , 并且 不存在 ? 参数
+        if ($password && stripos($href, '?') === false)
+        {
+
+            //移除#符号和后面的内容, 添加访问密码到下载链接里
+            $href = explode('#', $href)[0] . '?' . http_build_query([
+                'passcode' => $password,
+            ]);
+        }
     }
     else if (stripos($href, 'magnet') !== false)
     {

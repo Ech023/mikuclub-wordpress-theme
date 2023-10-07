@@ -138,14 +138,16 @@ if (get_theme_option(Admin_Meta::SITE_BOTTOM_CODE_ENABLE))
 
 ?>
 
+
+
 <script>
 
 	<?php
 
 	//底部动态JS代码
 
-	$new_post_count = get_new_post_count( 3 );
-
+	$new_post_count = get_new_post_count( 3);
+    
 	echo <<< HTML
     
          $(function () {

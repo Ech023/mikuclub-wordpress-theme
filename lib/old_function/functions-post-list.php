@@ -6,7 +6,7 @@ use mikuclub\constant\Category;
 use mikuclub\constant\Expired;
 use mikuclub\constant\Option_Meta;
 use mikuclub\constant\Post_Meta;
-use mikuclub\constant\Post_Query;
+use mikuclub\Post_Query;
 use mikuclub\constant\Post_Status;
 use WP_Query;
 
@@ -22,6 +22,19 @@ function on_pre_get_main_posts($wp_query)
 	//只在主查询中生效
 	if ($wp_query->is_main_query())
 	{
+
+		//如果存在自定义 分类变量
+		$main_cat =  get_query_var(Post_Query::CUSTOM_MAIN_CAT);
+		$sub_cat =  get_query_var(Post_Query::CUSTOM_SUB_CAT);
+		if($main_cat){
+			//替换默认查询分类ID
+			set_query_var('cat', $main_cat);
+		}
+		else if($sub_cat){
+			//替换默认查询分类ID
+			set_query_var('cat', $sub_cat);
+		}
+
 
 		//排除置顶文章
 		set_query_var('ignore_sticky_posts', 1);
@@ -70,6 +83,8 @@ function on_pre_get_main_posts($wp_query)
 		{
 			set_query_var('post_type', 'post');
 		}
+
+		
 
 
 		//如果用户未登陆 排除 魔法区分类

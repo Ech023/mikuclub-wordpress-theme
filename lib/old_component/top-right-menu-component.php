@@ -76,10 +76,10 @@ function top_right_menu_component()
                     <?php
                     $has_message   = '';
                     $message_count = '';
-                    if (get_user_unread_message_total_count() > 0)
+                    if (get_user_total_unread_count() > 0)
                     {
                         $has_message   = 'has_message';
-                        $message_count = get_user_unread_message_total_count();
+                        $message_count = get_user_total_unread_count();
                     }
                     $message_page_link = $home . '/message';
                     $forum_link =  $home . '/forums';
@@ -92,24 +92,21 @@ function top_right_menu_component()
                         <a class="dropdown-item" href="<?php echo add_query_arg('type', Message_Type::PRIVATE_MESSAGE, $message_page_link); ?>" target="_blank">
                             我的私信
                             <span>
-                                <?php if (isset($_SESSION[Session_Cache::PRIVATE_MESSAGE_COUNT]) && $_SESSION[Session_Cache::PRIVATE_MESSAGE_COUNT] > 0)
-                                    echo $_SESSION[Session_Cache::PRIVATE_MESSAGE_COUNT] ?>
+                                <?php echo get_user_private_message_unread_count() ?: '' ?>
                             </span>
                         </a>
 
                         <a class="dropdown-item" href="<?php echo add_query_arg('type', Message_Type::COMMENT_REPLY, $message_page_link); ?>" target="_blank">
                             评论回复
                             <span>
-                                <?php if (isset($_SESSION[Session_Cache::COMMENT_REPLY_COUNT]) && $_SESSION[Session_Cache::COMMENT_REPLY_COUNT] > 0)
-                                    echo $_SESSION[Session_Cache::COMMENT_REPLY_COUNT] ?>
+                                <?php echo get_user_comment_reply_unread_count() ?: '' ?>
                             </span>
                         </a>
 
                         <a class="dropdown-item" href="<?php echo add_query_arg('show_notification', '1', $forum_link); ?>" target="_blank">
                             论坛回帖
                             <span>
-                                <?php if (isset($_SESSION[Session_Cache::FORUM_REPLY_COUNT]) && $_SESSION[Session_Cache::FORUM_REPLY_COUNT] > 0)
-                                    echo $_SESSION[Session_Cache::FORUM_REPLY_COUNT] ?>
+                                <?php echo get_user_forum_notification_unread_count() ?: '' ?>
                             </span>
                         </a>
                     </div>

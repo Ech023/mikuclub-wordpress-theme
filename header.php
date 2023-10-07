@@ -171,7 +171,7 @@ else
                     { ?>
                         <div class="row">
                             <div class="col align-items-center py-2">
-                                <form class="search-form ms-xxl-auto me-auto " style="max-width: 500px;">
+                                <form class="site-search-form ms-xxl-auto me-auto " style="max-width: 500px;">
                                     <div class="input-group ">
                                         <input type="text" class="form-control" placeholder="搜索" name="search" autocomplete="off">
 
@@ -227,26 +227,7 @@ else
                         </div>
 
 
-                        <?php
-                        //主页播放音乐 + 雪花
-                        /*
-					if ( is_home() && ! get_query_var( 'paged' ) ) { ?>
-
-                        <div class="position-absolute  rounded p-3 border border-info end-0"
-                             style="background-color: #fffffff2;">
-                            <div class="text-center mb-2">
-                                <span>圣诞之歌 歌手: 莉姬LIJI 来源:</span>
-                                <a href="https://www.bilibili.com/video/BV1uJ411s7xp" target="_blank"
-                                   style="position: relative; z-index: 5; "
-                                   rel="external nofollow">BV1uJ411s7xp</a>
-                            </div>
-                            <audio src="https://tuku.mikuclub.cn/down/圣诞单身狗之歌.mp3" autoplay controls loop
-                                   style="position: relative;  z-index: 5;"></audio>
-                        </div>
-
-					<?php }
-                    */
-                        ?>
+                       
 
 
                     </div>
@@ -263,7 +244,7 @@ else
                         <?php echo get_main_menu(); ?>
                         <!-- 手机菜单搜索-->
                         <div class="d-md-none my-2">
-                            <form class="form-inline flex-grow-1 search-form">
+                            <form class="form-inline flex-grow-1 site-search-form">
                                 <div class="input-group flex-grow-1">
                                     <input type="text" class="form-control" placeholder="搜索" name="search">
 

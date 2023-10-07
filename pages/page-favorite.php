@@ -7,7 +7,7 @@
 
 use function mikuclub\breadcrumbs_component;
 use function mikuclub\next_page_button;
-use function mikuclub\print_categoria_radio_box;
+use function mikuclub\print_category_button_component;
 use function mikuclub\redirect_for_not_logged;
 
 redirect_for_not_logged();
@@ -38,7 +38,7 @@ get_header();
 
                 </div>
 
-                <?php echo print_categoria_radio_box(); ?>
+                <?php echo print_category_button_component(); ?>
 
             </div>
 

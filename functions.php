@@ -387,26 +387,6 @@ function convert_link_to_https($link)
 }
 
 
-/**
- * 输出页面的编辑链接
- * @return string
- */
-function print_page_edit_link()
-{
-    global $post;
-
-    $output = '';
-
-    if (current_user_is_admin())
-    {
-        $post_type_object = get_post_type_object($post->post_type);
-        $link = admin_url(sprintf($post_type_object->_edit_link . '&amp;action=edit', $post->ID));
-        $output = '<a class="btn btn-secondary" href="' . $link . '">编辑页面</a>';
-    }
-
-    return $output;
-}
-
 
 
 
@@ -429,76 +409,6 @@ function get_random_head_background_image($index = null)
     return 'https://' . Web_Domain::CDN_MIKUCLUB_FUN . '/top/' . $index . '.webp';
 }
 
-/**
- * 输出分类单选框
- *
- * @return string 
- */
-function print_categoria_radio_box()
-{
-
-    //获取当前分类id
-    $current_cat = get_query_var('cat');
-    //获取分类id列表
-    $category_list = get_main_category_list();
-
-    $category_options = [
-        (object) [
-            'term_id' => 0,
-            'name' => '全部分区'
-        ]
-    ];
-
-
-    foreach ($category_list as $category)
-    {
-
-
-        $main_name = $category->name;
-
-        //更改主分类名称, 增加后缀
-        //$category->name .= '-全部';
-
-        //储存主分类
-        $category_options[] = $category;
-
-
-        //如果是成人分类 和 用户已登陆
-        if ($category->term_id === Category::ADULT_CATEGORY && is_user_logged_in())
-        {
-            //添加子分类数组
-            foreach (get_main_category_children($category->term_id) as $sub_category)
-            {
-                //更改子分类名称, 增加上主分类的前缀
-                $sub_category->name = $main_name . '-' . $sub_category->name;
-                $category_options[] = $sub_category;
-            }
-        }
-    }
-
-
-    $category_output = '<div class="row g-3">';
-    //输出分类
-    foreach ($category_options as $category)
-    {
-        $id = $category->term_id;
-        $name =  $category->name;
-        $checked = (empty($id) || $id === $current_cat) ? 'checked' : '';
-
-
-        $category_output .= <<<HTML
-     <div class="col-auto">
-            <input type="radio" class="cat btn-check" name="cat" id="cat-{$id}" autocomplete="off" value={$id} {$checked}>
-            <label class="btn btn-outline-secondary" for="cat-{$id}">{$name}</label>
-    </div>
-
-HTML;
-    }
-
-    $category_output .= '</div>';
-
-    return $category_output;
-}
 
 
 
@@ -601,7 +511,7 @@ function fix_image_domain_with_file_6($image_src)
 {
     $array_search = array_merge(Web_Domain::get_array_site_domain(), Web_Domain::get_array_file_domain());
 
-    $new_domain = Web_Domain::FILE5_MIKUCLUB_FUN;
+    $new_domain = Web_Domain::FILE6_MIKUCLUB_FUN;
 
     $images_src = str_replace($array_search, $new_domain, $image_src);
 
@@ -623,4 +533,17 @@ function fix_site_domain_with_domain_main($link)
     $result = str_replace($array_search, $new_domain, $link);
 
     return $result;
+}
+
+/**
+ * 格式化DEBUG输出
+ *
+ * @param mixed $value
+ * @return void
+ */
+function var_dump_formatted($value) {
+
+	echo '<pre>';
+	var_dump( $value );
+	echo '</pre>';
 }

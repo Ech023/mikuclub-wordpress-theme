@@ -52,6 +52,7 @@ spl_autoload_register(function ($class) use ($theme_lib_directory)
     foreach (array_merge(
         //glob($theme_lib_directory . 'old_class' . DIRECTORY_SEPARATOR . $file_name . '.php'),
         glob($theme_lib_directory . 'class' . DIRECTORY_SEPARATOR . $file_name . '.php'),
+        glob($theme_lib_directory . 'model' . DIRECTORY_SEPARATOR . $file_name . '.php'),
         glob($theme_lib_directory . 'exception' . DIRECTORY_SEPARATOR . $file_name . '.php')
     ) as $php_file)
     {

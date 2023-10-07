@@ -6,9 +6,9 @@ use function mikuclub\adult_404_content_for_no_logging_user;
 use function mikuclub\breadcrumbs_component;
 
 use function mikuclub\get_hot_list_by_random;
-use function mikuclub\get_main_category_children;
+use function mikuclub\get_sub_category_list;
 use function mikuclub\get_theme_option;
-use function mikuclub\has_sub_categories;
+use function mikuclub\has_sub_category;
 use function mikuclub\hot_posts_most_comments;
 use function mikuclub\hot_posts_most_rating;
 use function mikuclub\is_adult_category;
@@ -45,7 +45,7 @@ use function mikuclub\top_hot_posts_component;
 
 			//如果是有子分类的主分类
 			//输出幻灯片+3种热门列表
-			if (has_sub_categories(get_queried_object_id()))
+			if (has_sub_category(get_queried_object_id()))
 			{
 		?>
 
@@ -68,7 +68,7 @@ use function mikuclub\top_hot_posts_component;
 					echo '<div class="pop-banner  text-center my-4">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
 				}
 
-				$sub_categories = get_main_category_children(get_queried_object_id());
+				$sub_categories = get_sub_category_list(get_queried_object_id());
 				if ($sub_categories)
 				{
 					echo '

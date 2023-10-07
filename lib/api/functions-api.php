@@ -42,9 +42,9 @@ function api_get_bilibili_video_info($data)
 
 	try
 	{
-		$post_id = Input_Validator::get_request_value('post_id', Input_Validator::TYPE_INT, true);
-		$aid = Input_Validator::get_request_value('aid', Input_Validator::TYPE_STRING);
-		$bvid = Input_Validator::get_request_value('bvid', Input_Validator::TYPE_STRING);
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
+		$aid = Input_Validator::get_array_value($data, 'aid', Input_Validator::TYPE_STRING);
+		$bvid = Input_Validator::get_array_value($data, 'bvid', Input_Validator::TYPE_STRING);
 
 		if (empty($aid) && empty($bvid))
 		{

@@ -15,4 +15,4 @@ add_action('wp_enqueue_scripts', 'mikuclub\setup_front_end_script_variable');
 
 
 //添加 自定义query变量
-add_filter('query_vars', ['mikuclub\constant\Post_Query', 'add_custom_query_vars']);
+add_filter('query_vars', ['mikuclub\Post_Query', 'add_custom_query_vars']);

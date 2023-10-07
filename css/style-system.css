@@ -110,6 +110,10 @@ a.disabled {
     white-space: nowrap;
 }
 
+.text-body {
+    color: var(--text-color) !important;
+}
+
 /**
 自定义颜色 初音绿
  */

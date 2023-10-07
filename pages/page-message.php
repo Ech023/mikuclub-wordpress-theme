@@ -34,16 +34,16 @@ $nav_items = [
 		'type_key' => 'type',
 		'type'      => Message_Type::COMMENT_REPLY,
 		'name'      => '评论回复',
-		'count'     => $_SESSION[ Session_Cache::COMMENT_REPLY_COUNT ],
-		'count_key' => Session_Cache::COMMENT_REPLY_COUNT,
+		'count'     => $_SESSION[ Session_Cache::USER_COMMENT_REPLY_UNREAD_COUNT ],
+		'count_key' => Session_Cache::USER_COMMENT_REPLY_UNREAD_COUNT,
 		'page_link' => get_page_link(),
 	],
 	[
 		'type_key' => 'show_notification',
 		'type'      => 1,
 		'name'      => '论坛回复',
-		'count'     => $_SESSION[ Session_Cache::FORUM_REPLY_COUNT ],
-		'count_key' => Session_Cache::FORUM_REPLY_COUNT,
+		'count'     => $_SESSION[ Session_Cache::USER_FORUM_NOTIFICATION_UNREAD_COUNT ],
+		'count_key' => Session_Cache::USER_FORUM_NOTIFICATION_UNREAD_COUNT,
 		'page_link' => get_home_url().'/forums',
 	]
 

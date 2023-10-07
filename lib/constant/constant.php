@@ -33,7 +33,9 @@ class Config
     const DATE_FORMAT = 'y-m-d H:i:s';
 
     //启动文件缓存系统
-    const ENABLE_FILE_CACHE_SYSTEM = true;
+    const ENABLE_FILE_CACHE_SYSTEM
+    // = true;
+    = false;
     //关闭文件缓存
     //const ENABLE_FILE_CACHE_SYSTEM = false;
 
@@ -42,6 +44,14 @@ class Config
     const STICKY_POST_COUNT = 6;
     //内容页底部相关推荐里的文章数量
     const RELATED_POST_COUNT = 8;
+
+    //单页的评论数量
+    const NUMBER_COMMENT_PER_PAGE = 30;
+    //单页的高赞评论数量
+    const NUMBER_TOP_LIKE_COMMENT_PER_PAGE = 3;
+
+    //单页的回复评论数量
+    const NUMBER_COMMENT_REPLY_PER_PAGE = 20;
 }
 
 /**
@@ -63,7 +73,7 @@ class Web_Domain
     const FILE3_MIKUCLUB_FUN = 'file3.mikuclub.fun';
     const FILE4_MIKUCLUB_FUN = 'file4.mikuclub.fun';
     const FILE5_MIKUCLUB_FUN = 'file5.mikuclub.fun';
-    //const FILE6_MIKUCLUB_FUN = 'file6.mikuclub.fun';
+    const FILE6_MIKUCLUB_FUN = 'file6.mikuclub.fun';
 
     /**
      * 获取当前主域名

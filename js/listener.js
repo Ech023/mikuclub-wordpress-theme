@@ -15,20 +15,22 @@
 
 $(function () {
 
-    "use strict";
+    const $body = $('body');
 
-
-    let $body = $('body');
 
     //监听搜索表单 的提交事件
-    $('form.search-form').on('submit', function (event) {
+    $('form.site-search-form').on('submit', function (event) {
         event.preventDefault();
-        sendSearch(event.target);
+        sendSearch($(event.target));
     });
-    //监听搜索表单里的check点击事件
-    $('form.search-form .cat').on('click', function (event) {
+    //监听搜索表单里的分类按钮check点击事件
+    $('form.site-search-form button.category').on('click', function (event) {
+
+        //更新分类和子分类按钮组件的识别类名
+        update_category_button_group_class($(this));
+
         //触发表单的提交事件
-        $(this).parents('form.search-form').trigger('submit');
+        $(this).closest('form.site-search-form').trigger('submit');
     });
 
 

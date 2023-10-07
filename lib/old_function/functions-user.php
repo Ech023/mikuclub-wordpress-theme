@@ -5,75 +5,13 @@ namespace mikuclub;
 use mikuclub\constant\Comment_Meta;
 use mikuclub\constant\Expired;
 use mikuclub\constant\Post_Meta;
+use mikuclub\constant\User_Capability;
 use mikuclub\constant\User_Meta;
 use WP_Post;
 use WP_REST_Request;
 use WP_User;
 
-/**
- * 初始化用户数据
- * @return void
- */
-function init_user_data()
-{
 
-	//如果有登陆
-	if (is_user_logged_in())
-	{
-
-		//黑名单用户检查
-		check_blocked_user();
-
-		//设置用户的消息变量
-		init_user_unread_message_total_count();
-	}
-}
-
-/**
- * 检查是否是黑名单用户, 如果是, 直接跳转到其他网站
- * @return void
- */
-function check_blocked_user()
-{
-
-	//如果还未初始化 检查记录
-	if (!isset($_SESSION[Session_Cache::IS_REGULAR_USER]))
-	{
-		$_SESSION[Session_Cache::IS_REGULAR_USER] = current_user_can('read');
-	}
-	//如果是黑名单用户
-	if ($_SESSION[Session_Cache::IS_REGULAR_USER] === false)
-	{
-		//跳转
-		$redirect_site =  'https://www.mikuclub.com';
-		wp_redirect($redirect_site);
-		exit;
-	}
-}
-
-/**
- * 初始化 第一次访问的时候统计用户未读消息数
- * @return void
- */
-function init_user_unread_message_total_count()
-{
-
-	//设置未读私信数量
-	if (!isset($_SESSION[Session_Cache::PRIVATE_MESSAGE_COUNT]))
-	{
-		$_SESSION[Session_Cache::PRIVATE_MESSAGE_COUNT] = get_user_private_message_unread_count();
-	}
-	//设置未读评论数量
-	if (!isset($_SESSION[Session_Cache::COMMENT_REPLY_COUNT]))
-	{
-		$_SESSION[Session_Cache::COMMENT_REPLY_COUNT] = get_user_unread_comment_reply_count();
-	}
-	//设置未读论坛帖子回复数量
-	if (!isset($_SESSION[Session_Cache::FORUM_REPLY_COUNT]))
-	{
-		$_SESSION[Session_Cache::FORUM_REPLY_COUNT] = get_user_forum_notification_count();
-	}
-}
 
 
 
@@ -671,49 +609,7 @@ function add_user_comment_count($user_id)
 
 
 
-/**
- * 获取用户未读的评论数量
- *
- * @return int
- */
-function get_user_unread_comment_reply_count()
-{
 
-	$user_id = get_current_user_id();
-	$count   = 0;
-
-	//必须有用户id
-	if ($user_id)
-	{
-
-		$args = [
-
-			'status'     => 'approve',
-			'count'      => true,
-			'meta_query' => [
-				'meta_query' => [
-					'relation' => 'AND',
-					[
-						'key'     => Comment_Meta::COMMENT_PARENT_USER_ID,
-						'value'   => $user_id,
-						'compare' => '=',
-						'type'    => 'NUMERIC',
-					],
-					[
-						'key'     => Comment_Meta::COMMENT_PARENT_USER_READ,
-						'value'   => 0,
-						'compare' => '=',
-						'type'    => 'NUMERIC',
-					],
-				],
-			],
-		];
-
-		$count = get_comments($args);
-	}
-
-	return $count;
-}
 
 
 /**
@@ -994,18 +890,7 @@ function action_on_user_login($user_name, $user)
 
 add_action('wp_login', 'mikuclub\action_on_user_login', 10, 2);
 
-/**
- * 用户退出登陆时触发的动作
- * 
- * @return void
- */
-function action_on_user_logout()
-{
-	//删除消息变量
-	delete_user_unread_message_total_count_session();
-}
 
-add_action('wp_logout', 'mikuclub\action_on_user_logout');
 
 
 /**
@@ -1107,42 +992,6 @@ function delete_user_favorite($post_id)
 
 
 
-/**
- * 获取用户未读消息总数
- * @return int;
- */
-function get_user_unread_message_total_count()
-{
-
-	$total_count = 0;
-
-	if (isset($_SESSION[Session_Cache::PRIVATE_MESSAGE_COUNT]))
-	{
-		$total_count += $_SESSION[Session_Cache::PRIVATE_MESSAGE_COUNT];
-	}
-	if (isset($_SESSION[Session_Cache::COMMENT_REPLY_COUNT]))
-	{
-		$total_count += $_SESSION[Session_Cache::COMMENT_REPLY_COUNT];
-	}
-	if (isset($_SESSION[Session_Cache::FORUM_REPLY_COUNT]))
-	{
-		$total_count += $_SESSION[Session_Cache::FORUM_REPLY_COUNT];
-	}
-
-	return $total_count;
-}
-
-/**
- * 移除用户未读消息数的session变量
- * 
- * @return void
- */
-function delete_user_unread_message_total_count_session()
-{
-	unset($_SESSION[Session_Cache::PRIVATE_MESSAGE_COUNT]);
-	unset($_SESSION[Session_Cache::COMMENT_REPLY_COUNT]);
-	unset($_SESSION[Session_Cache::FORUM_REPLY_COUNT]);
-}
 
 
 /**

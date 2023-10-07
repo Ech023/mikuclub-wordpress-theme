@@ -1,38 +1,11 @@
 <?php
+
 namespace mikuclub;
 
 use mikuclub\constant\Config;
 use WP_Error;
 
-/**
- * 获取用户收到的未读私信数量
- * @return int 数量
- */
-function get_user_private_message_unread_count()
-{
 
-	$user_id   = get_current_user_id();
-	$cache_key = 'user_message_unread_count_' . $user_id;
-
-	$count = 0;
-
-	//必须拥有当前用户id
-	if ($user_id)
-	{
-
-		global $wpdb;
-		$query = " SELECT COUNT(*) FROM mm_message WHERE recipient_id = {$user_id} AND status  = 0  ";
-		$count = $wpdb->get_var($query);
-
-		//如果错误 重设为0
-		if (!$count)
-		{
-			$count = 0;
-		}
-	}
-
-	return $count;
-}
 
 /**
  * 获取用户收到的收到的私信列表
@@ -205,11 +178,10 @@ function send_private_message($recipient_id, $message_content, $respond = 0, $is
 		}
 
 		//检测发件人是否在收件人的黑名单里
-		if(in_user_black_list($recipient_id, $sender_id)){
+		if (in_user_black_list($recipient_id, $sender_id))
+		{
 			return new WP_Error(400, __FUNCTION__ . ' : 你已被收件人拉黑', '无法发送 你已被收件人拉黑');
 		}
-
-
 	}
 
 
@@ -283,7 +255,7 @@ function delete_private_message($user_id,  $message_id, $target_user_id)
 			$result = $wpdb->delete(
 				'mm_message',
 				[
-					'sender_id' => $target_user_id, 
+					'sender_id' => $target_user_id,
 					'recipient_id' =>  $user_id,
 				],
 				[

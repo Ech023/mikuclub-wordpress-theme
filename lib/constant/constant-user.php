@@ -39,5 +39,7 @@ class User_Capability{
 
     //编辑主题的权限
     const EDIT_THEMES = 'edit_themes';
+    //查看文章的权限
+    const READ = 'read';
 
 }

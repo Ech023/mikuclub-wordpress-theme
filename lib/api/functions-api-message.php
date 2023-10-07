@@ -226,7 +226,7 @@ function register_custom_private_message_api()
 		[
 			'methods'             => 'GET',
 			'callback'            => 'mikuclub\api_get_private_messages',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'permission_callback' => 'is_user_logged_in',
 		],
 		[
 			'methods'             => 'POST',
@@ -236,21 +236,21 @@ function register_custom_private_message_api()
 		[
 			'methods'             => 'delete',
 			'callback'            => 'mikuclub\api_delete_private_message',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'permission_callback' => 'is_user_logged_in',
 		],
 	]);
 	register_rest_route('utils/v2', '/message/(?P<id>\d+)', [
 		[
 			'methods'             => 'DELETE',
 			'callback'            => 'mikuclub\api_delete_private_message',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'permission_callback' => 'is_user_logged_in',
 		],
 	]);
 
 	register_rest_route('utils/v2', '/message_count', [
 		'methods'             => 'GET',
 		'callback'            => 'mikuclub\api_get_user_private_message_unread_count',
-		'permission_callback' => 'mikuclub\is_user_logged_in',
+		'permission_callback' => 'is_user_logged_in',
 	]);
 
 	register_rest_route('utils/v2', '/message_report', [

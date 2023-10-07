@@ -76,16 +76,31 @@ function isSearchSpider() {
 
 }
 
+/**
+ * 更新分类按钮的类名
+ * @param {jQuery} $button
+ */
+function update_category_button_group_class($button) {
+
+    //移除分类组和子分类组里所有选中状态
+    $('.array_cat_button_group button.category, .array_sub_cat_group button.category').removeClass('selected');
+    //只为当前点击的按钮添加识别类名
+    $button.addClass('selected');
+
+
+}
 
 /**
  * 发送搜索
- * @param form
+ * @param {jQuery} $form
  */
-function sendSearch(form) {
-    "use strict";
+function sendSearch($form) {
+
+
+    const $input = $form.find('input[name="search"]');
 
     //获取搜索内容
-    let searchValue = form.search.value.trim();
+    let searchValue = $input.val();
 
     //如果搜索内容为空
     if (!searchValue) {
@@ -93,15 +108,28 @@ function sendSearch(form) {
         return;
     }
 
-    //如果有分类选项 并且有选择特定分类
+    //获取被选中的分类和子分类按钮里的ID
+    const main_cat = $form.find('button.main_cat.selected').data('main_cat');
+    const sub_cat = $form.find('button.sub_cat.selected').data('sub_cat');
+
+    const data = {};
+    //如果cat存在
+    if (main_cat) {
+        data.main_cat = main_cat;
+    }
+    //如果sub_cat存在
+    else if (sub_cat) {
+        data.sub_cat = sub_cat;
+    }
+
     let params = '';
-    if (form.hasOwnProperty('cat') && form.cat.value > 0) {
-        params = `?${$.param({ cat: form.cat.value })}`;
+    //如果有分类选项
+    if (Object.keys(data).length) {
+        params = '?' + $.param(data);
     }
 
     let path = encodeURIComponent(searchValue);
     location.href = `${MY_SITE.home}/search/${path}${params}`;
-
 }
 
 /**
@@ -537,8 +565,14 @@ function replace_image_src_to_backup_image_domain(image_src) {
 
     if (image_src) {
 
+        const search_domain = SITE_DOMAIN.get_array_site_domain();
+        // 遍历主域名数组，逐一进行替换
+        for (const domain of search_domain) {
+            image_src = image_src.replace(domain, BACKUP_IMAGE_DOMAIN);
+        }
+
         // 使用正则表达式匹配文件名，把 ww.mikuclub.win / ww.mikuclub.eu 的 地址 改成 file.mikuclub.fun
-        image_src = image_src.replace(/www\.mikuclub\.(win|eu)/g, BACKUP_IMAGE_DOMAIN);
+        // image_src = image_src.replace(/www\.mikuclub\.(win|eu)/g, BACKUP_IMAGE_DOMAIN);
 
         // 使用正则表达式匹配文件名，把 file*.mikuclub.fun 域名 统一替换成 file.mikuclub.fun
         image_src = image_src.replace(/file\d+\.mikuclub\.fun/g, BACKUP_IMAGE_DOMAIN);
@@ -588,6 +622,26 @@ function update_image_src_of_element_to_backup_image_domain() {
 
     }
 
+}
+
+
+/**
+ * 修正链接,替换成当前域名
+ * @param {string} href
+ */
+function replace_link_href_to_current_domain(href) {
+
+    if (href) {
+
+        const search_domain = SITE_DOMAIN.get_array_site_domain();
+        // 遍历主域名数组，逐一进行替换
+        for (const domain of search_domain) {
+            href = href.replace(domain, SITE_DOMAIN.get_current_domain);
+        }
+
+    }
+
+    return href;
 }
 
 /**

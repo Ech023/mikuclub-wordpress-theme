@@ -61,38 +61,6 @@ function wpforo_attach_file_suggestion($forumid = null)
 //add_action('wpforo_reply_form_extra_fields_after', 'mikuclub\wpforo_attach_file_suggestion');
 //add_action('wpforo_portable_form_extra_fields_after', 'mikuclub\wpforo_attach_file_suggestion');
 
-/**
- * 获取论坛通知统计数
- * @return int
- */
-function get_user_forum_notification_count()
-{
-
-	$user_id = get_current_user_id();
-	$count = 0;
-
-	//必须拥有当前用户id
-	if ($user_id)
-	{
-
-		//消息类型
-		$itemtype = 'alert';
-		//统计数量
-		$row_count = 100;
-
-		global $wpdb;
-		$query = " SELECT COUNT(*)  FROM  mm_wpforo_activity WHERE itemtype = '{$itemtype}' AND userid = {$user_id} ORDER BY id DESC LIMIT 0 , {$row_count}";
-		$count = $wpdb->get_var($query);
-
-		//如果错误 重设为0
-		if (!$count)
-		{
-			$count = 0;
-		}
-	}
-
-	return $count;
-}
 
 
 

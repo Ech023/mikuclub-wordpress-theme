@@ -16,9 +16,9 @@ use WP_REST_Request;
  *
  * @return int
  */
-function api_get_user_unread_comment_reply_count($data)
+function api_get_user_comment_reply_unread_count($data)
 {
-	return get_user_unread_comment_reply_count();
+	return get_user_comment_reply_unread_count();
 }
 
 
@@ -29,7 +29,7 @@ function api_get_user_unread_comment_reply_count($data)
  *
  * @return My_Comment_Reply[]|WP_Error
  */
-function api_get_comment_replies($data)
+function api_get_comment_reply_list($data)
 {
 
 	//默认参数
@@ -55,7 +55,7 @@ function api_get_comment_replies($data)
 	}
 
 
-	return get_comment_replies($paged, $number);
+	return get_comment_reply_list($paged, $number);
 }
 
 
@@ -71,7 +71,7 @@ function api_delete_comment($data)
 	try
 	{
 		//获取 id 参数
-		$comment_id = Input_Validator::get_request_value('id', Input_Validator::TYPE_INT, true);
+		$comment_id = Input_Validator::get_array_value($data, 'id', Input_Validator::TYPE_INT, true);
 
 		//当前登陆用户ID
 		$user_id = get_current_user_id();
@@ -111,6 +111,9 @@ function api_delete_comment($data)
 			{
 				throw new Exception('删除失败');
 			}
+
+			//清空该文章的所有评论缓存
+			delete_comment_file_cache($comment_id, $post_id);
 		}
 		else
 		{
@@ -129,7 +132,7 @@ function api_delete_comment($data)
  * API 获取文章的评论列表
  * @param WP_REST_Request $data
  *
- * @return My_Comment[]|WP_Error
+ * @return My_Comment_Model[]|WP_Error
  */
 function api_get_comment_list($data)
 {
@@ -167,15 +170,23 @@ function api_get_comment_list($data)
  *
  * @return int|WP_Error
  **/
-function api_add_comment_likes($data)
+function api_add_comment_like($data)
 {
-
-	//如果缺少必要参数
-	if (!isset($data['comment_id']))
+	try
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : comment_id 参数错误');
+		$comment_id = Input_Validator::get_array_value($data, 'comment_id', Input_Validator::TYPE_INT, true);
+
+		//清空该文章的所有评论缓存
+		delete_comment_file_cache($comment_id);
+
+		$result = add_comment_like($comment_id);
 	}
-	return add_comment_likes($data['comment_id']);
+	catch (Exception $e)
+	{
+		$result = new WP_Error(400, $e->getMessage(), __FUNCTION__);
+	}
+
+	return $result;
 }
 
 /**
@@ -185,15 +196,24 @@ function api_add_comment_likes($data)
  *
  * @return int|WP_Error
  **/
-function api_delete_comment_likes($data)
+function api_delete_comment_like($data)
 {
 
-	//如果缺少必要参数
-	if (!isset($data['comment_id']))
+	try
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : comment_id 参数错误');
+		$comment_id = Input_Validator::get_array_value($data, 'comment_id', Input_Validator::TYPE_INT, true);
+
+		//清空该文章的所有评论缓存
+		delete_comment_file_cache($comment_id);
+
+		$result = delete_comment_like($comment_id);
 	}
-	return delete_comment_likes($data['comment_id']);
+	catch (Exception $e)
+	{
+		$result = new WP_Error(400, $e->getMessage(), __FUNCTION__);
+	}
+
+	return $result;
 }
 
 
@@ -203,7 +223,7 @@ function api_delete_comment_likes($data)
  * 创建评论
  * @param WP_REST_Request $data
  *
- * @return bool|mixed|My_Comment|WP_Error
+ * @return bool|mixed|My_Comment_Model|WP_Error
  */
 function api_insert_custom_comment($data)
 {
@@ -253,7 +273,7 @@ function api_add_custom_comment_metadata($data)
 		if (get_comment_reply_count($comment_id) > 0)
 		{
 			//获取子评论 id数组
-			$output['comment_reply_ids'] = get_comment_reply_ids($comment_id);
+			$output['comment_reply_ids'] = get_array_children_comment_id($comment_id);
 		}
 	}
 
@@ -305,16 +325,16 @@ function register_custom_comment_api()
 	//添加自定义接口
 	register_rest_route('utils/v2', '/comments_count', [
 		'methods'             => 'GET',
-		'callback'            => 'mikuclub\api_get_user_unread_comment_reply_count',
-		'permission_callback' => 'mikuclub\is_user_logged_in',
+		'callback'            => 'mikuclub\api_get_user_comment_reply_unread_count',
+		'permission_callback' => 'is_user_logged_in',
 
 	]);
 
 	register_rest_route('utils/v2', '/comments', [
 		[
 			'methods'             => 'GET',
-			'callback'            => 'mikuclub\api_get_comment_replies',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'callback'            => 'mikuclub\api_get_comment_reply_list',
+			'permission_callback' => 'is_user_logged_in',
 		],
 	]);
 
@@ -334,7 +354,7 @@ function register_custom_comment_api()
 		[
 			'methods'             => 'DELETE',
 			'callback'            => 'mikuclub\api_delete_comment',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'permission_callback' => 'is_user_logged_in',
 		],
 	]);
 
@@ -342,11 +362,11 @@ function register_custom_comment_api()
 	register_rest_route('utils/v2', '/comment_likes', [
 		[
 			'methods'             => 'POST',
-			'callback'            => 'mikuclub\api_add_comment_likes',
+			'callback'            => 'mikuclub\api_add_comment_like',
 		],
 		[
 			'methods'             => 'DELETE',
-			'callback'            => 'mikuclub\api_delete_comment_likes',
+			'callback'            => 'mikuclub\api_delete_comment_like',
 		],
 	]);
 

@@ -307,17 +307,17 @@ function register_custom_user_metadata()
 		[
 			'methods'             => 'GET',
 			'callback'            => 'mikuclub\api_get_user_favorite',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'permission_callback' => 'is_user_logged_in',
 		],
 		[
 			'methods'             => 'POST',
 			'callback'            => 'mikuclub\api_add_user_favorite',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'permission_callback' => 'is_user_logged_in',
 		],
 		[
 			'methods'             => 'DELETE',
 			'callback'            => 'mikuclub\api_delete_user_favorite',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'permission_callback' => 'is_user_logged_in',
 		],
 	]);
 
@@ -325,17 +325,17 @@ function register_custom_user_metadata()
 		[
 			'methods'             => 'GET',
 			'callback'            => 'mikuclub\api_get_user_followed',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'permission_callback' => 'is_user_logged_in',
 		],
 		[
 			'methods'             => 'POST',
 			'callback'            => 'mikuclub\api_add_user_followed',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'permission_callback' => 'is_user_logged_in',
 		],
 		[
 			'methods'             => 'DELETE',
 			'callback'            => 'mikuclub\api_delete_user_followed',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'permission_callback' => 'is_user_logged_in',
 		],
 	]);
 
@@ -343,17 +343,17 @@ function register_custom_user_metadata()
 		[
 			'methods'             => 'GET',
 			'callback'            => 'mikuclub\api_get_user_black_list',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'permission_callback' => 'is_user_logged_in',
 		],
 		[
 			'methods'             => 'POST',
 			'callback'            => 'mikuclub\api_add_user_black_list',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'permission_callback' => 'is_user_logged_in',
 		],
 		[
 			'methods'             => 'DELETE',
 			'callback'            => 'mikuclub\api_delete_user_black_list',
-			'permission_callback' => 'mikuclub\is_user_logged_in',
+			'permission_callback' => 'is_user_logged_in',
 		],
 	]);
 

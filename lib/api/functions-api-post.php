@@ -412,7 +412,7 @@ function register_custom_post_api()
 	register_rest_route('utils/v2', '/update_post_date', [
 		'methods'             => 'POST',
 		'callback'            => 'mikuclub\api_update_post_date',
-		'permission_callback' => 'mikuclub\is_user_logged_in',
+		'permission_callback' => 'is_user_logged_in',
 	]);
 
 
@@ -438,7 +438,7 @@ function register_custom_post_api()
 	register_rest_route('utils/v2', '/draft_post', [
 		'methods'             => 'POST',
 		'callback'            => 'mikuclub\api_draft_post',
-		'permission_callback' => 'mikuclub\is_user_logged_in',
+		'permission_callback' => 'is_user_logged_in',
 	]);
 
 	register_rest_route('utils/v2', '/fail_down', [
@@ -449,7 +449,7 @@ function register_custom_post_api()
 	register_rest_route('utils/v2', '/post_meta', [
 		'methods'             => 'POST',
 		'callback'            => 'mikuclub\api_update_post_meta',
-		'permission_callback' => 'mikuclub\is_user_logged_in',
+		'permission_callback' => 'is_user_logged_in',
 	]);
 
 	register_rest_field(

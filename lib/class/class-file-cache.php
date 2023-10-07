@@ -17,8 +17,8 @@ class File_Cache
     const DIR_POST = 'post';
     const DIR_POSTS = 'posts';
     const DIR_COMMENTS = 'comments';
+    const DIR_CATEGORY = 'category';
     const DIR_COMPONENTS = 'components';
-
 
     /*全站相关缓存 键名*/
     const SITE_POST_COUNT = 'count_total_post';
@@ -29,6 +29,7 @@ class File_Cache
     const SITE_FRIEND_LINK = 'friend_link';
 
     const MAIN_CATEGORY_LIST = 'main_category_list';
+    const SUB_CATEGORY_LIST = 'sub_category_list';
 
 
     /*用户相关缓存 键名*/
@@ -62,6 +63,8 @@ class File_Cache
     const POST_META_DESCRIPTION = 'post_meta_description';
 
 
+    /*评论列表 缓存 键名*/
+    const COMMENT_LIST = 'comment_list';
 
     /**
      * 读取缓存
@@ -151,7 +154,7 @@ class File_Cache
      * @param string $sub_directory
      * @return void
      */
-    public static function clean_cache($sub_directory = '')
+    public static function delete_directory($sub_directory = '')
     {
         $path = static::ROOT_DIRECTORY . $sub_directory;
         static::delete_recursive_file($path);

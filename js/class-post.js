@@ -36,6 +36,9 @@ class MyPostSlim {
             //启动备用图片域名
             this.post_image = replace_image_src_to_backup_image_domain(this.post_image);
         }
+
+         //修正链接里的域名
+        this.post_href = replace_link_href_to_current_domain(post.post_href);
     }
 
     /**

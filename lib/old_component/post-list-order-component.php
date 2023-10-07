@@ -3,7 +3,7 @@
 namespace mikuclub;
 
 use mikuclub\constant\Post_Meta;
-use mikuclub\constant\Post_Query;
+use mikuclub\Post_Query;
 
 /**
  * 文章列表自定义排序组件

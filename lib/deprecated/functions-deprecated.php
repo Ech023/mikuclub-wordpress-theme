@@ -104,26 +104,7 @@ function timeago( $post_time ) {
 	};
 }
 
-/**
- * 自定义美化版 var_dump
- *
- * @param mixed $expression
- */
-function var_dump_formatted( $expression ) {
 
-	echo '<pre>';
-	var_dump( $expression );
-	echo '</pre>';
-}
-
-function var_dump_wp_query( ) {
-
-	global $wp_query;
-
-	echo '<pre>';
-	var_dump( $wp_query );
-	echo '</pre>';
-}
 
 
 

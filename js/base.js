@@ -144,6 +144,14 @@ const SITE_DOMAIN = {
     */
     get_main_domain() {
         return this.www_mikuclub_win;
+    },
+
+    /**
+     * 获取当前访问的域名
+     * @returns {string}
+     */
+    get_current_domain(){
+        return window.location.hostname;
     }
 }
 

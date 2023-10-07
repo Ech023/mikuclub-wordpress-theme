@@ -18,6 +18,9 @@ class MyAuthor {
             //启动备用图片域名
             this.user_image = replace_image_src_to_backup_image_domain(this.user_image);
         }
+
+        //修正链接里的域名
+        this.user_href = replace_link_href_to_current_domain(this.user_href);
     }
 
 
