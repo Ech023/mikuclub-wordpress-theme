@@ -41,9 +41,12 @@ class Config
 
 
     //幻灯片里显示的文章数量
-    const STICKY_POST_COUNT = 6;
+    const STICKY_POST_LIST_LENGTH = 6;
     //内容页底部相关推荐里的文章数量
-    const RELATED_POST_COUNT = 8;
+    const RELATED_POST_LIST_LENGTH = 8;
+
+    //最新发布的论坛帖子列表长度
+    const RECENT_FORUM_TOPIC_LIST_LENGTH = 8;
 
     //单页的评论数量
     const NUMBER_COMMENT_PER_PAGE = 30;
@@ -52,6 +55,11 @@ class Config
 
     //单页的回复评论数量
     const NUMBER_COMMENT_REPLY_PER_PAGE = 20;
+
+    //单页的私信人数量
+    const NUMBER_PRIVATE_MESSAGE_LIST_PER_PAGE = 20;
+    //单页和单个收件人之间的私信数量
+    const NUMBER_PRIVATE_MESSAGE_LIST_WITH_ONE_SENDER_PER_PAGE = 50;
 }
 
 /**

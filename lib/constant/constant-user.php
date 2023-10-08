@@ -35,11 +35,47 @@ class User_Meta
 /**
  * 用户权限 常量
  */
-class User_Capability{
+class User_Capability
+{
 
     //编辑主题的权限
     const EDIT_THEMES = 'edit_themes';
     //查看文章的权限
     const READ = 'read';
+    //后台编辑权限
+    const MANAGE_OPTIONS = 'manage_options';
+    //公开文章的权限
+    const PUBLISH_POSTS = 'publish_posts';
+    //编辑文章的权限
+    const EDIT_POSTS = 'edit_posts';
+
+    /**
+     * 检测当前用户是否是管理员
+     * @return boolean
+     */
+    public static function is_admin()
+    {
+        return current_user_can(static::MANAGE_OPTIONS);
+    }
+
+    
+
+    /**
+     * 检测当前用户是否是高级作者用户
+     * @return bool
+     */
+    public static function is_premium_user()
+    {
+        return current_user_can(static::PUBLISH_POSTS);
+    }
+
+     /**
+     * 检测当前用户是否是正常用户
+     * @return bool
+     */
+    public static function is_regular_user()
+    {
+        return current_user_can(static::READ);
+    }
 
 }

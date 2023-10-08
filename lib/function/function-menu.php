@@ -78,45 +78,44 @@ function get_bottom_menu()
 function get_friends_links()
 {
 
-
     //获取缓存
-    $links_list_html = File_Cache::get_cache_meta(File_Cache::SITE_FRIEND_LINK, '', Expired::EXP_1_DAY);
-    //如果缓存无效
-    if (empty($links_list_html))
-    {
-
-        //获取链接列表
-        $links_list = get_bookmarks();
-
-        $links_list_html = <<<HTML
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">友情链接: </a> 
-            </li>
-HTML;
-
-        $links_list_html = array_reduce($links_list, function (string $carry, object $link)
+    $links_list_html = File_Cache::get_cache_meta_with_callback(
+        File_Cache::SITE_FRIEND_LINK,
+        '',
+        Expired::EXP_1_DAY,
+        function ()
         {
-            $carry .= <<< HTML
+            //获取链接列表
+            $links_list = get_bookmarks();
 
+            $links_list_html = <<<HTML
                 <li class="nav-item">
-                    <a class="nav-link" title="{$link->link_name}" href="{$link->link_url}" target="_blank">
-                        {$link->link_name}
-                    </a> 
+                    <a class="nav-link disabled" href="#">友情链接: </a> 
                 </li>
 HTML;
-            return $carry;
-        }, $links_list_html);
 
+            $links_list_html = array_reduce($links_list, function (string $carry, object $link)
+            {
+                $carry .= <<< HTML
+                    <li class="nav-item">
+                        <a class="nav-link" title="{$link->link_name}" href="{$link->link_url}" target="_blank">
+                            {$link->link_name}
+                        </a> 
+                    </li>
+HTML;
+                return $carry;
+            }, $links_list_html);
 
-        //最终输出
-        $links_list_html = <<<HTML
-            <ul class="nav">
-                {$links_list_html}
-            </ul>
+            //最终输出
+            $links_list_html = <<<HTML
+                <ul class="nav">
+                    {$links_list_html}
+                </ul>
 HTML;
 
-        File_Cache::set_cache_meta(File_Cache::SITE_FRIEND_LINK, '', $links_list_html);
-    }
+            return $links_list_html;
+        }
+    );
 
     return $links_list_html;
 }

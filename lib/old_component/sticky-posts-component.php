@@ -11,7 +11,7 @@ function sticky_posts_component() {
 
 
 	//获取列表规定长度
-	$stick_count = Config::STICKY_POST_COUNT;
+	$stick_count = Config::STICKY_POST_LIST_LENGTH;
 	//获取置顶文章列表
 	$sticky_post_list = get_sticky_posts( $stick_count );
 

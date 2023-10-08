@@ -1,7 +1,9 @@
 <?php
+
 namespace mikuclub;
 
 use mikuclub\constant\Post_Meta;
+use mikuclub\constant\User_Capability;
 use WP_Error;
 use WP_REST_Request;
 
@@ -216,13 +218,13 @@ function api_set_post_fail_times($data)
 	}
 
 	//如果是要注销失效计数
-	if (isset($data['disable']) && current_user_is_admin())
+	if (isset($data['disable']) && User_Capability::is_admin())
 	{
 
 		$count = update_post_fail_times($data['post_id'], -1);
 	}
 	//如果是要清零
-	else if (isset($data['reset']) && current_user_is_admin())
+	else if (isset($data['reset']) && User_Capability::is_admin())
 	{
 
 		$count = update_post_fail_times($data['post_id'], 0);
@@ -269,7 +271,7 @@ function api_update_post_meta($data)
 	$author_id  = get_post_field('post_author', $post_id);
 
 	//如果不是作者本人 或 管理员
-	if ($user_id != $author_id && !current_user_is_admin())
+	if ($user_id != $author_id && !User_Capability::is_admin())
 	{
 		return new WP_Error(401, __FUNCTION__ . ' : 无权进行该项操作');
 	}
@@ -420,19 +422,19 @@ function register_custom_post_api()
 		[
 			'methods'             => 'POST',
 			'callback'            => 'mikuclub\api_add_sticky_posts',
-			'permission_callback' => 'mikuclub\current_user_is_admin',
+			'permission_callback' => ['mikuclub\constant\User_Capability', 'is_admin'],
 		],
 		[
 			'methods'             => 'DELETE',
 			'callback'            => 'mikuclub\api_delete_sticky_posts',
-			'permission_callback' => 'mikuclub\current_user_is_admin',
+			'permission_callback' => ['mikuclub\constant\User_Capability', 'is_admin'],
 		],
 	]);
 
 	register_rest_route('utils/v2', '/reject_post', [
 		'methods'             => 'POST',
 		'callback'            => 'mikuclub\api_reject_post',
-		'permission_callback' => 'mikuclub\current_user_is_admin',
+		'permission_callback' => ['mikuclub\constant\User_Capability', 'is_admin'],
 	]);
 
 	register_rest_route('utils/v2', '/draft_post', [

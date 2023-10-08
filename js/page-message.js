@@ -179,7 +179,7 @@ function getMessageListWithOneSender(event) {
     //创建请求数据
     let data = {
         sender_id,
-        number: 50
+        //number: 50
     };
 
     let loadingElement = $(' <div class="text-center"><div class="loading spinner-border text-miku" role="status" aria-hidden="true"></div></div>');

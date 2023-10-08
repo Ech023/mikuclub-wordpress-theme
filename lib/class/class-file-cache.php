@@ -19,6 +19,7 @@ class File_Cache
     const DIR_COMMENTS = 'comments';
     const DIR_CATEGORY = 'category';
     const DIR_COMPONENTS = 'components';
+    const DIR_FORUM = 'forum';
 
     /*全站相关缓存 键名*/
     const SITE_POST_COUNT = 'count_total_post';
@@ -45,6 +46,10 @@ class File_Cache
     const USER_POST_TOTAL_UNLIKE = 'user_post_total_likes';
     //用户投稿退件邮件通知 (避免短时间发送多封邮件给同一个用户)
     const USER_REJECT_POST_EMAIL = 'email_reject_post';
+    //用户等级
+    const USER_LEVEL = 'user_level';
+    //用户积分
+    const USER_POINT = 'user_point';
 
 
     /*文章列表相关缓存 键名*/
@@ -63,8 +68,15 @@ class File_Cache
     const POST_META_DESCRIPTION = 'post_meta_description';
 
 
-    /*评论列表 缓存 键名*/
+    /*评论相关缓存 键名*/
+    //评论列表
     const COMMENT_LIST = 'comment_list';
+
+    /*论坛相关缓存 键名*/
+    //最新帖子列表
+    const RECENT_FORUM_TOPIC_LIST = 'recent_forum_topic_list';
+
+
 
     /**
      * 读取缓存
@@ -120,6 +132,34 @@ class File_Cache
             //新建文件
             file_put_contents($file_path, serialize($meta_value));
         }
+    }
+
+    /**
+     * 读取缓存
+     *
+     * @param string $meta_key
+     * @param string $sub_directory
+     * @param int $expired 文件有效时间
+     * @param callable|null $callable 如果缓存不存在就调用回调函数
+     * @return mixed|null 如果不存在则返回NULL
+     */
+    public static function get_cache_meta_with_callback($meta_key, $sub_directory, $expired, $callable = null)
+    {
+        $result = static::get_cache_meta($meta_key, $sub_directory, $expired);
+        //如果缓存不存在 并且 回调函数有效
+        if (is_null($result) && is_callable($callable))
+        {
+            //运行回调函数
+            $result = $callable();
+            //如果有有效数据
+            if (!is_null($result))
+            {
+                //更新缓存
+                static::set_cache_meta($meta_key, $sub_directory, $result);
+            }
+        }
+
+        return $result;
     }
 
     /**

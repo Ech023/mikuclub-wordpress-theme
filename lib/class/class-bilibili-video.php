@@ -28,64 +28,63 @@ class Bilibili_Video
      */
     public static function get_video_meta($post_id, $aid = null, $bvid = null)
     {
-        
 
-        $cache_key = Post_Meta::POST_BILIBILI_VIDEO_INFO . '_' . $post_id;
 
-        //尝试用文件缓存
-        $result = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_POST . DIRECTORY_SEPARATOR . $post_id, Expired::EXP_7_DAYS);
-        if (empty($result))
-        {
-
-            //尝试从数据库查询
-            $result = get_post_meta($post_id, Post_Meta::POST_BILIBILI_VIDEO_INFO, true);
-
-            //都没有 则重新远程请求
-            if (empty($result))
+        $result = File_Cache::get_cache_meta_with_callback(
+            Post_Meta::POST_BILIBILI_VIDEO_INFO,
+            File_Cache::DIR_POST . DIRECTORY_SEPARATOR . $post_id,
+            Expired::EXP_7_DAYS,
+            function () use ($post_id, $aid, $bvid)
             {
-                //根据参数生成请求数组
-                $query_params = [];
-                if ($aid)
-                {
-                    $query_params['aid'] = $aid;
-                }
-                else if ($bvid)
-                {
-                    $query_params['bvid'] = $bvid;
-                }
-                
-                //把参数数组转换成url字符串
-                $query_string = http_build_query($query_params);
-           
-                $response = wp_remote_get(static::API_URL . '?' . $query_string);
 
-                $body = wp_remote_retrieve_body($response);
-                if (!$body)
+                //尝试从数据库查询
+                $result = get_post_meta($post_id, Post_Meta::POST_BILIBILI_VIDEO_INFO, true);
+
+                //都没有 则重新远程请求
+                if (empty($result))
                 {
-                    return new WP_Error(500, __FUNCTION__ . ' : 请求失败');
+                    //根据参数生成请求数组
+                    $query_params = [];
+                    if ($aid)
+                    {
+                        $query_params['aid'] = $aid;
+                    }
+                    else if ($bvid)
+                    {
+                        $query_params['bvid'] = $bvid;
+                    }
+
+                    //把参数数组转换成url字符串
+                    $query_string = http_build_query($query_params);
+
+                    $response = wp_remote_get(static::API_URL . '?' . $query_string);
+
+                    $body = wp_remote_retrieve_body($response);
+                    if (!$body)
+                    {
+                        return new WP_Error(500, __FUNCTION__ . ' : 请求失败');
+                    }
+
+                    $body = json_decode($body, true);
+                    //如果相关数据不存在
+                    if (!isset($body['data']) || !isset($body['data']['aid']) || !isset($body['data']['bvid']) || !isset($body['data']['pages']) || count($body['data']['pages']) == 0 || !isset($body['data']['pages'][0]['cid']) || !$body['data']['pages'][0]['cid'])
+                    {
+                        return new WP_Error(500, __FUNCTION__ . ' : 获取AID,BVID 和 CID失败');
+                    }
+
+                    $result = [
+                        'aid' => $body['data']['aid'],
+                        'bvid' => $body['data']['bvid'],
+                        'cid' => $body['data']['pages'][0]['cid'],
+                    ];
+
+                    //保存到数据库
+                    update_post_meta($post_id, Post_Meta::POST_BILIBILI_VIDEO_INFO, $result);
                 }
 
-                $body = json_decode($body, true);
-                //如果相关数据不存在
-                if (!isset($body['data']) || !isset($body['data']['aid']) || !isset($body['data']['bvid']) || !isset($body['data']['pages']) || count($body['data']['pages']) == 0 || !isset($body['data']['pages'][0]['cid']) || !$body['data']['pages'][0]['cid'])
-                {
-                    return new WP_Error(500, __FUNCTION__ . ' : 获取AID,BVID 和 CID失败');
-                }
-
-                $result = [
-                    'aid' => $body['data']['aid'],
-                    'bvid' => $body['data']['bvid'],
-                    'cid' => $body['data']['pages'][0]['cid'],
-                ];
-
-                //保存到数据库
-                update_post_meta($post_id, Post_Meta::POST_BILIBILI_VIDEO_INFO, $result);
+                return $result;
             }
-
-            //保存为内存缓存
-            File_Cache::set_cache_meta($cache_key, File_Cache::DIR_POST . DIRECTORY_SEPARATOR . $post_id, $result);
-        }
-
+        );
 
         return $result;
     }

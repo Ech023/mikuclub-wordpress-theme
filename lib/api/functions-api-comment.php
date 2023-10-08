@@ -4,6 +4,7 @@ namespace mikuclub;
 
 use Exception;
 use mikuclub\constant\Comment_Meta;
+use mikuclub\constant\User_Capability;
 use stdClass;
 use WP_Error;
 use WP_REST_Request;
@@ -27,7 +28,7 @@ function api_get_user_comment_reply_unread_count($data)
  *
  * @param WP_REST_Request $data ['paged' => 页数, number' => 每页数据数量]
  *
- * @return My_Comment_Reply[]|WP_Error
+ * @return My_Comment_Reply_Model[]|WP_Error
  */
 function api_get_comment_reply_list($data)
 {
@@ -91,12 +92,12 @@ function api_delete_comment($data)
 		$author_id  = intval($comment->user_id);
 
 		//如果是高级用户和当前文章的作者
-		$is_premium_user_and_post_author = current_user_can_publish_posts() && $user_id === $post_author_id;
+		$is_premium_user_and_post_author = User_Capability::is_premium_user() && $user_id === $post_author_id;
 
 		//检测权限, 只有管理员 和 评论作者自己 有权限删除评论
 		if (
 			//如果是管理员
-			current_user_is_admin()
+			User_Capability::is_admin()
 			||
 			//如果是高级用户和文章的作者ID
 			$is_premium_user_and_post_author
@@ -346,7 +347,7 @@ function register_custom_comment_api()
 		[
 			'methods'             => 'POST',
 			'callback'            => 'mikuclub\api_insert_comment',
-			'permission_callback' => 'mikuclub\current_user_is_regular',
+			'permission_callback' => ['mikuclub\constant\User_Capability', 'is_regular_user'],
 		],
 	]);
 

@@ -5,8 +5,7 @@
 <?php
 
 use mikuclub\constant\Admin_Meta;
-
-use function mikuclub\current_user_is_admin;
+use mikuclub\constant\User_Capability;
 
 use function mikuclub\get_bottom_menu;
 use function mikuclub\get_friends_links;
@@ -61,7 +60,7 @@ use function mikuclub\get_site_tag_count;
 
 		<?php
 		//给管理员看的统计信息
-		if ( current_user_is_admin() ) { ?>
+		if ( User_Capability::is_admin() ) { ?>
 
             <div class="admin-info my-2">
 

@@ -234,17 +234,19 @@ function add_meta_data_on_attachment($post_id)
 function get_site_post_count()
 {
 	//获取缓存
-	$count = File_Cache::get_cache_meta(File_Cache::SITE_POST_COUNT, '', Expired::EXP_7_DAYS);
+	$count = File_Cache::get_cache_meta_with_callback(
+		File_Cache::SITE_POST_COUNT,
+		'',
+		Expired::EXP_7_DAYS,
+		function ()
+		{
+			//重新计算
+			$count = wp_count_posts()->publish;
+			return intval($count);
+		}
+	);
 
-	//如果缓存失效
-	if (empty($count))
-	{
-		//重新计算
-		$count = wp_count_posts()->publish;
-		File_Cache::set_cache_meta(File_Cache::SITE_POST_COUNT, '', $count);
-	}
-
-	return $count;
+	return intval($count);
 }
 
 /**
@@ -255,18 +257,19 @@ function get_site_comment_count()
 {
 
 	//从内存中获取
-	$count = File_Cache::get_cache_meta(File_Cache::SITE_COMMENT_COUNT, '', Expired::EXP_7_DAYS);
+	$count = File_Cache::get_cache_meta_with_callback(
+		File_Cache::SITE_COMMENT_COUNT,
+		'',
+		Expired::EXP_7_DAYS,
+		function ()
+		{
+			//重新计算
+			$count = wp_count_comments()->total_comments;
+			return intval($count);
+		}
+	);
 
-	//如果缓存失效
-	if (empty($count))
-	{
-
-		//重新计算
-		$count = wp_count_comments()->total_comments;
-		File_Cache::set_cache_meta(File_Cache::SITE_COMMENT_COUNT, '', $count);
-	}
-
-	return $count;
+	return intval($count);
 }
 
 /**
@@ -277,17 +280,19 @@ function get_site_category_count()
 {
 
 	//获取缓存
-	$count = File_Cache::get_cache_meta(File_Cache::SITE_CATEGORY_COUNT, '', Expired::EXP_7_DAYS);
+	$count = File_Cache::get_cache_meta_with_callback(
+		File_Cache::SITE_CATEGORY_COUNT,
+		'',
+		Expired::EXP_7_DAYS,
+		function ()
+		{
+			//重新计算
+			$count = wp_count_terms('category');
+			return intval($count);
+		}
+	);
 
-	//如果缓存失效
-	if (empty($count))
-	{
-		//重新计算
-		$count = wp_count_terms('category');
-		File_Cache::set_cache_meta(File_Cache::SITE_CATEGORY_COUNT, '', $count);
-	}
-
-	return $count;
+	return intval($count);
 }
 
 /**
@@ -298,17 +303,19 @@ function get_site_tag_count()
 {
 
 	//获取缓存
-	$count = File_Cache::get_cache_meta(File_Cache::SITE_TAG_COUNT, '', Expired::EXP_7_DAYS);
+	$count = File_Cache::get_cache_meta_with_callback(
+		File_Cache::SITE_TAG_COUNT,
+		'',
+		Expired::EXP_7_DAYS,
+		function ()
+		{
+			//重新计算
+			$count = wp_count_terms('post_tag');
+			return intval($count);
+		}
+	);
 
-	//如果缓存失效
-	if (empty($count))
-	{
-		//重新计算
-		$count = wp_count_terms('post_tag');
-		File_Cache::set_cache_meta(File_Cache::SITE_TAG_COUNT, '', $count);
-	}
-
-	return $count;
+	return intval($count);
 }
 
 

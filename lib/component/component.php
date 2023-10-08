@@ -5,6 +5,7 @@ namespace mikuclub;
 use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Category;
 use mikuclub\constant\Expired;
+use mikuclub\constant\User_Capability;
 use WP_Term;
 
 /**
@@ -27,24 +28,28 @@ function print_site_meta_description()
     {
         //获取缓存
         $sub_directory = File_Cache::DIR_POST . DIRECTORY_SEPARATOR . $post->ID;
-        $description = File_Cache::get_cache_meta(File_Cache::POST_META_DESCRIPTION, $sub_directory, Expired::EXP_10_DAYS);
+        $description = File_Cache::get_cache_meta_with_callback(
+            File_Cache::POST_META_DESCRIPTION,
+            $sub_directory,
+            Expired::EXP_1_DAY,
+            function () use ($post)
+            {
+                //解义html实体
+                //$post_content = html_entity_decode($post->post_content);
+                $post_content = $post->post_content;
 
-        if ($description === null)
-        {
-            //解义html实体
-            //$post_content = html_entity_decode($post->post_content);
-            $post_content = $post->post_content;
+                //移除所有HTML标签
+                $post_content = trim(strip_tags($post_content));
 
-            //移除所有HTML标签
-            $post_content = trim(strip_tags($post_content));
+                //移除所有无关字符
+                $description = preg_replace('/[^\x{4e00}-\x{9fa5}a-zA-Z0-9,.;:?！？，。；：\/]+/u', '', $post_content);
+                //限制为150个字符
+                $description = mb_substr($description, 0, 150, 'utf-8');
 
-            //移除所有无关字符
-            $description = preg_replace('/[^\x{4e00}-\x{9fa5}a-zA-Z0-9,.;:?！？，。；：\/]+/u', '', $post_content);
-            //限制为150个字符
-            $description = mb_substr($description, 0, 150, 'utf-8');
+                return $description;
+            }
+        );
 
-            File_Cache::set_cache_meta(File_Cache::POST_META_DESCRIPTION, $sub_directory, $description);
-        }
     }
     else if (is_home())
     {
@@ -148,7 +153,7 @@ function print_page_edit_link()
 
     $output = '';
 
-    if (current_user_is_admin())
+    if (User_Capability::is_admin())
     {
         $post_type_object = get_post_type_object($post->post_type);
         $link = admin_url(sprintf($post_type_object->_edit_link . '&amp;action=edit', $post->ID));
@@ -157,4 +162,3 @@ function print_page_edit_link()
 
     return $output;
 }
-

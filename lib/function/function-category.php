@@ -115,26 +115,28 @@ function get_parent_category_id($category_id)
 function get_main_category_list()
 {
 
-	//获取缓存
-	$result = File_Cache::get_cache_meta(File_Cache::MAIN_CATEGORY_LIST, File_Cache::DIR_CATEGORY, Expired::EXP_1_DAY);
-	//无缓存的情况
-	if (empty($result))
-	{
-		$args = [
-			'orderby' => 'name',
-			'order'   => 'ASC',
-			'parent'  => 0
-		];
-
-		$array_category_object = get_categories($args);
-		//转换成category model
-		$result = array_map(function (WP_Term $category)
+	$result = File_Cache::get_cache_meta_with_callback(
+		File_Cache::MAIN_CATEGORY_LIST,
+		File_Cache::DIR_CATEGORY,
+		Expired::EXP_1_DAY,
+		function ()
 		{
-			return new My_Category_Model($category);
-		}, $array_category_object);
+			$args = [
+				'orderby' => 'name',
+				'order'   => 'ASC',
+				'parent'  => 0
+			];
 
-		File_Cache::set_cache_meta(File_Cache::MAIN_CATEGORY_LIST, File_Cache::DIR_CATEGORY, $result);
-	}
+			$array_category_object = get_categories($args);
+			//转换成category model
+			$result = array_map(function (WP_Term $category)
+			{
+				return new My_Category_Model($category);
+			}, $array_category_object);
+
+			return $result;
+		}
+	);
 
 	return $result;
 }
@@ -153,28 +155,31 @@ function get_sub_category_list($cat_id)
 
 	if ($cat_id)
 	{
-
 		//获取缓存
 		$cache_key  = File_Cache::SUB_CATEGORY_LIST . '_' . $cat_id;
-		$result = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_CATEGORY, Expired::EXP_7_DAYS);
-		//无缓存的情况
-		if (empty($result))
-		{
-			$args = [
-				'orderby' => 'name',
-				'order'   => 'ASC',
-				'parent' => $cat_id,
-			];
-
-			$array_category_object     = get_categories($args);
-			//转换成category model
-			$result = array_map(function (WP_Term $category)
+		$result = File_Cache::get_cache_meta_with_callback(
+			$cache_key,
+			File_Cache::DIR_CATEGORY,
+			Expired::EXP_7_DAYS,
+			function () use ($cat_id)
 			{
-				return new My_Category_Model($category);
-			}, $array_category_object);
+				$args = [
+					'orderby' => 'name',
+					'order'   => 'ASC',
+					'parent' => $cat_id,
+				];
 
-			File_Cache::set_cache_meta($cache_key, File_Cache::DIR_CATEGORY, $result);
-		}
+				$array_category_object     = get_categories($args);
+				//转换成category model
+				$result = array_map(function (WP_Term $category)
+				{
+					return new My_Category_Model($category);
+				}, $array_category_object);
+
+				return $result;
+			}
+		);
+
 	}
 
 	return $result;

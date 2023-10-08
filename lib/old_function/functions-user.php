@@ -15,211 +15,12 @@ use WP_User;
 
 
 
-/**
- * 设置用户的头像图片ID
- *
- * @param int $user_id
- * @param int $attachment_id
- * @return void
- */
-function set_my_user_avatar_id($user_id, $attachment_id)
-{
-
-	if ($user_id)
-	{
-		update_user_meta($user_id, User_Meta::USER_AVATAR, $attachment_id);
-	}
-}
-
-/**
- * 获取用户头像图地址
- *
- * @param int $user_id
- *
- * @return string 图像http地址
- */
-function get_my_user_avatar($user_id)
-{
-
-	$user_avatar = '';
-	if ($user_id)
-	{
-		//获取内存缓存
-		$cache_key   = User_Meta::USER_AVATAR . '_' . $user_id;
-		$user_avatar = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_7_DAYS);
-
-		//如果缓存不存在
-		if (empty($user_avatar))
-		{
-
-			//获取本地头像
-
-			$avatar_id = get_user_meta($user_id, User_Meta::USER_AVATAR, true);
-			if ($avatar_id)
-			{
-
-				$array_image =  wp_get_attachment_image_src($avatar_id, 'full');
-				if ($array_image)
-				{
-					$user_avatar = $array_image[0];
-				}
-			}
-
-			//如果未设置本地头像, 尝试获取社会化账号头像
-			if (empty($user_avatar))
-			{
-				$social_avatar = get_user_meta($user_id, "open_img", true);
-
-				//如果不是QQ头像地址 才使用 (QQ头像 好像已失效)
-				//if(stripos($user_avatar, 'thirdqq.qlogo.cn') === false){
-				$user_avatar = $social_avatar;
-				//}
-
-				//去除地址前的http 和 https 前缀
-				$user_avatar = ltrim($user_avatar, "https:");
-				//$user_avatar = substr($user_avatar, stripos($user_avatar, '//'));
-			}
-
-			//如果都没有则设置主题默认头像
-			if (empty($user_avatar))
-			{
-				$user_avatar = get_my_user_default_avatar();
-			}
-
-			File_Cache::set_cache_meta($cache_key,  File_Cache::DIR_USER, $user_avatar);
-		}
-
-		$user_avatar = fix_image_domain_with_file_5($user_avatar);
-	}
-
-	return $user_avatar;
-}
-
-/**
- * 获取默认头像地址
- * @return string
- */
-function get_my_user_default_avatar()
-{
-	return get_template_directory_uri() . "/img/default_avatar.webp";
-}
 
 
-/**
- * 输出用户头像html
- *
- * @param string $avatar_src 用户头像地址
- * @param int $size 图片显示大小
- *
- * @return string HTML代码
- */
-function print_user_avatar($avatar_src, $size = 50)
-{
-
-	return '<img class="avatar rounded-circle" src="' . $avatar_src . '" width="' . $size . '" height="' . $size . '" alt="用户头像" />';
-}
-
-/**
- * 更新用户头像动作
- *
- * @param int $user_id
- * @param int $attachment_id
- * @return void
- */
-function action_on_update_avatar($user_id, $attachment_id)
-{
-
-	if ($user_id)
-	{
-
-		//添加附件类型键值对数据 说明是 用户头像
-		update_post_meta($attachment_id, Post_Meta::ATTACHMENT_WP_USER_AVATAR, $user_id);
-
-		//获取旧头像ID
-		$old_avatar_id = get_user_meta($user_id, User_Meta::USER_AVATAR, true);
-		//如果存在
-		if ($old_avatar_id)
-		{
-			//删除
-			wp_delete_attachment($old_avatar_id, true);
-		}
-
-		//保存新头像
-		update_user_meta($user_id, User_Meta::USER_AVATAR, $attachment_id);
-
-		//清空旧头像文件缓存
-		$cache_key = User_Meta::USER_AVATAR . '_' . $user_id;
-		File_Cache::delete_cache_meta($cache_key, File_Cache::DIR_USER);
-	}
-}
-
-/**
- * 通过API上传图片附件的时候触发
- *
- * @param WP_Post $attachment Inserted or updated attachment object.
- * @param WP_REST_Request $request Request object.
- * @return void
- */
-function action_on_rest_after_insert_attachment($attachment, $request)
-{
-
-	//如果是上传更换新头像 的 动作
-	if ($request->has_param(User_Meta::ACTION_UPDATE_AVATAR_BY_API))
-	{
-		action_on_update_avatar(intval($attachment->post_author), $attachment->ID);
-	}
-}
-
-add_action('rest_after_insert_attachment', 'mikuclub\action_on_rest_after_insert_attachment', 10, 2);
 
 
-/**
- * 获取用户当前等级
- *
- * @param int $user_id
- *
- * @return string 用户当前等级 || 如果无等级 则返回空字符串
- */
-function get_user_level($user_id)
-{
 
-	$level = '';
-	if ($user_id && function_exists('mycred_get_users_rank'))
-	{
 
-		$user_rank = mycred_get_users_rank($user_id);
-		if ($user_rank)
-		{
-			$level = $user_rank->title;
-		}
-	}
-
-	return $level;
-}
-
-/**
- * 获取用户当前积分
- *
- * @param int $user_id
- *
- * @return int 积分数量
- */
-function get_user_points($user_id)
-{
-
-	$points = 0;
-	if ($user_id && function_exists('mycred_get_users_balance'))
-	{
-
-		$points = mycred_get_users_balance($user_id);
-		if ($points)
-		{
-			$points = number_format($points);
-		}
-	}
-
-	return $points;
-}
 
 
 /**
@@ -391,332 +192,23 @@ function print_user_badges($user_id, $badge_class = '')
 }
 
 
-/**
- * 获取用户发布的文章总数量
- * 先使用缓存, 无缓存的话再重新获取
- *
- * @param int $user_id
- *
- * @return int 文章数量
- */
-function get_user_post_count($user_id)
-{
-
-	$count = 0;
-
-	if ($user_id)
-	{
-
-		$cache_key = File_Cache::USER_POST_COUNT . '_' . $user_id;
-
-		$count = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_1_DAY);
-
-		if (!$count)
-		{
-			$count = count_user_posts($user_id, 'post', true);
-			//如果结果NULL, 则重设为0
-			if (!$count)
-			{
-				$count = 0;
-			}
-			File_Cache::set_cache_meta($cache_key, File_Cache::DIR_USER, $count);
-		}
-	}
-
-
-	return $count;
-}
-
-
-/**
- * 获取用户发布的文章的查看总次数
- * 先使用缓存, 无缓存的话再重新获取
- *
- * @param int $user_id
- *
- * @return int 查看总次数
- */
-function get_user_post_total_views($user_id)
-{
-
-	global $wpdb;
-
-	$count = 0;
-
-	if ($user_id)
-	{
-
-		$cache_key = File_Cache::USER_POST_TOTAL_VIEW . '_' . $user_id;
-
-		$count = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_3_DAYS);
-
-		if (!$count)
-		{
-			//重新计算
-			$count = $wpdb->get_var(" SELECT SUM(M.meta_value) FROM {$wpdb->posts} P, {$wpdb->postmeta} M WHERE P.post_author = {$user_id} AND P.post_type = 'post' AND P.post_status = 'publish' AND P.ID = M.post_id AND M.meta_key='views' ");
-			//如果结果NULL, 则重设为0
-			if (!$count)
-			{
-				$count = 0;
-			}
-			File_Cache::set_cache_meta($cache_key, File_Cache::DIR_USER, $count);
-		}
-	}
-
-	return $count;
-}
-
-
-/**
- * 获取用户发布的文章收到的总评论数
- * 先使用缓存, 无缓存的话再重新获取
- *
- * @param int $user_id
- *
- * @return string 总评论数
- */
-function get_user_post_total_comments($user_id)
-{
-
-	$count = 0;
-	if ($user_id)
-	{
-
-		$cache_key = File_Cache::USER_POST_TOTAL_COMMENT . '_' . $user_id;
-
-		$count = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_3_DAYS);
-
-		if ($count === '')
-		{
-			//重新计算
-			global $wpdb;
-			$count = $wpdb->get_var(" SELECT SUM(P.comment_count) FROM {$wpdb->posts} P WHERE P.post_author = {$user_id} AND P.post_type =  'post'  AND P.post_status =  'publish' ");
-			//如果结果NULL, 则重设为0
-			if (!$count)
-			{
-				$count = 0;
-			}
-			File_Cache::set_cache_meta($cache_key, File_Cache::DIR_USER, $count);
-		}
-	}
-
-	return $count;
-}
-
-
-/**
- * 获取用户发布的文章收到的总点赞数
- * 先使用缓存, 无缓存的话再重新获取
- *
- * @param int $user_id
- *
- * @return int 总点赞数
- */
-function get_user_post_total_likes($user_id)
-{
 
-	$count = 0;
-	if ($user_id)
-	{
 
-		$cache_key = File_Cache::USER_POST_TOTAL_LIKE . '_' . $user_id;
-		$count     = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_3_DAYS);
-
-		if (!$count)
-		{
-			//重新计算
-			global $wpdb;
-			$count = $wpdb->get_var(" SELECT SUM(M.meta_value) FROM {$wpdb->posts} P, {$wpdb->postmeta} M WHERE P.post_author = {$user_id} AND P.post_type = 'post' AND P.post_status = 'publish' AND P.ID = M.post_id AND M.meta_key='count_like' ");
-			//如果结果NULL, 则重设为0
-			if (!$count)
-			{
-				$count = 0;
-			}
-			File_Cache::set_cache_meta($cache_key, File_Cache::DIR_USER, $count);
-		}
-	}
-
-	return $count;
-}
-
 
-/**
- * 获取用户发布的评论总数
- * 先使用缓存, 无缓存的话再重新获取
- *
- * @param int $user_id
- *
- * @return int 评论总数
- */
-function get_user_comment_count($user_id)
-{
-
-	$count = 0;
-
-	if ($user_id)
-	{
-
-		$cache_key = User_Meta::USER_COMMENT_COUNT . '_' . $user_id;
-
-		$count = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_1_DAY);
-
-		if ($count === '')
-		{
-
-			$count = get_user_meta($user_id, User_Meta::USER_COMMENT_COUNT, true);
-
-			if ($count === '')
-			{
-				//重新计算
-				global $wpdb;
-				$count = $wpdb->get_var(" SELECT COUNT(*) FROM {$wpdb->comments} WHERE user_id = {$user_id} AND comment_approved = 1 ");
-				//如果结果NULL, 则重设为0
-				if (!$count)
-				{
-					$count = 0;
-				}
-				//更新到用户列表里
-				update_user_meta($user_id, User_Meta::USER_COMMENT_COUNT, $count);
-			}
-			//保存到缓存里
-			File_Cache::set_cache_meta($cache_key, File_Cache::DIR_USER, $count);
-		}
-	}
-
-	return $count;
-}
-
-/**
- * 增加用户评论总数
- *
- * @param int $user_id
- * @return void
- */
-function add_user_comment_count($user_id)
-{
-
-	$count = get_user_comment_count($user_id);
-	$count++;
-	update_user_meta($user_id, User_Meta::USER_COMMENT_COUNT, $count);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * 获取用户的点赞总次数
- *
- * @param int $user_id
- *
- * @return int 点赞总次数
- */
-function get_user_like_count($user_id)
-{
-
-	$count = 0;
-
-	if ($user_id)
-	{
-
-		$count = get_user_meta($user_id, User_Meta::USER_LIKE_COUNT, true);
-		//如果用户从未评过分
-		if ($count === "")
-		{
-			//设置默认为0
-			$count = 0;
-		}
-	}
-
-	return $count;
-}
-
-/**
- * 增加用户点赞总次数
- *
- * @param int $user_id
- * @return void
- */
-function add_user_like_count($user_id)
-{
-
-	//只有登陆用户, 才会更新计数
-	if ($user_id)
-	{
-
-		$count = get_user_like_count($user_id);
-		$count++;
-		update_user_meta($user_id, User_Meta::USER_LIKE_COUNT, intval(($count)));
-	}
-}
-
-/**
- * 减少用户点赞总次数
- *
- * @param int $user_id
- * @return void
- */
-function delete_user_like_count($user_id)
-{
-
-	//只有登陆用户, 才会更新计数
-	if ($user_id)
-	{
-
-		$count = get_user_like_count($user_id);
-		//如果点赞数 大于 0
-		if ($count > 0)
-		{
-			$count--;
-		}
-		else
-		{
-			$count = 0;
-		}
-		update_user_meta($user_id, User_Meta::USER_LIKE_COUNT, intval($count));
-	}
-}
-
-
-
-
-/**
- * 检测当前用户是否是管理员
- * @return bool
- */
-function current_user_is_admin()
-{
-	return current_user_can('manage_options');
-}
-
-
-
-
-/**
- * 检测当前用户是否是高级作者用户
- * @return bool
- */
-function current_user_can_publish_posts()
-{
-	return current_user_can('publish_posts');
-}
-
-/**
- * 检测当前用户是否是正常用户
- * @return bool
- */
-function current_user_is_regular()
-{
-	return current_user_can('edit_posts');
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /**
@@ -814,7 +306,7 @@ add_filter('user_contactmethods', 'mikuclub\profile_custom_contact_fields');
 function remove_menus()
 {
 
-	if (!current_user_is_admin())
+	if (!User_Capability::is_admin())
 	{
 
 		remove_menu_page('index.php'); //仪表盘
@@ -837,7 +329,7 @@ add_action('admin_menu', 'mikuclub\remove_menus');
 function annointed_admin_bar_remove()
 {
 
-	if (!current_user_is_admin())
+	if (!User_Capability::is_admin())
 	{
 		global $wp_admin_bar;
 		$wp_admin_bar->remove_menu('wp-logo');
@@ -857,7 +349,7 @@ function annointed_admin_bar_remove()
 function bandUserRedirection()
 {
 	//检测用户是否有管理权限
-	if (!current_user_is_admin())
+	if (!User_Capability::is_admin())
 	{
 		$address = get_home_url();
 		wp_redirect($address, 302);
@@ -1023,7 +515,7 @@ function redirect_for_not_logged($location = '')
 function redirect_for_not_admin($location = '')
 {
 
-	if (!current_user_is_admin())
+	if (!User_Capability::is_admin())
 	{
 		if (empty($location))
 		{

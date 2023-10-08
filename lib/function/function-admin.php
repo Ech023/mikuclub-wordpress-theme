@@ -114,6 +114,7 @@ function delete_theme_cache()
         File_Cache::DIR_POSTS,
         File_Cache::DIR_COMMENTS,
         File_Cache::DIR_CATEGORY,
+        File_Cache::DIR_FORUM,
     ];
     //遍历每个缓存类型
     foreach ($array_type_cache as $type)
@@ -227,7 +228,7 @@ function custom_dashboard_widgets()
 {
 
     //必须是管理员 才能看到
-    if (current_user_is_admin())
+    if (User_Capability::is_admin())
     {
         add_meta_box('pending_posts_dashboard_widget', '待审文章', 'mikuclub\pending_posts_dashboard_widget_component', 'dashboard', 'normal', 'core');
         add_meta_box('fail_down_posts_dashboard_widget', '失效文章', 'mikuclub\fail_down_posts_dashboard_widget_component', 'dashboard', 'normal', 'core');

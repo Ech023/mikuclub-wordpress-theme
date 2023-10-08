@@ -3,10 +3,11 @@
 use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Config;
 use mikuclub\constant\Post_Feedback_Rank;
+use mikuclub\constant\User_Capability;
 
 use function mikuclub\adult_404_content_for_no_logging_user;
 use function mikuclub\breadcrumbs_component;
-use function mikuclub\current_user_is_admin;
+
 
 use function mikuclub\get_custom_author;
 use function mikuclub\get_post_favorites;
@@ -225,7 +226,7 @@ HTML;
                             <!-- 编辑按钮 -->
                             <?php
                             //如果当前用户是作者或者管理员
-                            if ($current_user_id === $author->id || current_user_is_admin())
+                            if ($current_user_id === $author->id || User_Capability::is_admin())
                             {
                                 echo '<div class="post-edit-link my-1 my-md-0">' .
                                     '<a class="text-info" href="' . get_edit_post_link($post_id) . '" target="_blank">[编辑投稿]</a>' .

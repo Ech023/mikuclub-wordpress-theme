@@ -14,7 +14,7 @@ use WP_Comment;
 /**
  * 扩展 子评论回复类
  */
-class My_Comment_Reply extends My_Comment_Model
+class My_Comment_Reply_Model extends My_Comment_Model
 {
 
 	/**

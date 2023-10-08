@@ -9,6 +9,7 @@ use mikuclub\constant\Option_Meta;
 use mikuclub\constant\Post_Feedback_Rank;
 use mikuclub\constant\Post_Meta;
 use mikuclub\constant\Post_Status;
+use mikuclub\constant\User_Capability;
 use mikuclub\constant\Web_Domain;
 use WP_Error;
 use WP_Post;
@@ -589,7 +590,7 @@ function get_new_post_count($date)
     $meta_key = 'new_post_count' . $date;
 
     //从缓存列表获取
-    $count = File_Cache::get_cache_meta($meta_key, File_Cache::DIR_USER, Expired::EXP_1_DAY);
+    $count = File_Cache::get_cache_meta($meta_key, '', Expired::EXP_6_HOURS);
  
     //缓存无效的话 重新计算
     if (empty($count))
@@ -617,7 +618,7 @@ function get_new_post_count($date)
         $query = $wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_status='publish' AND post_type='post' AND post_date > %s ", $date_node);
         $count = $wpdb->get_var($query);
 
-        File_Cache::set_cache_meta($meta_key, File_Cache::DIR_USER,  $count);
+        File_Cache::set_cache_meta($meta_key, '',  $count);
     }
 
     
@@ -1436,7 +1437,7 @@ function update_post_date($post_id)
 {
 
     //只有高级用户有权限
-    if (!current_user_can_publish_posts())
+    if (!User_Capability::is_premium_user())
     {
         return new WP_Error(401, __FUNCTION__ . ' : 无权进行该项操作');
     }
@@ -1575,7 +1576,7 @@ function draft_post($post_id)
 
     $author_id = get_post_field('post_author', $post_id);
     //如果不是管理员 并且 不是用户自己的投稿
-    if (!current_user_is_admin() && get_current_user_id() != $author_id)
+    if (!User_Capability::is_admin() && get_current_user_id() != $author_id)
     {
         $result = new WP_Error(401, __FUNCTION__ . ' : 无权进行该项操作');
     }
@@ -1606,11 +1607,11 @@ function send_reject_post_email($post_id, $reject_cause)
 
     $post_title = get_post_field('post_title', $post_id);
 
-    $cache_key = File_Cache::USER_REJECT_POST_EMAIL . '_user_' . $user_id;
+
 
     //检查是否有缓存 和 有效收件地址
     //使用内存缓存来避免短时间内重复邮件同个作者, 1天内只发送一次邮件
-    if (empty(File_Cache::get_cache_meta($cache_key, File_Cache::DIR_USER, Expired::EXP_1_DAY)) && stripos($user->user_email, "@fake") !== false)
+    if (empty(File_Cache::get_cache_meta(File_Cache::USER_REJECT_POST_EMAIL, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id, Expired::EXP_1_DAY)) && stripos($user->user_email, "@fake") !== false)
     {
 
 
@@ -1643,7 +1644,7 @@ HTML;
         wp_mail($user->user_email, $email_object, $email_content, $headers);
 
         //设置缓存
-        File_Cache::set_cache_meta($cache_key, File_Cache::DIR_USER, 1);
+        File_Cache::set_cache_meta(File_Cache::USER_REJECT_POST_EMAIL, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id, 1);
     }
 }
 

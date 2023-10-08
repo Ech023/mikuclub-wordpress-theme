@@ -3,12 +3,11 @@
 use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Web_Domain;
 
-
+use function mikuclub\check_blocked_user;
 use function mikuclub\get_main_menu;
 use function mikuclub\get_random_head_background_image;
 use function mikuclub\get_theme_option;
 use function mikuclub\get_top_left_menu;
-use function mikuclub\init_user_data;
 use function mikuclub\is_adult_category;
 use function mikuclub\top_right_menu_component;
 use function mikuclub\wpforo_custom_editor_smiley_js_code;
@@ -20,8 +19,8 @@ global $paged;
 $home = get_home_url();
 //网站名称
 $site_name = get_option('blogname');
-//初始化用户变量+禁止黑名单用户访问
-init_user_data();
+//检查是否是黑名单用户
+check_blocked_user();
 
 //页面标题
 $title = '';
@@ -112,17 +111,10 @@ else
         echo get_theme_option(Admin_Meta::SITE_TOP_CODE);
     }
 
-
-    //判断当前是否是 页面
-    if (is_page())
-    {
-
-        //输出 论坛自定义表情按钮的js代码
-        echo wpforo_custom_editor_smiley_js_code();
-    }
-
-
-    ?>
+    //输出 论坛自定义表情按钮的js代码
+    echo wpforo_custom_editor_smiley_js_code();
+    
+?>
 
 
 

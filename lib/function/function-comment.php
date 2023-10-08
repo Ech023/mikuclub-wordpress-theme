@@ -5,6 +5,7 @@ namespace mikuclub;
 use mikuclub\constant\Comment_Meta;
 use mikuclub\constant\Config;
 use mikuclub\constant\Expired;
+use mikuclub\constant\User_Capability;
 use WP_Comment;
 use WP_Error;
 use WP_REST_Request;
@@ -196,51 +197,53 @@ function get_comment_list($post_id, $offset, $number = Config::NUMBER_COMMENT_PE
         $offset,
         $number
     ]);
-    $result = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_COMMENTS . DIRECTORY_SEPARATOR . $post_id, Expired::EXP_30_MINUTE);
 
-    //如果缓存不存在
-    if (empty($result))
-    {
-
-        //高点赞评论列表
-        $array_top_like_comment_list = [];
-        //需要从主列表中排除的评论ID数组
-        $array_exclude_id = [];
-
-        //如果是第一页评论
-        //添加 高点赞的评论到列表头部
-        if (empty($offset))
+    $result = File_Cache::get_cache_meta_with_callback(
+        $cache_key,
+        File_Cache::DIR_COMMENTS . DIRECTORY_SEPARATOR . $post_id,
+        Expired::EXP_30_MINUTE,
+        function () use ($post_id, $offset, $number)
         {
-            $array_top_like_comment_list = get_top_like_comment_list($post_id);
-            $array_exclude_id = array_map(function (My_Comment_Model $comment)
+            //高点赞评论列表
+            $array_top_like_comment_list = [];
+            //需要从主列表中排除的评论ID数组
+            $array_exclude_id = [];
+
+            //如果是第一页评论
+            //添加 高点赞的评论到列表头部
+            if (empty($offset))
             {
-                return $comment->comment_id;
-            }, $array_top_like_comment_list);
+                $array_top_like_comment_list = get_top_like_comment_list($post_id);
+                $array_exclude_id = array_map(function (My_Comment_Model $comment)
+                {
+                    return $comment->comment_id;
+                }, $array_top_like_comment_list);
+            }
+
+            $args_normal_comment = [
+                'comment__not_in' => $array_exclude_id,
+                'post_id' => $post_id,
+                'offset' => $offset,
+                'status' => 'approve',
+                'type' => 'comment',
+                'number' => $number,
+                'hierarchical' => 'threaded',
+                'orderby' => [
+                    'comment_ID' => 'DESC'
+                ],
+            ];
+
+            $comments = get_comments($args_normal_comment);
+            $array_comment_list = array_map(function (WP_Comment $comment)
+            {
+                return new My_Comment_Model($comment);
+            }, $comments);
+
+            $result = array_merge($array_top_like_comment_list, $array_comment_list);
+
+            return $result;
         }
-
-        $args_normal_comment = [
-            'comment__not_in' => $array_exclude_id,
-            'post_id' => $post_id,
-            'offset' => $offset,
-            'status' => 'approve',
-            'type' => 'comment',
-            'number' => $number,
-            'hierarchical' => 'threaded',
-            'orderby' => [
-                'comment_ID' => 'DESC'
-            ],
-        ];
-
-        $comments = get_comments($args_normal_comment);
-        $array_comment_list = array_map(function (WP_Comment $comment)
-        {
-            return new My_Comment_Model($comment);
-        }, $comments);
-
-        $result = array_merge($array_top_like_comment_list, $array_comment_list);
-
-        File_Cache::set_cache_meta($cache_key, File_Cache::DIR_COMMENTS . DIRECTORY_SEPARATOR . $post_id, $result);
-    }
+    );
 
     return $result;
 }
@@ -305,7 +308,7 @@ function get_top_like_comment_list($post_id, $number = Config::NUMBER_TOP_LIKE_C
  * @param int $paged
  * @param int $number_per_page
  *
- * @return My_Comment_Reply[]
+ * @return My_Comment_Reply_Model[]
  */
 function get_comment_reply_list($paged = 1, $number_per_page = Config::NUMBER_COMMENT_REPLY_PER_PAGE)
 {
@@ -329,7 +332,7 @@ function get_comment_reply_list($paged = 1, $number_per_page = Config::NUMBER_CO
 
         $comment_replies = array_map(function (WP_Comment $wp_comment)
         {
-            return new My_Comment_Reply($wp_comment);
+            return new My_Comment_Reply_Model($wp_comment);
         }, $results);
 
         //遍历结果
@@ -475,7 +478,7 @@ function check_pre_insert_comment($prepared_comment, $request)
         $post_author_id = intval(get_post_field('post_author', $comment_post_id));
 
         //如果当前用户是封禁用户
-        if (current_user_is_regular() === false)
+        if (User_Capability::is_regular_user() === false)
         {
             $prepared_comment = new WP_Error(400, __FUNCTION__ . ' : 该账号已被封禁',  '无法发送 该账号已被封禁');
         }

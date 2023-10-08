@@ -9,6 +9,7 @@ namespace mikuclub;
 
 use mikuclub\constant\Category;
 use mikuclub\constant\Config;
+use mikuclub\constant\User_Capability;
 use mikuclub\constant\User_Meta;
 use mikuclub\constant\Web_Domain;
 
@@ -326,8 +327,8 @@ function setup_front_end_script_variable()
         //添加nonce数据, 来支持调用rest api
         'nonce' => wp_create_nonce('wp_rest'),
         'user_id' => get_current_user_id(),
-        'is_admin' => current_user_is_admin(),
-        'is_premium_user' => current_user_can_publish_posts(),
+        'is_admin' => User_Capability::is_admin(),
+        'is_premium_user' => User_Capability::is_premium_user(),
         User_Meta::USER_BLACK_LIST => get_user_black_list(get_current_user_id()),
         User_Meta::USER_FAVORITE_POST_LIST => get_user_favorite(),
     ];

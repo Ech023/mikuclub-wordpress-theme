@@ -1,4 +1,5 @@
 <?php
+
 namespace mikuclub;
 
 use WP_Error;
@@ -28,7 +29,7 @@ function api_get_user_private_message_unread_count($data)
  * 	'sender_id' =>是否只要当前用户和sender之间互相写的私信
  * ]
  *
- * @return My_Private_Message[]|WP_Error
+ * @return My_Private_Message_Model[]|WP_Error
  */
 function api_get_private_messages($data)
 {
@@ -60,12 +61,12 @@ function api_get_private_messages($data)
 	if (!isset($data['sender_id']))
 	{
 		//进行普通分类查询 获取只包含所有发件人最后消息的私信列表
-		$result = get_user_private_message_list_grouped($paged, $number);
+		$result = get_user_private_message_list_grouped($paged);
 	}
 	else
 	{
 		//获取和特定发件人之间的私信列表
-		$result = get_user_private_message_list_with_one_sender($data['sender_id'], $paged, $number);
+		$result = get_user_private_message_list_with_one_sender($data['sender_id'], $paged);
 	}
 
 	return $result;
@@ -80,7 +81,7 @@ function api_get_private_messages($data)
  * 'content' => 私信内容,
  * 'respond' =>是否在回复另外一条私信]
  *
- * @return My_Private_Message |WP_Error
+ * @return My_Private_Message_Model |WP_Error
  */
 function api_send_private_message($data)
 {
@@ -162,7 +163,7 @@ function api_delete_private_message($data)
  * 'content' => 私信内容,
  * 'respond' =>是否在回复另外一条私信]
  *
- * @return My_Private_Message |WP_Error
+ * @return My_Private_Message_Model |WP_Error
  */
 function api_send_report_message($data)
 {
@@ -231,7 +232,7 @@ function register_custom_private_message_api()
 		[
 			'methods'             => 'POST',
 			'callback'            => 'mikuclub\api_send_private_message',
-			'permission_callback' => 'mikuclub\current_user_is_regular',
+			'permission_callback' => ['mikuclub\constant\User_Capability', 'is_regular_user'],
 		],
 		[
 			'methods'             => 'delete',

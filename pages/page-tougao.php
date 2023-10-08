@@ -7,7 +7,7 @@
 use mikuclub\constant\Config;
 
 use function mikuclub\breadcrumbs_component;
-use function mikuclub\current_user_is_admin;
+
 use function mikuclub\is_sticky_post;
 use function mikuclub\redirect_for_not_logged;
 
@@ -81,7 +81,7 @@ get_header();
                         <?php
 
                         //高级用户可见
-                        if (current_user_is_admin())
+                        if (User_Capability::is_admin())
                         {
                         ?>
                             <div class="col-auto">
@@ -139,7 +139,7 @@ get_header();
                             <?php
 
                             //高级用户可见
-                            if (current_user_is_admin())
+                            if (User_Capability::is_admin())
                             {
                             ?>
 
@@ -155,7 +155,7 @@ get_header();
 
                         <?php
                         //管理员才可见
-                        if (current_user_is_admin())
+                        if (User_Capability::is_admin())
                         {
 
                             if (!is_sticky_post($post_id))

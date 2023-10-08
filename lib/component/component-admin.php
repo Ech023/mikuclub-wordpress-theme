@@ -86,6 +86,10 @@ function print_theme_config_page()
                 'name' => $clean_cache_key . File_Cache::DIR_CATEGORY,
                 'text' => '删除分类缓存',
             ],
+            [
+                'name' => $clean_cache_key . File_Cache::DIR_FORUM,
+                'text' => '删除论坛缓存',
+            ],
         ]
     );
 

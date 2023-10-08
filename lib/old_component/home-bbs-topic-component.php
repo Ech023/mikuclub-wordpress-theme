@@ -8,7 +8,7 @@ function home_bbs_topic_component() {
 
 
 	//获取帖子列表
-	$topic_list = get_recent_forums_topic( 10 );
+	$topic_list = get_recent_forum_topic_list( 10 );
 	//论坛地址
 	$forums_link = get_home_url() . '/forums';
 

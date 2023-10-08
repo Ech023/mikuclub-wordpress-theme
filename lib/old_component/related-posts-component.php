@@ -11,7 +11,7 @@ use mikuclub\constant\Config;
 function related_posts_component()
 {
 
-    $count = Config::RELATED_POST_COUNT;
+    $count = Config::RELATED_POST_LIST_LENGTH;
 
     $post_id = get_the_ID();
 
