@@ -237,6 +237,7 @@ class Expired
     const EXP_7_DAYS = 86400 * 7;
     const EXP_10_DAYS = 86400 * 10;
     const EXP_1_MONTH = 86400 * 30;
+    const EXP_6_MONTHS = 86400 * 30 * 6;
     const EXP_1_YEAR = 86400 * 365;
 
     /**

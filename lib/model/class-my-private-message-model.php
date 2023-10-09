@@ -42,7 +42,7 @@ class My_Private_Message_Model
 	 */
 	public $date;
 	/**
-	 * @var My_System_User|My_User|null
+	 * @var My_User_Model
 	 */
 	public $author;
 
@@ -68,7 +68,7 @@ class My_Private_Message_Model
 
 			$this->date = $object->date ?? date(Config::DATE_FORMAT);
 
-			$this->author = get_custom_author($this->sender_id);
+			$this->author = get_custom_user($this->sender_id);
 		}
 	}
 }

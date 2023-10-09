@@ -10,6 +10,7 @@ use mikuclub\constant\Config;
 class File_Cache
 {
     /*缓存系统ROOT文件夹*/
+    //@phpstan-ignore-next-line
     const ROOT_DIRECTORY = WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'cache_file' . DIRECTORY_SEPARATOR;
 
     /*子文件夹*/
@@ -50,6 +51,8 @@ class File_Cache
     const USER_LEVEL = 'user_level';
     //用户积分
     const USER_POINT = 'user_point';
+    //用户徽章
+    const USER_BADGE = 'user_badge';
 
 
     /*文章列表相关缓存 键名*/

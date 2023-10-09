@@ -3,13 +3,11 @@
 use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Config;
 use mikuclub\constant\Post_Feedback_Rank;
-use mikuclub\constant\User_Capability;
+use mikuclub\User_Capability;
 
 use function mikuclub\adult_404_content_for_no_logging_user;
 use function mikuclub\breadcrumbs_component;
-
-
-use function mikuclub\get_custom_author;
+use function mikuclub\get_custom_user;
 use function mikuclub\get_post_favorites;
 use function mikuclub\get_post_like;
 use function mikuclub\get_post_shares;
@@ -55,7 +53,7 @@ if ($access_allowed)
         //add_post_views( $post_id );
 
         $author_id = intval(get_post_field('post_author', $post_id));
-        $author = get_custom_author($author_id);
+        $author = get_custom_user($author_id);
         $is_user_followed = is_user_followed($author->id);
 
 

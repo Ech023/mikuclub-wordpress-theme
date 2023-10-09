@@ -3,7 +3,7 @@
 namespace mikuclub;
 
 use mikuclub\constant\Post_Meta;
-use mikuclub\constant\User_Capability;
+use mikuclub\User_Capability;
 use WP_Error;
 use WP_REST_Request;
 
@@ -367,7 +367,7 @@ function api_custom_post_metadata($data)
 
 
 	//获取作者信息
-	$metadata['author'] = [get_custom_author($data['author'])];
+	$metadata['author'] = [get_custom_user($data['author'])];
 
 	//获取评论总数
 	$metadata['count_comments'] = [get_comments_number($post_id)];
@@ -422,19 +422,19 @@ function register_custom_post_api()
 		[
 			'methods'             => 'POST',
 			'callback'            => 'mikuclub\api_add_sticky_posts',
-			'permission_callback' => ['mikuclub\constant\User_Capability', 'is_admin'],
+			'permission_callback' => ['mikuclub\User_Capability', 'is_admin'],
 		],
 		[
 			'methods'             => 'DELETE',
 			'callback'            => 'mikuclub\api_delete_sticky_posts',
-			'permission_callback' => ['mikuclub\constant\User_Capability', 'is_admin'],
+			'permission_callback' => ['mikuclub\User_Capability', 'is_admin'],
 		],
 	]);
 
 	register_rest_route('utils/v2', '/reject_post', [
 		'methods'             => 'POST',
 		'callback'            => 'mikuclub\api_reject_post',
-		'permission_callback' => ['mikuclub\constant\User_Capability', 'is_admin'],
+		'permission_callback' => ['mikuclub\User_Capability', 'is_admin'],
 	]);
 
 	register_rest_route('utils/v2', '/draft_post', [

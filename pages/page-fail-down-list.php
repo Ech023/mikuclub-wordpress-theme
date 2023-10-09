@@ -3,6 +3,7 @@
 //如果不是管理员
 
 use mikuclub\constant\Post_Meta;
+use mikuclub\User_Capability;
 
 use function mikuclub\breadcrumbs_component;
 use function mikuclub\convert_link_to_https;
@@ -10,9 +11,9 @@ use function mikuclub\get_down_link_from_old_post;
 use function mikuclub\get_fail_down_post_list;
 use function mikuclub\get_post_fail_times;
 use function mikuclub\print_page_edit_link;
-use function mikuclub\redirect_for_not_admin;
 
-redirect_for_not_admin();
+
+User_Capability::prevent_not_admin_user();
 
 /*
 	template name: 下载失效列表

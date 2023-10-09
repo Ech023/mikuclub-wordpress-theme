@@ -5,7 +5,7 @@ namespace mikuclub;
 use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Category;
 use mikuclub\constant\Expired;
-use mikuclub\constant\User_Capability;
+use mikuclub\User_Capability;
 use WP_Term;
 
 /**

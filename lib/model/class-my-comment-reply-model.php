@@ -34,9 +34,8 @@ class My_Comment_Reply_Model extends My_Comment_Model
 
 	/**
 	 *
-	 * @var My_System_User|My_User
+	 * @var My_User_Model
 	 */
-	//@phpstan-ignore-next-line
 	public $author;
 
 
@@ -52,6 +51,6 @@ class My_Comment_Reply_Model extends My_Comment_Model
 		$this->comment_post_href        = get_permalink($this->comment_post_id);
 
 		//替换原版author
-		$this->author = get_custom_author(intval($comment->user_id));
+		$this->author = get_custom_user(intval($comment->user_id));
 	}
 }

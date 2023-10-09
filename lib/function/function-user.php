@@ -4,7 +4,7 @@ namespace mikuclub;
 
 use mikuclub\constant\Expired;
 use mikuclub\constant\Post_Meta;
-use mikuclub\constant\User_Capability;
+use mikuclub\User_Capability;
 use mikuclub\constant\User_Meta;
 
 /**
@@ -12,38 +12,40 @@ use mikuclub\constant\User_Meta;
  */
 
 
-
 /**
- * 检查是否是黑名单用户, 如果是, 直接跳转到其他网站
- * @return void
+ * 根据id获取用户信息
+ *
+ * @param int $user_id
+ *
+ * @return My_User_Model
  */
-function check_blocked_user()
+function get_custom_user($user_id)
 {
-	//如果有登陆
-	if (is_user_logged_in())
+
+
+	//如果是0, 创建系统用户实例
+	if ($user_id == 0)
 	{
-
-		//获取缓存
-		$is_blocked_user = Session_Cache::get(Session_Cache::IS_BLOCKED_USER);
-		//如果缓存不存在
-		if ($is_blocked_user === null)
+		$author = My_User_Model::create_system_user();
+	}
+	else
+	{
+		$user = get_userdata($user_id);
+		if ($user)
 		{
-			//检测是否是黑名单用户
-			$is_blocked_user = !User_Capability::is_regular_user();
-			//设置新缓存
-			Session_Cache::set(Session_Cache::IS_BLOCKED_USER, $is_blocked_user);
+			//创建自定义用户类
+			$author = new My_User_Model($user);
 		}
-
-		//如果是黑名单
-		if ($is_blocked_user)
+		//如果用户不存在, 创建已删除用户模板
+		else
 		{
-			//自动跳转到第三方域名
-			$redirect_site =  'https://www.mikuclub.net';
-			wp_redirect($redirect_site);
-			exit;
+			$author = My_User_Model::create_deleted_user();
 		}
 	}
+
+	return $author;
 }
+
 
 
 /**
@@ -78,6 +80,7 @@ function update_user_custom_avatar($user_id, $attachment_id)
 		File_Cache::delete_cache_meta(User_Meta::USER_AVATAR, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id);
 	}
 }
+
 
 
 /**
@@ -153,22 +156,6 @@ function get_my_user_avatar($user_id)
 function get_my_user_default_avatar()
 {
 	return get_template_directory_uri() . "/img/default_avatar.webp";
-}
-
-/**
- * 输出用户头像html
- *
- * @param string $avatar_src 用户头像地址
- * @param int $size 图片显示大小
- *
- * @return string HTML代码
- */
-function print_user_avatar($avatar_src, $size = 50)
-{
-
-	return <<<HTML
-		<img class="avatar rounded-circle" src="{$avatar_src}" style="width: {$size}px; height: {$size}px" alt="用户头像" />
-HTML;
 }
 
 
@@ -552,6 +539,620 @@ function delete_user_like_count($user_id)
 		update_user_meta($user_id, User_Meta::USER_LIKE_COUNT, $count);
 	}
 }
+
+/**
+ * 获取用户收藏夹 (文章id列表)
+ * @return int[]
+ */
+function get_user_favorite()
+{
+
+	$result  = [];
+	$user_id = get_current_user_id();
+
+	//确保用户有登陆
+	if ($user_id)
+	{
+		$result = get_user_meta($user_id, User_Meta::USER_FAVORITE_POST_LIST, true) ?: [];
+		$result = array_map(function ($element)
+		{
+			return intval($element);
+		}, $result);
+	}
+
+	return array_values($result);
+}
+
+/**
+ * 添加文章id到收藏夹
+ *
+ * @param int $post_id
+ * @return boolean 成功TRUE 失败 false
+ */
+function add_user_favorite($post_id)
+{
+
+	$result = false;
+
+	$user_id = get_current_user_id();
+
+	//确保用户有登陆 并且有 文章id
+	if ($user_id && $post_id)
+	{
+		$user_favorite = get_user_favorite();
+		//只有在文章id不存在于数组中的时候 , 避免重复添加
+		if (!in_array($post_id, $user_favorite))
+		{
+			//在头部添加新收藏的文章id
+			array_unshift($user_favorite, $post_id);
+			//更新数组
+			$result = update_user_meta($user_id, User_Meta::USER_FAVORITE_POST_LIST, $user_favorite);
+
+			//文章收藏数+1
+			add_post_favorites($post_id);
+		}
+	}
+
+	return boolval($result);
+}
+
+/**
+ * 从收藏夹移除文章id
+ *
+ * @param int $post_id
+ * @return boolean 成功TRUE 失败 false
+ */
+function delete_user_favorite($post_id)
+{
+
+	$result = false;
+
+	$user_id = get_current_user_id();
+
+	//确保用户有登陆 并且有 文章id
+	if ($user_id && $post_id)
+	{
+
+		$user_favorite = get_user_favorite();
+		//只有在文章id存在于数组中的时候 
+		if (in_array($post_id, $user_favorite))
+		{
+			//从收藏列表里移除对应的文章ID
+			$user_favorite = array_filter($user_favorite, function ($element) use ($post_id)
+			{
+				return $element !== 0 && $element !== $post_id;
+			});
+
+			//更新数组
+			$result = update_user_meta($user_id, User_Meta::USER_FAVORITE_POST_LIST, $user_favorite);
+
+			//文章收藏数-1
+			delete_post_favorites($post_id);
+		}
+	}
+
+	return boolval($result);
+}
+
+
+
+/**
+ * 获取用户的关注数组
+ * @return int[]
+ */
+function get_user_followed()
+{
+
+	$result  = [];
+	$user_id = get_current_user_id();
+
+	//确保用户有登陆
+	if ($user_id)
+	{
+		$result = get_user_meta($user_id, User_Meta::USER_FOLLOW_LIST, true) ?: [];
+		$result = array_map(function ($element)
+		{
+			return intval($element);
+		}, $result);
+	}
+
+	return array_values($result);
+}
+
+
+/**
+ * 检测是否已被用户关注
+ * @param int $user_id_to_follow
+ * @return bool
+ */
+function is_user_followed($user_id_to_follow)
+{
+
+	$result  = false;
+	$user_id = get_current_user_id();
+	//确保用户有登陆
+	if ($user_id)
+	{
+		$user_followed = get_user_followed();
+		$result = in_array($user_id_to_follow, $user_followed);
+	}
+
+	return $result;
+}
+
+/**
+ * 添加新作者到关注数组
+ *
+ * @param int $user_id_to_follow
+ * @return boolean 成功TRUE 失败 false
+ */
+function add_user_followed($user_id_to_follow)
+{
+
+	$result = false;
+	$user_id = get_current_user_id();
+
+	if ($user_id && $user_id_to_follow)
+	{
+
+		$user_followed = get_user_followed();
+		//只有在作者id不存在于数组中的时候 , 避免重复添加
+		if (!in_array($user_id_to_follow, $user_followed))
+		{
+			//添加
+			$user_followed[] = $user_id_to_follow;
+			//更新
+			$result = update_user_meta($user_id, User_Meta::USER_FOLLOW_LIST, $user_followed);
+		}
+	}
+
+	return boolval($result);
+}
+
+/**
+ * 从关注数组里移除作者ID
+ *
+ * @param int $user_id_to_follow
+ * @return boolean 成功TRUE 失败 false
+ */
+function delete_user_followed($user_id_to_follow)
+{
+
+	$result = false;
+
+	$user_id = get_current_user_id();
+	//确保用户有登陆
+	if ($user_id && $user_id_to_follow)
+	{
+		$user_followed = get_user_followed();
+		//如果是取消关注, 确保在数组中已存在相关元素
+		if (in_array($user_id_to_follow, $user_followed))
+		{
+			//过滤掉相关元素
+			$user_followed = array_filter($user_followed, function ($element) use ($user_id_to_follow)
+			{
+				return  $element !== 0 && $element !== $user_id_to_follow;
+			});
+			//更新
+			$result = update_user_meta($user_id, User_Meta::USER_FOLLOW_LIST, $user_followed);
+		}
+	}
+
+	return boolval($result);
+}
+
+
+/**
+ * 获取用户的黑名单
+ *
+ * @param int $user_id
+ * @return int[] 拉黑用户ID数组
+ */
+function get_user_black_list($user_id)
+{
+	//初始化为空数组
+	$result = [];
+
+	//确保用户有登陆
+	if ($user_id)
+	{
+		$result = get_user_meta($user_id, User_Meta::USER_BLACK_LIST, true) ?: [];
+		$result = array_map(function ($element)
+		{
+			return intval($element);
+		}, $result);
+	}
+
+	return array_values($result);
+}
+
+/**
+ * 检测目标用户ID是否在黑名单内
+ *
+ * @param int $user_id 当前登陆的用户ID
+ * @param int $target_user_id 目标用户ID
+ *
+ * @return boolean 成功TRUE 失败 false
+ */
+function in_user_black_list($user_id, $target_user_id)
+{
+
+	$result = false;
+	//确保用户和目标用户存在
+	if ($user_id && $target_user_id)
+	{
+		//获取黑名单
+		$black_list = get_user_black_list($user_id);
+		//检测是否在黑名单内
+		$result = in_array($target_user_id, $black_list);
+	}
+
+	return $result;
+}
+
+
+
+
+/**
+ * 添加拉黑的用户ID到用户的黑名单
+ *
+ * @param int $user_id 当前登陆的用户ID
+ * @param int $target_user_id 要拉黑的用户ID
+ *
+ * @return boolean 成功TRUE 失败 false
+ */
+function add_user_black_list($user_id, $target_user_id)
+{
+
+	$result = false;
+
+	//确保用户和目标用户存在
+	if ($user_id && $target_user_id && $user_id !== $target_user_id)
+	{
+		//获取黑名单
+		$black_list = get_user_black_list($user_id);
+		//如果黑名单里还不包含目标用户ID
+		if (!in_array($target_user_id, $black_list))
+		{
+			//添加ID到黑名单里
+			$black_list[] = $target_user_id;
+			//更新黑名单
+			$result = update_user_meta($user_id, User_Meta::USER_BLACK_LIST, $black_list);
+
+			//增加目标用户的被拉黑数
+			add_user_blacked_count($target_user_id);
+		}
+
+		//从用户自己的关注列表里移除该作者
+		delete_user_followed($target_user_id);
+	}
+
+	return boolval($result);
+}
+
+
+/**
+ * 从黑名单里移除对应的用户ID
+ *
+ * @param int $user_id 当前登陆的用户ID
+ * @param int $target_user_id 要取消拉黑的用户ID
+ *
+ * @return boolean 成功TRUE 失败 false
+ */
+function delete_user_black_list($user_id, $target_user_id)
+{
+
+	$result = false;
+
+	//确保用户和目标用户存在
+	if ($user_id && $target_user_id)
+	{
+		//获取黑名单
+		$black_list = get_user_black_list($user_id);
+		//从黑名单里移除目标ID
+		$new_black_list = array_filter($black_list, function ($element) use ($target_user_id)
+		{
+			return $element !== 0 && $element !== $target_user_id;
+		});
+
+		//更新黑名单
+		$result = update_user_meta($user_id, User_Meta::USER_BLACK_LIST, $new_black_list);
+
+		//如果新旧黑名单有变化
+		if (count($new_black_list) !== count($black_list))
+		{
+			//减少目标用户的被拉黑数
+			delete_user_blacked_count($target_user_id);
+		}
+	}
+
+	return boolval($result);
+}
+
+
+/**
+ * 获取用户被拉黑的次数
+ *
+ * @param int $user_id
+ * @return int
+ */
+function get_user_blacked_count($user_id)
+{
+	$result = 0;
+
+	//如果用户ID存在
+	if ($user_id)
+	{
+		//如果不存在 重设为0
+		$result = get_user_meta($user_id, User_Meta::USER_BLACKED_COUNT, true) ?: 0;
+	}
+
+	return intval($result);
+}
+
+/**
+ * 增加用户被拉黑的次数
+ * @param int $user_id 当前登陆的用户ID
+ * @return boolean 成功TRUE 失败 false
+ */
+function add_user_blacked_count($user_id)
+{
+	$result = false;
+
+	//确保用户和目标用户存在
+	if ($user_id)
+	{
+		$count = get_user_blacked_count($user_id);
+		$count++;
+
+		//更新
+		$result = update_user_meta($user_id, User_Meta::USER_BLACKED_COUNT, $count);
+	}
+
+	return boolval($result);
+}
+
+/**
+ * 减少用户被拉黑的次数
+ * @param int $user_id 当前登陆的用户ID
+ * @return boolean 成功TRUE 失败 false
+ */
+function delete_user_blacked_count($user_id)
+{
+	$result = false;
+
+	//确保用户和目标用户存在
+	if ($user_id)
+	{
+		$count = get_user_blacked_count($user_id);
+		$count--;
+		//如果数量为负数, 重置为0;
+		if ($count < 0)
+		{
+			$count = 0;
+		}
+
+		//更新
+		$result = update_user_meta($user_id, User_Meta::USER_BLACKED_COUNT, $count);
+	}
+
+	return boolval($result);
+}
+
+
+/**
+ * 获取用户的粉丝数量
+ *
+ * @param int $user_id
+ * @return  int
+ */
+function get_user_fans_count($user_id)
+{
+
+	$result = 0;
+
+	//确保用户有登陆
+	if ($user_id)
+	{
+		$result = get_user_meta($user_id, User_Meta::USER_FANS_COUNT, true) ?: 0;
+	}
+
+	return intval($result);
+}
+
+
+/**
+ * 增加用户的粉丝数
+ *
+ * @param int $user_id
+ * @return boolean 成功TRUE 失败 false
+ */
+function add_user_fans_count($user_id)
+{
+	$result = false;
+	//确保用户有登陆
+	if ($user_id)
+	{
+		$fans_count = get_user_fans_count($user_id);
+		//+1
+		$fans_count++;
+		//更新
+		$result = update_user_meta($user_id, User_Meta::USER_FANS_COUNT, $fans_count);
+	}
+	return boolval($result);
+}
+
+/**
+ * 减少用户的粉丝数
+ *
+ * @param int $user_id
+ * @return boolean 成功TRUE 失败 false
+ */
+function delete_user_fans_count($user_id)
+{
+	$result = false;
+	//确保用户有登陆
+	if ($user_id)
+	{
+		$fans_count = get_user_fans_count($user_id);
+
+		$fans_count--;
+
+		//如果为负数, 重置为0
+		if ($fans_count < 0)
+		{
+			$fans_count = 0;
+		}
+		//更新
+		$result = update_user_meta($user_id, User_Meta::USER_FANS_COUNT, $fans_count);
+	}
+	return boolval($result);
+}
+
+
+
+
+/**
+ * 获取用户勋章
+ *
+ * @param int $user_id
+ *
+ * @return array<int, array<string, mixed>> 勋章数组
+ */
+function get_user_badges($user_id)
+{
+
+	$result = File_Cache::get_cache_meta_with_callback(
+		File_Cache::USER_BADGE,
+		File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id,
+		Expired::EXP_6_HOURS,
+		function () use ($user_id)
+		{
+
+			//获取统计数据
+			$user_post_count    = get_user_post_count($user_id);
+			$user_comment_count = get_user_comment_count($user_id);
+			$user_like_count    = get_user_like_count($user_id);
+
+			$user = get_userdata($user_id);
+			$timestamp = strtotime($user->user_registered) ?: strtotime('now');
+			//计算用户注册年份
+			$user_old = date("Y") - date("Y", $timestamp);
+
+
+			//初始化用户勋章数组
+			$user_badges = [];
+
+			//如果存在UP主徽章
+			$user_post_count_level = calculate_user_badges_level($user_post_count);
+			if ($user_post_count_level)
+			{
+
+				$user_badges[] = [
+					'class' => 'badge text-bg-danger',
+					'title' => 'UP主 Lv' . $user_post_count_level,
+					'level' => $user_post_count_level,
+				];
+			}
+
+			//如果存在评价徽章
+			$user_comment_count_level = calculate_user_badges_level($user_comment_count);
+			if ($user_comment_count_level)
+			{
+
+				$user_badges[] = [
+					'class' => 'badge text-bg-primary',
+					'title' => '评价师 Lv' . $user_comment_count_level,
+					'level' => $user_comment_count_level,
+				];
+			}
+
+			//如果存在点赞徽章
+			$user_like_count_level = calculate_user_badges_level($user_like_count);
+			if ($user_like_count_level)
+			{
+				$user_badges[] = [
+					'class' => 'badge text-bg-success',
+					'title' => '点赞家 Lv' . $user_like_count_level,
+					'level' => $user_like_count_level,
+				];
+			}
+
+			//如果用户注册时间大于1年
+			if ($user_old > 1)
+			{
+				//根据用户年龄不如, 使用不同的颜色
+				$badge_color = 'text-bg-secondary';
+				if ($user_old > 6)
+				{
+					$badge_color = 'text-bg-info';
+				}
+				else if ($user_old > 3)
+				{
+					$badge_color = 'text-bg-warning';
+				}
+
+				$user_badges[] = [
+					'class' => 'badge ' . $badge_color,
+					'title' => $user_old . '年用户',
+					'level' => $user_old,
+				];
+			}
+
+			return $user_badges;
+		}
+	);
+
+	return $result;
+}
+
+/**
+ * 根据数值计算用户出自定义徽章的等级
+ *
+ * @param int $value
+ * @return int 如果无等级返回 0
+ */
+function calculate_user_badges_level($value)
+{
+
+	$level_6 = 1000;
+	$level_5 = 300;
+	$level_4 = 100;
+	$level_3 = 30;
+	$level_2 = 10;
+	$level_1 = 3;
+
+	$result = 0;
+
+
+	if ($value >= $level_6)
+	{
+		$result = 6;
+	}
+	else if ($value >= $level_5)
+	{
+		$result = 5;
+	}
+	else if ($value >= $level_4)
+	{
+		$result = 4;
+	}
+	else if ($value >= $level_3)
+	{
+		$result = 3;
+	}
+	else if ($value >= $level_2)
+	{
+		$result = 2;
+	}
+	else if ($value >= $level_1)
+	{
+		$result = 1;
+	}
+
+	return $result;
+}
+
 
 
 

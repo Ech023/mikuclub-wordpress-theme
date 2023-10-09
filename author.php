@@ -2,7 +2,7 @@
 
 use mikuclub\Post_Query;
 
-use function mikuclub\get_custom_author;
+use function mikuclub\get_custom_user;
 use function mikuclub\get_user_fans_count;
 use function mikuclub\in_user_black_list;
 use function mikuclub\is_user_followed;
@@ -14,7 +14,7 @@ use function mikuclub\print_user_badges;
 get_header();
 
 $current_user_id = get_current_user_id();
-$author           = get_custom_author(get_queried_object_id());
+$author           = get_custom_user(get_queried_object_id());
 $is_user_followed = is_user_followed($author->id);
 
 

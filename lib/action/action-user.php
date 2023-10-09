@@ -2,6 +2,7 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Expired;
 use mikuclub\constant\User_Meta;
 use WP_Post;
 use WP_REST_Request;
@@ -33,4 +34,21 @@ add_action(
     },
     10,
     2
+);
+
+/**
+ * 更改默认登陆cookie的有效时间
+ * @param int $expiration
+ * @param int $user_id
+ * @param bool $remember
+ * @return int
+ */
+add_filter(
+    'auth_cookie_expiration',
+    function ($expiration, $user_id, $remember)
+    {
+        return Expired::EXP_6_MONTHS;
+    },
+    10,
+    3
 );

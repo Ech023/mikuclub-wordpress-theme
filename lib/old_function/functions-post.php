@@ -9,7 +9,7 @@ use mikuclub\constant\Option_Meta;
 use mikuclub\constant\Post_Feedback_Rank;
 use mikuclub\constant\Post_Meta;
 use mikuclub\constant\Post_Status;
-use mikuclub\constant\User_Capability;
+use mikuclub\User_Capability;
 use mikuclub\constant\Web_Domain;
 use WP_Error;
 use WP_Post;

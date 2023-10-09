@@ -4,7 +4,7 @@ namespace mikuclub;
 
 use Exception;
 use mikuclub\constant\Comment_Meta;
-use mikuclub\constant\User_Capability;
+use mikuclub\User_Capability;
 use stdClass;
 use WP_Error;
 use WP_REST_Request;
@@ -347,7 +347,7 @@ function register_custom_comment_api()
 		[
 			'methods'             => 'POST',
 			'callback'            => 'mikuclub\api_insert_comment',
-			'permission_callback' => ['mikuclub\constant\User_Capability', 'is_regular_user'],
+			'permission_callback' => ['mikuclub\User_Capability', 'is_regular_user'],
 		],
 	]);
 

@@ -2,8 +2,8 @@
 
 use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Web_Domain;
+use mikuclub\User_Capability;
 
-use function mikuclub\check_blocked_user;
 use function mikuclub\get_main_menu;
 use function mikuclub\get_random_head_background_image;
 use function mikuclub\get_theme_option;
@@ -20,7 +20,7 @@ $home = get_home_url();
 //网站名称
 $site_name = get_option('blogname');
 //检查是否是黑名单用户
-check_blocked_user();
+User_Capability::prevent_blocked_user();
 
 //页面标题
 $title = '';

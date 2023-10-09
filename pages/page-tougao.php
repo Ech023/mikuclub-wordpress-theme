@@ -5,16 +5,17 @@
  */
 
 use mikuclub\constant\Config;
+use mikuclub\User_Capability;
 
 use function mikuclub\breadcrumbs_component;
 
 use function mikuclub\is_sticky_post;
-use function mikuclub\redirect_for_not_logged;
+
 
 $home = get_home_url();
 
 //如果未登陆 重定向回首页
-redirect_for_not_logged();
+User_Capability::prevent_not_logged_user();
 
 get_header();
 

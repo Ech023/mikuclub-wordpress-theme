@@ -5,7 +5,7 @@ namespace mikuclub;
 use mikuclub\constant\Comment_Meta;
 use mikuclub\constant\Config;
 use mikuclub\constant\Expired;
-use mikuclub\constant\User_Capability;
+use mikuclub\User_Capability;
 use WP_Comment;
 use WP_Error;
 use WP_REST_Request;

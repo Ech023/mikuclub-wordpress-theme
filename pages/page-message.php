@@ -8,13 +8,14 @@
 
 use mikuclub\constant\Message_Type;
 use mikuclub\Session_Cache;
+use mikuclub\User_Capability;
 
 use function mikuclub\breadcrumbs_component;
 use function mikuclub\next_page_button;
-use function mikuclub\redirect_for_not_logged;
+
 use function mikuclub\set_user_private_message_as_read;
 
-redirect_for_not_logged();
+User_Capability::prevent_not_logged_user();
 
 get_header();
 

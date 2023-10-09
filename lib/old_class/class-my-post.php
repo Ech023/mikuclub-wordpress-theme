@@ -138,7 +138,7 @@ if (
 
 		/**
 		 *
-		 * @var My_System_User|My_User|null
+		 * @var My_User_Model
 		 */
 		public $post_author;
 
@@ -182,7 +182,7 @@ if (
 
 			$this->post_status = $post->post_status;
 
-			$this->post_author = get_custom_author(intval($post->post_author));
+			$this->post_author = get_custom_user(intval($post->post_author));
 
 			$this->post_cat_id   = get_post_sub_cat_id($post->ID);
 			$this->post_cat_name = get_cat_name($this->post_cat_id);

@@ -9,7 +9,7 @@ namespace mikuclub;
 
 use mikuclub\constant\Category;
 use mikuclub\constant\Config;
-use mikuclub\constant\User_Capability;
+use mikuclub\User_Capability;
 use mikuclub\constant\User_Meta;
 use mikuclub\constant\Web_Domain;
 

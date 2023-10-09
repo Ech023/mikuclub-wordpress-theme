@@ -5,7 +5,7 @@
 <?php
 
 use mikuclub\constant\Admin_Meta;
-use mikuclub\constant\User_Capability;
+use mikuclub\User_Capability;
 
 use function mikuclub\get_bottom_menu;
 use function mikuclub\get_friends_links;

@@ -2,6 +2,7 @@
 
 namespace mikuclub;
 
+use Exception;
 use mikuclub\constant\Expired;
 use mikuclub\constant\User_Meta;
 use WP_Error;
@@ -74,7 +75,7 @@ add_action('jwt_auth_token_before_dispatch', 'mikuclub\modify_jwt_auth_response'
  *
  * @param WP_REST_Request $data ['id'=>作者id, 'full_view'=>是否要获取额外信息]
  *
- * @return My_User|My_System_User|WP_Error
+ * @return My_User_Model|WP_Error
  */
 function api_get_author($data)
 {
@@ -85,7 +86,7 @@ function api_get_author($data)
 		return new WP_Error(400, __FUNCTION__ . ' : ID 参数错误');
 	}
 
-	$author = get_custom_author($data['id']);
+	$author = get_custom_user($data['id']);
 
 	//如果需要查看完整作者信息
 	/*if ( ! empty( $data['full_view'] ) ) {
@@ -115,12 +116,18 @@ function api_get_user_favorite()
 function api_add_user_favorite($data)
 {
 
-	if (!isset($data['post_id']))
+	return execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
 
-	return add_user_favorite($data['post_id']);
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
+
+		add_user_favorite($post_id);
+
+		//为了兼容APP 需要返回新的收藏列表
+		$result = get_user_favorite();
+
+		return $result;
+	});
 }
 
 /**
@@ -132,13 +139,19 @@ function api_add_user_favorite($data)
  */
 function api_delete_user_favorite($data)
 {
-
-	if (!isset($data['post_id']))
+	return execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
 
-	return delete_user_favorite($data['post_id']);
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
+
+		delete_user_favorite($post_id);
+
+		//为了兼容APP 需要返回新的收藏列表
+		$result = get_user_favorite();
+
+		return $result;
+	});
+
 }
 
 
@@ -191,9 +204,9 @@ function api_add_user_followed($data)
 	$target_user_id = intval($target_user_id);
 
 	//增加被关注用户的粉丝数
-	set_user_fans_count($target_user_id, true);
+	add_user_fans_count($target_user_id);
 
-	return set_user_followed($target_user_id, true);
+	return add_user_followed($target_user_id);
 }
 
 /**
@@ -215,9 +228,9 @@ function api_delete_user_followed($data)
 	$target_user_id = intval($target_user_id);
 
 	//删除被取消关注用户的粉丝数
-	set_user_fans_count($target_user_id, false);
+	delete_user_fans_count($target_user_id);
 
-	return set_user_followed($target_user_id, false);
+	return delete_user_followed($target_user_id);
 }
 
 /**

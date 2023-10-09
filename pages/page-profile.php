@@ -6,7 +6,9 @@ template name: 用户个人信息页
 
 //如果未登陆 重定向回首页
 
-use mikuclub\My_User;
+
+use mikuclub\My_User_Model;
+use mikuclub\User_Capability;
 
 use function mikuclub\breadcrumbs_component;
 use function mikuclub\get_my_user_avatar;
@@ -14,9 +16,9 @@ use function mikuclub\get_user_black_list;
 use function mikuclub\get_user_level;
 use function mikuclub\get_user_points;
 use function mikuclub\print_user_avatar;
-use function mikuclub\redirect_for_not_logged;
 
-redirect_for_not_logged();
+
+User_Capability::prevent_not_logged_user();
 
 
 get_header();
@@ -168,7 +170,7 @@ $user = wp_get_current_user();
                     if ($black_user)
                     {
                         //转换成自定义用户类
-                        $black_user = new My_User($black_user);
+                        $black_user = new My_User_Model($black_user);
                         $black_user_avatar = print_user_avatar($black_user->user_image);
 
                         $user_black_list_element .= <<<HTML

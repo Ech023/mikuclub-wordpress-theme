@@ -315,7 +315,7 @@ function send_private_message($recipient_id, $message_content, $respond = 0, $is
     $model->respond = $respond;
     $model->status =  0;
     $model->date = date(Config::DATE_FORMAT);
-    $model->author = get_custom_author($sender_id);
+    $model->author = get_custom_user($sender_id);
 
     return $model;
 }

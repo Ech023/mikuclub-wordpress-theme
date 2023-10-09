@@ -54,7 +54,7 @@ class My_Comment_Model
 	public $comment_parent;
 
 	/**
-	 * @var My_Custom_Comment_User|My_Custom_Deleted_User
+	 * @var My_User_Model
 	 */
 	public $author;
 
@@ -87,7 +87,7 @@ class My_Comment_Model
 			$this->comment_parent   = intval($comment->comment_parent);
 			$this->comment_likes = get_comment_like($this->comment_id);
 
-			$this->author = get_custom_comment_user(intval($comment->user_id));
+			$this->author = get_custom_user(intval($comment->user_id));
 
 			//获取子评论
 			$this->children = array_map(function (WP_Comment $children_comment)

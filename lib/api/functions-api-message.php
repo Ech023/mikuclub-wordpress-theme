@@ -232,7 +232,7 @@ function register_custom_private_message_api()
 		[
 			'methods'             => 'POST',
 			'callback'            => 'mikuclub\api_send_private_message',
-			'permission_callback' => ['mikuclub\constant\User_Capability', 'is_regular_user'],
+			'permission_callback' => ['mikuclub\User_Capability', 'is_regular_user'],
 		],
 		[
 			'methods'             => 'delete',

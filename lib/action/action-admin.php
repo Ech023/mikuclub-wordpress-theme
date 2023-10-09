@@ -45,6 +45,20 @@ add_filter('request', [
 ]);
 //更新用户最后登陆时间
 add_action('wp_login', ['mikuclub\User_Extra_Data_Column', 'update_user_last_login_time'], 10, 2);
-/*=============================*/
 
 
+//自定义用户个人资料信息
+add_filter('user_contactmethods', 'mikuclub\user_custom_contact_fields');
+
+//移除用户在后台的菜单选项
+add_action('admin_menu', 'mikuclub\remove_menus');
+
+
+//禁止普通用户进入后台特定页面
+add_action('admin_print_scripts-index.php', 'mikuclub\prevent_user_access_wp_admin', 10, 0);
+add_action('admin_print_scripts-post-new.php', 'mikuclub\prevent_user_access_wp_admin', 10, 0);
+add_action('admin_print_scripts-edit.php', 'mikuclub\prevent_user_access_wp_admin', 10, 0);
+add_action('admin_print_scripts-edit-comments.php', 'mikuclub\prevent_user_access_wp_admin', 10, 0);
+add_action('admin_print_scripts-upload.php', 'mikuclub\prevent_user_access_wp_admin', 10, 0);
+add_action('admin_print_scripts-media-new.php', 'mikuclub\prevent_user_access_wp_admin', 10, 0);
+add_action('admin_print_scripts-profile.php', 'mikuclub\prevent_user_access_wp_admin', 10, 0);

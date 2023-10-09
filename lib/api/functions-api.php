@@ -253,6 +253,29 @@ function test_function($data)
 }
 
 
+
+/**
+ * 通过try catch 运行代码, 并在有错误的情况下返回 WP_Error
+ *
+ * @param callable $callable
+ * @return mixed|WP_Error
+ */
+function execute_with_try_catch_wp_error($callable)
+{
+
+	try
+	{
+		$result = $callable();
+	}
+	catch (Exception $e)
+	{
+		$result = new WP_Error(400, $e->getMessage(), __FUNCTION__);
+	}
+
+	return $result;
+}
+
+
 /**
  * 注册自定义 api 接口
  * 

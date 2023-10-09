@@ -5,7 +5,7 @@ namespace mikuclub;
 use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Admin_Page;
 use mikuclub\constant\Config;
-use mikuclub\constant\User_Capability;
+use mikuclub\User_Capability;
 
 
 /**
@@ -235,5 +235,60 @@ function custom_dashboard_widgets()
     }
 }
 
+/**
+ * 自定义用户个人资料信息
+ *
+ * @param string[] $contact_methods
+ * @return string[]
+ */
+function user_custom_contact_fields($contact_methods)
+{
+    //取消不必要的用户
+    unset($contact_methods['yim']);
+    unset($contact_methods['aim']);
+    unset($contact_methods['jabber']);
+    unset($contact_methods['twitter']);
+
+    $contact_methods['qq']         = 'QQ';
+    $contact_methods['sina_weibo'] = '新浪微博';
+
+    return $contact_methods;
+}
 
 
+/**
+ * 移除普通用户在后台的菜单选项
+ * 
+ * @return void
+ */
+function remove_menus()
+{
+
+    if (!User_Capability::is_admin())
+    {
+        remove_menu_page('index.php'); //仪表盘
+        remove_menu_page('upload.php'); //多媒体
+        remove_menu_page('edit.php'); //文章
+        remove_menu_page('post-new.php'); //新建文章
+        remove_menu_page('media-new.php'); //新建多媒体
+        remove_menu_page('edit-comments.php'); //评论
+        remove_menu_page('tools.php'); //工具
+    }
+}
+
+
+/**
+ * 禁止普通用户进入后台特定页面
+ * 
+ * @return void
+ */
+function prevent_user_access_wp_admin()
+{
+    //检测用户是否有管理权限
+    if (!User_Capability::is_admin())
+    {
+        $address = get_home_url();
+        wp_redirect($address);
+        exit;
+    }
+}
