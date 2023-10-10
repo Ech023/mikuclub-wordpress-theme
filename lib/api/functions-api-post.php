@@ -331,14 +331,14 @@ function api_custom_post_metadata($data)
 	if (empty($metadata[Post_Meta::POST_THUMBNAIL_SRC]) || empty($metadata[Post_Meta::POST_THUMBNAIL_SRC][0]))
 	{
 		//重新获取预览图地址
-		$metadata[Post_Meta::POST_THUMBNAIL_SRC][0] = get_thumbnail_src($post_id);
+		$metadata[Post_Meta::POST_THUMBNAIL_SRC][0] = Post_Image::get_thumbnail_src($post_id);
 	}
 
 	//重新获取一遍各个大小的预览图片地址数组
 	//因为默认批量获取 没有对数组进行反反序列化
-	$metadata[Post_Meta::POST_IMAGES_THUMBNAIL_SRC] = get_images_thumbnail_size($post_id);
-	$metadata[Post_Meta::POST_IMAGES_SRC]           = get_images_large_size($post_id);
-	$metadata[Post_Meta::POST_IMAGES_FULL_SRC]      = get_images_full_size($post_id);
+	$metadata[Post_Meta::POST_IMAGES_THUMBNAIL_SRC] = Post_Image::get_array_image_thumbnail_src($post_id);
+	$metadata[Post_Meta::POST_IMAGES_SRC]           = Post_Image::get_array_image_large_src($post_id);
+	$metadata[Post_Meta::POST_IMAGES_FULL_SRC]      = Post_Image::get_array_image_full_src($post_id);
 
 
 	/*
@@ -374,7 +374,7 @@ function api_custom_post_metadata($data)
 
 
 	//获取图片预览id数组 (以后可以改进, 只有在编辑的时候需要用到)
-	$metadata['previews'] = get_image_ids_from_form_field_by_post_id($post_id);
+	$metadata['previews'] = Post_Image::get_array_image_id($post_id);
 
 
 	return $metadata;

@@ -17,7 +17,7 @@ function print_post_for_rss($content)
 {
 
 	global $post;
-	$thumbnail_src = get_thumbnail_src($post->ID); //获取缩略图
+	$thumbnail_src = Post_Image::get_thumbnail_src($post->ID); //获取缩略图
 	$post_link     = get_permalink($post);
 
 	$content = <<< HTML
@@ -452,7 +452,7 @@ function hot_posts_print($list_value, $count, $target = 'target="_blank"')
     //初始化排行名次
     $num = 1;
     foreach ($risult as $row) {
-        $content .= '<div class="hot-post-box cache"><span class="widget-hot-rank"><i class="fa-solid fa-bolt"></i> ' . $num /* 输出排名 */ /*. '</span><span class="widget-hot-view"><i class="fa-solid fa-eye"></i> ' . $row->meta_value /* 输出点击数 */ /*. '</span><a title="' . $row->post_title . '" href="' .  get_home_url() . '/' . $row->ID . '" ' . $target . '><img src="' . get_thumbnail_src($row->ID) . '" alt="' . $row->post_title . '"><div class="post-title">' . $row->post_title . '</div></a></div>';
+        $content .= '<div class="hot-post-box cache"><span class="widget-hot-rank"><i class="fa-solid fa-bolt"></i> ' . $num /* 输出排名 */ /*. '</span><span class="widget-hot-view"><i class="fa-solid fa-eye"></i> ' . $row->meta_value /* 输出点击数 */ /*. '</span><a title="' . $row->post_title . '" href="' .  get_home_url() . '/' . $row->ID . '" ' . $target . '><img src="' . Post_Image::get_thumbnail_src($row->ID) . '" alt="' . $row->post_title . '"><div class="post-title">' . $row->post_title . '</div></a></div>';
 $num++;
 }
 
@@ -494,7 +494,7 @@ function hot_posts_update_print($list_name, $taxonomy_id, $count, $target = 'tar
 
         foreach ($risult as $row) {
 
-            $content .= '<div class="hot-post-box update"><span class="widget-hot-rank"><i class="fa-solid fa-bolt"></i> ' . $num /* 输出排名 */ /*. '</span><span class="widget-hot-view"><i class="fa-solid fa-eye"></i> ' . $row->meta_value /* 输出点击数 *//* . '</span><a title="' . $row->post_title . '" href="' .  get_home_url() . '/' . $row->ID . '" ' . $target . '><img src="' . get_thumbnail_src($row->ID) . '" alt="' . $row->post_title . '" /><div class="post-title">' . $row->post_title . '</div></a></div>';
+            $content .= '<div class="hot-post-box update"><span class="widget-hot-rank"><i class="fa-solid fa-bolt"></i> ' . $num /* 输出排名 */ /*. '</span><span class="widget-hot-view"><i class="fa-solid fa-eye"></i> ' . $row->meta_value /* 输出点击数 *//* . '</span><a title="' . $row->post_title . '" href="' .  get_home_url() . '/' . $row->ID . '" ' . $target . '><img src="' . Post_Image::get_thumbnail_src($row->ID) . '" alt="' . $row->post_title . '" /><div class="post-title">' . $row->post_title . '</div></a></div>';
 $num++;
 array_push($array_post_list, $row->ID); //储存有关文章id到数组里
 }
@@ -561,7 +561,7 @@ function rating_posts_print($list_value, $count, $target = 'target="_blank"')
     $num = 1;
     foreach ($risult as $row) {
 
-        $content .= '<div class="rating-div cache"><span class="widget-hot-rank"><i class="fa-solid fa-bolt"></i> ' . $num . '</span><span class="rating-total"><i class="far fa-star" aria-hidden="true"></i> ' . $row->meta_value /* 输出评分总数 *//* . '</span><a title="' . $row->post_title . '" href="' .  get_home_url() . '/' . $row->ID . '" ' . $target . '><img src="' . get_thumbnail_src($row->ID) . '" alt="' . $row->post_title . '" /><div class="post-title">' . $row->post_title . '</div></a></div>';
+        $content .= '<div class="rating-div cache"><span class="widget-hot-rank"><i class="fa-solid fa-bolt"></i> ' . $num . '</span><span class="rating-total"><i class="far fa-star" aria-hidden="true"></i> ' . $row->meta_value /* 输出评分总数 *//* . '</span><a title="' . $row->post_title . '" href="' .  get_home_url() . '/' . $row->ID . '" ' . $target . '><img src="' . Post_Image::get_thumbnail_src($row->ID) . '" alt="' . $row->post_title . '" /><div class="post-title">' . $row->post_title . '</div></a></div>';
 
 $num++;
 }
@@ -598,7 +598,7 @@ function rating_posts_update_print($list_name, $taxonomy_id, $count, $target = '
 
         foreach ($risult as $row) {
             //输出文章列表
-            $content .= '<div class="rating-div update"><span class="widget-hot-rank"><i class="fa-solid fa-bolt"></i> ' . $num . '</span><span class="rating-total"><i class="far fa-star" aria-hidden="true"></i> ' . $row->meta_value /* 输出评分总数 *//* . '</span><a title="' . $row->post_title . '" href="' .  get_home_url() . '/' . $row->ID . '" ' . $target . '><img src="' . get_thumbnail_src($row->ID) . '" alt="' . $row->post_title . '" /><div class="post-title">' . $row->post_title . '</div></a></div>';*/
+            $content .= '<div class="rating-div update"><span class="widget-hot-rank"><i class="fa-solid fa-bolt"></i> ' . $num . '</span><span class="rating-total"><i class="far fa-star" aria-hidden="true"></i> ' . $row->meta_value /* 输出评分总数 *//* . '</span><a title="' . $row->post_title . '" href="' .  get_home_url() . '/' . $row->ID . '" ' . $target . '><img src="' . Post_Image::get_thumbnail_src($row->ID) . '" alt="' . $row->post_title . '" /><div class="post-title">' . $row->post_title . '</div></a></div>';*/
 /*
             $num++;
 

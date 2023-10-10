@@ -18,6 +18,8 @@ parameters:
 		- sidebar.php
 		- single.php
 		- tag.php
+	scanDirectories:
+		- ignore
 
 	excludePaths:
 		analyse:

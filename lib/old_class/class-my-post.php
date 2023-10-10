@@ -70,7 +70,7 @@ if (
 		{
 			parent::__construct($post);
 
-			$this->post_image = get_thumbnail_src($post->ID);
+			$this->post_image = Post_Image::get_thumbnail_src($post->ID);
 			$this->post_views = get_post_views($post->ID);
 		}
 	}
@@ -91,7 +91,7 @@ if (
 		{
 			parent::__construct($post);
 
-			$this->post_image = get_images_large_size($post->ID)[0];
+			$this->post_image = Post_Image::get_array_image_large_src($post->ID)[0];
 		}
 	}
 
@@ -172,7 +172,7 @@ if (
 			parent::__construct($post);
 
 
-			$this->post_image = get_thumbnail_src($post->ID);
+			$this->post_image = Post_Image::get_thumbnail_src($post->ID);
 
 			$this->post_views     = get_post_views($post->ID);
 			$this->post_likes     = get_post_like($post->ID);

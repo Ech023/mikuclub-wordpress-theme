@@ -31,6 +31,7 @@ class Config
     //默认时间格式
     const DATE_FORMAT_SHORT = 'y-m-d';
     const DATE_FORMAT = 'y-m-d H:i:s';
+    const DATE_FORMAT_MYSQL = 'Y-m-d H:i:s';
 
     //启动文件缓存系统
     const ENABLE_FILE_CACHE_SYSTEM
@@ -121,6 +122,31 @@ class Web_Domain
             static::FILE5_MIKUCLUB_FUN,
             //static::FILE6_MIKUCLUB_FUN,
         ];
+    }
+
+    /**
+     * 把链接还原成主域名 并且移除HTTP或HTTPS协议部分
+     *
+     * @param string $url
+     * @return string 
+     */
+    public static function reset_to_main_site_domain_and_remove_protocol($url)
+    {
+        $array_search = array_merge(
+            static::get_array_site_domain(),
+            static::get_array_file_domain()
+        );
+
+        //当前原始主域名
+        $origin_domain = Web_Domain::get_main_site_domain();
+
+        //把链接修正回默认主站域名
+        $url = str_replace($array_search, $origin_domain, $url);
+
+        // 移除HTTP或HTTPS协议部分，但保留双斜杠
+        $url = preg_replace("/^(https?:)?\//", "//", $url);
+
+        return $url;
     }
 }
 

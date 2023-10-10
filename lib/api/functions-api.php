@@ -205,7 +205,7 @@ function test_function($data)
 	foreach ($posts as $post)
 	{
 
-		/*$imgs = get_images_large_size($post->ID);
+		/*$imgs = Post_Image::get_array_image_large_src($post->ID);
 		if (count($imgs) > 1)
 		{
 			$img = $imgs[1];
@@ -219,11 +219,11 @@ function test_function($data)
 			}
 		}*/
 
-		//$img = get_thumbnail_src($post->ID);
+		//$img = Post_Image::get_thumbnail_src($post->ID);
 
-		$array_image = get_images_thumbnail_size($post->ID);
-		//$array_image = array_merge($array_image, get_images_large_size($post->ID));
-		//$array_image = array_merge($array_image, get_images_full_size($post->ID));
+		$array_image = Post_Image::get_array_image_thumbnail_src($post->ID);
+		//$array_image = array_merge($array_image, Post_Image::get_array_image_large_src($post->ID));
+		//$array_image = array_merge($array_image, Post_Image::get_array_image_full_src($post->ID));
 
 		$array_search = [
 			'file1.mikuclub.fun',

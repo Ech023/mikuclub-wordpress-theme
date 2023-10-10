@@ -83,7 +83,7 @@ class Weibo_Share
             $title = mb_substr($title, 0, 32, 'utf-8');
 
             //获取封面图地址
-            $array_images = get_images_full_size($post_id);
+            $array_images = Post_Image::get_array_image_full_src($post_id);
             $top_image = count($array_images) > 0 ? $array_images[0] : '';
 
 
@@ -161,8 +161,8 @@ class Weibo_Share
         //以数组x数组的方式返回元数据 [ 'meta_key' => [meta_value] ]
         $metadata = get_post_meta($post_id);
         //获取图片地址数组
-        $images_src = get_images_large_size($post_id);
-        $images_full_src = get_images_full_size($post_id);
+        $images_src = Post_Image::get_array_image_large_src($post_id);
+        $images_full_src = Post_Image::get_array_image_full_src($post_id);
 
 
         //获取来源url变量
