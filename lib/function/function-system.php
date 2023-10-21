@@ -2,9 +2,7 @@
 
 namespace mikuclub;
 
-use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Expired;
-use WP_Term;
 
 /**
  *  网站系统相关函数
@@ -341,7 +339,7 @@ function create_hash_string($input)
 		$value = $input;
 	}
 
-	return hash('xxh3', $value);
+	return md5($value);
 }
 
 

@@ -190,7 +190,31 @@ class File_Cache
         }
     }
 
+    /**
+     * 清空单个文章相关的所有缓存
+     * @param int $post_id
+     * @return void
+     */
+    public static function delete_post_cache_meta_by_post_id($post_id)
+    {
+        if ($post_id)
+        {
+            static::delete_directory(File_Cache::DIR_POST . DIRECTORY_SEPARATOR . $post_id);
+        }
+    }
 
+    /**
+     * 清空单个文章评论的所有缓存
+     * @param int $post_id
+     * @return void
+     */
+    public static function delete_comment_cache_meta_by_post_id($post_id)
+    {
+        if ($post_id)
+        {
+            static::delete_directory(File_Cache::DIR_COMMENTS . DIRECTORY_SEPARATOR . $post_id);
+        }
+    }
 
     /**
      * 清空文件缓存系统

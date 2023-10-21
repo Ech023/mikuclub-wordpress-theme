@@ -207,7 +207,7 @@ class Post_Image
         //就从文章元数据中读取本地图片地址
         $array_image_large_src = get_post_meta($post_id, Post_Meta::POST_IMAGES_SRC, true);
         // 如果还未储存过相关地址
-        if (empty($images_src))
+        if (empty($array_image_large_src))
         {
             //重新获取
             $array_image_large_src = Post_Image::set_array_image_src($post_id, Post_Meta::POST_IMAGES_SRC);
@@ -316,7 +316,7 @@ class Post_Image
         });
 
         //如果图片数组是空的, 尝试直接从文章内容里抓取图片
-        if (count($array_image_src) > 0)
+        if (count($array_image_src) === 0)
         {
             $array_image_src[] = static::find_first_image_in_content($post_id);
         }

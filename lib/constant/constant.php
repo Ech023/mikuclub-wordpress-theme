@@ -84,6 +84,9 @@ class Web_Domain
     const FILE5_MIKUCLUB_FUN = 'file5.mikuclub.fun';
     const FILE6_MIKUCLUB_FUN = 'file6.mikuclub.fun';
 
+    //DEBUG专用域名
+    const LOCALHOST = 'localhost/html';
+
     /**
      * 获取当前主域名
      * @return string
@@ -105,6 +108,8 @@ class Web_Domain
             static::MIKUCLUB_WIN,
             static::MIKUCLUB_EU,
             static::MIKUCLUB_UK,
+            //debug专用
+            static::LOCALHOST
         ];
     }
 
@@ -144,7 +149,7 @@ class Web_Domain
         $url = str_replace($array_search, $origin_domain, $url);
 
         // 移除HTTP或HTTPS协议部分，但保留双斜杠
-        $url = preg_replace("/^(https?:)?\//", "//", $url);
+        $url = preg_replace("/^(https?:)?\/\//", "//", $url);
 
         return $url;
     }

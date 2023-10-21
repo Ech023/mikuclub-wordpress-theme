@@ -15,6 +15,7 @@ use function mikuclub\wpforo_custom_editor_smiley_js_code;
 global $paged;
 
 
+
 //网站主页地址
 $home = get_home_url();
 //网站名称

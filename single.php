@@ -5,7 +5,7 @@ use mikuclub\constant\Config;
 use mikuclub\constant\Post_Feedback_Rank;
 use mikuclub\User_Capability;
 
-use function mikuclub\adult_404_content_for_no_logging_user;
+use function mikuclub\print_adult_404_content_for_no_logging_user;
 use function mikuclub\breadcrumbs_component;
 use function mikuclub\get_custom_user;
 use function mikuclub\get_post_favorites;
@@ -345,7 +345,7 @@ HTML;
 }
 else
 {
-    echo adult_404_content_for_no_logging_user();
+    echo print_adult_404_content_for_no_logging_user();
 }
 
 

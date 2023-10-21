@@ -215,7 +215,7 @@ function setPostLike(event) {
         }
 
         //更新文章评价等级
-        update_Post_Feedback_Rank();
+        update_post_feedback_rank();
     };
 
 
@@ -278,7 +278,7 @@ function setPostUnlike(event) {
         }
 
         //更新文章评价等级
-        update_Post_Feedback_Rank();
+        update_post_feedback_rank();
     };
 
 
@@ -306,7 +306,7 @@ function setPostUnlike(event) {
 /**
  * 根据评价数量更新文章评价等级
  */
-function update_Post_Feedback_Rank() {
+function update_post_feedback_rank() {
 
     const $functional_part = $('.functional-part');
 
@@ -315,10 +315,10 @@ function update_Post_Feedback_Rank() {
 
     console.log('更新评价' + post_like_count + ' ' + post_unlike_count);
 
-    let rank = Post_Feedback_Rank.get_rank(post_like_count, post_unlike_count);
+    let rank = POST_FEEDBACK_RANK.get_rank(post_like_count, post_unlike_count);
 
     //更新评价等级
-    $functional_part.find('.Post_Feedback_Rank').html(rank);
+    $functional_part.find('.post_feedback_rank').html(rank);
 }
 
 /**

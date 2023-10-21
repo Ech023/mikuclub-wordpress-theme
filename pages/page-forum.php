@@ -5,7 +5,7 @@
 
 use mikuclub\Session_Cache;
 
-use function mikuclub\adult_404_content_for_no_logging_user;
+use function mikuclub\print_adult_404_content_for_no_logging_user;
 
 get_header();
 
@@ -27,7 +27,7 @@ if(is_user_logged_in()){
 
   //如果未登录 输出404内容
   	if (!is_user_logged_in()) {
-		echo adult_404_content_for_no_logging_user();
+		echo print_adult_404_content_for_no_logging_user();
 	}
 	else {
 

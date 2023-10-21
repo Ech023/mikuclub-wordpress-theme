@@ -116,7 +116,7 @@ function api_set_post_unlike($data)
  *
  * @param WP_REST_Request $data
  *
- * @return int|WP_Error 成功的情况 返回文章id \ 错误的情况 返回0 或者 WpError对象
+ * @return boolean|WP_Error 成功的情况 返回文章id \ 错误的情况 返回0 或者 WpError对象
  */
 function api_update_post_date($data)
 {
@@ -126,6 +126,13 @@ function api_update_post_date($data)
 	{
 		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
 	}
+
+	//只有高级用户有权限
+	if (!User_Capability::is_premium_user())
+	{
+		return new WP_Error(401, __FUNCTION__ . ' : 无权进行该项操作');
+	}
+	
 
 	return update_post_date($data['post_id']);
 }

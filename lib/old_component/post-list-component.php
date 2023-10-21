@@ -52,7 +52,7 @@ function post_list_component()
 			';
 		}*/
 
-		$post_container_class = set_black_user_post_container_mask_class($my_post->post_author->id);
+		$post_container_class = add_mask_class_to_black_user_post_container($my_post->post_author->id);
 
 
 		$post_list_html .= <<< HTML

@@ -2,7 +2,7 @@
 
 use mikuclub\constant\Admin_Meta;
 
-use function mikuclub\adult_404_content_for_no_logging_user;
+use function mikuclub\print_adult_404_content_for_no_logging_user;
 use function mikuclub\breadcrumbs_component;
 
 use function mikuclub\get_hot_list_by_random;
@@ -26,7 +26,7 @@ use function mikuclub\top_hot_posts_component;
 	//如果未登录 访问成人分类 和成人文章 输出404内容
 	if (!is_user_logged_in() && is_adult_category())
 	{
-		echo adult_404_content_for_no_logging_user();
+		echo print_adult_404_content_for_no_logging_user();
 	}
 	else
 	{

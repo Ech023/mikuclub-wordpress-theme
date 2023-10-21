@@ -22,19 +22,39 @@ class Post_Meta
     //文章的分享次数
     const POST_SHARE_COUNT = 'count_sharing';
 
+    //来源说明
+    const POST_SOURCE_NAME = 'source_name';
+    //来源地址
+    const POST_SOURCE = 'source';
+
     //下载栏1
     const POST_DOWN = 'down';
     //下载栏2
     const POST_DOWN2 = 'down2';
-    //密码栏1
+    //访问密码栏1
     const POST_PASSWORD = 'password';
-    //密码栏2
+    //访问密码栏2
     const POST_PASSWORD2 = 'password2';
+    //解压密码栏1
+    const POST_UNZIP_PASSWORD = 'unzip_password';
+    //解压密码栏2
+    const POST_UNZIP_PASSWORD2 = 'unzip_password2';
+
+    //百度秒传地址
+    const POST_BAIDU_FAST_LINK = 'baidu_fast_link';
+    //文章的B站播放ID
+    const POST_BILIBILI = 'bilibili';
+    //文章的B站视频aid,bvid,cid数据 (需要另外获取)
+    const POST_BILIBILI_VIDEO_INFO = 'bilibili_info';
+    //文章的在线播放地址
+    const POST_VIDEO = 'video';
+
 
     //预览图ID数组
     const POST_PREVIEWS = 'previews';
-    //相关的B站视频数据
-    const POST_BILIBILI_VIDEO_INFO = 'bilibili_info';
+
+    //判断文章是否是第一次公开
+    const POST_IS_FIRST_PUBLISHED = 'first_published';
     //判断是否加入微博待发送列表
     const POST_SHARE_TO_WEIBO = 'waiting_for_weibo';
     //分类ID数组

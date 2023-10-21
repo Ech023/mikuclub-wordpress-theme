@@ -5,8 +5,12 @@ namespace mikuclub;
 use mikuclub\constant\Category;
 use mikuclub\constant\Config;
 use mikuclub\constant\Expired;
+use mikuclub\constant\Option_Meta;
 use mikuclub\constant\Post_Meta;
-use mikuclub\constant\Web_Domain;
+use mikuclub\constant\Post_Status;
+use WP_Error;
+use WP_Post;
+use WP_REST_Request;
 use WP_Term;
 
 /*
@@ -367,7 +371,7 @@ function delete_post_favorites($post_id)
  * @param int $post_id
  * @return int[]
  */
-function get_post_category_ids($post_id)
+function get_post_array_cat_id($post_id)
 {
 
     $result = [];
@@ -379,7 +383,7 @@ function get_post_category_ids($post_id)
         //如果数值为空 重新计算分类数组
         if (empty($result))
         {
-            $result = set_post_category_ids($post_id);
+            $result = set_post_array_cat_id($post_id);
         }
     }
 
@@ -393,7 +397,7 @@ function get_post_category_ids($post_id)
  * @param int $post_id
  * @return int[]
  */
-function set_post_category_ids($post_id)
+function set_post_array_cat_id($post_id)
 {
 
     //获取文章所属分类对象数组
@@ -531,6 +535,564 @@ function set_post_sub_cat_id($post_id)
 
     return $sub_cat_id;
 }
+
+
+
+
+/**
+ * 从旧版文章里提取出下载地址
+ *
+ * @param int $post_id
+ *
+ * @return array<string, string>
+ */
+function get_down_link_from_old_post($post_id)
+{
+
+    $result = [];
+
+    //获取文章内容
+    $post_content = get_post_field('post_content', $post_id);
+
+    //尝试搜索文章内容
+    $index = stripos($post_content, '<a class="dl" href="');
+    //如果搜索到了下载1地址
+    if ($index !== false)
+    {
+
+        //提取下载1的地址
+        $download = substr($post_content, $index + (strlen('<a class="dl" href="')));
+        $result[Post_Meta::POST_DOWN] = stristr($download, '"', true);
+
+        //捕捉密码1位置
+        $index_pw = stripos($post_content, '<span class="passw">');
+        if ($index_pw !== false)
+        {
+            //提取密码1
+            $password_text = substr($post_content, $index_pw + (strlen('<span class="passw">')));
+            $result[Post_Meta::POST_PASSWORD] = stristr($password_text, '<', true);
+        }
+
+        //搜索第二个下载地址
+        $index2 = stripos($download, '<a class="dl" href="');
+        //如果搜索到了下载2地址
+        if ($index2 !== false)
+        {
+            //提取下载2的地址
+            $download2 = substr($download, $index2 + (strlen('<a class="dl" href="')));
+            $result[Post_Meta::POST_DOWN2] = stristr($download2, "\"", true);
+
+            //捕捉密码2位置
+            $index_pw2 = stripos($password_text ?? '', '<span class="passw">');
+            if ($index_pw2 != false)
+            {
+                //提取密码2
+                $password_text2 = substr($password_text, $index_pw2 + (strlen('<span class="passw">')));
+                $result[Post_Meta::POST_PASSWORD2] = stristr($password_text2, '<', true);
+            }
+        }
+    }
+
+    return $result;
+}
+
+
+
+
+/**
+ *通过REST API创建文章的时候触发
+ *为REST插入的新文章添加初始META数据
+ *
+ * @param WP_Post $post Inserted or updated post object.
+ * @param WP_REST_Request $request Request object.
+ * @return void
+ **/
+function add_custom_post_meta_on_rest_post($post, $request)
+{
+    //如果参数里有meta键名
+    $meta = $request['meta'] ?? null;
+
+    //有元数据数组
+    if ($meta)
+    {
+        //批量初始化文章元数据
+        //未在REST INSERT POST里使用到
+        $array_post_meta_key_to_create = [
+            Post_Meta::POST_SOURCE,
+            Post_Meta::POST_VIDEO,
+        ];
+        foreach ($array_post_meta_key_to_create as $meta_key)
+        {
+            if (empty(metadata_exists('post', $post->ID, Post_Meta::POST_SOURCE)))
+            {
+                update_post_meta($post->ID, $meta_key, '');
+            }
+        }
+
+        //批量更新文章元数据
+        $array_post_meta_key_to_update = [
+            Post_Meta::POST_SOURCE_NAME,
+            //Post_Meta::POST_SOURCE, 未使用
+            Post_Meta::POST_DOWN,
+            Post_Meta::POST_DOWN2,
+            Post_Meta::POST_PASSWORD,
+            Post_Meta::POST_PASSWORD2,
+            Post_Meta::POST_UNZIP_PASSWORD,
+            Post_Meta::POST_UNZIP_PASSWORD2,
+            Post_Meta::POST_BAIDU_FAST_LINK,
+            Post_Meta::POST_BILIBILI,
+            //Post_Meta::POST_VIDEO, 未使用
+
+        ];
+
+        foreach ($array_post_meta_key_to_update as $meta_key)
+        {
+            $meta_value = $meta[$meta_key] ?? '';
+            update_post_meta($post->ID, $meta_key, $meta_value);
+        }
+
+
+        //如果有图片数组数据
+        $array_preview_id = $meta[Post_Meta::POST_PREVIEWS] ?? null;
+        if (is_array($array_preview_id) && count($array_preview_id) > 0)
+        {
+            //确保图片ID数组为整数
+            $array_preview_id = array_map(function ($preview_id)
+            {
+                return intval($preview_id);
+            }, $array_preview_id);
+
+
+            //如果图片数组只有一个图片id, 只提取第一个元素
+            if (count($array_preview_id) === 1)
+            {
+                $previews = $array_preview_id[0];
+            }
+            else
+            {
+                $previews = $array_preview_id;
+            }
+
+            update_post_meta($post->ID, Post_Meta::POST_PREVIEWS, $previews);
+            //更新相关图片附件的父文章id
+            update_post_parent($array_preview_id, $post->ID);
+        }
+
+        //调用后续文章提交动作 来设置 额外元数据 和发布
+        post_submit_action($post->ID);
+    }
+}
+
+
+/**
+ * 用表单新建文章和更新文章后的动作
+ *
+ * @param int $post_id
+ * @return void
+ */
+function post_submit_action($post_id)
+{
+
+    //更新所有大小版本的图片地址
+    Post_Image::update_all_array_image_src($post_id);
+    //更新缩微图ID
+    Post_Image::set_thumbnail_id($post_id);
+    //更新缩微图图片地址
+    Post_Image::set_thumbnail_src($post_id);
+
+    //更新主要分类
+    set_post_main_cat_id($post_id);
+    //更新具体子分类
+    set_post_sub_cat_id($post_id);
+    //更新分类ID数组
+    set_post_array_cat_id($post_id);
+
+
+    $down = get_post_meta($post_id, Post_Meta::POST_DOWN, true);
+    $down2 = get_post_meta($post_id, Post_Meta::POST_DOWN2, true);
+    //如果没有下载地址, 设置fail_time =-1, 关闭下载失效反馈功能
+    if (empty($down) && empty($down2))
+    {
+        update_post_fail_times($post_id, -1);
+    }
+    //否则 重置失效次数为0
+    else
+    {
+        update_post_fail_times($post_id, 0);
+    }
+
+
+    //如果是高级用户
+    if (User_Capability::is_premium_user())
+    {
+        //直接发布文章
+        post_publish_action($post_id);
+    } //如果不是高级用户, 让文章变成待审核状态
+    else
+    {
+        //更改文章状态
+        update_post_status($post_id, Post_Status::PENDING);
+    }
+
+    //清空bilibili视频缓存信息
+    Bilibili_Video::delete_video_meta($post_id);
+    //清空文章相关的缓存
+    File_Cache::delete_post_cache_meta_by_post_id($post_id);
+}
+
+
+
+
+
+/**
+ * 文章发布动作
+ *
+ * @param int $post_id
+ * @return void
+ */
+function post_publish_action($post_id)
+{
+
+    $is_first_published = get_post_meta($post_id, Post_Meta::POST_IS_FIRST_PUBLISHED, true);
+
+    //如果是第一次发布
+    if (empty($is_first_published))
+    {
+
+        //添加到微博待同步列表
+        Weibo_Share::add_post_to_weibo_sync($post_id);
+
+        //设置发布过的标识
+        update_post_meta($post_id, Post_Meta::POST_IS_FIRST_PUBLISHED, 1);
+
+
+        $post_author_id = intval(get_post_field('post_author', $post_id));
+        //添加 point奖励
+        mycred_add(
+            'publishing_content',
+            $post_author_id,
+            1000,
+            '发布投稿 %link_with_title%',
+            $post_id,
+            ['ref_type' => 'post'],
+            'mycred_default'
+        );
+    }
+
+    //发布文章
+    wp_publish_post($post_id);
+}
+
+
+
+
+/**
+ * 更改文章状态
+ *
+ * @param int $post_id
+ * @param string $post_status
+ * @return void
+ */
+function update_post_status($post_id, $post_status)
+{
+
+    global $wpdb;
+
+    //判断文章是否已经公开过
+    $first_published = get_post_meta($post_id, Post_Meta::POST_IS_FIRST_PUBLISHED, true);
+
+    //获取文章所属分类ID数组
+    $array_id_category = get_post_array_cat_id($post_id);
+    //如果是动漫区或者视频区或者从未公开过
+    if (
+        in_array(Category::ANIME, $array_id_category) ||
+        in_array(Category::VIDEO, $array_id_category) ||
+        empty($first_published)
+    )
+    {
+        //更新创建时间+状态
+        $time = current_time('mysql');
+
+        $wpdb->update(
+            $wpdb->posts,
+            [
+                'post_status' => $post_status,
+                'post_date' => $time,
+                'post_date_gmt' => get_gmt_from_date($time),
+            ],
+            [
+                'ID' => $post_id,
+            ],
+            [
+                '%s',
+                '%s',
+                '%s',
+            ],
+            [
+                '%d',
+            ]
+        );
+    }
+    //如果不是动漫区
+    else
+    {
+        //只更新状态
+        $wpdb->update(
+            $wpdb->posts,
+            [
+                'post_status' => $post_status,
+            ],
+            [
+                'ID' => $post_id,
+            ],
+            [
+                '%s',
+            ],
+            [
+                '%d',
+            ]
+        );
+    }
+}
+
+
+/**
+ * 驳回待审文章
+ *
+ * @param int $post_id
+ * @param string $reject_cause 驳回原因 默认为下载地址失效
+ * @return void
+ */
+function reject_post($post_id, $reject_cause = '下载地址失效')
+{
+
+    $user_id = intval(get_post_field('post_author', $post_id));
+    $post_title = get_post_field('post_title', $post_id);
+
+    //更新文章标题+更新状态为草稿
+    $time = current_time('mysql');
+    wp_update_post(
+        [
+            'ID' => $post_id,
+            'post_title' => $reject_cause . ' ' . $post_title,
+            'post_status' => 'draft',
+            'post_date' => $time,
+            'post_date_gmt' => get_gmt_from_date($time)
+        ]
+    );
+
+
+    //创建私信通知
+    $message_content = '您的投稿 《 ' . $post_title . ' 》( ' . get_permalink($post_id) . ' ) 已被退回, 退回原因: ' . $reject_cause . ' .  您可以通过投稿管理页面重新编辑该稿件.';
+    //发送系统私信
+    send_private_message($user_id, $message_content, 0, true);
+    //发送退稿邮件
+    send_email_reject_post($post_id, $reject_cause);
+}
+
+/**
+ * 把文章转为草稿
+ *
+ * @param int $post_id
+ * @return boolean|WP_Error
+ */
+function draft_post($post_id)
+{
+    $result = false;
+
+    $author_id = intval(get_post_field('post_author', $post_id));
+    //如果不是管理员 并且 不是用户自己的投稿
+    if (!User_Capability::is_admin() && get_current_user_id() !== $author_id)
+    {
+        $result = new WP_Error(401, __FUNCTION__ . ' : 无权进行该项操作');
+    }
+    else
+    {
+        $result = wp_update_post(
+            [
+                'ID' => $post_id,
+                'post_status' => 'draft',
+            ]
+        );
+
+        if (is_numeric($result))
+        {
+            $result = true;
+        }
+    }
+
+    return $result;
+}
+
+
+/**
+ * 更改图片附件关联的父文章ID
+ *
+ * @param int[] $array_post_id
+ * @param int $post_parent_id
+ * @return void
+ * 
+ * @global $wpdb
+ */
+function update_post_parent($array_post_id, $post_parent_id)
+{
+
+    global $wpdb;
+
+    $string_array_post_id = implode(',', $array_post_id);
+
+    $query = <<<SQL
+        UPDATE
+            {$wpdb->posts}
+        SET 
+            post_parent = {$post_parent_id}
+        WHERE
+            ID IN {$string_array_post_id}
+SQL;
+
+    $wpdb->query($query);
+
+
+    // $wpdb->update(
+    //     $wpdb->posts,
+    //     [
+    //         'post_parent' => $post_parent_id,
+    //     ],
+    //     [
+    //         'ID' => $post_id,
+    //     ],
+    //     [
+    //         '%d',
+    //     ],
+    //     [
+    //         '%d',
+    //     ]
+    // );
+}
+
+/**
+ * 更新文章的创建时间
+ *
+ * @param int $post_id
+ * @return bool|WP_Error
+ */
+function update_post_date($post_id)
+{
+    $result = false;
+
+    if ($post_id)
+    {
+
+        $time = current_time('mysql');
+        //更新文章的创建时间
+        $result = wp_update_post(
+            [
+                'ID' => $post_id,
+                'post_date' => $time,
+                'post_date_gmt' => get_gmt_from_date($time)
+            ]
+        );
+        if (is_numeric($result))
+        {
+            $result = true;
+        }
+    }
+
+    return $result;
+}
+
+
+
+/**
+ * 添加文章置顶
+ *
+ * @param int $post_id
+ * @return bool
+ * */
+function add_sticky_posts($post_id)
+{
+    $result = false;
+
+    //置顶文章列表最大长度
+    $max_sticky_post_length = 300;
+
+    if ($post_id)
+    {
+        //获取置顶文章id数组
+        $array_sticky_post_id = get_option(Option_Meta::STICKY_POSTS);
+
+        if (count($array_sticky_post_id) > $max_sticky_post_length)
+        {
+            //只保存前200个ID
+            $array_sticky_post_id = array_slice($array_sticky_post_id, 0, $max_sticky_post_length);
+        }
+
+        //如果id未曾置顶
+        if (!in_array($post_id, $array_sticky_post_id))
+        {
+            //添加id到数组头部
+            array_unshift($array_sticky_post_id, $post_id);
+        }
+
+        $result = update_option(Option_Meta::STICKY_POSTS, $array_sticky_post_id);
+    }
+
+    return $result;
+}
+
+
+/**
+ * 移除文章置顶
+ *
+ * @param int $post_id
+ * @return bool
+ * */
+function delete_sticky_posts($post_id)
+{
+
+    //获取置顶文章id数组
+    $sticky_posts = get_option(Option_Meta::STICKY_POSTS);
+
+    //搜索元素在数组中的位置
+    $index = array_search($post_id, $sticky_posts);
+    //如果成功找到
+    if ($index !== false)
+    {
+        //根据位置删除该元素
+        unset($sticky_posts[$index]);
+    }
+
+    //更新数组
+    return update_option(Option_Meta::STICKY_POSTS, $sticky_posts);
+}
+
+/**
+ * 检测是否是置顶文章
+ *
+ * @param int $post_id
+ * @return bool
+ */
+function is_sticky_post($post_id)
+{
+
+    $is_sticky = false;
+
+    //获取置顶文章id数组
+    $sticky_posts = get_option(Option_Meta::STICKY_POSTS);
+    if (is_array($sticky_posts) && in_array($post_id, $sticky_posts))
+    {
+        $is_sticky = true;
+    }
+
+    return $is_sticky;
+}
+
+
+
+
+
+
+
 
 
 

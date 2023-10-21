@@ -27,6 +27,28 @@ class Weibo_Share
     const WEIBO_SHARE_MAX_RETRY_TIME = 3;
 
     /**
+     * 添加文章元数据来注明 那些文章需要同步到微博
+     *
+     * @param int $post_id
+     * @return void
+     */
+    public static function add_post_to_weibo_sync($post_id)
+    {
+        if ($post_id)
+        {
+            //获取主分类
+            $main_cat_id = get_post_main_cat_id($post_id);
+
+            //如果不是微博禁发分类
+            if (!in_array($main_cat_id, Category::get_array_not_weibo()))
+            {
+                //加入等待新浪微博同步标示
+                update_post_meta($post_id, Post_Meta::POST_SHARE_TO_WEIBO, 0);
+            }
+        }
+    }
+
+    /**
      * 转发文章到微博
      * @return bool|string
      */
@@ -153,128 +175,62 @@ class Weibo_Share
     public static function get_post_content_for_weibo($post_id)
     {
 
-        $post = get_post($post_id);  //获取文章主体
-        $post_title = $post->post_title; //获取文章标题
-
         $post_link = get_permalink($post_id); // 获取文章链接
 
-        //以数组x数组的方式返回元数据 [ 'meta_key' => [meta_value] ]
-        $metadata = get_post_meta($post_id);
-        //获取图片地址数组
-        $images_src = Post_Image::get_array_image_large_src($post_id);
-        $images_full_src = Post_Image::get_array_image_full_src($post_id);
+        $first_image_part = print_post_content_first_image($post_id);
+        $post_description_part = print_post_content_description($post_id);
+        $preview_images_part = print_post_content_previews_image($post_id);
 
-
-        //获取来源url变量
-        $source_url = trim($metadata['source'][0]);
-        //获取来源说明
-        $source_text = trim($metadata['source_name'][0]);
-
-        //bilibili视频地址
-        $bilibili_video = trim($metadata['bilibili'][0]);
-
-        $post_content_part = $post->post_content; //描述部分
-        $source_part = ''; //来源部分
-        $preview_images_part = ''; //图片预览部分
-        $video_part = ''; //视频部分
-        $download_part = ''; //下载部分
-
-        //来源部分------------------------------------------------------------------------------------------
-
-        //有来源地址
-        if ($source_url)
+        //视频部分
+        $bilibili_video_id = get_post_meta($post_id, Post_Meta::POST_BILIBILI, true) ?: '';
+        $video_part = '';
+        if ($bilibili_video_id)
         {
-            //没有来源说明 就使用来源地址当做说明
-            if (empty($source_text))
-            {
-                $source_text = $source_url;
-            }
-            $source_part = '<a href="' . $source_url . '"  target="_blank" rel="external nofollow">' . $source_text . '</a>';
-        }
-        //只有来源说明的情况
-        else if ($source_text)
-        {
-            $source_part = $source_text;
+            $video_part = <<<HTML
+                <h4>在线播放</h4>
+                <div class=" py-2 py-md-0">
+                    <h2>
+                        <a class="btn btn-miku w-100 w-md-50" href="https://www.bilibili.com/video/{$bilibili_video_id}" target="_blank" rel="external nofollow">点击观看</a>
+                    </h2>
+                </div>
+HTML;
         }
 
-        //如果来源信息不是空的 添加前置词
-        if ($source_part)
-        {
-            $source_part = '©来源:  ' . $source_part;
-        }
-
-        //预览图片部分------------------------------------------------------------------------------------------
-        for ($i = 1; $i < count($images_src); $i++) //从第二张图开始 循环输出剩下的图片
-        {
-            $preview_images_part .= '<div class="preview-image m-1 ">
-														<a href="' . $images_full_src[$i] . '" data-lightbox="images">
-															<img class="preview img-fluid"  src="' . $images_src[$i] . '" alt="' . $post_title . '"  />
-														</a>
-												</div>';
-        }
-        //如果有预览图存在, 添加前置标题
-        if ($preview_images_part)
-        {
-            $preview_images_part = '
-		<h4>预览</h4>
-		<div class=" py-2 py-md-0">'
-                . $preview_images_part
-                . '</div> ';
-        }
-
-        if ($bilibili_video)
-        {
-            $video_part = '
-		<h4>在线播放</h4>
-		<div class=" py-2 py-md-0">
-		  <h2>
-            <a class="btn btn-miku w-100 w-md-50" href="https://www.bilibili.com/video/' . $bilibili_video . '" target="_blank" rel="external nofollow"> 点击观看</a>
-            </h2>
-        </div>';
-        }
-
-        $download_part = '
-	<h4>下载地址</h4>
-		<div class=" py-2 py-md-0">
-		    <h2>
-		    	<a href="' . $post_link . '" target="_blank">
-		    	点击查看下载地址
-				</a>
-            </h2>
-        </div>';
-
+        //下载部分
+        $download_part = <<<HTML
+            <h4>下载地址</h4>
+            <div class=" py-2 py-md-0">
+                <h2>
+                    <a href="{$post_link}" target="_blank">点击查看下载地址</a>
+                </h2>
+            </div>
+HTML;
 
         return <<<HTML
 
-		<div class="first-image-part my-4">
-		    <a href="{$images_full_src[0]}" data-lightbox="images">
-                <img class="preview img-fluid"  src="{$images_src[0]}" alt="{$post_title}"  />
-            </a>
-		</div>
-		<br/>
-		<div class="source-part my-4">
-			{$source_part}
-		</div>
-		<br/>
-		<div class="content-part my-4">
-			{$post_content_part}
-		</div>
-        <br/>
-		<div class="preview-images-part my-4" id="preview-images-part">
-			{$preview_images_part}
-		</div>
-        <br/>
-        <div class="video-part my-4"">
-			{$video_part}
-		</div>
-        <br/>
-		<div  class="download-part my-4">
-            {$download_part}
-		</div>
-        <br/>
-		<div>
-			<small>本帖内容来自于服务器的自动推送, 如果涉及侵权或禁转, 麻烦请通知我, 邮箱地址 hexie2109@gmail.com</small>
-		</div>
+            <div class="first-image-part my-4" id="first-image-part">
+                    {$first_image_part}
+            </div>
+            <br/>
+            <div class="content-part my-4" >
+				{$post_description_part}
+			</div>
+            <br/>
+            <div class="preview-images-part my-4" id="preview-images-part">
+                {$preview_images_part}
+            </div>
+            <br/>
+            <div class="video-part my-4"">
+                {$video_part}
+            </div>
+            <br/>
+            <div  class="download-part my-4">
+                {$download_part}
+            </div>
+            <br/>
+            <div>
+                <small>本帖内容来自于初音社网站的自动推送, 如果有资源的相关问题, 请打开链接向在网站投稿的UP用户反馈, 如果帖子涉及侵权或禁转, 麻烦请通知我, 邮箱地址 hexie2109@gmail.com</small>
+            </div>
 		
 HTML;
     }

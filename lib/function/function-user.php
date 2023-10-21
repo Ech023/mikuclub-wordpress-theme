@@ -4,7 +4,6 @@ namespace mikuclub;
 
 use mikuclub\constant\Expired;
 use mikuclub\constant\Post_Meta;
-use mikuclub\User_Capability;
 use mikuclub\constant\User_Meta;
 
 /**

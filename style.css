@@ -359,7 +359,6 @@ body.single div.content .article-content img {
 }
 
 /*文章页 描述里A链接增加下划线和颜色*/
-article.article-content .source-part a,
 article.article-content .content-part a {
     color: #17a2b8;
     text-decoration: underline;

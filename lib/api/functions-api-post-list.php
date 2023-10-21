@@ -28,7 +28,7 @@ function api_get_post_list( $data ) {
 	if ( isset( $data['page_type'] ) && $data['page_type'] == 'author' ) {
 		//清空文章列表中的作者信息
 		foreach ( $post_list as $my_post_slim ) {
-			$my_post_slim->post_author = null;
+			//$my_post_slim->post_author = null;
 		}
 	}
 

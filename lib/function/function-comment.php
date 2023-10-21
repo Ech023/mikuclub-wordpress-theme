@@ -371,11 +371,8 @@ function delete_comment_file_cache($comment_id, $post_id = null)
     }
 
 
-    if ($post_id)
-    {
-        //清空该文章的所有评论缓存
-        File_Cache::delete_directory(File_Cache::DIR_COMMENTS . DIRECTORY_SEPARATOR . $post_id);
-    }
+    //清空该文章的所有评论缓存
+    File_Cache::delete_comment_cache_meta_by_post_id($post_id);
 }
 
 
