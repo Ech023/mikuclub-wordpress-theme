@@ -136,7 +136,7 @@ HTML;
 
             <div class="input-group author-internal-search ">
 
-                <input type="text" class="form-control search-value " placeholder="搜索该UP主的投稿" name="<?php echo Post_Query::AUTHOR_INTERNAL_SEARCH ?>" autocomplete="off" value="<?php echo sanitize_text_field(get_query_var(Post_Query::AUTHOR_INTERNAL_SEARCH)); ?>" />
+                <input type="text" class="form-control search-value " placeholder="搜索该UP主的投稿" name="<?php echo Post_Query::CUSTOM_SEARCH ?>" autocomplete="off" value="<?php echo sanitize_text_field(get_query_var(Post_Query::CUSTOM_SEARCH)); ?>" />
                 <button class="btn btn-miku"><i class="fa-solid fa-search"></i></button>
 
             </div>

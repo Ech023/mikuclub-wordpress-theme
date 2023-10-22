@@ -1,4 +1,5 @@
 <?php
+
 namespace mikuclub;
 
 use mikuclub\constant\Post_Meta;
@@ -6,7 +7,7 @@ use mikuclub\constant\Post_Meta;
 /**
  * 热门文章列表组件
  *
- * @param My_Post_Hot[] $post_list
+ * @param My_Post_Model[] $post_list
  * @param string $meta_key
  * @param string $title
  * @param string $title_icon
@@ -14,7 +15,8 @@ use mikuclub\constant\Post_Meta;
  *
  * @return string html内容
  */
-function hot_posts_component( $post_list, $meta_key, $title, $title_icon, $item_icon ) {
+function hot_posts_component($post_list, $meta_key, $title, $title_icon, $item_icon)
+{
 
 	$output = '';
 
@@ -22,10 +24,11 @@ function hot_posts_component( $post_list, $meta_key, $title, $title_icon, $item_
 	$num = 1;
 
 	$post_list_html = '';
-	foreach ( $post_list as $my_post ) {
+	foreach ($post_list as $my_post)
+	{
 
 		//获取排行用的数值
-		$meta_value = get_post_meta( $my_post->id, $meta_key, true );
+		$meta_value = get_post_meta($my_post->id, $meta_key, true);
 
 		$post_list_html .= <<<HTML
 
@@ -49,11 +52,12 @@ function hot_posts_component( $post_list, $meta_key, $title, $title_icon, $item_
 
 HTML;
 
-		$num ++;
+		$num++;
 	}
 
 	//只有在列表有内容的情况下 才会输出
-	if ( $post_list_html ) {
+	if ($post_list_html)
+	{
 
 		$output = <<< HTML
 
@@ -68,23 +72,22 @@ HTML;
 			</div>
 		</div>
 HTML;
-
 	}
 
 
 	return $output;
-
 }
 
 /**
  * 获取近期最多点击数的文章列表
  *
+ * @param int $term_id
  * @param int $number //文章数量
- *
  * @return string
  */
 
-function hot_posts_most_views( $number = 6 ) {
+function hot_posts_most_views($term_id, $number = 6)
+{
 
 	//统计基础周期 是  10天;
 	$range_day = 14;
@@ -99,21 +102,21 @@ function hot_posts_most_views( $number = 6 ) {
 
 	//获取文章列表
 	$term_id = get_queried_object() ? get_queried_object()->term_id : null;
-	$post_list = get_hot_post_list($term_id, $meta_key, $number, $range_day );
+	$post_list = get_hot_post_list($term_id, $meta_key, $range_day, $number);
 	//转换成html输出
-	return hot_posts_component( $post_list, $meta_key, $title, $title_icon, $item_icon );
-
+	return hot_posts_component($post_list, $meta_key, $title, $title_icon, $item_icon);
 }
 
 
 /**
  * 获取近期评分最多的文章列表
  *
+ * @param int $term_id
  * @param int $number //文章数量
- *
  * @return string
  */
-function hot_posts_most_rating( $number = 6 ) {
+function hot_posts_most_rating($term_id, $number = 6)
+{
 
 	//统计基础周期 是  10天;
 	$range_day = 21;
@@ -129,22 +132,21 @@ function hot_posts_most_rating( $number = 6 ) {
 
 	//获取文章列表
 	$term_id = get_queried_object() ? get_queried_object()->term_id : null;
-	$post_list = get_hot_post_list($term_id, $meta_key, $number, $range_day );
+	$post_list = get_hot_post_list($term_id, $meta_key, $range_day, $number);
 	//转换成html输出
-	return hot_posts_component( $post_list, $meta_key, $title, $title_icon, $item_icon );
-
-
+	return hot_posts_component($post_list, $meta_key, $title, $title_icon, $item_icon);
 }
 
 
 /**
  * 获取近期评论最多的文章列表
  *
+ * @param int $term_id
  * @param int $number //文章数量
- *
  * @return string
  */
-function hot_posts_most_comments( $number = 6 ) {
+function hot_posts_most_comments($term_id, $number = 6)
+{
 
 
 	//统计基础周期 是  10天;
@@ -160,32 +162,34 @@ function hot_posts_most_comments( $number = 6 ) {
 
 	//获取文章列表
 	$term_id = get_queried_object() ? get_queried_object()->term_id : null;
-	$post_list = get_hot_post_list($term_id,  $meta_key, $number, $range_day );
+	$post_list = get_hot_post_list($term_id,  $meta_key, $range_day, $number);
 	//转换成html输出
-	return hot_posts_component( $post_list, $meta_key, $title, $title_icon, $item_icon );
-
+	return hot_posts_component($post_list, $meta_key, $title, $title_icon, $item_icon);
 }
 
 /**
  * 随机获取一种热门类型的列表
  *
+ * @param int $term_id
  * @param int $number //文章数量
- *
  * @return string HTML内容
  */
-function get_hot_list_by_random( $number = 6 ) {
+function get_hot_list_by_random($term_id, $number = 6)
+{
 
-	$index = rand( 0, 2 );
-	if ( $index == 0 ) {
-		$output = hot_posts_most_views( $number );
+	$index = rand(0, 2);
+	if ($index == 0)
+	{
+		$output = hot_posts_most_views($term_id, $number);
 	}
-	else if ( $index == 1 ) {
-		$output = hot_posts_most_rating( $number );
+	else if ($index == 1)
+	{
+		$output = hot_posts_most_rating($term_id, $number);
 	}
-	else {
-		$output = hot_posts_most_comments( $number );
+	else
+	{
+		$output = hot_posts_most_comments($term_id, $number);
 	}
 
 	return $output;
-
 }

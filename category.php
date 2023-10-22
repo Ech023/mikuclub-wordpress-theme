@@ -16,7 +16,12 @@ use function mikuclub\post_list_component;
 use function mikuclub\sticky_posts_component;
 use function mikuclub\top_hot_posts_component;
 
- get_header(); ?>
+ get_header(); 
+ 
+ $cat_id = get_queried_object_id();
+ 
+ 
+ ?>
 
 
 <div class="content my-4">
@@ -45,16 +50,16 @@ use function mikuclub\top_hot_posts_component;
 
 			//如果是有子分类的主分类
 			//输出幻灯片+3种热门列表
-			if (has_sub_category(get_queried_object_id()))
+			if (has_sub_category($cat_id))
 			{
 		?>
 
 				<div class="row my-4">
 					<div class="col-12 col-lg-6 col-xl-5">
-						<?php echo sticky_posts_component(); ?>
+						<?php echo sticky_posts_component($cat_id); ?>
 					</div>
 					<div class="col-12 col-lg-6 col-xl-7 my-3 my-lg-0">
-						<?php echo top_hot_posts_component(); ?>
+						<?php echo top_hot_posts_component($cat_id); ?>
 					</div>
 				</div>
 
@@ -68,7 +73,7 @@ use function mikuclub\top_hot_posts_component;
 					echo '<div class="pop-banner  text-center my-4">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
 				}
 
-				$sub_categories = get_sub_category_list(get_queried_object_id());
+				$sub_categories = get_sub_category_list($cat_id);
 				if ($sub_categories)
 				{
 					echo '
@@ -96,16 +101,16 @@ use function mikuclub\top_hot_posts_component;
 				?>
 
 
-				<?php echo hot_posts_most_rating(8); ?>
+				<?php echo hot_posts_most_rating($cat_id, 8); ?>
 
-				<?php echo hot_posts_most_comments(8); ?>
+				<?php echo hot_posts_most_comments($cat_id, 8); ?>
 
 
 		<?php } //如果是没有子分类的分类
 			else
 			{
 				//随机输出一种热门文章
-				echo get_hot_list_by_random(8);
+				echo get_hot_list_by_random($cat_id, 8);
 				if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 				{
 					echo '<div class="pop-banner  text-center my-4">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';

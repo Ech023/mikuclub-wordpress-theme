@@ -3,6 +3,8 @@
 namespace mikuclub;
 
 use mikuclub\constant\Admin_Meta;
+use mikuclub\constant\Category;
+use mikuclub\constant\Config;
 use mikuclub\constant\Expired;
 
 /**
@@ -19,9 +21,9 @@ function home_main_page()
     //关注用户列表长度
     $followed_post_list_length = 6;
     //默认列表长度
-    $default_list_length = 15;
+    $default_list_length = Config::RECENTLY_POST_LIST_LENGTH;
     //分类列表长度
-    $cat_list_length = 15;
+    $cat_list_length = Config::RECENTLY_POST_LIST_LENGTH;
 
     //获取过期时间
     $expired = Expired::get_home_exp_time();
@@ -98,9 +100,9 @@ function home_main_page()
     {
 
         //幻灯片组件
-        $home_sticky = sticky_posts_component();
+        $home_sticky = sticky_posts_component(Category::NO_ADULT_CATEGORY);
         //热门文章列表
-        $home_hot_posts = top_hot_posts_component();
+        $home_hot_posts = top_hot_posts_component(Category::NO_ADULT_CATEGORY);
 
         //输出顶部幻灯片+顶部热门
         $home_content_output = <<<HTML
@@ -162,11 +164,11 @@ HTML;
         //创建对应长度的文章列表
         for ($i = 0; $i < $default_list_length; $i++)
         {
-            $recently_post_list[] = new My_Post_Hot($wp_query->posts[$i]);
+            $recently_post_list[] = new My_Post_Model($wp_query->posts[$i]);
         }
 
         $recently_posts_component = recently_posts_component($recently_post_list, $recently_post_list_title, $recently_post_list_link, '');
-        $hot_posts_sidebar_component = get_home_hot_posts_sidebar_component_by_random(null, 6);
+        $hot_posts_sidebar_component = get_home_hot_posts_sidebar_component_by_random(Category::NO_ADULT_CATEGORY, 6);
 
         $home_content_output .= <<<HTML
         <div class="my-4 row">
@@ -192,7 +194,7 @@ HTML;
             $cat_icon = $cat_ids_list[$i]['icon'];
             $cat_name = get_the_category_by_ID($cat_id);
             $cat_link = get_category_link($cat_id);
-            $post_list = get_cat_recently_post_list($cat_id, $cat_list_length);
+            $post_list = get_recently_post_list($cat_id, $cat_list_length);
 
             $recently_posts_component = recently_posts_component($post_list, $cat_name, $cat_link, $cat_icon);
 

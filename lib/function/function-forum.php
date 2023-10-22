@@ -164,7 +164,7 @@ SQL;
  * 获取最新发布的主题帖列表
  *
  * @param int $posts_per_page
- * @return My_Wpforo_topic[]  主题帖列表
+ * @return My_Wpforo_Topic_Model[]  主题帖列表
  * 
  * @global $wpdb
  */
@@ -192,10 +192,10 @@ SQL;
 
 			$query_results = $wpdb->get_results($query);
 
-			//转换成My_Wpforo_topic
+			//My_Wpforo_Topic_Model
 			$result = array_map(function ($object)
 			{
-				return new My_Wpforo_topic($object);
+				return new My_Wpforo_Topic_Model($object);
 			}, $query_results);
 
 			return $result;

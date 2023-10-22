@@ -40,11 +40,16 @@ class Config
     //关闭文件缓存
     //const ENABLE_FILE_CACHE_SYSTEM = false;
 
+    //最新发布列表文章数量
+    const RECENTLY_POST_LIST_LENGTH = 15;
 
     //幻灯片里显示的文章数量
     const STICKY_POST_LIST_LENGTH = 6;
+    //热门列表文章数量
+    const HOT_POST_LIST_LENGTH = 8;
     //内容页底部相关推荐里的文章数量
     const RELATED_POST_LIST_LENGTH = 8;
+
 
     //最新发布的论坛帖子列表长度
     const RECENT_FORUM_TOPIC_LIST_LENGTH = 8;

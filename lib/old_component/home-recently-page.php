@@ -2,6 +2,7 @@
 namespace mikuclub;
 
 use mikuclub\constant\Admin_Meta;
+use mikuclub\constant\Category;
 
 /**
  * 主页 第一页 最新发布 组件
@@ -18,7 +19,7 @@ function home_recently_page() {
 
 	//在第一页的时候 输出热门文章列表
 	if ( get_query_var( 'paged' ) == 1 ) {
-		$hot_post_list = get_hot_list_by_random( 8 );
+		$hot_post_list = get_hot_list_by_random(Category::NO_ADULT_CATEGORY, 8 );
 	} //其他页面的话 输出面包屑
 	else {
 		//$breadcrumbs = breadcrumbs_component();

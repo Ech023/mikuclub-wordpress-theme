@@ -5,3 +5,4 @@
 - 给wpforo 里的自定义函数 添加 namespace  mikuclub\get_wpforo_post_excerpt_and_thumbnail_images
 - 用原生代码替换掉 mycred插件
 - 自动推荐投稿标签
+- 在文章页 添加 退稿和删除功能

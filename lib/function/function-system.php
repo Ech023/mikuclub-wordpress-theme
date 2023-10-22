@@ -322,24 +322,28 @@ function get_site_tag_count()
 /**
  * 把数值 转换成hash随机数
  *
- * @param mixed $input
+ * @param array<mixed,mixed>|object $input
  * @return string
  */
 function create_hash_string($input)
 {
-
-	//如果是数组和对象
-	if (is_array($input) || is_object($input))
+	//如果是对象就强制转换成数组
+	if (is_object($input))
 	{
-		//转换成json字符串
-		$value = json_encode($input);
-	}
-	else
-	{
-		$value = $input;
+		$input = get_object_vars($input);
 	}
 
-	return md5($value);
+	//如果是数组
+	if (is_array($input))
+	{
+		//按照键名重新排序
+		ksort($input);
+	}
+
+	//转换成json字符串
+	$value = md5(json_encode($input));
+
+	return $value;
 }
 
 

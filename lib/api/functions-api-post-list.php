@@ -9,7 +9,7 @@ use WP_REST_Request;
  *
  * @param WP_REST_Request $data
  *
- * @return My_Post_Slim[]
+ * @return My_Post_Model[]
  */
 function api_get_post_list( $data ) {
 
@@ -27,8 +27,8 @@ function api_get_post_list( $data ) {
 	//如果是作者页面
 	if ( isset( $data['page_type'] ) && $data['page_type'] == 'author' ) {
 		//清空文章列表中的作者信息
-		foreach ( $post_list as $my_post_slim ) {
-			//$my_post_slim->post_author = null;
+		foreach ( $post_list as $My_Post_Model ) {
+			//$My_Post_Model->post_author = null;
 		}
 	}
 
@@ -43,7 +43,7 @@ function api_get_post_list( $data ) {
  *
  * @param WP_REST_Request $data
  *
- * @return My_Post_Slim[]
+ * @return My_Post_Model[]
  */
 function api_get_my_favorite_post_list( $data ) {
 

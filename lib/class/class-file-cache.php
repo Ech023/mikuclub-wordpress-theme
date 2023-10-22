@@ -60,6 +60,8 @@ class File_Cache
     const POST_LIST = 'post_list';
     //热门榜文章列表
     const HOT_POST_LIST = 'hot_post_list';
+    //最新发布文章列表
+    const RECENTLY_POST_LIST = 'recently_post_list';
     //相关文章列表
     const RELATED_POST_LIST = 'related_post_list';
 

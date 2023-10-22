@@ -379,7 +379,7 @@ function pending_posts_dashboard_widget_component()
         foreach ($post_list as $post)
         {
 
-            $my_post = new My_Post_Slim($post);
+            $my_post = new My_Post_Model($post);
             //获取文章编辑地址
             //如果是普通文章
             if ($post->post_type == Post_Type::POST)
@@ -477,7 +477,7 @@ function fail_down_posts_dashboard_widget_component()
         foreach ($post_list as $post)
         {
 
-            $my_post = new My_Post_Slim($post);
+            $my_post = new My_Post_Model($post);
 
             //获取文章所属分类数组
             $array_category     = get_the_category($my_post->id);

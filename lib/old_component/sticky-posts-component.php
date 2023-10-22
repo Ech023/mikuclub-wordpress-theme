@@ -1,19 +1,21 @@
 <?php
+
 namespace mikuclub;
 
+use mikuclub\constant\Category;
 use mikuclub\constant\Config;
 
 /**
  * 幻灯片 组件
+ * @param int $cat_id
  * @return string
  */
-function sticky_posts_component() {
+function sticky_posts_component($cat_id)
+{
 
 
-	//获取列表规定长度
-	$stick_count = Config::STICKY_POST_LIST_LENGTH;
 	//获取置顶文章列表
-	$sticky_post_list = get_sticky_posts( $stick_count );
+	$sticky_post_list = get_sticky_post_list($cat_id);
 
 	/*插入临时广告
 	移除广告的时候 记得 移除 rel="nofollow"
@@ -27,22 +29,23 @@ function sticky_posts_component() {
     }*/
 
 	//实际列表长度
-	$sticky_post_list_length = count( $sticky_post_list );
+	$sticky_post_list_length = count($sticky_post_list);
 
 
 	$output = '';
 
 	//确保文章列表不是空的
-	if ( $sticky_post_list_length ) {
+	if ($sticky_post_list_length)
+	{
 
 		//生成指示符item
 		$carousel_indicators_list = '';
-		for ( $i = 0; $i < $sticky_post_list_length; $i ++ ) {
+		for ($i = 0; $i < $sticky_post_list_length; $i++)
+		{
 
-			$class_name               = ( $i == 0 ) ? 'active' : '';
+			$class_name               = ($i == 0) ? 'active' : '';
 			$carousel_indicators_list .= '<li data-bs-target="#carousel" data-bs-slide-to="' . $i . '"
                 class="' . $class_name . '"></li>';
-
 		}
 
 		//创建指示器用来识别第一个图
@@ -52,15 +55,16 @@ function sticky_posts_component() {
 		$count_replace = 0;
 
 		//创建幻灯片内容
-		foreach ( $sticky_post_list as $my_post_sticky ) {
+		foreach ($sticky_post_list as $my_post_sticky)
+		{
 
-			$class_name = ( $isFirst == true ) ? 'active' : '';
+			$class_name = ($isFirst == true) ? 'active' : '';
 
 			$carousel_item_list .= <<< HTML
         
         <div class="carousel-item {$class_name}" data-bs-interval="5000">
             <a href="{$my_post_sticky->post_href}" target="_blank" rel="nofollow" class="">
-                <img class="d-block w-100" src="{$my_post_sticky->post_image}" alt="{$my_post_sticky->post_title}"
+                <img class="d-block w-100" src="{$my_post_sticky->post_image_large}" alt="{$my_post_sticky->post_title}"
                      skip_lazyload/>
                 <div class="carousel-caption d-none d-sm-block">
                     <h6>{$my_post_sticky->post_title}</h6>
@@ -97,10 +101,8 @@ HTML;
 	</div>
 
 HTML;
-
 	}
 
 
 	return $output;
-
 }

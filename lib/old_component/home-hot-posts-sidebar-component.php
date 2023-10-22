@@ -6,7 +6,7 @@ use mikuclub\constant\Post_Meta;
 /**
  * 热门文章列表组件
  *
- * @param My_Post_Hot[] $post_list
+ * @param My_Post_Model[] $post_list
  * @param string $meta_key
  * @param string $title
  * @param string $title_icon
@@ -120,7 +120,7 @@ function get_home_hot_posts_sidebar_component_by_random($term_id, $number = 6)
 
 		//获取文章列表
 	
-		$post_list = get_hot_post_list($term_id, $meta_key, $number, $range_day);
+		$post_list = get_hot_post_list($term_id, $meta_key, $range_day, $number);
 		//转换成html输出
 		$result = home_hot_posts_sidebar_component($post_list, $meta_key, $title, $title_icon, $item_icon);
 	}
@@ -142,7 +142,7 @@ function get_home_hot_posts_sidebar_component_by_random($term_id, $number = 6)
 
 		//获取文章列表
 		
-		$post_list = get_hot_post_list($term_id, $meta_key, $number, $range_day);
+		$post_list = get_hot_post_list($term_id, $meta_key, $range_day, $number);
 		//转换成html输出
 		$result = home_hot_posts_sidebar_component($post_list, $meta_key, $title, $title_icon, $item_icon);
 	}
@@ -163,7 +163,7 @@ function get_home_hot_posts_sidebar_component_by_random($term_id, $number = 6)
 		$item_icon = 'fa-solid fa-comment';
 
 		//获取文章列表
-		$post_list = get_hot_post_list($term_id,  $meta_key, $number, $range_day);
+		$post_list = get_hot_post_list($term_id,  $meta_key, $range_day, $number);
 		//转换成html输出
 		$result = home_hot_posts_sidebar_component($post_list, $meta_key, $title, $title_icon, $item_icon);
 	}

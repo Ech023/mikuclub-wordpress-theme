@@ -4,7 +4,7 @@ namespace mikuclub;
 /**
  * 输出最新文章列表
  *
- * @param My_Post_Hot[] $post_list
+ * @param My_Post_Model[] $post_list
  * @param string $list_title
  * @param string $more_link
  * @param string $icon 图标名

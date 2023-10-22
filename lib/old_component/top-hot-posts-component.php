@@ -5,9 +5,10 @@ use mikuclub\constant\Web_Domain;
 
 /**
  * 主页顶部热门列表 组件
+ * @param int $term_id
  * @return string html内容
  */
-function top_hot_posts_component() {
+function top_hot_posts_component($term_id) {
 
 	$output = '';
 
@@ -23,14 +24,7 @@ function top_hot_posts_component() {
 
 	$output = '';
 
-
-	
-	//如果是在分类或标签页则获取他们对应的id
-	$term_id = get_queried_object() ? get_queried_object()->term_id : null;
-	
-
-
-	$post_list = get_hot_post_list( $term_id, $meta_key, $number, $range_day );
+	$post_list = get_hot_post_list( $term_id, $meta_key, $range_day , $number);
 
 
 	
@@ -43,7 +37,7 @@ function top_hot_posts_component() {
 		if($adsense_post){
 
 			//设置广告外链
-			$adsense_post = new My_Post_Hot($adsense_post);
+			$adsense_post = new My_Post_Model($adsense_post);
 			$adsense_post->post_title = '《初音社》力推大男孩宝藏玩具店';
 			$adsense_post->post_image = 'https://'.Web_Domain::CDN_MIKUCLUB_FUN.'/pub/七色谷/thumbnail.jpg';
 			$adsense_post->post_href = 'https://tomaxbjyp.tmall.com/shop/view_shop.htm';
