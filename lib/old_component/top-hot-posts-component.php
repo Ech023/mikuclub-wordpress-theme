@@ -1,4 +1,5 @@
 <?php
+
 namespace mikuclub;
 
 use mikuclub\constant\Web_Domain;
@@ -8,7 +9,8 @@ use mikuclub\constant\Web_Domain;
  * @param int $term_id
  * @return string html内容
  */
-function top_hot_posts_component($term_id) {
+function top_hot_posts_component($term_id)
+{
 
 	$output = '';
 
@@ -24,33 +26,51 @@ function top_hot_posts_component($term_id) {
 
 	$output = '';
 
-	$post_list = get_hot_post_list( $term_id, $meta_key, $range_day , $number);
+	$post_list = get_hot_post_list($term_id, $meta_key, $range_day, $number);
 
 
-	
+
 	//只有在首页的时候
-	if(is_home()){
-		
+	if (is_home())
+	{
+
 		//添加广告文章
-		$adsense_post = get_post(716271);
+		$origin_post = get_post(909069);
+		$origin_post2 = get_post(914019);
 		//如果文章存在
-		if($adsense_post){
+		if ($origin_post && $origin_post2)
+		{
 
 			//设置广告外链
-			$adsense_post = new My_Post_Model($adsense_post);
-			$adsense_post->post_title = '《初音社》力推大男孩宝藏玩具店';
-			$adsense_post->post_image = 'https://'.Web_Domain::CDN_MIKUCLUB_FUN.'/pub/七色谷/thumbnail.jpg';
-			$adsense_post->post_href = 'https://tomaxbjyp.tmall.com/shop/view_shop.htm';
+			$adsense_post = new My_Post_Hot($origin_post);
+			$adsense_post->post_title = '【BOMB】禁漫APP-YYDS 最新最全的片片都在这';
+			$adsense_post->post_image = 'https://' . CDN_MIKUCLUB_FUN . '/img/bomb/thumbnail.webp';
+			$adsense_post->post_href = 'https://down.sex-bomhub.com?adCode=cad9f39a-e81e-4cc4-880a-b29587edde4d';
+
+			$adsense_post_2 = new My_Post_Hot($origin_post2);
+			if (mt_rand(0, 1))
+			{
+				$adsense_post_2->post_title = '【广告】初音未来正版周边';
+				$adsense_post_2->post_image = 'https://' . CDN_MIKUCLUB_FUN . '/img/初音未来正版周边.webp';
+				$adsense_post_2->post_href = '/shop';
+			}
+			else
+			{
+				$adsense_post_2->post_title = '【广告】动漫/游戏周边等身抱枕';
+				$adsense_post_2->post_image = 'https://' . CDN_MIKUCLUB_FUN . '/img/等身抱枕.webp';
+				$adsense_post_2->post_href = '/shop';
+			}
 
 			//$post_list[0] = $adsense_post;
 
 			//添加广告文章到数组开头
+
+			array_unshift($post_list, $adsense_post_2);
 			array_unshift($post_list, $adsense_post);
-			//删除最后一个元素
+			//删除最后二个元素
+			array_pop($post_list);
 			array_pop($post_list);
 		}
-	
-		
 	}
 
 
@@ -60,15 +80,18 @@ function top_hot_posts_component($term_id) {
 	$num            = 1;
 	$post_list_html = '';
 
-	foreach ( $post_list as $my_post ) {
+	foreach ($post_list as $my_post)
+	{
 
-		$display_class="";
+		$display_class = "";
 		//如果超过第4位
-		if($num > 6){
+		if ($num > 6)
+		{
 			$display_class = 'd-none d-xl-flex';
 		}
-		else if($num > 4){
-			$display_class = 'd-none d-lg-flex';
+		else if ($num > 4)
+		{
+			$display_class = 'd-lg-flex';
 		}
 
 		$post_list_html .= <<<HTML
@@ -92,7 +115,7 @@ function top_hot_posts_component($term_id) {
 
 HTML;
 
-		$num ++;
+		$num++;
 	}
 
 	//最终输出内容
@@ -107,5 +130,4 @@ HTML;
 
 
 	return $output;
-
 }

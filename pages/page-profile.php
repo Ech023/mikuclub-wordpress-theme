@@ -28,7 +28,7 @@ $user = wp_get_current_user();
 
 ?>
 
-<div class="content page-profile">
+<div class="page-profile">
 
     <header class="page-header">
         <h4 class="my-4">

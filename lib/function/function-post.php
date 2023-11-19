@@ -8,6 +8,7 @@ use mikuclub\constant\Expired;
 use mikuclub\constant\Option_Meta;
 use mikuclub\constant\Post_Meta;
 use mikuclub\constant\Post_Status;
+use mikuclub\constant\Post_Submit_Source;
 use WP_Error;
 use WP_Post;
 use WP_REST_Request;
@@ -678,6 +679,9 @@ function add_custom_post_meta_on_rest_post($post, $request)
             update_post_parent($array_preview_id, $post->ID);
         }
 
+        //提交来源
+        update_post_meta($post->ID, Post_Meta::POST_SUBMIT_SOURCE, Post_Submit_Source::APP);
+
         //调用后续文章提交动作 来设置 额外元数据 和发布
         post_submit_action($post->ID);
     }
@@ -692,6 +696,7 @@ function add_custom_post_meta_on_rest_post($post, $request)
  */
 function post_submit_action($post_id)
 {
+    global $wpdb;
 
     //更新所有大小版本的图片地址
     Post_Image::update_all_array_image_src($post_id);
@@ -733,6 +738,40 @@ function post_submit_action($post_id)
         //更改文章状态
         update_post_status($post_id, Post_Status::PENDING);
     }
+
+     //判断文章是否已经公开过
+     $first_published = get_post_meta($post_id, Post_Meta::POST_IS_FIRST_PUBLISHED, true);
+
+     //获取文章所属分类ID数组
+     $array_id_category = get_post_array_cat_id($post_id);
+     //如果是动漫区或者视频区或者从未公开过
+     if (
+         in_array(Category::ANIME, $array_id_category) ||
+         in_array(Category::VIDEO, $array_id_category) ||
+         empty($first_published)
+     )
+     {
+         //更新创建时间+状态
+         $time = current_time('mysql');
+ 
+         $wpdb->update(
+             $wpdb->posts,
+             [
+                 'post_date' => $time,
+                 'post_date_gmt' => get_gmt_from_date($time),
+             ],
+             [
+                 'ID' => $post_id,
+             ],
+             [
+                 '%s',
+                 '%s',
+             ],
+             [
+                 '%d',
+             ]
+         );
+     }
 
     //清空bilibili视频缓存信息
     Bilibili_Video::delete_video_meta($post_id);
@@ -798,44 +837,44 @@ function update_post_status($post_id, $post_status)
 
     global $wpdb;
 
-    //判断文章是否已经公开过
-    $first_published = get_post_meta($post_id, Post_Meta::POST_IS_FIRST_PUBLISHED, true);
+    // //判断文章是否已经公开过
+    // $first_published = get_post_meta($post_id, Post_Meta::POST_IS_FIRST_PUBLISHED, true);
 
-    //获取文章所属分类ID数组
-    $array_id_category = get_post_array_cat_id($post_id);
-    //如果是动漫区或者视频区或者从未公开过
-    if (
-        in_array(Category::ANIME, $array_id_category) ||
-        in_array(Category::VIDEO, $array_id_category) ||
-        empty($first_published)
-    )
-    {
-        //更新创建时间+状态
-        $time = current_time('mysql');
+    // //获取文章所属分类ID数组
+    // $array_id_category = get_post_array_cat_id($post_id);
+    // //如果是动漫区或者视频区或者从未公开过
+    // if (
+    //     in_array(Category::ANIME, $array_id_category) ||
+    //     in_array(Category::VIDEO, $array_id_category) ||
+    //     empty($first_published)
+    // )
+    // {
+    //     //更新创建时间+状态
+    //     $time = current_time('mysql');
 
-        $wpdb->update(
-            $wpdb->posts,
-            [
-                'post_status' => $post_status,
-                'post_date' => $time,
-                'post_date_gmt' => get_gmt_from_date($time),
-            ],
-            [
-                'ID' => $post_id,
-            ],
-            [
-                '%s',
-                '%s',
-                '%s',
-            ],
-            [
-                '%d',
-            ]
-        );
-    }
-    //如果不是动漫区
-    else
-    {
+    //     $wpdb->update(
+    //         $wpdb->posts,
+    //         [
+    //             'post_status' => $post_status,
+    //             'post_date' => $time,
+    //             'post_date_gmt' => get_gmt_from_date($time),
+    //         ],
+    //         [
+    //             'ID' => $post_id,
+    //         ],
+    //         [
+    //             '%s',
+    //             '%s',
+    //             '%s',
+    //         ],
+    //         [
+    //             '%d',
+    //         ]
+    //     );
+    // }
+    // //如果不是动漫区
+    // else
+    // {
         //只更新状态
         $wpdb->update(
             $wpdb->posts,
@@ -852,7 +891,7 @@ function update_post_status($post_id, $post_status)
                 '%d',
             ]
         );
-    }
+    // }
 }
 
 

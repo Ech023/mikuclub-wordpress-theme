@@ -78,6 +78,9 @@ class Post_Meta
 
     //判断文章附件是否是用户头像
     const ATTACHMENT_WP_USER_AVATAR = '_wp_attachment_wp_user_avatar';
+
+    //文章提交来源 (PC/APP)
+    const POST_SUBMIT_SOURCE = 'submit_source';
 }
 
 
@@ -103,6 +106,15 @@ class Post_Status
     const PENDING = 'pending';
     //草稿
     const DRAFT = 'draft';
+}
+
+/**
+ * 文章提交来源
+ */
+class Post_Submit_Source
+{
+    const PC = 'pc';
+    const APP = 'app';
 }
 
 /**

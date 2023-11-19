@@ -53,7 +53,7 @@ class MyPostSlim {
         if (this.post_author) {
 
             //如果作者在用户的黑名单里
-            if (MY_SITE.user_black_list.includes(String(this.post_author.id))) {
+            if (MY_SITE.user_black_list.includes(parseInt(this.post_author.id))) {
                 //添加遮罩类名
                 class_name = 'black-user-post-mask';
             }

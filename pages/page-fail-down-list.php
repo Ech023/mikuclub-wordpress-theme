@@ -3,6 +3,7 @@
 //如果不是管理员
 
 use mikuclub\constant\Post_Meta;
+use mikuclub\Input_Validator;
 use mikuclub\User_Capability;
 
 use function mikuclub\breadcrumbs_component;
@@ -22,7 +23,11 @@ User_Capability::prevent_not_admin_user();
 get_header();
 
 
-$post_list = get_fail_down_post_list();
+$author = Input_Validator::get_request_value('author_id', Input_Validator::TYPE_INT);
+$cat = Input_Validator::get_request_value('category', Input_Validator::TYPE_INT);
+$paged = Input_Validator::get_request_value('offset', Input_Validator::TYPE_INT);
+
+$post_list = get_fail_down_post_list($author, $cat, $paged);
 
 $post_list_html = '';
 
@@ -150,7 +155,7 @@ HTML;
 
 ?>
 
-<div class="content page-fail-down-list">
+<div class="page-fail-down-list">
 
     <header class="page-header">
         <h4 class="my-4">

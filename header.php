@@ -114,8 +114,8 @@ else
 
     //输出 论坛自定义表情按钮的js代码
     echo wpforo_custom_editor_smiley_js_code();
-    
-?>
+
+    ?>
 
 
 
@@ -123,11 +123,7 @@ else
 
 </head>
 
-<body <?php body_class(); ?> <?php
-                                //如果是内容页, 增加滚动监听
-                                echo ' data-spy="scroll" data-target="#fixed-sidebar-menu" data-offset="10" ';
-                                ?>>
-
+<body <?php body_class(); ?> <?php /*如果是内容页, 增加滚动监听*/ echo ' data-spy="scroll" data-target="#fixed-sidebar-menu" data-offset="10" '; ?>>
 
     <!-- 谷歌跟踪代码 Google Tag Manager (noscript) -->
     <noscript>
@@ -142,6 +138,8 @@ else
     </script>
 
     <div class="container-fluid px-0">
+
+
 
 
         <header id="header" class="header mx-auto">
@@ -220,7 +218,7 @@ else
                         </div>
 
 
-                       
+
 
 
                     </div>
@@ -321,7 +319,7 @@ else
                     echo '<div class="pop-banner d-block d-md-none text-center my-3">' . get_theme_option(Admin_Meta::HOME_TOP_ADSENSE_PHONE) . '</div>';
                 }
             }
-        
-
 
             ?>
+
+            <div class="content">

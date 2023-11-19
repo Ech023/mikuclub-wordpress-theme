@@ -24,7 +24,7 @@ $user = wp_get_current_user();
 
 ?>
 
-<div class="content page-uploader">
+<div class="page-uploader">
 
     <header class="page-header">
         <h4 class="my-4">

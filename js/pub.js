@@ -99,14 +99,14 @@ function js_game_pub() {
 
     switch (index) {
         case 1:
-            pcImgSrc = 'https://cdn.mikuclub.fun/pub/JSGame/pc-1.webp';
-            mobileImgSrc = 'https://cdn.mikuclub.fun/pub/JSGame/phone-1.webp';
+            pcImgSrc = 'https://cdn.mikuclub.fun/img/JSGame/pc-1.webp';
+            mobileImgSrc = 'https://cdn.mikuclub.fun/img/JSGame/phone-1.webp';
             link = 'http://yujipop.com/igwg/index.html?ag=mikuclub';
             break;
 
         case 2:
-            pcImgSrc =  'https://cdn.mikuclub.fun/pub/JSGame/pc-2.webp';
-            mobileImgSrc =  'https://cdn.mikuclub.fun/pub/JSGame/phone-2.webp';
+            pcImgSrc =  'https://cdn.mikuclub.fun/img/JSGame/pc-2.webp';
+            mobileImgSrc =  'https://cdn.mikuclub.fun/img/JSGame/phone-2.webp';
             link = 'https://oo1rcd.live';
             break;
 
@@ -141,11 +141,11 @@ function js_game_pub() {
  */
  function pub3() {
 
-    let index = Math.floor(Math.random() * 5) + 1;
+    let index = Math.floor(Math.random() * 2) + 1;
     //默认链接
-    let link = "https://shop119340084.taobao.com/shop/view_shop.htm?spm=a230r.1.14.4.75dc14ecGDLY4r&user_number_id=1965847533&mm_sycmid=1_139544_204eb550d8889ed3be7ea07664a8ccf6";
-    let pcImgSrc  = 'https://cdn.mikuclub.fun/pub/A酱的绅士玩具屋/pc'+index+'.webp';
-    let mobileImgSrc = 'https://cdn.mikuclub.fun/pub/A酱的绅士玩具屋/phone'+index+'.webp';
+    let link = "https://shop119340084.taobao.com/shop/view_shop.htm?spm=a230r.1.14.4.75dc14ecGDLY4r&user_number_id=1965847533&mm_sycmid=1_144962_8d3c3900107ba43419eb50be47edd98d";
+    let pcImgSrc  = 'https://cdn.mikuclub.fun/img/A酱的绅士玩具屋/pc'+index+'.webp?a=0';
+    let mobileImgSrc = 'https://cdn.mikuclub.fun/img/A酱的绅士玩具屋/phone'+index+'.webp?a=0';
 
  
     //创建PC和手机端广告图

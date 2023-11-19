@@ -10,7 +10,7 @@ function post_list_component()
 {
 
 	//获取默认文章列表
-	$post_list = get_default_post_list();
+	$post_list = get_wp_query_post_list();
 
 
 	$post_list_html = '';

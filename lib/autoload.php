@@ -11,16 +11,12 @@ $theme_lib_directory = get_template_directory()  . DIRECTORY_SEPARATOR . 'lib' .
 $array_file_path_to_require = array_merge(
     //导入常亮
     glob($theme_lib_directory . 'constant' . DIRECTORY_SEPARATOR . '*.php'),
-    //导入旧类
-    glob($theme_lib_directory . 'old_class' . DIRECTORY_SEPARATOR . '*.php'),
     //导入类
     // glob($theme_lib_directory . 'class' . DIRECTORY_SEPARATOR . '*.php'),
     //导入错误类
     // glob($theme_lib_directory . 'exception' . DIRECTORY_SEPARATOR . '*.php'),
     //导入函数
     glob($theme_lib_directory . 'function' . DIRECTORY_SEPARATOR . '*.php'),
-    //导入旧函数
-    glob($theme_lib_directory . 'old_function' . DIRECTORY_SEPARATOR . '*.php'),
     //导入钩子和动作
     glob($theme_lib_directory . 'action' . DIRECTORY_SEPARATOR . '*.php'),
     //导入API接口

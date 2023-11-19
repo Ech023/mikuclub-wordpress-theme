@@ -17,6 +17,8 @@ class Post_Query
     const CAT = 'cat';
     //标签ID
     const TAG_ID = 'tag_id';
+    const TAG__IN = 'tag__in';
+
 
     //时间过滤器
     const DATE_QUERY = 'date_query';
@@ -25,6 +27,9 @@ class Post_Query
     const POST_TYPE = 'post_type';
     //文章状态
     const POST_STATUS = 'post_status';
+
+    //作者ID
+    const AUTHOR = 'author';
 
     //排序
     const ORDERBY = 'orderby';
@@ -36,7 +41,9 @@ class Post_Query
 
     //文章ID数组
     const POST__IN = 'post__in';
+    const POST__NOT_IN = 'post__not_in';
 
+    const PAGED = 'paged';
 
     //自定义分类ID
     const CUSTOM_MAIN_CAT = 'main_cat';

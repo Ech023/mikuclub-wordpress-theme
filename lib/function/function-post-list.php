@@ -14,8 +14,7 @@ use mikuclub\constant\Post_Status;
 use mikuclub\constant\Post_Type;
 use WP_Post;
 use WP_Query;
-
-
+use WP_Term;
 
 /**
  * 从wp query里获取默认的文章列表
@@ -301,7 +300,7 @@ function get_hot_post_list($term_id, $meta_key, $range_day, $number = Config::HO
     ]);
 
     //获取缓存
-    $output = File_Cache::get_cache_meta_with_callback($cache_meta_key, File_Cache::DIR_POSTS . DIRECTORY_SEPARATOR . File_Cache::HOT_POST_LIST, Expired::EXP_2_HOURS, function ($term_id, $meta_key, $range_day, $number)
+    $output = File_Cache::get_cache_meta_with_callback($cache_meta_key, File_Cache::DIR_POSTS . DIRECTORY_SEPARATOR . File_Cache::HOT_POST_LIST, Expired::EXP_2_HOURS, function () use ($term_id, $meta_key, $range_day, $number)
     {
         //当前时间
         $now = time();
@@ -374,3 +373,218 @@ function get_hot_post_list($term_id, $meta_key, $range_day, $number = Config::HO
 
     return $output;
 }
+
+
+/**
+ * 获取相关文章列表
+ *
+ * @param int $post_id
+ * @param int $number
+ *
+ * @return My_Post_Model[]
+ */
+function get_related_post_list($post_id, $number = Config::RELATED_POST_LIST_LENGTH)
+{
+
+	//创建缓存键值
+	$cache_key = File_Cache::RELATED_POST_LIST . '_' . $post_id . '_' . $number;
+	//获取缓存
+	$output = File_Cache::get_cache_meta_with_callback($cache_key, File_Cache::DIR_POSTS.DIRECTORY_SEPARATOR . File_Cache::RELATED_POST_LIST, Expired::EXP_7_DAYS, function() use($post_id, $number){
+
+		$args = [
+			Post_Query::IGNORE_STICKY_POSTS => 1,
+			Post_Query::ORDERBY => 'rand',
+			Post_Query::POSTS_PER_PAGE => $number,
+			Post_Query::POST__NOT_IN => [$post_id],
+            Post_Query::POST_STATUS => Post_Status::PUBLISH,
+            Post_Query::POST_TYPE => Post_Type::POST,
+		];
+
+		//设置分类
+		if (get_post_sub_cat_id($post_id))
+		{
+			$args[Post_Query::CAT] = get_post_sub_cat_id($post_id);
+		}
+
+		//获取标签
+		$tags = get_the_tags();
+
+		//如果有标签
+		if ($tags)
+		{
+
+			//提取标签id数组
+			$tag_ids = array_map(function (WP_Term $tag)
+			{
+				return $tag->term_id;
+			}, $tags);
+			//设置标签id过滤参数
+			$args[Post_Query::TAG__IN] = $tag_ids;
+		}
+
+		//查询文章
+		$results = get_posts($args);
+
+		//如果结果数量不够 再获取同分类的文章
+		if (count($results) < $number)
+		{
+			//移除标签限制
+			unset($args[Post_Query::TAG__IN]);
+			//修改需求数量
+			$args[Post_Query::POSTS_PER_PAGE] = $number - count($results);
+			//重新查询文章
+			$results2 = get_posts($args);
+			//合并结果
+			$results = array_merge($results, $results2);
+		}
+
+		//把查询到的文章数组转换成自定义文章类
+		$output = array_map(function ($element)
+		{
+			return new My_Post_Model($element);
+		}, $results);
+
+		return $output;
+	});
+
+	return $output;
+}
+
+
+/**
+ * 获取下载失效文章列表
+ *
+ * @param int|null $author
+ * @param int|null $cat
+ * @param int|null $paged
+ * @param int $number
+ * @return My_Post_Model[]
+ */
+function get_fail_down_post_list($author, $cat, $paged, $number = 20)
+{
+	
+
+	$args = [
+		Post_Query::IGNORE_STICKY_POSTS => 1,
+		Post_Query::ORDERBY => 'meta_value_num',
+		'meta_key'            => Post_Meta::POST_FAIL_TIME,
+		'order'               => 'DESC',
+		Post_Query::POSTS_PER_PAGE => $number,
+		Post_Query::POST_STATUS => Post_Status::PUBLISH,
+		Post_Query::POST_TYPE => Post_Type::POST,
+	];
+
+	if ($author)
+	{
+		$args[Post_Query::AUTHOR] = $author;
+	}
+	if ($cat)
+	{
+		$args[Post_Query::CAT] = $cat;
+	}
+	if ($paged)
+	{
+		$args[Post_Query::PAGED] = $paged;
+	}
+
+	//查询文章
+	$results = get_posts($args);
+
+	//把查询到的文章数组转换成自定义文章类
+	$output = array_map(function ($element)
+	{
+		return new My_Post_Model($element);
+	}, $results);
+
+	return $output;
+}
+
+/**
+ * 获取用户收藏夹文章列表
+ *
+ * @param int|null $cat 
+ * @param string|null $search search value
+ * @param int|null $paged
+ *
+ * @return My_Post_Model[]
+ */
+function get_my_favorite_post_list($cat, $search, $paged)
+{
+	$output = [];
+
+	$user_favorite = get_user_favorite();
+	//如果收藏夹不是空
+	if ($user_favorite)
+	{
+		$args = [
+			Post_Query::IGNORE_STICKY_POSTS => 1,
+			Post_Query::POST__IN => get_user_favorite(),
+			Post_Query::ORDERBY => 'post__in',
+			Post_Query::POSTS_PER_PAGE => get_option(Option_Meta::POSTS_PER_PAGE),
+
+		];
+
+		if ($cat)
+		{
+			$args[Post_Query::CAT] = $cat;
+		}
+
+		//如果有需要搜索的内容, 添加到参数里
+		if ($search)
+		{
+			$args[Post_Query::SEARCH] = $search;
+		}
+
+		if ($paged)
+		{
+			$args[Post_Query::PAGED] = $paged;
+		}
+
+		$results = get_posts($args);
+
+		//把查询到的文章数组转换成自定义文章类
+		$output = array_map(function ($element)
+		{
+			return new My_Post_Model($element);
+		}, $results);
+	}
+
+	return $output;
+}
+
+/**
+ * 获取关注用户的投稿列表
+ *
+ * @param int $number 数量
+ *
+ * @return My_Post_Model[]
+ */
+function get_my_followed_post_list($number)
+{
+
+	$output = [];
+
+	//获取用户关注列表
+	$user_followed = get_user_followed();
+
+	//如果关注列表不是空
+	if ($user_followed)
+	{
+		$args = [
+			Post_Query::IGNORE_STICKY_POSTS => 1,
+			Post_Query::AUTHOR => implode(',', $user_followed),
+			Post_Query::POSTS_PER_PAGE => $number,
+		];
+
+		$results = get_posts($args);
+		
+		//把查询到的文章数组转换成自定义文章类
+		$output = array_map(function ($element)
+		{
+			return new My_Post_Model($element);
+		}, $results);
+	}
+
+	return $output;
+}
+

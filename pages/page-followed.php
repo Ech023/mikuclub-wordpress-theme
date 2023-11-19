@@ -193,7 +193,7 @@ $number_followed = count($user_followed);
 
 $output = <<<HTML
 
-<div class="content page-followed">
+<div class="page-followed">
 
 	<header class="page-header">
 		<h4 class="my-4">

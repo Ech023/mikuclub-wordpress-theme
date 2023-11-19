@@ -4,7 +4,7 @@ $(function () {
      * 如果在DOM中发现消息页面的css类名时触发
      * 消息列表 默认触发加载
      */
-    let $messagePageElement = $('body.page .content.page-message');
+    let $messagePageElement = $('body.page .content .page-message');
     if ($messagePageElement.length) {
 
         getMessageList();
@@ -15,7 +15,7 @@ $(function () {
         $messagePageElement.on('show.bs.collapse', '.collapse', '', getMessageListWithOneSender);
 
         //绑定删除私信按钮点击事件
-        $('body.page .content.page-message').on('click', 'a.delete-message-by-user', '', function () {
+        $('body.page .content .page-message').on('click', 'a.delete-message-by-user', '', function () {
 
             //删除私信
             const target_user_id = $(this).attr('data-target-user-id');
@@ -30,7 +30,7 @@ $(function () {
        */
         $('body.page').on('hidden.bs.modal', '.my-modal', event => {
             //隐藏当前展开的窗口
-            $('body.page .content.page-message .message-item .collapse.show').collapse('hide');
+            $('body.page .content .page-message .message-item .collapse.show').collapse('hide');
         });
 
     }
@@ -43,7 +43,7 @@ $(function () {
  */
 function getMessageList() {
 
-    let $messagePage = $('body.page .content.page-message');
+    let $messagePage = $('body.page .content .page-message');
     let $button = $messagePage.find('button.get-next-page');
     let $pageInput = $messagePage.find('input[name="paged"]');
 
@@ -188,7 +188,7 @@ function getMessageListWithOneSender(event) {
     let black_list_button_class = 'add-user-black-list';
     let black_list_button_text = '加入黑名单';
     //如果目标用户已经被拉黑
-    if (MY_SITE.user_black_list.includes(String(sender_id))) {
+    if (MY_SITE.user_black_list.includes(parseInt(sender_id))) {
 
         black_list_button_class = 'delete-user-black-list';
         black_list_button_text = '从黑名单里移除';

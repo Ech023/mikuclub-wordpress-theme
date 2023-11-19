@@ -89,69 +89,69 @@ HTML;
 ?>
 
 
-<div class="content">
 
-    <header class="author-header row my-3 gy-3" data-author-id="<?php echo $author->id; ?>">
 
-        <div class="col-12 col-lg">
-            <div class="row justify-content-start">
-                <div class="col-12 col-sm-auto ">
-                    <div class="text-center">
-                        <?php echo print_user_avatar($author->user_image, 100); ?>
-                    </div>
-                </div>
-                <div class="col mt-xl-0">
-                    <div class="fs-5 fw-bold text-center text-sm-start m-1">
-                        <?php echo $author->display_name ?>
-                    </div>
+<header class="author-header row my-3 gy-3" data-author-id="<?php echo $author->id; ?>">
 
-                    <div class="m-1 text-center text-sm-start">
-                        <?php echo print_user_badges($author->id); ?>
-                    </div>
-
-                    <div class="my-2 overflow-hidden text-center text-sm-start" style="max-height: 96px;">
-                        <?php echo $author->user_description; ?>
-                    </div>
+    <div class="col-12 col-lg">
+        <div class="row justify-content-start">
+            <div class="col-12 col-sm-auto ">
+                <div class="text-center">
+                    <?php echo print_user_avatar($author->user_image, 100); ?>
                 </div>
             </div>
-        </div>
+            <div class="col mt-xl-0">
+                <div class="fs-5 fw-bold text-center text-sm-start m-1">
+                    <?php echo $author->display_name ?>
+                </div>
 
-        <div class="col-12 col-lg-auto">
-            <div class="user-functions row justify-content-center justify-content-lg-end gx-2 h-100 align-items-center">
-                <?php echo $author_buttons_element; ?>
+                <div class="m-1 text-center text-sm-start">
+                    <?php echo print_user_badges($author->id); ?>
+                </div>
+
+                <div class="my-2 overflow-hidden text-center text-sm-start" style="max-height: 96px;">
+                    <?php echo $author->user_description; ?>
+                </div>
             </div>
         </div>
-        
-        <div class="m-0"></div>
+    </div>
 
-        <div class="col-12 col-xxl-8">
+    <div class="col-12 col-lg-auto">
+        <div class="user-functions row justify-content-center justify-content-lg-end gx-2 h-100 align-items-center">
+            <?php echo $author_buttons_element; ?>
+        </div>
+    </div>
 
-            <div class="row row-cols-3 row-cols-md-6 text-center small g-2">
-                <?php echo print_author_statistics($author->id); ?>
-            </div>
+    <div class="m-0"></div>
+
+    <div class="col-12 col-xxl-8">
+
+        <div class="row row-cols-3 row-cols-md-6 text-center small g-2">
+            <?php echo print_author_statistics($author->id); ?>
+        </div>
+
+    </div>
+
+    <div class="col-12 col-xxl-4">
+
+        <div class="input-group author-internal-search ">
+
+            <input type="text" class="form-control search-value " placeholder="搜索该UP主的投稿" name="<?php echo Post_Query::CUSTOM_SEARCH ?>" autocomplete="off" value="<?php echo sanitize_text_field(get_query_var(Post_Query::CUSTOM_SEARCH)); ?>" />
+            <button class="btn btn-miku"><i class="fa-solid fa-search"></i></button>
 
         </div>
 
-        <div class="col-12 col-xxl-4">
 
-            <div class="input-group author-internal-search ">
-
-                <input type="text" class="form-control search-value " placeholder="搜索该UP主的投稿" name="<?php echo Post_Query::CUSTOM_SEARCH ?>" autocomplete="off" value="<?php echo sanitize_text_field(get_query_var(Post_Query::CUSTOM_SEARCH)); ?>" />
-                <button class="btn btn-miku"><i class="fa-solid fa-search"></i></button>
-
-            </div>
+    </div>
 
 
-        </div>
+</header>
+
+<hr />
 
 
-    </header>
+<?php echo post_list_component() ?>
 
-    <hr/>
-
-
-    <?php echo post_list_component() ?>
-</div>
 
 
 <?php get_footer(); ?>

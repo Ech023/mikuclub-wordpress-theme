@@ -3,24 +3,26 @@
 use function mikuclub\home_main_page;
 use function mikuclub\home_recently_page;
 
- get_header();
+get_header();
 
 ?>
 
 
 
-    <div class="content">
-
+ 
 
 		<?php
-        
+
 
 		//如果不存在分页变量
-		if ( !get_query_var( 'paged' ) ) {
-		    //加载首页组件
+		if (!get_query_var('paged'))
+		{
+			//加载首页组件
 			echo home_main_page();
-		} else {
-		    //加载最新发布
+		}
+		else
+		{
+			//加载最新发布
 			echo home_recently_page();
 		}
 
@@ -29,7 +31,6 @@ use function mikuclub\home_recently_page;
 
 
 
-    </div>
 
 
 <?php

@@ -13,7 +13,7 @@ get_header();
 global $post;
 ?>
 
-    <div class="content page-qiandao">
+    <div class="page-qiandao">
 
         <header class="page-header">
             <h4 class="my-4">
@@ -30,7 +30,7 @@ global $post;
 		while ( have_posts() ) {
 			the_post();
 
-			$max         = 1136;
+			$max         = 1256;
 			$rand_image = rand( 1, $max );
             //在左方添加0
             $rand_image = str_pad(strval($rand_image), 3, '0', STR_PAD_LEFT);

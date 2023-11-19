@@ -44,8 +44,8 @@ function sticky_posts_component($cat_id)
 		{
 
 			$class_name               = ($i == 0) ? 'active' : '';
-			$carousel_indicators_list .= '<li data-bs-target="#carousel" data-bs-slide-to="' . $i . '"
-                class="' . $class_name . '"></li>';
+			$carousel_indicators_list .= '<button type="button" data-bs-target="#carousel" data-bs-slide-to="' . $i . '"
+                class="' . $class_name . '"></button>';
 		}
 
 		//创建指示器用来识别第一个图
@@ -82,22 +82,22 @@ HTML;
 		$output = <<<HTML
 
 	<div id="carousel" class="carousel top-slide" data-bs-ride="carousel">
-	    <ol class="carousel-indicators">
+		<div class="carousel-indicators">
 	        {$carousel_indicators_list}
-	    </ol>
+	    </div>
 	    <div class="carousel-inner">
 	        {$carousel_item_list}
 		</div>
-	<a class="carousel-control-prev" href="#carousel" role="button" data-bs-slide="prev">
-	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-	    <span class="sr-only">Previous</span>
-	</a>
-	<a class="carousel-control-next" href="#carousel" role="button" data-bs-slide="next">
-	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-	    <span class="sr-only">Next</span>
-	</a>
-	<div class="carousel-background"></div>
-	
+		<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Previous</span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Next</span>
+		</button>
+		<!-- 背景虚化用来突出标题 -->
+		<div class="carousel-background"></div>
 	</div>
 
 HTML;

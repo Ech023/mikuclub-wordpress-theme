@@ -21,7 +21,7 @@ get_header();
 
 ?>
 
-<div class="content page-tougao">
+<div class="page-tougao">
 
     <header class="page-header">
         <h4 class="my-4">

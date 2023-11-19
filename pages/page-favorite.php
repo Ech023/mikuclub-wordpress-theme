@@ -18,7 +18,7 @@ get_header();
 
 ?>
 
-<div class="content page-favorite">
+<div class="page-favorite">
 
     <header class="page-header">
 

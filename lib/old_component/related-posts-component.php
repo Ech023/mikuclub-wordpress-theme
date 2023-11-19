@@ -15,7 +15,7 @@ function related_posts_component()
 
     $post_id = get_the_ID();
 
-    $related_post_list = get_related_post_list($post_id, $count);
+    $related_post_list = get_related_post_list($post_id);
 
 
     $related_post_list_html = '';

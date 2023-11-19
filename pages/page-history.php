@@ -18,7 +18,7 @@ get_header();
 
 ?>
 
-<div class="content page-history">
+<div class="page-history">
 
     <header class="page-header">
 

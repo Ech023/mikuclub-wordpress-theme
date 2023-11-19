@@ -32,7 +32,7 @@ $access_allowed = $current_user_id > 0 || is_adult_category() === false;
 
 
 
-echo '<div class="content ">';
+
 
 //检测是否允许访问
 if ($access_allowed)
@@ -122,7 +122,7 @@ HTML;
 HTML;
         }
 
-        ?>
+?>
 
 
         <header class="article-header">
@@ -348,7 +348,5 @@ else
     echo print_adult_404_content_for_no_logging_user();
 }
 
-
-echo '</div>';
 
 get_footer();

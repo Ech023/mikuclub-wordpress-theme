@@ -399,7 +399,7 @@ function convert_link_to_https($link)
 function get_random_head_background_image($index = null)
 {
     //图片数量
-    $image_count = 79;
+    $image_count = 99;
     //如果未指定
     if ($index === null)
     {

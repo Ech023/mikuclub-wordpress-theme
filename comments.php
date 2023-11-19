@@ -15,7 +15,7 @@ $pub_comment_element = '';
 
 if (is_single())
 {
-    $pub_link = 'https://shop119340084.taobao.com/shop/view_shop.htm?spm=a230r.1.14.4.75dc14ecGDLY4r&user_number_id=1965847533&mm_sycmid=1_139544_204eb550d8889ed3be7ea07664a8ccf6';
+    $pub_link = 'https://shop119340084.taobao.com/shop/view_shop.htm?spm=a230r.1.14.4.75dc14ecGDLY4r&user_number_id=1965847533&mm_sycmid=1_144962_8d3c3900107ba43419eb50be47edd98d';
     $cdn_domain = Web_Domain::CDN_MIKUCLUB_FUN;
     $pub_comment_element = <<<HTML
 
@@ -26,7 +26,7 @@ if (is_single())
 
             <div class="col-auto col-md-1 my-2 avatar-container">
                 <a class="" href="{$pub_link}" title="查看用户主空间" target="_blank" rel="nofollow">
-                    <img class="avatar rounded-circle" src="https://{$cdn_domain}/pub/A酱的绅士玩具屋/头像.jpg" width="50" height="50" alt="用户头像">
+                    <img class="avatar rounded-circle" src="https://{$cdn_domain}/img/A酱的绅士玩具屋/头像.jpg" width="50" height="50" alt="用户头像">
                 </a>
             </div>
             <div class="col col-md-10 my-2">
