@@ -25,6 +25,7 @@ class Constant
  */
 class Config
 {
+    
     //CSS和JS版本号
     const CSS_JS_VERSION = '1.00';
 
@@ -34,11 +35,9 @@ class Config
     const DATE_FORMAT_MYSQL = 'Y-m-d H:i:s';
 
     //启动文件缓存系统
-    const ENABLE_FILE_CACHE_SYSTEM
-    // = true;
-    = false;
+    // const ENABLE_FILE_CACHE_SYSTEM = true;
     //关闭文件缓存
-    //const ENABLE_FILE_CACHE_SYSTEM = false;
+    const ENABLE_FILE_CACHE_SYSTEM = false;
 
     //最新发布列表文章数量
     const RECENTLY_POST_LIST_LENGTH = 15;
@@ -66,6 +65,7 @@ class Config
     const NUMBER_PRIVATE_MESSAGE_LIST_PER_PAGE = 20;
     //单页和单个收件人之间的私信数量
     const NUMBER_PRIVATE_MESSAGE_LIST_WITH_ONE_SENDER_PER_PAGE = 50;
+    
 }
 
 /**
@@ -91,6 +91,11 @@ class Web_Domain
 
     //DEBUG专用域名
     const LOCALHOST = 'localhost/html';
+    const MIKUCLUB = 'mikuclub';
+
+    //第三方域名
+    const PAN_BAIDU_COM = 'pan.baidu.com';
+    const ALIYUN_DRIVE_CHECK = 'https://api.aliyundrive.com/adrive/v3/share_link/get_share_by_anonymous';
 
     /**
      * 获取当前主域名
@@ -114,7 +119,8 @@ class Web_Domain
             static::MIKUCLUB_EU,
             static::MIKUCLUB_UK,
             //debug专用
-            static::LOCALHOST
+            static::LOCALHOST,
+            static::MIKUCLUB,
         ];
     }
 
@@ -183,7 +189,8 @@ class Category
     const TUTORIAL = 8621;
     //视频区
     const VIDEO = 9305;
-
+    //舞蹈区
+    const DANCE = 19828;
 
     //魔法区(主分区)
     const ADULT_CATEGORY = 1120;
@@ -204,7 +211,9 @@ class Category
     //魔法动画
     const ADULT_ANIME = 5998;
     //魔法图包
-    const ADULT_IMAGE = 6678;
+    const ADULT_IMAGE = 19829;
+    //魔法漫画
+    const ADULT_MANGA = 6678;
     //魔法小说
     const ADULT_FICTION = 6713;
     //魔法手机游戏/应用
@@ -227,6 +236,7 @@ class Category
             static::ADULT_VIDEO,
             static::ADULT_ANIME,
             static::ADULT_IMAGE,
+            static::ADULT_MANGA,
             static::ADULT_FICTION,
             static::ADULT_PHONE_GAME,
         ];
@@ -248,6 +258,7 @@ class Category
             static::FICTION,
             static::TUTORIAL,
             static::VIDEO,
+            static::DANCE,
             static::OTHER,
 
         ];

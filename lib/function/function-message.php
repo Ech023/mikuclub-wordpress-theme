@@ -361,8 +361,8 @@ function set_user_private_message_as_read($user_id)
  * 删除单个私信或者 根据发件人ID删除
  *
  * @param int $user_id
- * @param int $message_id
- * @param int $target_user_id
+ * @param int|null $message_id
+ * @param int|null $target_user_id
  *
  * @return bool 是否删除成功
  */

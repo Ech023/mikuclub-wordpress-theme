@@ -2,6 +2,7 @@
 
 namespace mikuclub;
 
+use Exception;
 use mikuclub\constant\Post_Meta;
 use mikuclub\User_Capability;
 use WP_Error;
@@ -17,16 +18,16 @@ use WP_REST_Request;
 function api_add_post_views($data)
 {
 
-
-	//如果缺少必要参数
-	if (!isset($data['post_id']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
+		$view_number = Input_Validator::get_array_value($data, 'view_number', Input_Validator::TYPE_INT, false) ?: 1;
 
-	$view_number = $data['view_number'] ?? null;
+		$result = add_post_views($post_id, $view_number);
+		return $result;
+	});
 
-	return add_post_views($data['post_id'], $view_number);
+	return $result;
 }
 
 
@@ -39,14 +40,15 @@ function api_add_post_views($data)
  **/
 function api_add_post_shares($data)
 {
-
-	//如果缺少必要参数
-	if (!isset($data['post_id']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
 
-	return add_post_shares($data['post_id']);
+		$result = add_post_shares($post_id);
+		return $result;
+	});
+
+	return $result;
 }
 
 
@@ -60,24 +62,24 @@ function api_add_post_shares($data)
 function api_set_post_like($data)
 {
 
-	//如果缺少必要参数
-	if (!isset($data['post_id']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
+		$cancel = Input_Validator::get_array_value($data, 'cancel', Input_Validator::TYPE_INT, false);
 
-	//默认 增加点赞
-	if (!isset($data['cancel']))
-	{
-		$count = add_post_like($data['post_id']);
-	}
-	//取消点赞
-	else
-	{
-		$count = delete_post_like($data['post_id']);
-	}
+		if ($cancel)
+		{
+			$result = add_post_like($post_id);
+		}
+		else
+		{
+			$result = delete_post_like($post_id);
+		}
 
-	return $count;
+		return $result;
+	});
+
+	return $result;
 }
 
 /**
@@ -90,24 +92,25 @@ function api_set_post_like($data)
 function api_set_post_unlike($data)
 {
 
-	//如果缺少必要参数
-	if (!isset($data['post_id']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
+		$cancel = Input_Validator::get_array_value($data, 'cancel', Input_Validator::TYPE_INT, false);
 
-	//默认 增加点赞
-	if (!isset($data['cancel']))
-	{
-		$count = add_post_unlike($data['post_id']);
-	}
-	//取消点赞
-	else
-	{
-		$count = delete_post_unlike($data['post_id']);
-	}
+		if ($cancel)
+		{
+			$result = add_post_unlike($post_id);
+		}
+		else
+		{
+			$result = delete_post_unlike($post_id);
+		}
 
-	return $count;
+
+		return $result;
+	});
+
+	return $result;
 }
 
 
@@ -121,20 +124,21 @@ function api_set_post_unlike($data)
 function api_update_post_date($data)
 {
 
-	//如果缺少必要参数
-	if (!isset($data['post_id']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
 
-	//只有高级用户有权限
-	if (!User_Capability::is_premium_user())
-	{
-		return new WP_Error(401, __FUNCTION__ . ' : 无权进行该项操作');
-	}
-	
+		//只有高级用户有权限
+		if (!User_Capability::is_premium_user())
+		{
+			throw new Exception('无权进行该项操作');
+		}
 
-	return update_post_date($data['post_id']);
+		$result = update_post_date($post_id);
+		return $result;
+	});
+
+	return $result;
 }
 
 
@@ -143,18 +147,20 @@ function api_update_post_date($data)
  *
  * @param WP_REST_Request $data
  *
- * @return boolean | WP_Error
+ * @return boolean|WP_Error
  **/
 function api_add_sticky_posts($data)
 {
 
-	//如果缺少必要参数
-	if (!isset($data['post_id']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
 
-	return add_sticky_posts($data['post_id']);
+		$result = add_sticky_posts($post_id);
+		return $result;
+	});
+
+	return $result;
 }
 
 /**
@@ -162,18 +168,19 @@ function api_add_sticky_posts($data)
  *
  * @param WP_REST_Request $data
  *
- * @return boolean | WP_Error
+ * @return boolean|WP_Error
  **/
 function api_delete_sticky_posts($data)
 {
-
-	//如果缺少必要参数
-	if (!isset($data['post_id']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
 
-	return delete_sticky_posts($data['post_id']);
+		$result = delete_sticky_posts($post_id);
+		return $result;
+	});
+
+	return $result;
 }
 
 
@@ -182,29 +189,21 @@ function api_delete_sticky_posts($data)
  *
  * @param WP_REST_Request $data
  *
- * @return bool | WP_Error
+ * @return bool|WP_Error
  */
 function api_reject_post($data)
 {
 
-	//如果缺少必要参数
-	if (!isset($data['post_id']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
+		$cause = Input_Validator::get_array_value($data, 'cause', Input_Validator::TYPE_STRING, false) ?: '';
 
-	//如果有自定义退稿原因
-	if (isset($data['cause']) && $data['cause'])
-	{
-		reject_post($data['post_id'], $data['cause']);
-	}
-	else
-	{
-		reject_post($data['post_id']);
-	}
+		reject_post($post_id, $cause);
+		return true;
+	});
 
-
-	return true;
+	return $result;
 }
 
 
@@ -218,32 +217,31 @@ function api_reject_post($data)
 function api_set_post_fail_times($data)
 {
 
-	//如果缺少必要参数
-	if (!isset($data['post_id']))
+
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
-
-	//如果是要注销失效计数
-	if (isset($data['disable']) && User_Capability::is_admin())
-	{
-
-		$count = update_post_fail_times($data['post_id'], -1);
-	}
-	//如果是要清零
-	else if (isset($data['reset']) && User_Capability::is_admin())
-	{
-
-		$count = update_post_fail_times($data['post_id'], 0);
-	}
-	//默认 增加计数
-	else
-	{
-		$count = add_post_fail_times($data['post_id']);
-	}
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
+		$disable = Input_Validator::get_array_value($data, 'disable', Input_Validator::TYPE_BOOL, false);
+		$reset = Input_Validator::get_array_value($data, 'reset', Input_Validator::TYPE_BOOL, false);
 
 
-	return $count;
+		if (User_Capability::is_admin() && $disable)
+		{
+			$result = update_post_fail_times($post_id, -1);
+		}
+		else if (User_Capability::is_admin() && $reset)
+		{
+			$result = update_post_fail_times($post_id, 0);
+		}
+		else
+		{
+			$result = add_post_fail_times($post_id);
+		}
+
+		return $result;
+	});
+
+	return $result;
 }
 
 
@@ -252,44 +250,51 @@ function api_set_post_fail_times($data)
  *
  * @param WP_REST_Request $data ['post_id'=>文章或附件id, 'meta_key'=>元数据键名, 'meta_value'=>元数据键值]
  *
- * @return bool | WP_Error
+ * @return bool|WP_Error
  */
 function api_update_post_meta($data)
 {
 
-	//如果缺少必要参数
-	if (!isset($data['post_id']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
-	if (!isset($data['meta_key']))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : meta_key 参数错误');
-	}
-	if (!isset($data['meta_value']))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : meta_value 参数错误');
-	}
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
+		$meta_key = Input_Validator::get_array_value($data, 'meta_key', Input_Validator::TYPE_STRING, true);
+		$meta_value = Input_Validator::get_array_value($data, 'meta_value', Input_Validator::TYPE_STRING, true);
 
-	$post_id    = $data['post_id'];
-	$meta_key   = $data['meta_key'];
-	$meta_value = $data['meta_value'];
-	$user_id    = get_current_user_id();
-	$author_id  = get_post_field('post_author', $post_id);
+		//如果数值是数值
+		if (is_numeric($meta_value))
+		{
+			//如果是整数
+			if (is_int($meta_value + 0))
+			{
+				$meta_value = intval($meta_value);
+			}
+			//否则是浮点数
+			else
+			{
+				$meta_value = floatval($meta_value);
+			}
+		}
 
-	//如果不是作者本人 或 管理员
-	if ($user_id != $author_id && !User_Capability::is_admin())
-	{
-		return new WP_Error(401, __FUNCTION__ . ' : 无权进行该项操作');
-	}
+		$user_id = get_current_user_id();
+		$author_id = intval(get_post_field('post_author', $post_id));
 
-	//更新元数据
-	$result = update_post_meta($post_id, $meta_key, $meta_value);
+		//如果不是作者本人 或 管理员
+		if ($user_id !== $author_id && !User_Capability::is_admin())
+		{
+			throw new Exception('无权进行该项操作');
+		}
 
-	if ($result === false)
-	{
-		return new WP_Error(500, __FUNCTION__ . ' : 更新meta数据失败');
-	}
+		//更新元数据
+		$result = update_post_meta($post_id, $meta_key, $meta_value);
+
+		if ($result === false)
+		{
+			throw new Exception('更新meta数据失败');
+		}
+
+		return $result;
+	});
 
 	return $result;
 }
@@ -299,18 +304,20 @@ function api_update_post_meta($data)
  *
  * @param WP_REST_Request $data
  *
- * @return bool | WP_Error
+ * @return bool|WP_Error
  */
 function api_draft_post($data)
 {
 
-	//如果缺少必要参数
-	if (!isset($data['post_id']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
-	draft_post($data['post_id']);
-	return true;
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
+
+		$result = draft_post($post_id);
+		return $result;
+	});
+
+	return $result;
 }
 
 
@@ -469,6 +476,3 @@ function register_custom_post_api()
 		]
 	);
 }
-
-/* 挂载函数到系统中*/
-add_action('rest_api_init', 'mikuclub\register_custom_post_api');

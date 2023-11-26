@@ -4,8 +4,8 @@ namespace mikuclub;
 
 use Exception;
 use mikuclub\constant\Comment_Meta;
+use mikuclub\constant\Config;
 use mikuclub\User_Capability;
-use stdClass;
 use WP_Error;
 use WP_REST_Request;
 
@@ -33,30 +33,17 @@ function api_get_user_comment_reply_unread_count($data)
 function api_get_comment_reply_list($data)
 {
 
-	//默认参数
-	$paged  = 1;
-	$number = 20;
-
-	if (isset($data['paged']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		$paged = $data['paged'];
-	}
-	else if (isset($data['paged']) && !is_numeric($data['paged']))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : paged 参数错误');
-	}
+		$paged = Input_Validator::get_array_value($data, 'paged', Input_Validator::TYPE_INT, false) ?: 1;
+		$number = Input_Validator::get_array_value($data, 'number', Input_Validator::TYPE_INT, false) ?: Config::NUMBER_COMMENT_REPLY_PER_PAGE;
 
-	if (isset($data['number']))
-	{
-		$number = $data['number'];
-	}
-	else if (isset($data['number']) && !is_numeric($data['number']))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : number 参数错误');
-	}
+		$result = get_comment_reply_list($paged, $number);
 
+		return $result;
+	});
 
-	return get_comment_reply_list($paged, $number);
+	return $result;
 }
 
 
@@ -69,7 +56,7 @@ function api_get_comment_reply_list($data)
  */
 function api_delete_comment($data)
 {
-	try
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
 		//获取 id 参数
 		$comment_id = Input_Validator::get_array_value($data, 'id', Input_Validator::TYPE_INT, true);
@@ -91,7 +78,7 @@ function api_delete_comment($data)
 		//评论人ID
 		$author_id  = intval($comment->user_id);
 
-		//如果是高级用户和当前文章的作者
+		//检测时候是高级用户和当前文章的作者
 		$is_premium_user_and_post_author = User_Capability::is_premium_user() && $user_id === $post_author_id;
 
 		//检测权限, 只有管理员 和 评论作者自己 有权限删除评论
@@ -120,11 +107,7 @@ function api_delete_comment($data)
 		{
 			throw new Exception('无权操作');
 		}
-	}
-	catch (Exception $e)
-	{
-		$result = new WP_Error(400, $e->getMessage(), __FUNCTION__);
-	}
+	});
 
 	return $result;
 }
@@ -137,30 +120,17 @@ function api_delete_comment($data)
  */
 function api_get_comment_list($data)
 {
+	$result = execute_with_try_catch_wp_error(function () use ($data)
+	{
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
+		$offset = Input_Validator::get_array_value($data, 'offset', Input_Validator::TYPE_INT, true);
+		$number = Input_Validator::get_array_value($data, 'number', Input_Validator::TYPE_INT, false) ?: Config::NUMBER_COMMENT_PER_PAGE;
 
-	if (!isset($data['post_id']))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
-	if (!isset($data['offset']))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : offset 参数错误');
-	}
-	if (isset($data['number']) && !is_numeric($data['number']))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : number 参数类型错误');
-	}
+		$result = get_comment_list($post_id, $offset, $number);
+		return $result;
+	});
 
-	if (isset($data['number']))
-	{
-		$comment_list = get_comment_list($data['post_id'], $data['offset'], $data['number']);
-	}
-	else
-	{
-		$comment_list = get_comment_list($data['post_id'], $data['offset']);
-	}
-
-	return $comment_list;
+	return $result;
 }
 
 
@@ -173,7 +143,8 @@ function api_get_comment_list($data)
  **/
 function api_add_comment_like($data)
 {
-	try
+
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
 		$comment_id = Input_Validator::get_array_value($data, 'comment_id', Input_Validator::TYPE_INT, true);
 
@@ -181,11 +152,8 @@ function api_add_comment_like($data)
 		delete_comment_file_cache($comment_id);
 
 		$result = add_comment_like($comment_id);
-	}
-	catch (Exception $e)
-	{
-		$result = new WP_Error(400, $e->getMessage(), __FUNCTION__);
-	}
+		return $result;
+	});
 
 	return $result;
 }
@@ -199,8 +167,7 @@ function api_add_comment_like($data)
  **/
 function api_delete_comment_like($data)
 {
-
-	try
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
 		$comment_id = Input_Validator::get_array_value($data, 'comment_id', Input_Validator::TYPE_INT, true);
 
@@ -208,16 +175,11 @@ function api_delete_comment_like($data)
 		delete_comment_file_cache($comment_id);
 
 		$result = delete_comment_like($comment_id);
-	}
-	catch (Exception $e)
-	{
-		$result = new WP_Error(400, $e->getMessage(), __FUNCTION__);
-	}
+		return $result;
+	});
 
 	return $result;
 }
-
-
 
 
 /**
@@ -228,29 +190,17 @@ function api_delete_comment_like($data)
  */
 function api_insert_comment($data)
 {
-
-	if (!isset($data['comment_post_ID']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : comment_post_ID 参数错误');
-	}
-	if (!isset($data['comment_content']) &&  trim($data['comment_content']))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : comment_content 缺少参数');
-	}
-	if (isset($data['comment_parent']) && !is_numeric($data['comment_parent']))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : comment_parent 参数错误');
-	}
+		$comment_post_ID = Input_Validator::get_array_value($data, 'comment_post_ID', Input_Validator::TYPE_INT, true);
+		$comment_content = Input_Validator::get_array_value($data, 'comment_content', Input_Validator::TYPE_STRING, true);
+		$comment_parent = Input_Validator::get_array_value($data, 'comment_parent', Input_Validator::TYPE_INT, false) ?? 0;
 
-	$comment_parent = 0;
-	if (isset($data['comment_parent']))
-	{
-		$comment_parent =  $data['comment_parent'];
-	}
+		$result = insert_comment($comment_content, $comment_post_ID, $comment_parent);
+		return $result;
+	});
 
-	$comment_content = trim($data['comment_content']);
-
-	return insert_comment($comment_content, $data['comment_post_ID'], $comment_parent);
+	return $result;
 }
 
 /**
@@ -385,4 +335,4 @@ function register_custom_comment_api()
 	register_custom_comment_metadata();
 }
 
-add_action('rest_api_init', 'mikuclub\register_custom_comment_api');
+

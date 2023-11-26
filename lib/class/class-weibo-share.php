@@ -14,7 +14,7 @@ use WP_Term;
 
 class Weibo_Share
 {
-    const WEIBO_APP_KEY = '173298400';
+    const WEIBO_APP_KEY = 173298400;
     const WEIBO_USER_NAME = 'hexie2108@sina.com';
     const WEIBO_USER_PASSWORD = 'Wenjie2108@@';
     //微博接口地址

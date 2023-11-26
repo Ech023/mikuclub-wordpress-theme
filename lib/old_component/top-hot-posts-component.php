@@ -45,7 +45,7 @@ function top_hot_posts_component($term_id)
 			$adsense_post = new My_Post_Hot($origin_post);
 			$adsense_post->post_title = '【BOMB】禁漫APP-YYDS 最新最全的片片都在这';
 			$adsense_post->post_image = 'https://' . CDN_MIKUCLUB_FUN . '/img/bomb/thumbnail.webp';
-			$adsense_post->post_href = 'https://down.sex-bomhub.com?adCode=cad9f39a-e81e-4cc4-880a-b29587edde4d';
+			$adsense_post->post_href = 'https://appdown.iwaitu.xyz?adCode=6a180992-67be-4ee4-9bcf-14f806fd874b';
 
 			$adsense_post_2 = new My_Post_Hot($origin_post2);
 			if (mt_rand(0, 1))

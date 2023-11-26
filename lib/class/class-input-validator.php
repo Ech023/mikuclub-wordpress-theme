@@ -44,7 +44,7 @@ class Input_Validator
                 break;
 
             case static::TYPE_STRING:
-                $result = htmlentities($value);
+                $result = htmlentities(trim($value));
                 break;
 
             case static::TYPE_ARRAY:

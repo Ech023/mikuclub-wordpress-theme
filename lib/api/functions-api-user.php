@@ -2,68 +2,9 @@
 
 namespace mikuclub;
 
-use Exception;
-use mikuclub\constant\Expired;
 use mikuclub\constant\User_Meta;
 use WP_Error;
 use WP_REST_Request;
-use WP_User;
-
-/**
- * JWT API 登陆跳过极验证专用
- * 通过使用 session变量 来跳过极验证
- *
- * @param string $default_header
- *
- * @return string
- */
-function api_pass_gee_test($default_header)
-{
-
-	$_SESSION['login_from_api'] = true;
-
-	return $default_header;
-}
-
-add_action('jwt_auth_cors_allow_headers', 'mikuclub\api_pass_gee_test', 100, 1);
-
-/**
- * 修改 JWT API登陆 token令牌的过期时间
- * 默认为 7天,  改为180天
- * 
- * @return int
- */
-function modify_jwt_auth_expire()
-{
-
-	$expire_days = 180;
-
-	return time() + (Expired::EXP_1_DAY * $expire_days);
-}
-
-add_action('jwt_auth_expire', 'mikuclub\modify_jwt_auth_expire');
-
-
-/**
- * 修改 JWT API登陆后 返回的数据
- *
- * @param array<string, mixed> $data
- * @param WP_User $user
- *
- * @return array<string, mixed>
- */
-function modify_jwt_auth_response($data, $user)
-{
-	$data['id']          = $user->ID;
-	$data['user_login']  = $user->data->user_login;
-	$data['user_meta']   = get_user_meta($user->ID, '');
-	$data['avatar_urls'] = get_my_user_avatar($user->ID);
-
-	return $data;
-}
-
-add_action('jwt_auth_token_before_dispatch', 'mikuclub\modify_jwt_auth_response', 10, 2);
-
 
 
 
@@ -80,20 +21,15 @@ add_action('jwt_auth_token_before_dispatch', 'mikuclub\modify_jwt_auth_response'
 function api_get_author($data)
 {
 
-	//如果参数错误
-	if (!isset($data['id']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : ID 参数错误');
-	}
+		$id = Input_Validator::get_array_value($data, 'id', Input_Validator::TYPE_INT, true);
 
-	$author = get_custom_user($data['id']);
+		$result = get_custom_user($id);
+		return $result;
+	});
 
-	//如果需要查看完整作者信息
-	/*if ( ! empty( $data['full_view'] ) ) {
-
-	}*/
-
-	return $author;
+	return $result;
 }
 
 
@@ -125,7 +61,6 @@ function api_add_user_favorite($data)
 
 		//为了兼容APP 需要返回新的收藏列表
 		$result = get_user_favorite();
-
 		return $result;
 	});
 }
@@ -148,30 +83,8 @@ function api_delete_user_favorite($data)
 
 		//为了兼容APP 需要返回新的收藏列表
 		$result = get_user_favorite();
-
 		return $result;
 	});
-
-}
-
-
-/**
- * 在wp/v2/users  回复中增加自定义 metadata数据
- *
- * @param WP_REST_Request $data
- *
- * @return array<string, mixed>
- */
-function api_custom_user_metadata($data)
-{
-
-	$user_id = $data['id'];
-
-	$metadata = [];
-	//增加头像地址
-	$metadata['avatar_src'] = get_my_user_avatar($user_id);
-
-	return $metadata;
 }
 
 /**
@@ -190,23 +103,22 @@ function api_get_user_followed()
  *
  * @param WP_REST_Request $data ['user_id' => xxx]
  *
- * @return boolean | WP_Error
+ * @return boolean|WP_Error
  */
 function api_add_user_followed($data)
 {
-
-	$target_user_id = $data['target_user_id'] ?? null;
-	if (!is_numeric($target_user_id))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : target_user_id 参数错误');
-	}
+		$target_user_id = Input_Validator::get_array_value($data, 'target_user_id', Input_Validator::TYPE_INT, true);
 
-	$target_user_id = intval($target_user_id);
+		//增加被关注用户的粉丝数
+		add_user_fans_count($target_user_id);
 
-	//增加被关注用户的粉丝数
-	add_user_fans_count($target_user_id);
+		$result = add_user_followed($target_user_id);
+		return $result;
+	});
 
-	return add_user_followed($target_user_id);
+	return $result;
 }
 
 /**
@@ -214,23 +126,22 @@ function api_add_user_followed($data)
  *
  * @param WP_REST_Request $data ['user_id' => xxx]
  *
- * @return boolean | WP_Error
+ * @return boolean|WP_Error
  */
 function api_delete_user_followed($data)
 {
-
-	$target_user_id = $data['target_user_id'] ?? null;
-	if (!is_numeric($target_user_id))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : target_user_id 参数错误');
-	}
+		$target_user_id = Input_Validator::get_array_value($data, 'target_user_id', Input_Validator::TYPE_INT, true);
 
-	$target_user_id = intval($target_user_id);
+		//删除被取消关注用户的粉丝数
+		delete_user_fans_count($target_user_id);
 
-	//删除被取消关注用户的粉丝数
-	delete_user_fans_count($target_user_id);
+		$result = delete_user_followed($target_user_id);
+		return $result;
+	});
 
-	return delete_user_followed($target_user_id);
+	return $result;
 }
 
 /**
@@ -239,7 +150,6 @@ function api_delete_user_followed($data)
  */
 function api_get_user_black_list()
 {
-
 	$user_id = get_current_user_id();
 	return get_user_black_list($user_id);
 }
@@ -250,22 +160,20 @@ function api_get_user_black_list()
  *
  * @param WP_REST_Request $data ['target_user_id' => xxx]
  *
- * @return boolean | WP_Error
+ * @return boolean|WP_Error
  */
 function api_add_user_black_list($data)
 {
-	$target_user_id = $data['target_user_id'] ?? null;
-	if (!is_numeric($target_user_id))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : target_user_id 参数错误');
-	}
+		$user_id = get_current_user_id();
+		$target_user_id = Input_Validator::get_array_value($data, 'target_user_id', Input_Validator::TYPE_INT, true);
 
-	$target_user_id = intval($target_user_id);
+		$result = add_user_black_list($user_id, $target_user_id);
+		return $result;
+	});
 
-	$user_id = get_current_user_id();
-
-	//添加拉黑的用户ID到用户的黑名单
-	return add_user_black_list($user_id, $target_user_id);
+	return $result;
 }
 
 /**
@@ -273,24 +181,42 @@ function api_add_user_black_list($data)
  *
  * @param WP_REST_Request $data ['target_user_id' => xxx]
  *
- * @return boolean | WP_Error
+ * @return boolean|WP_Error
  */
 function api_delete_user_black_list($data)
 {
-
-	$target_user_id = $data['target_user_id'] ?? null;
-	if (!is_numeric($target_user_id))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : target_user_id 参数错误');
-	}
+		$user_id = get_current_user_id();
+		$target_user_id = Input_Validator::get_array_value($data, 'target_user_id', Input_Validator::TYPE_INT, true);
 
-	$target_user_id = intval($target_user_id);
+		$result = delete_user_black_list($user_id, $target_user_id);
+		return $result;
+	});
 
-	$user_id = get_current_user_id();
-
-	return delete_user_black_list($user_id, $target_user_id);
+	return $result;
 }
 
+
+/**
+ * 在wp/v2/users  回复中增加自定义 metadata数据
+ *
+ * @param WP_REST_Request $data
+ *
+ * @return array<string, mixed>
+ */
+function api_custom_user_metadata($data)
+{
+
+	$user_id = $data['id'];
+
+	$metadata = [
+		//增加头像地址
+		'avatar_src' => get_my_user_avatar($user_id),
+	];
+
+	return $metadata;
+}
 
 
 
@@ -310,6 +236,15 @@ function register_custom_user_metadata()
 	];
 
 	register_meta('user', User_Meta::USER_AVATAR, $integer_meta_args);
+
+	//在回复中添加自定义数据
+	register_rest_field(
+		'user',
+		'metadata',
+		[
+			'get_callback' => 'api_custom_user_metadata',
+		]
+	);
 
 	register_rest_route('utils/v2', '/author/(?P<id>\d+)', [
 		'methods'  => 'GET',
@@ -369,17 +304,4 @@ function register_custom_user_metadata()
 			'permission_callback' => 'is_user_logged_in',
 		],
 	]);
-
-
-	//在回复中添加自定义数据
-	register_rest_field(
-		'user',
-		'metadata',
-		[
-			'get_callback' => 'api_custom_user_metadata',
-		]
-	);
 }
-
-
-add_action('rest_api_init', 'mikuclub\register_custom_user_metadata');

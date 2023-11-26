@@ -40,7 +40,9 @@ $(function () {
                 post_id: $(element).data('post-id'),
                 disable: true
             }, disableFailTimes);
-            $(element).on('click', 'button.reject-post', {post_id: $(element).data('post-id')}, rejectPostFromList);
+            $(element).on('click', 'button.reject-post', {
+                post_id: $(element).data('post-id'),
+            }, rejectPostFromList);
             $(element).on('click', 'button.delete-post', {
                 post_id: $(element).data('post-id'),
                 force: true
@@ -66,7 +68,7 @@ function failDownListLinkCheck($linkElement) {
 
     let link = $linkElement.attr('href');
 
-    if(!link.includes('pan.baidu.com') && !link.includes('aliyun')){
+    if (!link.includes('pan.baidu.com') && !link.includes('aliyun')) {
         return;
     }
 
@@ -108,10 +110,10 @@ function resetFailTimes(event) {
     //回调函数
     let successCallback = function (response) {
 
-            //创建通知弹窗
-            TOAST_SYSTEM.add('已清零', TOAST_TYPE.success);
-            //设置背景颜色
-            $parentItem.css('background-color', '#ccc');
+        //创建通知弹窗
+        TOAST_SYSTEM.add('已清零', TOAST_TYPE.success);
+        //设置背景颜色
+        $parentItem.css('background-color', '#ccc');
 
     };
 
@@ -155,10 +157,10 @@ function disableFailTimes(event) {
     //回调函数
     let successCallback = function (response) {
 
-            //创建通知弹窗
-            TOAST_SYSTEM.add('已关闭失效', TOAST_TYPE.success);
-            //设置背景颜色
-            $parentItem.css('background-color', '#ccc');
+        //创建通知弹窗
+        TOAST_SYSTEM.add('已关闭失效', TOAST_TYPE.success);
+        //设置背景颜色
+        $parentItem.css('background-color', '#ccc');
 
     };
 
@@ -198,14 +200,15 @@ function rejectPostFromList(event) {
     $button.toggleDisabled();
 
     let data = event.data;
+    data.cause = '下载地址失效';
 
     //回调函数
     let successCallback = function (response) {
 
-            //创建通知弹窗
-            TOAST_SYSTEM.add('已退稿', TOAST_TYPE.success);
-            //设置背景颜色
-            $parentItem.css('background-color', '#ccc');
+        //创建通知弹窗
+        TOAST_SYSTEM.add('已退稿', TOAST_TYPE.success);
+        //设置背景颜色
+        $parentItem.css('background-color', '#ccc');
 
     };
 
@@ -254,10 +257,10 @@ function deletePostFromFailList(event) {
     //回调函数
     let successCallback = function (response) {
 
-            //创建通知弹窗
-            TOAST_SYSTEM.add('已删除', TOAST_TYPE.success);
-            //设置背景颜色
-            $parentItem.css('background-color', '#ccc');
+        //创建通知弹窗
+        TOAST_SYSTEM.add('已删除', TOAST_TYPE.success);
+        //设置背景颜色
+        $parentItem.css('background-color', '#ccc');
 
     };
 

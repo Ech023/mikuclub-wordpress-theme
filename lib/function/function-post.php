@@ -899,10 +899,10 @@ function update_post_status($post_id, $post_status)
  * 驳回待审文章
  *
  * @param int $post_id
- * @param string $reject_cause 驳回原因 默认为下载地址失效
+ * @param string $reject_cause 驳回原因
  * @return void
  */
-function reject_post($post_id, $reject_cause = '下载地址失效')
+function reject_post($post_id, $reject_cause = '')
 {
 
     $user_id = intval(get_post_field('post_author', $post_id));

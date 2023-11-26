@@ -4,6 +4,7 @@ namespace mikuclub;
 
 use Exception;
 use mikuclub\constant\Post_Status;
+use mikuclub\constant\Web_Domain;
 use WP_Error;
 use WP_REST_Request;
 
@@ -13,18 +14,23 @@ use WP_REST_Request;
  *
  * @param WP_REST_Request $data
  *
- * @return bool|mixed|string|WP_Error
+ * @return bool|string|WP_Error
  */
 function api_share_to_sina($data)
 {
-
-	//如果 密钥错误
-	if (!isset($data['appkey']) && $data['appkey'] != 173298400)
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : appkey 参数错误');
-	}
+		$appkey = Input_Validator::get_array_value($data, 'appkey', Input_Validator::TYPE_INT, true);
+		if ($appkey !== Weibo_Share::WEIBO_APP_KEY)
+		{
+			throw new Exception('appkey 参数错误');
+		}
 
-	return Weibo_Share::share_to_sina();
+		$result = Weibo_Share::share_to_sina();
+		return $result;
+	});
+
+	return $result;
 }
 
 
@@ -40,23 +46,19 @@ function api_share_to_sina($data)
 function api_get_bilibili_video_info($data)
 {
 
-	try
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
 		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
 		$aid = Input_Validator::get_array_value($data, 'aid', Input_Validator::TYPE_STRING);
 		$bvid = Input_Validator::get_array_value($data, 'bvid', Input_Validator::TYPE_STRING);
-
 		if (empty($aid) && empty($bvid))
 		{
 			throw new Empty_Exception('aid和bvid参数');
 		}
 
 		$result = Bilibili_Video::get_video_meta($post_id, $aid, $bvid);
-	}
-	catch (Exception $e)
-	{
-		$result = new WP_Error(400, $e->getMessage(), __FUNCTION__);
-	}
+		return $result;
+	});
 
 	return $result;
 }
@@ -67,27 +69,35 @@ function api_get_bilibili_video_info($data)
  *
  * @param WP_REST_Request $data
  *
- * @return string | WP_Error
+ * @return string|WP_Error
  */
 function check_baidu_pan_link($data)
 {
 
-	//未设置, 或者 不是百度盘域名
-	if (!isset($data['url']) || stripos($data['url'], 'pan.baidu.com') === false)
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : url 参数错误');
-	}
+		$url = Input_Validator::get_array_value($data, 'url', Input_Validator::TYPE_STRING, true);
+		if (stripos($url, Web_Domain::PAN_BAIDU_COM) === false)
+		{
+			throw new Exception('url 参数不符合百度网盘地址');
+		}
 
-	$url = $data['url'];
-	//发起请求
-	$response = wp_remote_get($url);
-	if (is_wp_error($response))
-	{
-		return $response;
-	}
+		//发起请求
+		$response = wp_remote_get($url);
+		if (is_wp_error($response))
+		{
+			$result = $response;
+		}
+		else
+		{
+			//返回请求到的数据
+			$result = wp_remote_retrieve_body($response);
+		}
 
-	//返回请求到的数据
-	return wp_remote_retrieve_body($response);
+		return $result;
+	});
+
+	return $result;
 }
 
 /**
@@ -100,36 +110,39 @@ function check_baidu_pan_link($data)
 function check_aliyun_pan_link($data)
 {
 
-	//未设置, 或者 不是百度盘域名
-	if (!isset($data['share_id']))
+
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : share_id 参数错误');
-	}
+		//阿里云分享ID
+		$share_id = Input_Validator::get_array_value($data, 'share_id', Input_Validator::TYPE_STRING, true);
 
-	//阿里云检测地址
-	$url = 'https://api.aliyundrive.com/adrive/v3/share_link/get_share_by_anonymous';
+		$body = wp_json_encode([
+			'share_id'  => $share_id,
+		]);
 
-	$body = [
-		'share_id'  => $data['share_id'],
-	];
-	$body = wp_json_encode($body);
+		$options = [
+			'body'        => $body,
+			'headers'     => [
+				'Content-Type' => 'application/json',
+			],
+		];
 
-	$options = [
-		'body'        => $body,
-		'headers'     => [
-			'Content-Type' => 'application/json',
-		],
-	];
+		//发起请求
+		$response = wp_remote_post(Web_Domain::ALIYUN_DRIVE_CHECK, $options);
+		if (is_wp_error($response))
+		{
+			$result =  $response;
+		}
+		else
+		{
+			//返回请求到的数据
+			$result = json_decode(wp_remote_retrieve_body($response), true);
+		}
 
-	//发起请求
-	$response = wp_remote_post($url, $options);
-	if (is_wp_error($response))
-	{
-		return $response;
-	}
+		return $result;
+	});
 
-	//返回请求到的数据
-	return json_decode(wp_remote_retrieve_body($response), true);
+	return $result;
 }
 
 
@@ -168,17 +181,14 @@ function delete_trash_post()
 
 	$posts = get_posts($args);
 
-	$result = [];
-
-	if ($posts)
+	$result = array_map(function ($post)
 	{
+		
+		wp_delete_post($post->ID, true);
+		return $post->ID;
 
-		foreach ($posts as $single_post)
-		{
-			wp_delete_post($single_post->ID, true);
-			$result[] = $single_post->ID;
-		}
-	}
+	}, $posts);
+
 
 	return $result;
 }
@@ -323,7 +333,3 @@ function register_custom_api()
 		'callback' => 'mikuclub\test_function',
 	]);
 }
-
-
-/* 挂载函数到系统中*/
-add_action('rest_api_init', 'mikuclub\register_custom_api');

@@ -3,6 +3,13 @@
  */
 $(function () {
 
+    let $pub3Container = $('.pub3-pc');
+    let $pub3MobileContainer = $('.pub3-mobile');
+    //如果存在 显示广告
+    if ($pub3Container.length || $pub3MobileContainer.length) {
+        pub3();
+    }
+
     let $feijiTopPubContainer = $('.pub-feiji-top-pc');
     let $feijiTopPubMobileContainer = $('.pub-feiji-top-mobile');
 
@@ -20,18 +27,56 @@ $(function () {
     }
 
 
-    let $pub3Container = $('.pub3-pc');
-    let $pub3MobileContainer = $('.pub3-mobile');
-    //如果存在 显示广告
-    if ($pub3Container.length || $pub3MobileContainer.length) {
-        pub3();
-    }
+  
 
 
 });
 
 
+
+
+
+
 /**
+ * A酱的绅士玩具屋
+ * PC端+手机端
+ */
+ function pub3() {
+
+    let index = Math.floor(Math.random() * 2) + 1;
+    //默认链接
+    let link = "https://shop119340084.taobao.com/shop/view_shop.htm?spm=a230r.1.14.4.75dc14ecGDLY4r&user_number_id=1965847533&mm_sycmid=1_144962_8d3c3900107ba43419eb50be47edd98d";
+    let pcImgSrc  = 'https://cdn.mikuclub.fun/img/A酱的绅士玩具屋/pc'+index+'.webp?a=0';
+    let mobileImgSrc = 'https://cdn.mikuclub.fun/img/A酱的绅士玩具屋/phone'+index+'.webp?a=0';
+
+ 
+    //创建PC和手机端广告图
+    let $pubContainer = $('.pub3-pc');
+    let $pubMobileContainer = $('.pub3-mobile');
+
+    let pcContent = `
+        <a title="A酱的绅士玩具屋" href="${link}"  rel="nofollow" target="_blank">
+            <img class="img-fluid w-100" src="${pcImgSrc}" alt="A酱的绅士玩具屋"  skip_lazyload />
+        </a>
+    `;
+
+    $pubContainer.append(pcContent);
+
+    let mobileContent = `
+        <a title="A酱的绅士玩具屋" href="${link}"  rel="nofollow" target="_blank">
+            <img class="img-fluid w-100" src="${mobileImgSrc}" alt="A酱的绅士玩具屋"  skip_lazyload />
+        </a>
+    `;
+
+    $pubMobileContainer.append(mobileContent);
+}
+
+
+
+/*================================================================================================*/
+
+/**
+ * @deprecated 已弃用
  * 飞机杯顶部广告代码
  * PC端+手机端
  */
@@ -81,11 +126,11 @@ function feijiTopPub() {
 }
 
 
-/*================================================================================================*/
 
 
 
 /**
+ * @deprecated 已弃用
  * JS Game
  * PC端+手机端
  */
@@ -132,43 +177,3 @@ function js_game_pub() {
 
     $pubPhoneContainer.append(mobileContent);
 }
-
-
-
-/**
- * A酱的绅士玩具屋
- * PC端+手机端
- */
- function pub3() {
-
-    let index = Math.floor(Math.random() * 2) + 1;
-    //默认链接
-    let link = "https://shop119340084.taobao.com/shop/view_shop.htm?spm=a230r.1.14.4.75dc14ecGDLY4r&user_number_id=1965847533&mm_sycmid=1_144962_8d3c3900107ba43419eb50be47edd98d";
-    let pcImgSrc  = 'https://cdn.mikuclub.fun/img/A酱的绅士玩具屋/pc'+index+'.webp?a=0';
-    let mobileImgSrc = 'https://cdn.mikuclub.fun/img/A酱的绅士玩具屋/phone'+index+'.webp?a=0';
-
- 
-    //创建PC和手机端广告图
-    let $pubContainer = $('.pub3-pc');
-    let $pubMobileContainer = $('.pub3-mobile');
-
-    let pcContent = `
-        <a title="A酱的绅士玩具屋" href="${link}"  rel="nofollow" target="_blank">
-            <img class="img-fluid w-100" src="${pcImgSrc}" alt="A酱的绅士玩具屋"  skip_lazyload />
-        </a>
-    `;
-
-    $pubContainer.append(pcContent);
-
-    let mobileContent = `
-        <a title="A酱的绅士玩具屋" href="${link}"  rel="nofollow" target="_blank">
-            <img class="img-fluid w-100" src="${mobileImgSrc}" alt="A酱的绅士玩具屋"  skip_lazyload />
-        </a>
-    `;
-
-    $pubMobileContainer.append(mobileContent);
-}
-
-
-
-

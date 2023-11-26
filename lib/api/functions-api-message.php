@@ -2,6 +2,8 @@
 
 namespace mikuclub;
 
+use Exception;
+use mikuclub\constant\Config;
 use WP_Error;
 use WP_REST_Request;
 
@@ -33,41 +35,26 @@ function api_get_user_private_message_unread_count($data)
  */
 function api_get_private_messages($data)
 {
+	$result = execute_with_try_catch_wp_error(function () use ($data)
+	{
+		$paged = Input_Validator::get_array_value($data, 'paged', Input_Validator::TYPE_INT, false) ?: 1;
+		$number = Input_Validator::get_array_value($data, 'number', Input_Validator::TYPE_INT, false) ?: Config::NUMBER_PRIVATE_MESSAGE_LIST_PER_PAGE;
+		$sender_id = Input_Validator::get_array_value($data, 'sender_id', Input_Validator::TYPE_INT, false);
 
-	//默认参数
-	$paged  = 1;
-	$number = 20;
+		//如果有指定特定 发件人,
+		if ($sender_id)
+		{
+			//获取和特定发件人之间的私信列表
+			$result = get_user_private_message_list_with_one_sender($sender_id, $paged);
+		}
+		else
+		{
+			//进行普通分类查询 获取只包含所有发件人最后消息的私信列表
+			$result = get_user_private_message_list_grouped($paged, $number);
+		}
 
-	if (isset($data['paged']))
-	{
-		$paged = $data['paged'];
-	}
-	else if (isset($data['paged']) && !is_numeric($data['paged']))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : paged 参数错误');
-	}
-
-	if (isset($data['number']))
-	{
-		$number = $data['number'];
-	}
-	else if (isset($data['number']) && !is_numeric($data['number']))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : number 参数错误');
-	}
-
-
-	//如果未指定特定 发件人,
-	if (!isset($data['sender_id']))
-	{
-		//进行普通分类查询 获取只包含所有发件人最后消息的私信列表
-		$result = get_user_private_message_list_grouped($paged);
-	}
-	else
-	{
-		//获取和特定发件人之间的私信列表
-		$result = get_user_private_message_list_with_one_sender($data['sender_id'], $paged);
-	}
+		return $result;
+	});
 
 	return $result;
 }
@@ -77,80 +64,69 @@ function api_get_private_messages($data)
  * 发送私信API
  *
  * @param WP_REST_Request $data
- * 'recipient_id' => 收件人id,
- * 'content' => 私信内容,
- * 'respond' =>是否在回复另外一条私信]
+ * [
+ * 	'recipient_id' => 收件人id,
+ * 	'content' => 私信内容,
+ * 	'respond' =>是否在回复另外一条私信
+ * ]
  *
- * @return My_Private_Message_Model |WP_Error
+ * @return My_Private_Message_Model|WP_Error
  */
 function api_send_private_message($data)
 {
-
-
-	if (!isset($data['recipient_id']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : recipient_id 参数错误');
-	}
-	if (empty($data['content']))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : content 参数错误');
-	}
+		$recipient_id = Input_Validator::get_array_value($data, 'recipient_id', Input_Validator::TYPE_INT, true);
+		$respond = Input_Validator::get_array_value($data, 'respond', Input_Validator::TYPE_INT, false) ?? 0;
 
-	$recipient_id    = $data['recipient_id'];
-	$message_content = strip_tags(trim($data['content']), '<p><a><br>');
+		$content = Input_Validator::get_array_value($data, 'content', Input_Validator::TYPE_STRING, true);
+		//移除html标签
+		$content = strip_tags($content, '<p><a><br>');
 
-	//如果收件人不存在
-	if (empty(get_userdata($recipient_id)))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : 收件人不存在');
-	}
+		//如果收件人不存在
+		if (empty(get_userdata($recipient_id)))
+		{
+			throw new Exception('收件人不存在');
+		}
 
-	//如果是在回复上一条私信  ID必须是纯数字
-	if (isset($data['respond']))
-	{
-		$respond = $data['respond'];
-	}
-	else
-	{
-		$respond = 0;
-	}
+		$result = send_private_message($recipient_id, $content, $respond);
+		return $result;
+	});
 
-	//发送私信
-	return send_private_message($recipient_id, $message_content, $respond);
+	return $result;
 }
 
 
 /**
  * 删除私信API
  *
- * @param WP_REST_Request $data ['id' => 私信id]
+ * @param WP_REST_Request $data
+ * [
+ * 	'id' => 私信id
+ * ]
  *
- * @return bool  | WP_Error 是否删除成功 或者 报错
+ * @return bool|WP_Error 是否删除成功 或者 报错
  */
 function api_delete_private_message($data)
 {
-	$user_id = get_current_user_id();
-	$message_id = $data['id'] ?? null;
-	$target_user_id = $data['target_user_id'] ?? null;
 
-	//如果2个参数都缺
-	if (is_null($message_id) && is_null($target_user_id))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : id 参数缺失/target_user_id 参数缺失');
-	}
-	//如果id参数错误
-	else if ($message_id && !is_numeric($message_id))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : id 参数错误');
-	}
-	//如果target_user_id参数错误
-	else if ($target_user_id && !is_numeric($target_user_id))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : target_user_id 参数错误');
-	}
+		$user_id = get_current_user_id();
+		$message_id = Input_Validator::get_array_value($data, 'id', Input_Validator::TYPE_INT, false);
+		$target_user_id = Input_Validator::get_array_value($data, 'target_user_id', Input_Validator::TYPE_INT, false);
 
+		//如果2个参数都缺
+		if (empty($message_id) && empty($target_user_id))
+		{
+			throw new Exception('id 参数缺失/target_user_id 参数缺失');
+		}
 
-	return delete_private_message($user_id, $message_id, $target_user_id);
+		$result = delete_private_message($user_id, $message_id, $target_user_id);
+		return $result;
+	});
+
+	return $result;
 }
 
 
@@ -159,57 +135,46 @@ function api_delete_private_message($data)
  * API发送投诉信息
  *
  * @param WP_REST_Request $data
- * 'recipient_id' => 收件人id,
- * 'content' => 私信内容,
- * 'respond' =>是否在回复另外一条私信]
- *
- * @return My_Private_Message_Model |WP_Error
+ * [
+ * 	'recipient_id' => int 收件人id,
+ * 	'content' => string 私信内容,
+ * 	'respond' => bool 是否在回复另外一条私信
+ * ]
+ * @return My_Private_Message_Model|WP_Error
  */
 function api_send_report_message($data)
 {
 
-
-	if (!isset($data['post_id']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : post_id 参数错误');
-	}
-	if (!isset($data['report_type']))
-	{
-		return new WP_Error(400, __FUNCTION__ . ' : report_type 参数缺少');
-	}
+		$post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
+		$report_type = Input_Validator::get_array_value($data, 'report_type', Input_Validator::TYPE_STRING, true);
+		$report_description = Input_Validator::get_array_value($data, 'report_description', Input_Validator::TYPE_STRING, false) ?: '';
+		//移除html标签
+		$report_description = strip_tags($report_description, '<p><a><br>');
 
-	$report_description = '';
-	if (isset($data['report_description']))
-	{
-		$report_description = $data['report_description'];
-		$report_description = strip_tags(trim($report_description), '<p><a><br>');
-	}
-	$report_contact = '';
-	if (isset($data['report_contact']))
-	{
-		$report_contact = $data['report_contact'];
-	}
+		$report_contact = Input_Validator::get_array_value($data, 'report_contact', Input_Validator::TYPE_STRING, false) ?: '';
 
-	$post_title = get_the_title($data['post_id']);
-	$post_link = get_permalink($data['post_id']);
+		$post_title = get_the_title($post_id);
+		$post_link = get_permalink($post_id);
 
-	$message_content = <<<HTML
-
-	<p>投诉类型: {$data['report_type']}</p>
-	<p>详细说明: {$report_description}</p>
-	<p>相关稿件: <a href="{$post_link}" target="_blank">$post_title</a></p>
-	<p>联系方式: {$report_contact}</p>
-
+		$message_content = <<<HTML
+			<p>投诉类型: {$report_type}</p>
+			<p>详细说明: {$report_description}</p>
+			<p>相关稿件: <a href="{$post_link}" target="_blank">{$post_title}</a></p>
+			<p>联系方式: {$report_contact}</p>
 HTML;
 
-	$is_system = false;
-	if (!is_user_logged_in())
-	{
-		$is_system = true;
-	}
+		$is_system = is_user_logged_in() ? false : true;
+		$admin_user_id = 1;
+		$respond = 0;
 
-	//发送私信
-	return send_private_message(1, $message_content, 0, $is_system);
+		//发送私信
+		$result = send_private_message($admin_user_id, $message_content, $respond, $is_system);
+		return $result;
+	});
+
+	return $result;
 }
 
 
@@ -262,5 +227,4 @@ function register_custom_private_message_api()
 	]);
 }
 
-/* 挂载函数到系统中*/
-add_action('rest_api_init', 'mikuclub\register_custom_private_message_api');
+

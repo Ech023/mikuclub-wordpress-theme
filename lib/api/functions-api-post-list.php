@@ -14,30 +14,30 @@ use WP_REST_Request;
  */
 function api_get_post_list($data)
 {
-
-	//获取请求参数
-	$data = $data->get_params();
-
-	//如果没有设置页数, 就重设为2
-	if (isset($data['paged']) && !isset($data['paged']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		$data['paged'] = 2;
-	}
+		//获取请求参数
+		$data = $data->get_params();
 
-	//查询文章
-	$post_list = get_post_list($data);
+		// $paged = Input_Validator::get_array_value($data, 'paged', Input_Validator::TYPE_INT, false) ?: 1;
 
-	//如果是作者页面
-	if (isset($data['page_type']) && $data['page_type'] == 'author')
-	{
-		//清空文章列表中的作者信息
-		foreach ($post_list as $My_Post_Model)
-		{
-			//$My_Post_Model->post_author = null;
-		}
-	}
+		//查询文章
+		$result = get_post_list($data);
 
-	return $post_list;
+		// //如果是作者页面
+		// if (isset($data['page_type']) && $data['page_type'] == 'author')
+		// {
+		// 	//清空文章列表中的作者信息
+		// 	foreach ($post_list as $My_Post_Model)
+		// 	{
+		// 		//$My_Post_Model->post_author = null;
+		// 	}
+		// }
+
+		return $result;
+	});
+
+	return $result;
 }
 
 
@@ -46,51 +46,52 @@ function api_get_post_list($data)
  *
  * @param WP_REST_Request $data
  *
- * @return My_Post_Model[]
+ * @return My_Post_Model[]|WP_Error
  */
 function api_get_my_favorite_post_list($data)
 {
 
-	$paged = $data['paged'] ?? 1;
-	$search = $data['s'] ?? null;
-	$cat = $data['cat'] ?? null;
+	$result = execute_with_try_catch_wp_error(function () use ($data)
+	{
+		$cat = Input_Validator::get_array_value($data, 'cat', Input_Validator::TYPE_INT, false);
+		$search = Input_Validator::get_array_value($data, 's', Input_Validator::TYPE_STRING, false);
+		$paged = Input_Validator::get_array_value($data, 'paged', Input_Validator::TYPE_INT, false) ?: 1;
 
-	//查询文章
-	return get_my_favorite_post_list($cat, $search, $paged);
+		$result = get_my_favorite_post_list($cat, $search, $paged);
+		return $result;
+	});
+
+	return $result;
 }
 
 
 
-
-
-/*获取从当前 到 特定时间 之间新发布的文章数量 API接口*/
 /**
- *
+ * 获取从当前 到 特定时间 之间新发布的文章数量 API接口
  * @param WP_REST_Request $data
  *
  * @return int|WP_Error
  */
 function api_get_new_post_count($data)
 {
-
-	//如果缺少必要参数
-	if (!isset($data['date']) && !isset($data['days']))
+	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		return new WP_Error(400, __FUNCTION__ . ' : 缺少必要参数 (date 或 days)');
-	}
+		$days = Input_Validator::get_array_value($data, 'days', Input_Validator::TYPE_INT, false);
+		$date = Input_Validator::get_array_value($data, 'date', Input_Validator::TYPE_STRING, false);
+		if ($days)
+		{
+			$result = get_new_post_count($days);
+		}
+		else if ($date)
+		{
+			$result = get_new_post_count($date);
+		}
+		
 
-	$count = 0;
-	if (isset($data['days']) &&  isset($data['days']))
-	{
-		$count = get_new_post_count($data['days']);
-	}
-	else if (isset($data['date']))
-	{
-		$count = get_new_post_count($data['date']);
-	}
+		return $result ?? 0;
+	});
 
-
-	return $count;
+	return $result;
 }
 
 
@@ -117,6 +118,3 @@ function register_custom_post_list_api()
 		'callback' => 'mikuclub\api_get_new_post_count',
 	]);
 }
-
-/* 挂载函数到系统中*/
-add_action('rest_api_init', 'mikuclub\register_custom_post_list_api');

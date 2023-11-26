@@ -198,7 +198,8 @@ else
 
             </div>
 
-            <div class="image-windows  d-none d-md-block " style="background-image: url('<?php echo get_random_head_background_image() ?>'), url('<?php echo get_random_head_background_image(1) ?>')">
+            
+            <div class="image-windows  d-none <?php echo is_singular() ? '' : 'd-md-block'; ?> " style="background-image: url('<?php echo get_random_head_background_image() ?>'), url('<?php echo get_random_head_background_image(1) ?>')">
                 <div class="image-windows-view w-75 m-auto d-flex flex-column h-100">
                     <div class="site-title flex-fill d-flex align-items-center position-relative">
 
@@ -228,7 +229,7 @@ else
 
 
             <!-- 网站主菜单 -->
-            <div id="nav-header" class="main-menu mx-3 mx-sm-5">
+            <div id="nav-header" class="main-menu mx-3 mx-sm-5  <?php echo is_singular() ? 'mb-2 border-bottom' : ''; ?>">
                 <nav class="navbar navbar-expand-md">
 
                     <div class="collapse navbar-collapse " id="site-main-menu">
