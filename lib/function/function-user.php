@@ -617,10 +617,10 @@ function delete_user_favorite($post_id)
 		if (in_array($post_id, $user_favorite))
 		{
 			//从收藏列表里移除对应的文章ID
-			$user_favorite = array_filter($user_favorite, function ($element) use ($post_id)
+			$user_favorite = array_values(array_filter($user_favorite, function ($element) use ($post_id)
 			{
 				return $element !== 0 && $element !== $post_id;
-			});
+			}));
 
 			//更新数组
 			$result = update_user_meta($user_id, User_Meta::USER_FAVORITE_POST_LIST, $user_favorite);
@@ -728,10 +728,10 @@ function delete_user_followed($user_id_to_follow)
 		if (in_array($user_id_to_follow, $user_followed))
 		{
 			//过滤掉相关元素
-			$user_followed = array_filter($user_followed, function ($element) use ($user_id_to_follow)
+			$user_followed = array_values(array_filter($user_followed, function ($element) use ($user_id_to_follow)
 			{
 				return  $element !== 0 && $element !== $user_id_to_follow;
-			});
+			}));
 			//更新
 			$result = update_user_meta($user_id, User_Meta::USER_FOLLOW_LIST, $user_followed);
 		}
@@ -849,10 +849,10 @@ function delete_user_black_list($user_id, $target_user_id)
 		//获取黑名单
 		$black_list = get_user_black_list($user_id);
 		//从黑名单里移除目标ID
-		$new_black_list = array_filter($black_list, function ($element) use ($target_user_id)
+		$new_black_list = array_values(array_filter($black_list, function ($element) use ($target_user_id)
 		{
 			return $element !== 0 && $element !== $target_user_id;
-		});
+		}));
 
 		//更新黑名单
 		$result = update_user_meta($user_id, User_Meta::USER_BLACK_LIST, $new_black_list);

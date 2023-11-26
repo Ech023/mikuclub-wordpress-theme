@@ -310,10 +310,10 @@ class Post_Image
         }, $array_image_id);
 
         //从数组里移除空url的元素
-        $array_image_src = array_filter($array_image_src, function ($src)
+        $array_image_src = array_values(array_filter($array_image_src, function ($src)
         {
             return $src !== '';
-        });
+        }));
 
         //如果图片数组是空的, 尝试直接从文章内容里抓取图片
         if (count($array_image_src) === 0)
@@ -328,7 +328,7 @@ class Post_Image
         }, $array_image_src);
 
         //确保数组为索引数组
-        $array_image_src = array_values($array_image_src);
+        // $array_image_src = array_values($array_image_src);
 
         //存储图片地址数组到数据库
         update_post_meta($post_id, $meta_name, $array_image_src);

@@ -242,7 +242,7 @@ function register_custom_user_metadata()
 		'user',
 		'metadata',
 		[
-			'get_callback' => 'api_custom_user_metadata',
+			'get_callback' => 'mikuclub\api_custom_user_metadata',
 		]
 	);
 

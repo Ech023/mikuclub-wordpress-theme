@@ -327,7 +327,7 @@ function register_custom_comment_api()
 		'comment',
 		'metadata',
 		[
-			'get_callback' => 'api_add_custom_comment_metadata',
+			'get_callback' => 'mikuclub\api_add_custom_comment_metadata',
 		]
 	);
 

@@ -451,10 +451,10 @@ function set_post_main_cat_id($post_id)
     $categories = get_the_category($post_id);
 
     //提取主分类数组
-    $array_main_category = array_filter($categories, function (WP_Term $category)
+    $array_main_category = array_values(array_filter($categories, function (WP_Term $category)
     {
         return $category->parent === 0;
-    });
+    }));
 
     //如果主分类数组存在
     if (count($array_main_category) > 0)
@@ -519,10 +519,10 @@ function set_post_sub_cat_id($post_id)
     }, $categories);
 
     //移除所有父分类ID
-    $array_category_id = array_filter($array_category_id, function ($category_id) use ($array_parent_category_id)
+    $array_category_id = array_values(array_filter($array_category_id, function ($category_id) use ($array_parent_category_id)
     {
         return in_array($category_id, $array_parent_category_id) === false;
-    });
+    }));
 
     //如果存在子分类
     if (count($array_category_id) > 0)

@@ -46,8 +46,8 @@ function setup_front_end_external_css_and_script()
     //wp_enqueue_style('fontawesome-regular', 'https://cdn.staticfile.org/font-awesome/6.3.0/css/regular.min.css', false, '5.13');
 
     //bootstrap库
-    wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.staticfile.org/twitter-bootstrap/5.3.1/css/bootstrap.min.css', [], '5.3.1');
-    wp_enqueue_script('twitter-bootstrap-js', 'https://cdn.staticfile.org/twitter-bootstrap/5.3.1/js/bootstrap.bundle.min.js', [], '5.3.1', true);
+    wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.staticfile.org/twitter-bootstrap/5.3.2/css/bootstrap.min.css', [], '5.3.2');
+    wp_enqueue_script('twitter-bootstrap-js', 'https://cdn.staticfile.org/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js', [], '5.3.2', true);
 
 
     //图片灯箱 lightbox2库
@@ -413,8 +413,6 @@ function get_random_head_background_image($index = null)
 
 
 
-
-
 /**
  * 使用file1 替换默认图片域名
  *
@@ -536,15 +534,17 @@ function fix_site_domain_with_domain_main($link)
     return $result;
 }
 
+
 /**
  * 格式化DEBUG输出
  *
  * @param mixed $value
  * @return void
  */
-function var_dump_formatted($value) {
+function var_dump_formatted($value)
+{
 
-	echo '<pre>';
-	var_dump( $value );
-	echo '</pre>';
+    echo '<pre>';
+    var_dump($value);
+    echo '</pre>';
 }

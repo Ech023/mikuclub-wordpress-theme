@@ -1,4 +1,7 @@
 <?php
+namespace mikuclub;
+
+use Walker_Nav_Menu;
 
 /**
  * WP Bootstrap Navwalker

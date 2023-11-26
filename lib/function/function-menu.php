@@ -3,7 +3,6 @@
 namespace mikuclub;
 
 use mikuclub\constant\Expired;
-use WP_Bootstrap_Navwalker;
 
 /**
  * 网站菜单栏目 和 底部链接相关函数
@@ -38,12 +37,12 @@ function get_main_menu()
 
     $menu_item_list = wp_nav_menu([
         'theme_location' => 'nav',
-        'echo' => false,
-        'container' => '',
-        'depth' => 2,
         'menu_class' => 'navbar-nav flex-fill flex-wrap',
+        'depth' => 2,
+        'container' => '',
         'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
         'walker' => new WP_Bootstrap_Navwalker(),
+        'echo' => false,
     ]);
 
     return $menu_item_list;

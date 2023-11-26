@@ -137,11 +137,10 @@ function sendSearch($form) {
  * @param number
  */
 function showNewPostCountInTopMenu(number) {
-    "use strict";
 
     //创建元素 并添加到菜单中
     let newBadge = ` <span class="badge bg-miku px-2">${number}</span>`;
-    $('#nav-header nav ul li.new-post-count a').append(newBadge);
+    $(' .main-menu nav ul li.new-post-count a').append(newBadge);
 }
 
 

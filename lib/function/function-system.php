@@ -316,6 +316,56 @@ function get_site_tag_count()
 	return intval($count);
 }
 
+/**
+ * 生成网站页面的标题
+ *
+ * @return string
+ */
+function create_site_title()
+{
+	$result =  get_option('blogname');
+
+	$paged = intval(get_query_var('paged'));
+
+	//如果是首页
+	if (is_home())
+	{
+		//如果是第一页
+		if ($paged > 1)
+		{
+			$result = "最新发布 第{$paged}页 | " . $result;
+		}
+		//如果不是第一页
+		else
+		{
+			//网站名称 + 描述
+			$result = $result . ' | ' . get_option('blogdescription');
+		}
+	}
+	//如果不是首页
+	else
+	{
+
+		//如果未登录 访问成人分类 和成人文章 输出404内容
+		if (!is_user_logged_in() && is_adult_category())
+		{
+			$result = '页面不存在' . ' | ' . $result;
+		}
+		else
+		{
+			$title = wp_title('', false, '');
+			//如果页数大于1
+			if ($paged > 1)
+			{
+				$title .= " 第{$paged}页";
+			}
+			$result =  $title . ' | ' . $result;
+		}
+	}
+
+	return $result;
+}
+
 
 
 
@@ -344,6 +394,22 @@ function create_hash_string($input)
 	$value = md5(json_encode($input));
 
 	return $value;
+}
+
+
+/**
+ * 把函数echo输出转换成string返回
+ *
+ * @param string $function_name
+ * @return string
+ */
+function echo_to_string($function_name)
+{
+	ob_start();
+	call_user_func($function_name);
+	$output = ob_get_contents();
+	ob_end_clean();
+	return $output;
 }
 
 

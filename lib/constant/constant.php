@@ -120,7 +120,7 @@ class Web_Domain
             static::MIKUCLUB_UK,
             //debug专用
             static::LOCALHOST,
-            static::MIKUCLUB,
+            //static::MIKUCLUB,
         ];
     }
 

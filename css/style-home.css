@@ -1,12 +1,11 @@
 .image-windows{
 
-    height: 180px;
-    /*background-image: url("https://img.alicdn.com/imgextra/i4/1974227597/O1CN01UTPALZ25zTW9wjhsT_!!1974227597.png");*/
-    background-position: center -20px;
+    height: 150px;
+    background-position: center -30px;
 
 }
 
-.image-windows .image-copyright .copyright-text{
+.image-windows .copyright-text{
     font-size: smaller;
     transform: scale(0.6);
     /*transform-origin: right;*/
