@@ -5,6 +5,7 @@ namespace mikuclub;
 use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Admin_Page;
 use mikuclub\constant\Config;
+use mikuclub\constant\Site_Menu;
 use mikuclub\User_Capability;
 
 
@@ -195,10 +196,11 @@ function add_theme_nav_menus()
     if (function_exists('register_nav_menus'))
     {
         register_nav_menus([
-            'nav'           => __('网站导航'),
-            'pagemenu'      => __('页面导航'),
-            'top_left_menu' => __('顶部左菜单'),
-            'bottom_menu'   => __('底部菜单'),
+            Site_Menu::MAIN_MENU => __(Site_Menu::get_description(Site_Menu::MAIN_MENU)),
+            Site_Menu::MAIN_PHONE_MENU => __(Site_Menu::get_description(Site_Menu::MAIN_PHONE_MENU)),
+            // Site_Menu::PAGE_MENU => __(Site_Menu::get_description(Site_Menu::PAGE_MENU)),
+            Site_Menu::TOP_LEFT_MENU => __(Site_Menu::get_description(Site_Menu::TOP_LEFT_MENU)),
+            Site_Menu::BOTTOM_MENU => __(Site_Menu::get_description(Site_Menu::BOTTOM_MENU)),
         ]);
     }
 }

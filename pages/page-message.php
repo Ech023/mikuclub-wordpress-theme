@@ -11,6 +11,9 @@ use mikuclub\Session_Cache;
 use mikuclub\User_Capability;
 
 use function mikuclub\breadcrumbs_component;
+use function mikuclub\get_user_comment_reply_unread_count;
+use function mikuclub\get_user_forum_notification_unread_count;
+use function mikuclub\get_user_private_message_unread_count;
 use function mikuclub\next_page_button;
 
 use function mikuclub\set_user_private_message_as_read;
@@ -35,7 +38,7 @@ $nav_items = [
 		'type_key' => 'type',
 		'type'      => Message_Type::PRIVATE_MESSAGE,
 		'name'      => '我的私信',
-		'count'     => $_SESSION[Session_Cache::USER_PRIVATE_MESSAGE_UNREAD_COUNT],
+		'count'     => get_user_private_message_unread_count(),
 		'count_key' => Session_Cache::USER_PRIVATE_MESSAGE_UNREAD_COUNT,
 		'page_link' => get_page_link(),
 	],
@@ -43,7 +46,7 @@ $nav_items = [
 		'type_key' => 'type',
 		'type'      => Message_Type::COMMENT_REPLY,
 		'name'      => '评论回复',
-		'count'     => $_SESSION[Session_Cache::USER_COMMENT_REPLY_UNREAD_COUNT],
+		'count'     => get_user_comment_reply_unread_count(),
 		'count_key' => Session_Cache::USER_COMMENT_REPLY_UNREAD_COUNT,
 		'page_link' => get_page_link(),
 	],
@@ -51,7 +54,7 @@ $nav_items = [
 		'type_key' => 'show_notification',
 		'type'      => 1,
 		'name'      => '论坛回复',
-		'count'     => $_SESSION[Session_Cache::USER_FORUM_NOTIFICATION_UNREAD_COUNT],
+		'count'     => get_user_forum_notification_unread_count(),
 		'count_key' => Session_Cache::USER_FORUM_NOTIFICATION_UNREAD_COUNT,
 		'page_link' => get_home_url() . '/forums',
 	]
@@ -79,7 +82,7 @@ foreach ($nav_items as $nav_item)
 	$nav_items_html .= '
 		<li class="nav-item">
 			<a class="nav-link ' . $nav_item['active'] . '" href="' . add_query_arg($nav_item['type_key'], $nav_item['type'], $nav_item['page_link']) . '">'
-		. $nav_item['name'] . ' <span class="badge bg-miku">' . $nav_item['count'] . '</span>
+		. $nav_item['name'] . ' <span class="badge text-bg-miku">' . $nav_item['count'] . '</span>
 			</a>
 		</li>';
 }

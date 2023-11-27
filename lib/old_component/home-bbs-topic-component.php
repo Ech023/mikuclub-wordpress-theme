@@ -22,7 +22,7 @@ function home_bbs_topic_component() {
 			<a title="{$topic->post_title}" href="{$topic->post_href}" target="_blank" >
 				<i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
 				 {$topic->post_title}
-				 <span class="badge bg-miku">{$topic->post_date}</span>
+				 <span class="badge text-bg-miku">{$topic->post_date}</span>
 			</a>
 		</div>
 

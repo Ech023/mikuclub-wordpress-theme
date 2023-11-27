@@ -38,7 +38,7 @@ class MyPrivateMessage {
         if (!this.status) {
 
             unread = `
-                <span class="badge bg-miku">
+                <span class="badge text-bg-miku">
                     未读
                 </span>
             `;
@@ -157,7 +157,7 @@ class MyCommentReply {
         //如果是未读
         if (!this.comment_parent_user_read) {
             unread = `
-                <span class="badge bg-miku">
+                <span class="badge text-bg-miku">
                     未读
                 </span>
             `;
@@ -235,7 +235,7 @@ class MyForumReply {
         //如果是未读
         if (this.parent_user_read !== '') {
             unread = `
-                <span class="badge bg-miku">
+                <span class="badge text-bg-miku">
                     未读
                 </span>
             `;

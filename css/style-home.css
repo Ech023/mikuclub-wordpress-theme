@@ -2,6 +2,7 @@
 
     height: 150px;
     background-position: center -30px;
+    background-size: 2560px auto;
 
 }
 
@@ -16,7 +17,7 @@
 公告栏
 */
 .speedbar{
-    background-color: var(--secondary-bg-color);
+    /*background-color: var(--secondary-bg-color);*/
 }
 
 /**

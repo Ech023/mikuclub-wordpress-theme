@@ -20,8 +20,7 @@ use WP_User;
  */
 function jwt_auth_skip_gee_verify($default_header)
 {
-
-	$_SESSION['login_from_api'] = true;
+	Session_Cache::set('login_from_api', true);
 
 	return $default_header;
 }

@@ -17,7 +17,7 @@ function message_nav_component($nav_items) {
 		$nav_items_html .= '
 		<li class="nav-item">
 			<a class="nav-link ' . $nav_item['active']. '" href="' . add_query_arg( 'type', $nav_item['type'], get_page_link() ) . '">'
-		                   . $nav_item['name'] . ' <span class="badge bg-miku">' . $nav_item['count'] . '</span>
+		                   . $nav_item['name'] . ' <span class="badge text-bg-miku">' . $nav_item['count'] . '</span>
 			</a>
 		</li>';
 	}

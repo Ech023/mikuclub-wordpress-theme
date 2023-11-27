@@ -15,7 +15,7 @@ use mikuclub\constant\Message_Type;
 function print_top_menu_bar_component()
 {
     //网站名称
-    $site_name = get_option('blogname');
+    // $site_name = get_option('blogname');
 
 
     $top_left_menu = get_top_left_menu();
@@ -38,33 +38,29 @@ HTML : '';
 
     $output = <<<HTML
 
-        <div class="top-menu-bar row mx-0 px-3 justify-content-end align-items-center border-bottom">
-            
-             <!--顶部左侧菜单栏-->
-            <div class="col-auto d-none d-md-block">
-                <nav class="navbar navbar-expand small py-0">
-                    {$top_left_menu}
-                </nav>
-            </div>
+        <div class="top-menu-bar border-bottom py-2 px-3 px-md-4">
+            <div class=" row  justify-content-end align-items-center">
+                
+                <!--顶部左侧菜单栏-->
+                <div class="col-auto d-none d-md-block pe-1">
+                    <nav class="navbar navbar-expand small py-0">
+                        {$top_left_menu}
+                    </nav>
+                </div>
 
-            <!-- 顶部中侧菜单栏-->
-            <div class="col d-none d-sm-block">
-                {$top_center_search_input}
-            </div>
+                <!-- 顶部中侧菜单栏-->
+                <div class="col px-md-1">
+                    {$top_center_search_input}
+                </div>
 
-            <div class="m-0 d-none d-md-block d-xl-none"></div>
+                <div class="m-0 d-none d-md-block d-xl-none"></div>
 
-            <!--顶部右侧菜单栏-->
-            <div class="col-auto ms-md-auto">
-                {$top_right_menu}
-            </div>
+                <!--顶部右侧菜单栏-->
+                <div class="col-auto ms-md-auto ps-1">
+                    {$top_right_menu}
+                </div>
 
-            <!-- 手机菜单 -->
-            <div class="col-12 d-md-none my-2 text-center">
-                <button class="wap-menu-button  py-2 px-3 btn btn-outline-secondary w-100" type="button" data-bs-toggle="collapse" data-bs-target="#site-main-menu">
-                    <i class="fa-solid fa-bars"></i>
-                    <span class="d-none d-sm-inline">{$site_name}</span>菜单
-                </button>
+               
             </div>
         </div>
 HTML;
@@ -108,12 +104,13 @@ HTML;
         $display_name = get_the_author_meta('display_name', $user_id);
         $user_points = get_user_points($user_id);
         $user_level = get_user_level($user_id);
+        $author_page_href = get_author_posts_url($user_id);
 
         $logout_url = wp_logout_url();
 
         $menu_items = <<<HTML
 
-        <li class="user-profile with-sub-menu nav-item dropdown me-2 me-md-0">
+        <li class="user-profile with-sub-menu nav-item dropdown me-2 me-md-0 ">
             <a class="user-img nav-link small" href="{$home}/user_profile" title="用户信息">
                 {$print_user_avatar}
             </a>
@@ -131,13 +128,16 @@ HTML;
 
                 <div class="dropdown-divider"></div>
 
-                <a class="user-profile dropdown-item small" href="{$home}/user_profile" title="个人中心">
-                    个人中心
+                <a class="user-profile dropdown-item small" href="{$home}/user_profile" title="用户信息">
+                    用户信息
+                </a>
+                <a class="dropdown-item small" href="{$author_page_href}" title="个人空间">
+                    个人空间
                 </a>
 
                 <div class="dropdown-divider"></div>
 
-                <a class="dropdown-item small" href="{$logout_url}">
+                <a class="dropdown-item small" href="{$logout_url}" title="退出账号">
                     退出账号
                 </a>
             </div>
@@ -164,7 +164,7 @@ HTML;
                     签到
                 </a>
             </li>
-            <li class="message-center with-sub-menu nav-item dropdown me-2 me-md-0">
+            <li class="message-center with-sub-menu nav-item dropdown me-2 me-md-0 d-none d-md-block">
                 <a class="{$message_center_class} nav-link" href="{$private_message_page_link}" title="消息中心" target="_blank">
                     <i class="fa-solid fa-envelope d-md-none"></i>
                     <span class="d-none d-md-inline">消息</span>
@@ -198,19 +198,19 @@ HTML;
         /* 收藏夹, 历史, 稿件管理, 投稿 */
         $menu_items .= <<<HTML
 
-            <li class="nav-item me-2 me-md-0">
+            <li class="nav-item me-2 me-md-0 d-none d-md-block">
                 <a class="nav-link" href="{$home}/favorite" title="收藏夹" target="_blank">
                     <i class="fa-solid fa-heart d-md-none"></i>
                     <span class="d-none d-md-block">收藏夹</span>
                 </a>
             </li>
-            <li class="nav-item me-2 me-md-0">
+            <li class="nav-item me-2 me-md-0 d-none d-md-block">
                 <a class="nav-link" href="{$home}/history" title="历史记录" target="_blank">
                     <i class="fa-solid fa-history d-md-none"></i>
                     <span class="d-none d-md-block">历史</span>
                 </a>
             </li>
-            <li class="tougao-manage nav-item me-2 me-md-0">
+            <li class="tougao-manage nav-item me-2 me-md-0 d-none d-md-block">
                 <a class="nav-link" href="{$home}/up_home_page" title="稿件管理" target="_blank">
                     <i class="fa-solid fa-list-alt d-md-none"></i>
                     <span class="d-none d-md-block">稿件管理</span>
@@ -218,8 +218,8 @@ HTML;
             </li>
             <li class="tougao nav-item ">
                 <a class=" btn btn-miku btn-sm px-3 px-md-5" href="{$home}/submit" title="新投稿" target="_blank">
-                    <i class="fa-solid fa-upload d-md-none"></i>
-                    <span class="d-none d-md-block">投稿</span>
+                    <i class="fa-solid fa-upload me-2"></i>
+                    <span class="">投稿</span>
                 </a>
             </li>
 HTML;

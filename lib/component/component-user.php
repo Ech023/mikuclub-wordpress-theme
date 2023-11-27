@@ -40,7 +40,7 @@ function print_user_badges($user_id, $badge_class = '')
     {
         //插入到勋章数组头部
         array_unshift($user_badges, [
-            'class' => 'badge bg-miku',
+            'class' => 'badge text-bg-miku',
             'title' => $user_level,
             'level' => 0,
         ]);

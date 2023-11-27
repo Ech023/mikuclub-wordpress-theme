@@ -1,10 +1,6 @@
-<!--关闭content-->
-</div>
-<!--关闭section-->
-</section>
-
-
 <?php
+
+namespace mikuclub;
 
 use mikuclub\constant\Admin_Meta;
 use mikuclub\User_Capability;
@@ -19,7 +15,17 @@ use function mikuclub\get_site_comment_count;
 use function mikuclub\get_site_post_count;
 use function mikuclub\get_site_tag_count;
 
- $home = get_home_url(); ?>
+
+$home = get_home_url();
+
+?>
+
+
+<!--关闭content-->
+</div>
+<!--关闭section-->
+</section>
+
 
 <footer id="footer" class="footer mt-5 px-3 px-sm-5">
 
@@ -32,18 +38,17 @@ use function mikuclub\get_site_tag_count;
             <div class="col-12 col-md-6 my-2">
                 <div class="bottom-menu row">
                     <nav class="navbar navbar-expand flex-wrap flex-lg-nowrap">
-                        <a class="navbar-brand"
-                           href="<?php echo get_home_url(); ?>"><?php echo get_option( 'blogname' ); ?> © 2014 -
+                        <a class="navbar-brand" href="<?php echo get_home_url(); ?>"><?php echo get_option('blogname'); ?> © 2014 -
                             <span id="current-year"></span></a>
-						<?php echo get_bottom_menu(); ?>
+                        <?php echo get_bottom_menu(); ?>
                     </nav>
                 </div>
 
                 <div class="my-2">
 
-					<?php 
-						echo get_theme_option( Admin_Meta::SITE_ANNOUNCEMENT_BOTTOM);
-					 ?>
+                    <?php
+                    echo get_theme_option(Admin_Meta::SITE_ANNOUNCEMENT_BOTTOM);
+                    ?>
 
                 </div>
 
@@ -60,9 +65,10 @@ use function mikuclub\get_site_tag_count;
         </div>
 
 
-		<?php
-		//给管理员看的统计信息
-		if ( User_Capability::is_admin() ) { ?>
+        <?php
+        //给管理员看的统计信息
+        if (User_Capability::is_admin())
+        { ?>
 
             <div class="admin-info my-2">
 
@@ -72,41 +78,42 @@ use function mikuclub\get_site_tag_count;
                         站点统计:
                     </li>
                     <li class="list-group-item">
-						<?php echo get_site_post_count(); ?> 篇投稿
+                        <?php echo get_site_post_count(); ?> 篇投稿
                     </li>
                     <li class="list-group-item">
-						<?php echo get_site_comment_count() ?> 条评论
+                        <?php echo get_site_comment_count() ?> 条评论
                     </li>
                     <li class="list-group-item">
-						<?php echo get_site_category_count(); ?> 个分类
+                        <?php echo get_site_category_count(); ?> 个分类
                     </li>
                     <li class="list-group-item">
-						<?php echo get_site_tag_count(); ?> 个标签
+                        <?php echo get_site_tag_count(); ?> 个标签
                     </li>
                     <li class="list-group-item">
-						<?php echo timer_stop( 0 ); ?> 响应时间
+                        <?php echo timer_stop(0); ?> 响应时间
                     </li>
                     <li class="list-group-item">
-						<?php echo get_num_queries(); ?> 查询次数
+                        <?php echo get_num_queries(); ?> 查询次数
                     </li>
 
                 </ul>
 
             </div>
 
-		<?php } ?>
+        <?php } ?>
 
 
-		<?php
+        <?php
 
-		//只有在 首页的时候 才会输出
-		if ( is_home() && strripos( $_SERVER['REQUEST_URI'], 'page' ) === false ) {
-			?>
+        //只有在 首页的时候 才会输出
+        if (is_home() && strripos($_SERVER['REQUEST_URI'], 'page') === false)
+        {
+        ?>
             <!--        友情链接-->
             <div class="friends-link my-2">
-				<?php echo get_friends_links() ?>
+                <?php echo get_friends_links() ?>
             </div>
-		<?php } ?>
+        <?php } ?>
 
 
     </div>
@@ -142,14 +149,13 @@ if (get_theme_option(Admin_Meta::SITE_BOTTOM_CODE_ENABLE))
 
 
 <script>
+    <?php
 
-	<?php
+    //底部动态JS代码
 
-	//底部动态JS代码
+    $new_post_count = get_new_post_count(3);
 
-	$new_post_count = get_new_post_count( 3);
-    
-	echo <<< HTML
+    echo <<< HTML
     
          $(function () {
                 //设置最新文章数量
@@ -160,12 +166,13 @@ if (get_theme_option(Admin_Meta::SITE_BOTTOM_CODE_ENABLE))
 
 HTML;
 
-	//如果是文章页面
-	if ( is_single() ) {
+    //如果是文章页面
+    if (is_single())
+    {
 
-		$post_id = get_the_ID();
+        $post_id = get_the_ID();
 
-		echo <<< HTML
+        echo <<< HTML
 
         //记录浏览记录
         setHistoryPostArray({$post_id});
@@ -173,12 +180,9 @@ HTML;
         addPostViews({$post_id});
 
 HTML;
+    }
 
-
-	}
-
-	?>
-
+    ?>
 </script>
 
 
@@ -188,5 +192,8 @@ HTML;
 
 <?php echo sidebar_menu_component(); ?>
 
+<?php echo print_phone_sidebar_menu_component(); ?>
+
 </body>
+
 </html>

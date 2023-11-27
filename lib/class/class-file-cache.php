@@ -33,6 +33,8 @@ class File_Cache
     const MAIN_CATEGORY_LIST = 'main_category_list';
     const SUB_CATEGORY_LIST = 'sub_category_list';
 
+    //网站菜单
+    const SITE_MENU ='site_menu';
 
     /*用户相关缓存 键名*/
     //用户文章数

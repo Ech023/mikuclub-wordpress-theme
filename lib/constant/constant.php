@@ -25,7 +25,7 @@ class Constant
  */
 class Config
 {
-    
+
     //CSS和JS版本号
     const CSS_JS_VERSION = '1.00';
 
@@ -65,7 +65,6 @@ class Config
     const NUMBER_PRIVATE_MESSAGE_LIST_PER_PAGE = 20;
     //单页和单个收件人之间的私信数量
     const NUMBER_PRIVATE_MESSAGE_LIST_WITH_ONE_SENDER_PER_PAGE = 50;
-    
 }
 
 /**
@@ -264,6 +263,50 @@ class Category
         ];
     }
 }
+
+/**
+ * 网站菜单位置
+ */
+class Site_Menu
+{
+
+    const MAIN_MENU = 'nav';
+    const MAIN_PHONE_MENU = 'phone_menu';
+    // const PAGE_MENU = 'pagemenu';
+    const TOP_LEFT_MENU = 'top_left_menu';
+    const BOTTOM_MENU = 'bottom_menu';
+
+    /**
+     * 获取菜单位置的名称
+     * 
+     * @param string $key
+     * @return string
+     */
+    public static function get_description($key)
+    {
+        $result = '';
+        switch ($key)
+        {
+            case static::MAIN_MENU:
+                $result = '网站导航';
+                break;
+            case static::MAIN_PHONE_MENU:
+                $result = '网站手机版导航';
+                break;
+            // case static::PAGE_MENU:
+            //     $result = '页面导航';
+            //     break;
+            case static::TOP_LEFT_MENU:
+                $result = '顶部左菜单';
+                break;
+            case static::BOTTOM_MENU:
+                $result = '底部菜单';
+                break;
+        }
+        return $result;
+    }
+}
+
 
 /**
  * 常用过期时间常量 (基础单位是 秒)

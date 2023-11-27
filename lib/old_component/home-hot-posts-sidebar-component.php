@@ -34,7 +34,7 @@ function home_hot_posts_sidebar_component($post_list, $meta_key, $title, $title_
 			<div class="col">
 				<div class="row">
 					<div class="col-auto">
-						<div class="badge bg-miku">{$num}</div>
+						<div class="badge text-bg-miku">{$num}</div>
 					</div>
 					<div class="col d-none d-xxl-block">
 						<a class="image_link d-block position-relative " title="{$my_post->post_title}" href="{$my_post->post_href}" target="_blank" >

@@ -3,6 +3,7 @@
 namespace mikuclub;
 
 use mikuclub\constant\Expired;
+use mikuclub\constant\Site_Menu;
 
 /**
  * 网站菜单栏目 和 底部链接相关函数
@@ -16,38 +17,75 @@ use mikuclub\constant\Expired;
 function get_top_left_menu()
 {
 
-    $menu_item_list = wp_nav_menu([
-        'theme_location' => 'top_left_menu',
-        'menu_class' => 'navbar-nav',
-        'container' => '',
-        'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
-        'walker' => new WP_Bootstrap_Navwalker(),
-        'echo' => false,
-    ]);
+    $meta_key = File_Cache::SITE_MENU . '_' . Site_Menu::TOP_LEFT_MENU;
 
-    return $menu_item_list;
+    $result = File_Cache::get_cache_meta_with_callback($meta_key, '', Expired::EXP_1_HOUR, function ()
+    {
+        $result = wp_nav_menu([
+            'theme_location' => Site_Menu::TOP_LEFT_MENU,
+            'menu_class' => 'navbar-nav',
+            'container' => '',
+            'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
+            'walker' => new WP_Bootstrap_Navwalker(),
+            'echo' => false,
+        ]);
+
+        return $result;
+    });
+
+    return $result;
 }
 
 /**
- * 获取顶主菜单
+ * 获取网站主菜单
  * @return string 菜单html列表
  */
 function get_main_menu()
 {
+    $meta_key = File_Cache::SITE_MENU . '_' . Site_Menu::MAIN_MENU;
 
-    $menu_item_list = wp_nav_menu([
-        'theme_location' => 'nav',
-        'menu_class' => 'navbar-nav flex-fill flex-wrap',
-        'depth' => 2,
-        'container' => '',
-        'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
-        'walker' => new WP_Bootstrap_Navwalker(),
-        'echo' => false,
-    ]);
+    $result = File_Cache::get_cache_meta_with_callback($meta_key, '', Expired::EXP_1_HOUR, function ()
+    {
+        $result = wp_nav_menu([
+            'theme_location' => Site_Menu::MAIN_MENU,
+            'menu_class' => 'navbar-nav flex-fill flex-wrap',
+            'depth' => 2,
+            'container' => '',
+            'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
+            'walker' => new WP_Bootstrap_Navwalker(),
+            'echo' => false,
+        ]);
+        return $result;
+    });
 
-    return $menu_item_list;
+    return $result;
 }
 
+
+/**
+ * 获取网站主菜单 手机版
+ * @return string 菜单html列表
+ */
+function get_main_phone_menu()
+{
+    $meta_key = File_Cache::SITE_MENU . '_' . Site_Menu::MAIN_PHONE_MENU;
+
+    $result = File_Cache::get_cache_meta_with_callback($meta_key, '', Expired::EXP_1_HOUR, function ()
+    {
+        $result = wp_nav_menu([
+            'theme_location' => Site_Menu::MAIN_PHONE_MENU,
+            'menu_class' => 'navbar-nav flex-fill flex-wrap',
+            'depth' => 2,
+            'container' => '',
+            'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
+            'walker' => new WP_Bootstrap_Navwalker(),
+            'echo' => false,
+        ]);
+        return $result;
+    });
+
+    return $result;
+}
 
 /**
  * 获取底部菜单
@@ -55,17 +93,22 @@ function get_main_menu()
  */
 function get_bottom_menu()
 {
+    $meta_key = File_Cache::SITE_MENU . '_' . Site_Menu::BOTTOM_MENU;
 
-    $menu_item_list = wp_nav_menu([
-        'theme_location' => 'bottom_menu',
-        'menu_class' => 'nav',
-        'container' => '',
-        'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
-        'walker' => new WP_Bootstrap_Navwalker(),
-        'echo' => false,
-    ]);
+    $result = File_Cache::get_cache_meta_with_callback($meta_key, '', Expired::EXP_1_HOUR, function ()
+    {
+        $result = wp_nav_menu([
+            'theme_location' => Site_Menu::BOTTOM_MENU,
+            'menu_class' => 'nav',
+            'container' => '',
+            'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
+            'walker' => new WP_Bootstrap_Navwalker(),
+            'echo' => false,
+        ]);
+        return $result;
+    });
 
-    return $menu_item_list;
+    return $result;
 }
 
 

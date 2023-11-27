@@ -12,7 +12,7 @@ get_header();
 //如果用户有登陆 清空论坛消息通知计数
 if (is_user_logged_in())
 {
-	$_SESSION[Session_Cache::USER_FORUM_NOTIFICATION_UNREAD_COUNT] = 0;
+	Session_Cache::set(Session_Cache::USER_FORUM_NOTIFICATION_UNREAD_COUNT, 0);
 }
 
 

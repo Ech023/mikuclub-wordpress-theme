@@ -25,8 +25,10 @@ $array_file_path_to_require = array_merge(
     glob($theme_lib_directory . 'old_component' . DIRECTORY_SEPARATOR . '*.php'),
     //导入HTML组件
     glob($theme_lib_directory . 'component' . DIRECTORY_SEPARATOR . '*.php'),
-    //导入HTML组件
-    glob($theme_lib_directory . 'component' . DIRECTORY_SEPARATOR .'head'.DIRECTORY_SEPARATOR . '*.php'),
+    //导入头部HTML组件
+    glob($theme_lib_directory . 'component' . DIRECTORY_SEPARATOR . 'header' . DIRECTORY_SEPARATOR . '*.php'),
+    //导入尾部HTML组件
+    glob($theme_lib_directory . 'component' . DIRECTORY_SEPARATOR . 'footer' . DIRECTORY_SEPARATOR . '*.php')
 
 );
 
