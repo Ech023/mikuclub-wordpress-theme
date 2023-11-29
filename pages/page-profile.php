@@ -115,7 +115,7 @@ $user = wp_get_current_user();
 
                         <label class="form-label" for="user_avatar">更改新的头像</label>
                         <small class="form-text text-muted">图片大小需要100 * 100像素以上, 支持JPG、PNG等格式, 图片需小于3M</small>
-                        <input type="file" class="form-control" id="user_avatar" name="user_avatar" accept="image/png,image/jpg,image/jpeg,image/bmp,image/webp">
+                        <input type="file" class="form-control open_image_cropper_modal" id="user_avatar" name="user_avatar" accept="image/png,image/jpg,image/jpeg,image/bmp,image/webp">
                     </div>
 
 

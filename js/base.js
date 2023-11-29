@@ -36,7 +36,7 @@ const POST_TYPE = {
 };
 
 //在线播放类型
-const PLAY_TYPE = {
+const VIDEO_TYPE = {
     video: 'video',
     music: 'music',
     bilibili: 'bilibili',
@@ -150,7 +150,7 @@ const SITE_DOMAIN = {
      * 获取当前访问的域名
      * @returns {string}
      */
-    get_current_domain(){
+    get_current_domain() {
         return window.location.hostname;
     }
 }
@@ -565,6 +565,7 @@ function send_post(url, data, pre_callback = null, done_callback = null, fail_ca
     );
 }
 
+
 /**
  * 发送DELETE请求
  * @param {string} url 
@@ -588,7 +589,7 @@ function send_delete(url, data, pre_callback = null, done_callback = null, fail_
 
 /**
  * 通过 $.ajax 发送请求
- * @param {string} type 
+ * @param {string} method 
  * @param {string} url 
  * @param {object} data 
  * @param {function|null} pre_callback 
@@ -596,7 +597,7 @@ function send_delete(url, data, pre_callback = null, done_callback = null, fail_
  * @param {function|null} fail_callback 
  * @param {function|null} always_callback 
  */
-function send_request(type, url, data, pre_callback = null, done_callback = null, fail_callback = defaultFailCallback, always_callback = null) {
+function send_request(method, url, data, pre_callback = null, done_callback = null, fail_callback = defaultFailCallback, always_callback = null) {
 
     //如果存在前置回调
     if (isFunction(pre_callback)) {
@@ -606,7 +607,38 @@ function send_request(type, url, data, pre_callback = null, done_callback = null
     $.ajax({
         url,
         data,
-        type,
+        method,
+        dataType: 'json',
+        headers: createAjaxHeader(),
+    }).done(done_callback).fail(fail_callback).always(always_callback);
+
+}
+
+
+/**
+ * 发送上传文件请求
+ * @param {string} url 
+ * @param {FormData} data 
+ * @param {function|null} pre_callback 
+ * @param {function|null} done_callback 
+ * @param {function|null} fail_callback 
+ * @param {function|null} always_callback 
+ */
+function send_file(url, data, pre_callback = null, done_callback = null, fail_callback = defaultFailCallback, always_callback = null) {
+
+    //如果存在前置回调
+    if (isFunction(pre_callback)) {
+        pre_callback();
+    }
+
+    $.ajax({
+        url,
+        data,
+        method: HTTP_METHOD.post,
+        mimeType: "multipart/form-data",
+        contentType: false,
+        processData: false,
+        dataType: 'json',
         headers: createAjaxHeader(),
     }).done(done_callback).fail(fail_callback).always(always_callback);
 

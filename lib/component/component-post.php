@@ -480,7 +480,7 @@ function print_post_content_video($post_id)
 
 			<div class="row my-3">
 				<div class="col-12 col-sm-6">
-					<button class="btn btn-miku w-100 w-md-50 play-button" value="{$bilibili_video_id}" data-video-type="bilibili" data-post-id="{$post_id}">
+					<button class="btn btn-miku w-100 w-md-50 open_video_modal" value="{$bilibili_video_id}" data-video-type="bilibili" data-post-id="{$post_id}">
 						<span class="button-text">点击播放</span>
 						<span class="button-loading spinner-border spinner-border-sm" style="display: none" role="status" aria-hidden="true"></span>
 					</button>
@@ -517,7 +517,7 @@ HTML;
 		$output = <<<HTML
 			<div class="row my-3">
 				<div class="col-12 col-sm-6">
-					<button class="btn btn-miku w-100 w-md-50 play-button" value="{$value}" data-video-type="{$type}">
+					<button class="btn btn-miku w-100 w-md-50 open_video_modal" value="{$value}" data-video-type="{$type}">
 						<span class="button-text">点击播放</span>
 						<span class="button-loading spinner-border spinner-border-sm" style="display: none" role="status" aria-hidden="true"></span>
 					</button>
@@ -697,7 +697,7 @@ HTML;
 HTML;
 
 	$report_button = <<<HTML
-		<button type="button" class="btn btn-sm btn-secondary w-100 open-post-report" data-post-id="{$post_id}">
+		<button type="button" class="btn btn-sm btn-secondary w-100 open_post_report_modal" data-post-id="{$post_id}">
 			<i class="fa-solid fa-paper-plane d-none d-md-inline-block my-2 my-md-0"></i>
 			<span>稿件投诉</span>
 		</button>

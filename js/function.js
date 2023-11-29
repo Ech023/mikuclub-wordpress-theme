@@ -272,23 +272,7 @@ function refreshPostListPage(queryObject) {
 }
 
 
-/**
- * 创建私信模态窗
- */
-function showPrivateMessageModal(event) {
 
-    //获取收件人信息
-    let recipient_id = $(this).data('recipient_id');
-    let recipient_name = $(this).data('recipient_name');
-
-    //console.log('nome' +recipient_name);
-    //console.log('id' +recipient_id);
-
-    //显示模态窗
-    new MyPrivateMessageModal(recipient_id, recipient_name).show();
-
-
-}
 
 /**
  * APP唤醒链接
@@ -734,3 +718,4 @@ function on_change_backup_image_domain_button() {
     });
 
 }
+

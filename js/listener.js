@@ -61,17 +61,13 @@ $(function () {
 
 
 
-    /**
-     * 创建私信窗口按钮 点击事件
-     * 创建显示模态窗
-     */
-    $body.on('click', 'button.show-private-message-modal', '', showPrivateMessageModal);
+ 
 
     /**
      * 私信模态窗中 发送按钮 点击事件
      * 发送私信
      */
-    $body.on('click', '.modal.private-message-modal button.send-private-message', '', sendPrivateMessage);
+    // $body.on('click', '.modal.private-message-modal button.send-private-message', '', sendPrivateMessage);
 
 
     /**
@@ -83,16 +79,7 @@ $(function () {
     });
 
 
-    /**模态窗消失时触发
-     *  把模态窗从DOM中移除
-     *  */
-    $body.on('hidden.bs.modal', '.my-modal', function () {
-        //删除jquery模态实例
-        $(this).modal('dispose');
-        //从DOM中移除
-        $(this).remove();
-
-    });
+  
 
 
     //监听所有 关注按钮点击事件

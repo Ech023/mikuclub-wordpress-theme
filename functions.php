@@ -193,6 +193,12 @@ function setup_front_end_script()
             'path' => '/js/function.js',
             'in_footer' => false,
         ],
+        //模态窗JS
+        [
+            'name' => 'js-function-modal',
+            'path' => '/js/function-modal.js',
+            'in_footer' => false,
+        ],
         //通用JS AJAX的函数
         [
             'name' => 'js-function-ajax',

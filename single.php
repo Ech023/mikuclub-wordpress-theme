@@ -84,7 +84,7 @@ if ($access_allowed)
 
 
                  <div class="col">
-                    <button class="btn btn-primary btn-sm w-100 show-private-message-modal" data-recipient_id="{$author->id}" data-recipient_name="{$author->display_name}">
+                    <button class="btn btn-primary btn-sm w-100 open_private_message_modal" data-recipient_id="{$author->id}" data-recipient_name="{$author->display_name}">
                         <i class="fa-solid fa-envelope"></i> 发私信
                     </button>
                 </div>

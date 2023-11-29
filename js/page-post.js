@@ -17,8 +17,7 @@ $(function () {
         //根据文章内容数据 隐藏相关菜单选项
         hideSidebarMenuItem();
 
-        //绑定在线播放按钮 点击事件
-        $('.video-part .play-button').on('click', '', '', openPlayModal);
+       
         //绑定密码表单 点击事件
         $('.password-part input').on('click', function () {
             selectAllAndCopy($(this));
@@ -32,9 +31,8 @@ $(function () {
         $('.functional-part .post-share a.dropdown-item').on('click', '', '', setPostShare);
         $('.functional-part button.set-post-fail-times').on('click', '', '', setPostFailTime);
 
-        $('.functional-part button.open-post-report').on('click', '', '', openReportModal);
+       
 
-        $singlePage.on('click', '.modal.report-modal button.send-report', '', sendReport);
 
 
         //绑定打开百度盘按钮
@@ -44,101 +42,7 @@ $(function () {
 });
 
 
-/**
- * 打开视频播放窗口
- * @param {Event}event
- */
-function openPlayModal(event) {
 
-
-    let $playButton = $('body.single .video-part .play-button');
-    let type = $playButton.data('video-type');
-    let value = $playButton.val();
-
-    //如果不是BILIBILI视频, 直接打开模态窗
-    if (type !== PLAY_TYPE.bilibili) {
-
-        //解义url字符串
-        value = decodeURIComponent(value.replace(/\+/g, ' '));
-
-        //创建打开模态窗
-        new MyVideoModal(value).show();
-
-    }
-    //如果是b站视频, 需要先获取CID号
-    else {
-
-        let postId = $playButton.data('post-id');
-
-        //切换按钮激活状态
-        //切换文字和加载进度条显示
-        $playButton.toggleDisabled();
-        $playButton.children().toggle();
-
-        let successCallback = function (response) {
-
-
-            let url = 'https://player.bilibili.com/player.html?' + $.param({
-                aid: response.aid,
-                bvid: response.bvid,
-                cid: response.cid,
-                page: 1,
-                danmaku: 1,
-                autoplay: 1,
-                //high_quality : 1,
-            });
-            let iframeCode = '<iframe src="' + url + '" allowfullscreen></iframe>';
-
-            // iframeCode = '<iframe src="//player.bilibili.com/player.html?aid=' + response.aid + '&bvid=' + response.bvid + '&cid=' + response.cid + '&page=1&high_quality=1&danmaku=1" allowfullscreen="true"></iframe>';
-            //创建打开模态窗
-            new MyVideoModal(iframeCode).show();
-
-        };
-
-
-        let completeCallback = function () {
-            //切换按钮激活状态
-            //切换文字和加载进度条显示
-            $playButton.toggleDisabled();
-            $playButton.children().toggle();
-        };
-
-        //发送请求
-        getBilibiliVIdeoData(value, postId, successCallback, defaultFailCallback, completeCallback);
-
-    }
-
-
-}
-
-
-/**
- * 获取B站视频播放地址
- * @param {string} videoId
- * @param {int} postId
- * @param {Function} successCallback
- * @param {Function} failCallback
- * @param {Function} completeCallback
- */
-function getBilibiliVIdeoData(videoId, postId, successCallback, failCallback, completeCallback) {
-
-    //请求参数
-    let data = {
-        post_id: postId,
-    };
-
-    //如果是旧AV号
-    if (videoId.includes('av')) {
-        data.aid = videoId.slice(2);
-    }
-    else {
-        data.bvid = videoId;
-    }
-
-    $.getJSON(URLS.bilibili, data).done(successCallback).fail(failCallback).always(completeCallback);
-
-
-}
 
 
 /**
@@ -585,96 +489,8 @@ function hideSidebarMenuItem() {
 }
 
 
-/**
- * 开启投诉模态窗
- * @param {Event} event
- */
-function openReportModal(event) {
-
-    //获取按钮
-    const $button = $(this);
-
-    let postId = $button.data('post-id');
-    let recipientId = $button.data('recipient-id');
-    let senderId = $button.data('sender-id');
-
-    new MyReportModal(postId, recipientId, senderId).show();
-
-}
-
-/**
- * 发送投诉
- * @param {Event} event
- */
-function sendReport(event) {
 
 
-    //获取按钮
-    const $button = $(this);
-
-    let $modalElement = $button.parents('.report-modal');
-    let $reportTypeRadio = $modalElement.find('input[name="report_type"]:checked');
-    //如果未选中任何投诉类型
-    if (!$reportTypeRadio.length) {
-        TOAST_SYSTEM.add('请先选择投诉类型', TOAST_TYPE.error);
-        return;
-    }
-
-    //获取表单内容
-    let report_type = $reportTypeRadio.val();
-    let report_description = $modalElement.find('textarea[name="report_description"]').val().trim();
-    //如果未填写描述
-    if (!report_description.length) {
-        TOAST_SYSTEM.add('请描述具体问题', TOAST_TYPE.error);
-        return;
-    }
-
-    let report_contact = $modalElement.find('input[name="report_contact"]').val().trim();
-    let post_id = $modalElement.find('input[name="post_id"]').val();
-
-    //查询参数
-    let data = {
-        report_type,
-        post_id,
-    };
-    if (report_description) {
-        data.report_description = report_description;
-    }
-    if (report_contact) {
-        data.report_contact = report_contact;
-    }
-
-    //切换按钮的显示
-    $button.toggleDisabled();
-    $button.children().toggle();
-
-    //成功的情况
-    let successCallback = function (response) {
-
-        TOAST_SYSTEM.add('提交成功, 管理员一般会在48小时内处理', TOAST_TYPE.success);
-        //关闭模态窗
-        $modalElement.modal('hide');
-
-    };
-
-
-    let completeCallback = function () {
-        //激活按钮
-        $button.toggleDisabled();
-        $button.children().toggle();
-    };
-
-
-    $.ajax({
-        url: URLS.messageReport,
-        data,
-        type: HTTP_METHOD.post,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
-
-
-
-}
 
 /**
  * 增加文章点击数

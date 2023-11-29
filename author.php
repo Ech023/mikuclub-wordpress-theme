@@ -43,7 +43,7 @@ if ($current_user_id > 0 && $current_user_id != $author->id)
          </button>
      </div>
      <div class="col-auto">
-         <button class="btn btn-primary show-private-message-modal" data-recipient_id="{$author->id}" data-recipient_name="{$author->display_name}">
+         <button class="btn btn-primary open_private_message_modal" data-recipient_id="{$author->id}" data-recipient_name="{$author->display_name}">
             <i class="fa-solid fa-envelope"></i> 发私信
          </button>
      </div>
