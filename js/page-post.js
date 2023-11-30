@@ -14,8 +14,7 @@ $(function () {
         //更改按钮状态
         checkButtonStatus();
 
-        //根据文章内容数据 隐藏相关菜单选项
-        hideSidebarMenuItem();
+      
 
        
         //绑定密码表单 点击事件
@@ -463,30 +462,7 @@ function updateButton($button, text, oldClass, newClass, addCount, isActivated) 
 
 
 
-/**
- * 根据当前文章数据 隐藏相关浮动菜单的选项
- */
-function hideSidebarMenuItem() {
 
-    //获取悬浮菜单
-    let $sidebarMenu = $('#fixed-sidebar-menu');
-
-    //如果无下载 内容 隐藏对应的菜单选项
-    if (!$('.article-content .download-part').children().length) {
-
-        $sidebarMenu.children('a[data-bs-target-id="password-part"]').hide();
-    }
-    //无在线播放
-    if (!$('.article-content .video-part').children().length) {
-        $sidebarMenu.children('a[data-bs-target-id="video-part"]').hide();
-    }
-    //无预览图片
-    if (!$('.article-content .preview-images-part').children().length) {
-        $sidebarMenu.children('a[data-bs-target-id="preview-images-part"]').hide();
-    }
-
-
-}
 
 
 

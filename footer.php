@@ -27,7 +27,7 @@ $home = get_home_url();
 </section>
 
 
-<footer id="footer" class="footer mt-5 px-3 px-sm-5">
+<footer id="footer" class="footer mt-5 px-3 px-md-4">
 
     <div class="py-3">
 
@@ -190,9 +190,11 @@ HTML;
 <!--关闭网页主体-->
 </div>
 
-<?php echo sidebar_menu_component(); ?>
+<?php 
 
-<?php echo print_phone_sidebar_menu_component(); ?>
+echo print_phone_sidebar_menu_component(); 
+echo print_float_bottom_menu_bar_component(); 
+?>
 
 </body>
 

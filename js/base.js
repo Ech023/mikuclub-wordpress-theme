@@ -458,14 +458,21 @@ function defaultFailCallback(jqXHR) {
 /**
  * 滚动到指定位置
  */
+function scroll_to_element($container = null, $target) {
 
-function scrollToId(element_id) {
+    if (!$container) {
+        $container = $(window);
+    }
+
+    $container.scrollTo($target);
 
     //滚动
-    $('html, body').animate({
-        scrollTop: $("#" + element_id).offset().top
-    }, 1000);
+    // $('html, body').animate({
+    //     scrollTop: $("#" + element_id).offset().top
+    // }, 1000);
 }
+
+
 
 /**
  * 创建异步请求头部

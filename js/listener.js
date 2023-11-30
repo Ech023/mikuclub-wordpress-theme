@@ -140,8 +140,8 @@ $(function () {
 
     }
 
-    //滚动的时候 显示浮动菜单 并延时隐藏
-    $(document).on('scroll', showSidebarMenuOnScroll);
+   
+    
 
 
     /**
@@ -155,15 +155,8 @@ $(function () {
      */
     update_image_src_of_element_to_backup_image_domain();
 
-    /**
-     * 根据local storage数值初始化 备用图床切换 按钮状态
-     */
-    init_backup_image_domain_button();
+ 
 
-    /**
-     * 监听 切换备用按钮的change事件
-     */
-    on_change_backup_image_domain_button();
 
 
 });

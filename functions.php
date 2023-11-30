@@ -61,6 +61,13 @@ function setup_front_end_external_css_and_script()
     wp_enqueue_script('cropper-js', 'https://cdn.staticfile.org/cropperjs/2.0.0-alpha.1/cropper.min.js', [], '2.0.0', true);
     wp_enqueue_style('cropper-css', 'https://cdn.staticfile.org/cropperjs/2.0.0-alpha.1/cropper.min.css', [], '2.0.0');
     wp_enqueue_script('jquery-cropper', 'https://cdn.staticfile.org/jquery-cropper/1.0.1/jquery-cropper.min.js', [], '1.0.1', true);
+
+
+    /**
+     * 页内平滑滚动
+     * @see https://github.com/flesler/jquery.scrollTo
+     */
+    wp_enqueue_script('jquery-scrollto', 'https://cdn.staticfile.org/jquery-scrollTo/2.1.3/jquery.scrollTo.min.js', [], '2.1.3', true);
 }
 
 /**
@@ -199,6 +206,13 @@ function setup_front_end_script()
             'path' => '/js/function-modal.js',
             'in_footer' => false,
         ],
+        //浮动菜单相关JS
+        [
+            'name' => 'js-function-float-menu-bar',
+            'path' => '/js/function-float-menu-bar.js',
+            'in_footer' => false, //必须在顶部, 不然会有视觉延时
+        ],
+
         //通用JS AJAX的函数
         [
             'name' => 'js-function-ajax',
@@ -301,12 +315,6 @@ function setup_front_end_script()
             'name' => 'js-forums',
             'path' => '/js/page-forums.js',
             'in_footer' => false,
-        ],
-        //JS 暗夜模式
-        [
-            'name' => 'js-darkmode',
-            'path' => '/js/darkmode.js',
-            'in_footer' => false, //必须在顶部, 不然会有视觉延时
         ],
 
     ];

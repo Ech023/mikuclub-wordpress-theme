@@ -20,8 +20,6 @@ $(function () {
         disableScrolling: true
     });
 
-    //根据当前时间 显示浮动菜单里的日夜模式切换按钮
-    //showSidebarMenuUiModeButton();
-
+   
 
 });

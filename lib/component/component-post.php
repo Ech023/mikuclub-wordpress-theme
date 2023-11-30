@@ -46,7 +46,7 @@ function print_post_content($post_id)
 			<div class="password-part my-4" id="password-part">
 				{$password_part}
 			</div>
-			<div class="download-part my-4">
+			<div class="download-part my-4" id="download-part">
 				{$download_part}
 			</div>
 			<div class="download-fast-link-part my-4">

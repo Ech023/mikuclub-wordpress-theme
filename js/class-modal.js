@@ -594,6 +594,74 @@ class MyPostReportModal extends MyModal {
 }
 
 /**
+ * 确认模态窗
+ */
+class ConfirmModal extends MyModal {
+
+    /**
+     */
+    constructor(text) {
+
+        super();
+
+
+        this.modal_container_class = 'confirm-modal';
+        this.modal_class = '';
+        this.modal_header_class = 'd-none';
+
+        // this.title = '确认';
+
+        this.body = `
+            <div class="text-center">
+               <div>${text}</div>
+            </div>
+        `;
+
+        this.footer = `
+
+           
+            <button type="button" class="btn btn-primary px-4 me-2 confirm">确定</button>
+            <button type="button" class="btn btn-secondary px-4 cancel">取消</button>
+
+        `;
+
+    }
+
+    /**
+    * @param {function|null} confirm_callback 点击确认的时候触发的回调
+    * @param {function|null} cancel_callback 点击取消的时候触发的回调
+    * @returns {ConfirmModal}
+    */
+    create(confirm_callback, cancel_callback) {
+
+        const model = super.create();
+
+        this.$modal_element.find('.confirm').on('click', () => {
+
+            this.hide();
+
+            if (isFunction(confirm_callback)) {
+                confirm_callback();
+            }
+        });
+
+        this.$modal_element.find('.cancel').on('click', () => {
+
+            this.hide();
+
+            if (isFunction(cancel_callback)) {
+                cancel_callback();
+            }
+        });
+
+
+        return model;
+
+    }
+
+}
+
+/**
  * 加载模态窗
  */
 class MyLoadingModal extends MyModal {

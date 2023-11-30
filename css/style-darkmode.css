@@ -105,19 +105,6 @@ body.darkmode .sl_lazyimg {
 }
 
 
-/**
-浮动侧边栏背景颜色
-*/
-body.darkmode #fixed-sidebar-menu .list-group-item:not(.active) {
-    background-color: var(--container-bg-color);
-    border: 1px solid var(--text-color);
-    color: var(--text-color);
-}
-
-/*
-body.darkmode #fixed-sidebar-menu .list-group-item span{
-    color: var(--text-color);
-}*/
 
 
 /**

@@ -19,7 +19,7 @@ echo <<<HTML
     {$head_output}
 
     <!-- 如果是内容页, 增加滚动监听 -->
-    <body class="{$body_class}"  data-spy="scroll" data-target="#fixed-sidebar-menu" data-offset="10">
+    <body class="{$body_class}" >
 
     <!-- 谷歌跟踪代码 Google Tag Manager (noscript) -->
     <!-- <noscript>
@@ -28,15 +28,15 @@ echo <<<HTML
     </noscript> -->
     <!-- End Google Tag Manager (noscript) -->
 
-    <script>
-        //初始化暗夜模式,必须在body标签加载后再运行
-        init_dark_mode();
-    </script>
+        <script>
+            //初始化暗夜模式,必须在body标签加载后再运行
+            init_dark_theme();
+        </script>
 
-    <div class="container-fluid px-0">
-        {$body_header_output}
+        <div class="container-fluid px-0">
+            {$body_header_output}
 
-        <section class="mh-75vh mx-auto px-3 px-md-4">
-            <div class="content">
+            <section class="mh-75vh px-3 px-md-4 my-2">
+                <div class="content">
 
 HTML;

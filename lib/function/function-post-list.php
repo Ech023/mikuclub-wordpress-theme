@@ -181,45 +181,98 @@ function set_post_list_query_vars($query_vars)
 function get_sticky_post_list($cat_id)
 {
 
-    //置顶文章长度
-    $posts_per_page = Config::STICKY_POST_LIST_LENGTH;
     //缓存时间的键名
     $cache_meta_key = Option_Meta::STICKY_POSTS . '_' . ($cat_id ?: 0);
 
-
     //获取缓存
-    $output = File_Cache::get_cache_meta_with_callback($cache_meta_key, File_Cache::DIR_POSTS . DIRECTORY_SEPARATOR . Option_Meta::STICKY_POSTS, Expired::EXP_2_HOURS, function () use ($cat_id, $posts_per_page)
+    $output = File_Cache::get_cache_meta_with_callback($cache_meta_key, File_Cache::DIR_POSTS . DIRECTORY_SEPARATOR . Option_Meta::STICKY_POSTS, Expired::EXP_2_HOURS, function () use ($cat_id)
     {
 
         //获取置顶文章id数组
-        $sticky = get_option(Option_Meta::STICKY_POSTS);
+        $sticky = get_option(Option_Meta::STICKY_POSTS) ?: [];
 
         $output = [];
 
-        //如果置顶文章大于0
-        if (is_array($sticky) && count($sticky) > 0)
+        //优先获取手动置顶的文章
+        $args = [
+            Post_Query::POST__IN => $sticky,
+            //维持 置顶id数组的排序
+            Post_Query::CAT => $cat_id,
+            //在有效期内获取
+            Post_Query::DATE_QUERY => [
+                [
+                    'column' => 'post_modified',
+                    'after' => '-' . Config::STICKY_POST_EXPIRED_DAY . ' days',
+                ],
+            ],
+            Post_Query::POST_STATUS => Post_Status::PUBLISH,
+            Post_Query::POST_TYPE => Post_Type::POST,
+            Post_Query::POSTS_PER_PAGE => Config::STICKY_POST_FIRST_LIST_LENGTH,
+            Post_Query::IGNORE_STICKY_POSTS => 1,
+            Post_Query::ORDERBY => 'post__in',
+        ];
+
+        //查询文章数据
+        $result = get_posts($args);
+
+        $total_list_length = Config::STICKY_POST_FIRST_LIST_LENGTH + Config::STICKY_POST_SECONDARY_LIST_LENGTH;
+        $missing_length = $total_list_length - count($result);
+        //如果手动置顶的数量不够
+        if ($missing_length > 0)
         {
 
-            $args = [
-                Post_Query::POST__IN => $sticky,
-                //维持 置顶id数组的排序
-                Post_Query::ORDERBY => 'post__in',
-                Post_Query::IGNORE_STICKY_POSTS => 1,
-                Post_Query::CAT => $cat_id,
-                Post_Query::POSTS_PER_PAGE => $posts_per_page,
-                Post_Query::POST_STATUS => Post_Status::PUBLISH,
-                Post_Query::POST_TYPE => Post_Type::POST,
+            //继续获取高点赞帖子
+
+            //创建一个时间数组用来累进的获取 最近的热高赞文章, 直到凑满需要的文章数量
+            $array_additional_expired_day = [
+                Config::STICKY_POST_EXPIRED_DAY,
+                Config::STICKY_POST_EXPIRED_DAY * 2,
+                Config::STICKY_POST_EXPIRED_DAY * 4,
+                Config::STICKY_POST_EXPIRED_DAY * 8,
+                Config::STICKY_POST_EXPIRED_DAY * 16,
+                Config::STICKY_POST_EXPIRED_DAY * 32,
+                Config::STICKY_POST_EXPIRED_DAY * 64,
+                Config::STICKY_POST_EXPIRED_DAY * 128,
+                Config::STICKY_POST_EXPIRED_DAY * 256,
             ];
 
-            //查询文章数据
-            $results = get_posts($args);
-
-            //把查询到的文章数组转换成自定义文章类
-            $output = array_map(function ($element)
+            foreach ($array_additional_expired_day as $additional_expired_day)
             {
-                return new My_Post_Sticky_Model($element);
-            }, $results);
+
+                $args = [
+                    Post_Query::META_KEY => Post_Meta::POST_LIKE,
+                    Post_Query::CAT => $cat_id,
+                    Post_Query::DATE_QUERY => [
+                        [
+                            'column' => 'post_modified',
+                            'after ' =>  '-' . $additional_expired_day . ' days',
+                        ]
+                    ],
+                    Post_Query::POST_STATUS => Post_Status::PUBLISH,
+                    Post_Query::POST_TYPE => Post_Type::POST,
+                    Post_Query::IGNORE_STICKY_POSTS => 1,
+                    Post_Query::POSTS_PER_PAGE => $missing_length,
+                    Post_Query::ORDERBY => 'meta_value_num',
+                    Post_Query::ORDER => 'DESC',
+                ];
+
+                $result = array_merge($result,  get_posts($args));
+
+                //更新缺少的文章数量
+                $missing_length = $total_list_length - count($result);
+                //如果没有缺少 就结束循环
+                if ($missing_length <= 0)
+                {
+                    break;
+                }
+            }
         }
+
+        //把查询到的文章数组转换成自定义文章类
+        $output = array_map(function ($element)
+        {
+            return new My_Post_Sticky_Model($element);
+        }, $result);
 
         return $output;
     });
@@ -315,6 +368,7 @@ function get_hot_post_list($term_id, $meta_key, $range_day, $number = Config::HO
             Post_Query::ORDER => 'DESC',
             Post_Query::DATE_QUERY => [
                 [
+                    'column' => 'post_modified',
                     'after ' => [
                         'year'  => date('Y', $after_time),
                         'month' => date('n', $after_time),
@@ -351,6 +405,7 @@ function get_hot_post_list($term_id, $meta_key, $range_day, $number = Config::HO
             //重设开始统计的日期位置
             $args[Post_Query::DATE_QUERY] = [
                 [
+                    'column' => 'post_modified',
                     'after ' => [
                         'year'  => date('Y', $after_time),
                         'month' => date('n', $after_time),
@@ -386,68 +441,69 @@ function get_hot_post_list($term_id, $meta_key, $range_day, $number = Config::HO
 function get_related_post_list($post_id, $number = Config::RELATED_POST_LIST_LENGTH)
 {
 
-	//创建缓存键值
-	$cache_key = File_Cache::RELATED_POST_LIST . '_' . $post_id . '_' . $number;
-	//获取缓存
-	$output = File_Cache::get_cache_meta_with_callback($cache_key, File_Cache::DIR_POSTS.DIRECTORY_SEPARATOR . File_Cache::RELATED_POST_LIST, Expired::EXP_7_DAYS, function() use($post_id, $number){
+    //创建缓存键值
+    $cache_key = File_Cache::RELATED_POST_LIST . '_' . $post_id . '_' . $number;
+    //获取缓存
+    $output = File_Cache::get_cache_meta_with_callback($cache_key, File_Cache::DIR_POSTS . DIRECTORY_SEPARATOR . File_Cache::RELATED_POST_LIST, Expired::EXP_7_DAYS, function () use ($post_id, $number)
+    {
 
-		$args = [
-			Post_Query::IGNORE_STICKY_POSTS => 1,
-			Post_Query::ORDERBY => 'rand',
-			Post_Query::POSTS_PER_PAGE => $number,
-			Post_Query::POST__NOT_IN => [$post_id],
+        $args = [
+            Post_Query::IGNORE_STICKY_POSTS => 1,
+            Post_Query::ORDERBY => 'rand',
+            Post_Query::POSTS_PER_PAGE => $number,
+            Post_Query::POST__NOT_IN => [$post_id],
             Post_Query::POST_STATUS => Post_Status::PUBLISH,
             Post_Query::POST_TYPE => Post_Type::POST,
-		];
+        ];
 
-		//设置分类
-		if (get_post_sub_cat_id($post_id))
-		{
-			$args[Post_Query::CAT] = get_post_sub_cat_id($post_id);
-		}
+        //设置分类
+        if (get_post_sub_cat_id($post_id))
+        {
+            $args[Post_Query::CAT] = get_post_sub_cat_id($post_id);
+        }
 
-		//获取标签
-		$tags = get_the_tags();
+        //获取标签
+        $tags = get_the_tags();
 
-		//如果有标签
-		if ($tags)
-		{
+        //如果有标签
+        if ($tags)
+        {
 
-			//提取标签id数组
-			$tag_ids = array_map(function (WP_Term $tag)
-			{
-				return $tag->term_id;
-			}, $tags);
-			//设置标签id过滤参数
-			$args[Post_Query::TAG__IN] = $tag_ids;
-		}
+            //提取标签id数组
+            $tag_ids = array_map(function (WP_Term $tag)
+            {
+                return $tag->term_id;
+            }, $tags);
+            //设置标签id过滤参数
+            $args[Post_Query::TAG__IN] = $tag_ids;
+        }
 
-		//查询文章
-		$results = get_posts($args);
+        //查询文章
+        $results = get_posts($args);
 
-		//如果结果数量不够 再获取同分类的文章
-		if (count($results) < $number)
-		{
-			//移除标签限制
-			unset($args[Post_Query::TAG__IN]);
-			//修改需求数量
-			$args[Post_Query::POSTS_PER_PAGE] = $number - count($results);
-			//重新查询文章
-			$results2 = get_posts($args);
-			//合并结果
-			$results = array_merge($results, $results2);
-		}
+        //如果结果数量不够 再获取同分类的文章
+        if (count($results) < $number)
+        {
+            //移除标签限制
+            unset($args[Post_Query::TAG__IN]);
+            //修改需求数量
+            $args[Post_Query::POSTS_PER_PAGE] = $number - count($results);
+            //重新查询文章
+            $results2 = get_posts($args);
+            //合并结果
+            $results = array_merge($results, $results2);
+        }
 
-		//把查询到的文章数组转换成自定义文章类
-		$output = array_map(function ($element)
-		{
-			return new My_Post_Model($element);
-		}, $results);
+        //把查询到的文章数组转换成自定义文章类
+        $output = array_map(function ($element)
+        {
+            return new My_Post_Model($element);
+        }, $results);
 
-		return $output;
-	});
+        return $output;
+    });
 
-	return $output;
+    return $output;
 }
 
 
@@ -462,41 +518,41 @@ function get_related_post_list($post_id, $number = Config::RELATED_POST_LIST_LEN
  */
 function get_fail_down_post_list($author, $cat, $paged, $number = 20)
 {
-	
 
-	$args = [
-		Post_Query::IGNORE_STICKY_POSTS => 1,
-		Post_Query::ORDERBY => 'meta_value_num',
-		'meta_key'            => Post_Meta::POST_FAIL_TIME,
-		'order'               => 'DESC',
-		Post_Query::POSTS_PER_PAGE => $number,
-		Post_Query::POST_STATUS => Post_Status::PUBLISH,
-		Post_Query::POST_TYPE => Post_Type::POST,
-	];
 
-	if ($author)
-	{
-		$args[Post_Query::AUTHOR] = $author;
-	}
-	if ($cat)
-	{
-		$args[Post_Query::CAT] = $cat;
-	}
-	if ($paged)
-	{
-		$args[Post_Query::PAGED] = $paged;
-	}
+    $args = [
+        Post_Query::IGNORE_STICKY_POSTS => 1,
+        Post_Query::ORDERBY => 'meta_value_num',
+        'meta_key'            => Post_Meta::POST_FAIL_TIME,
+        'order'               => 'DESC',
+        Post_Query::POSTS_PER_PAGE => $number,
+        Post_Query::POST_STATUS => Post_Status::PUBLISH,
+        Post_Query::POST_TYPE => Post_Type::POST,
+    ];
 
-	//查询文章
-	$results = get_posts($args);
+    if ($author)
+    {
+        $args[Post_Query::AUTHOR] = $author;
+    }
+    if ($cat)
+    {
+        $args[Post_Query::CAT] = $cat;
+    }
+    if ($paged)
+    {
+        $args[Post_Query::PAGED] = $paged;
+    }
 
-	//把查询到的文章数组转换成自定义文章类
-	$output = array_map(function ($element)
-	{
-		return new My_Post_Model($element);
-	}, $results);
+    //查询文章
+    $results = get_posts($args);
 
-	return $output;
+    //把查询到的文章数组转换成自定义文章类
+    $output = array_map(function ($element)
+    {
+        return new My_Post_Model($element);
+    }, $results);
+
+    return $output;
 }
 
 /**
@@ -510,46 +566,46 @@ function get_fail_down_post_list($author, $cat, $paged, $number = 20)
  */
 function get_my_favorite_post_list($cat, $search, $paged)
 {
-	$output = [];
+    $output = [];
 
-	$user_favorite = get_user_favorite();
-	//如果收藏夹不是空
-	if ($user_favorite)
-	{
-		$args = [
-			Post_Query::IGNORE_STICKY_POSTS => 1,
-			Post_Query::POST__IN => get_user_favorite(),
-			Post_Query::ORDERBY => 'post__in',
-			Post_Query::POSTS_PER_PAGE => get_option(Option_Meta::POSTS_PER_PAGE),
+    $user_favorite = get_user_favorite();
+    //如果收藏夹不是空
+    if ($user_favorite)
+    {
+        $args = [
+            Post_Query::IGNORE_STICKY_POSTS => 1,
+            Post_Query::POST__IN => get_user_favorite(),
+            Post_Query::ORDERBY => 'post__in',
+            Post_Query::POSTS_PER_PAGE => get_option(Option_Meta::POSTS_PER_PAGE),
 
-		];
+        ];
 
-		if ($cat)
-		{
-			$args[Post_Query::CAT] = $cat;
-		}
+        if ($cat)
+        {
+            $args[Post_Query::CAT] = $cat;
+        }
 
-		//如果有需要搜索的内容, 添加到参数里
-		if ($search)
-		{
-			$args[Post_Query::SEARCH] = $search;
-		}
+        //如果有需要搜索的内容, 添加到参数里
+        if ($search)
+        {
+            $args[Post_Query::SEARCH] = $search;
+        }
 
-		if ($paged)
-		{
-			$args[Post_Query::PAGED] = $paged;
-		}
+        if ($paged)
+        {
+            $args[Post_Query::PAGED] = $paged;
+        }
 
-		$results = get_posts($args);
+        $results = get_posts($args);
 
-		//把查询到的文章数组转换成自定义文章类
-		$output = array_map(function ($element)
-		{
-			return new My_Post_Model($element);
-		}, $results);
-	}
+        //把查询到的文章数组转换成自定义文章类
+        $output = array_map(function ($element)
+        {
+            return new My_Post_Model($element);
+        }, $results);
+    }
 
-	return $output;
+    return $output;
 }
 
 /**
@@ -562,29 +618,28 @@ function get_my_favorite_post_list($cat, $search, $paged)
 function get_my_followed_post_list($number)
 {
 
-	$output = [];
+    $output = [];
 
-	//获取用户关注列表
-	$user_followed = get_user_followed();
+    //获取用户关注列表
+    $user_followed = get_user_followed();
 
-	//如果关注列表不是空
-	if ($user_followed)
-	{
-		$args = [
-			Post_Query::IGNORE_STICKY_POSTS => 1,
-			Post_Query::AUTHOR => implode(',', $user_followed),
-			Post_Query::POSTS_PER_PAGE => $number,
-		];
+    //如果关注列表不是空
+    if ($user_followed)
+    {
+        $args = [
+            Post_Query::IGNORE_STICKY_POSTS => 1,
+            Post_Query::AUTHOR => implode(',', $user_followed),
+            Post_Query::POSTS_PER_PAGE => $number,
+        ];
 
-		$results = get_posts($args);
-		
-		//把查询到的文章数组转换成自定义文章类
-		$output = array_map(function ($element)
-		{
-			return new My_Post_Model($element);
-		}, $results);
-	}
+        $results = get_posts($args);
 
-	return $output;
+        //把查询到的文章数组转换成自定义文章类
+        $output = array_map(function ($element)
+        {
+            return new My_Post_Model($element);
+        }, $results);
+    }
+
+    return $output;
 }
-

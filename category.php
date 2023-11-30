@@ -1,5 +1,7 @@
 <?php
 
+namespace mikuclub;
+
 use mikuclub\constant\Admin_Meta;
 
 use function mikuclub\print_adult_404_content_for_no_logging_user;
@@ -13,8 +15,8 @@ use function mikuclub\hot_posts_most_comments;
 use function mikuclub\hot_posts_most_rating;
 use function mikuclub\is_adult_category;
 use function mikuclub\post_list_component;
-use function mikuclub\sticky_posts_component;
-use function mikuclub\top_hot_posts_component;
+
+
 
 get_header();
 
@@ -52,21 +54,7 @@ else
 		//输出幻灯片+3种热门列表
 		if (has_sub_category($cat_id))
 		{
-	?>
-
-			<div class="row my-4">
-				<div class="col-12 col-lg-6 col-xl-5">
-					<?php echo sticky_posts_component($cat_id); ?>
-				</div>
-				<div class="col-12 col-lg-6 col-xl-7 my-3 my-lg-0">
-					<?php echo top_hot_posts_component($cat_id); ?>
-				</div>
-			</div>
-
-
-
-
-			<?php
+			echo print_sticky_post_slide_component($cat_id);
 
 			if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 			{
@@ -98,17 +86,17 @@ else
 			}
 
 
-			?>
+			echo hot_posts_most_rating($cat_id, 8);
 
-
-			<?php echo hot_posts_most_rating($cat_id, 8); ?>
-
-			<?php echo hot_posts_most_comments($cat_id, 8); ?>
-
-
-	<?php } //如果是没有子分类的分类
+			echo hot_posts_most_comments($cat_id, 8);
+		} 
+		
+		//如果是没有子分类的分类
 		else
 		{
+
+			echo print_sticky_post_slide_component($cat_id);
+
 			//随机输出一种热门文章
 			echo get_hot_list_by_random($cat_id, 8);
 			if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))

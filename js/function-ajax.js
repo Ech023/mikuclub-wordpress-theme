@@ -300,36 +300,36 @@ function add_user_black_list(target_user_id) {
  */
 function delete_user_black_list(target_user_id) {
 
+    open_confirm_modal('确认要将该用户从黑名单里移除吗?', () => {
 
-    if (!confirm('确认要将该用户从黑名单里移除吗?')) {
-        return;
-    }
+        const data = {
+            target_user_id,
+        }
 
-    const data = {
-        target_user_id,
-    }
+        //成功的情况
+        let successCallback = function (response) {
+            TOAST_SYSTEM.add('移除黑名单成功', TOAST_TYPE.success);
+        };
 
-    //成功的情况
-    let successCallback = function (response) {
-        TOAST_SYSTEM.add('移除黑名单成功', TOAST_TYPE.success);
-    };
+        //错误的情况
+        let failCallback = function () {
+            TOAST_SYSTEM.add('移除黑名单失败', TOAST_TYPE.error);
+        };
 
-    //错误的情况
-    let failCallback = function () {
-        TOAST_SYSTEM.add('移除黑名单失败', TOAST_TYPE.error);
-    };
+        let completeCallback = function () {
 
-    let completeCallback = function () {
-
-    };
+        };
 
 
-    $.ajax({
-        url: URLS.userBlackList,
-        data,
-        type: HTTP_METHOD.delete,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(failCallback).always(completeCallback);
+        $.ajax({
+            url: URLS.userBlackList,
+            data,
+            type: HTTP_METHOD.delete,
+            headers: createAjaxHeader()
+        }).done(successCallback).fail(failCallback).always(completeCallback);
+
+    });
+
 
 }
 

@@ -43,7 +43,13 @@ class Config
     const RECENTLY_POST_LIST_LENGTH = 15;
 
     //幻灯片里显示的文章数量
-    const STICKY_POST_LIST_LENGTH = 6;
+    //主体列表长度 和 辅助列表的长度
+    const STICKY_POST_FIRST_LIST_LENGTH = 3;
+    const STICKY_POST_SECONDARY_LIST_LENGTH = 8;
+
+    //幻灯片置顶有效天数 (15天)
+    const STICKY_POST_EXPIRED_DAY = 15; 
+
     //热门列表文章数量
     const HOT_POST_LIST_LENGTH = 8;
     //内容页底部相关推荐里的文章数量

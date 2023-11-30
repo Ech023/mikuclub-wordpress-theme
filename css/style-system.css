@@ -16,15 +16,15 @@
 
     --image-scale: 1 / 16 * 9;
 
-    --container-margin : calc(3rem * 2);
+    --container-margin: calc(1.5rem * 2);
 
-    --container-sm-margin : calc(1rem * 2);
+    --container-sm-margin: calc(1rem * 2);
 
-    --col-margin : calc(1.5rem * .5 * 2);
+    --col-margin: calc(1.5rem * 0.5 * 2);
 
-    --secondary-bg-color : #F1F2F3;
+    --secondary-bg-color: #F1F2F3;
 
-    --footer-bg-color : #F8F9FA;
+    --footer-bg-color: #F8F9FA;
 
     --text-color: var(--bs-black);
 
@@ -53,7 +53,16 @@ body .container-fluid {
 /**
 增加html4的兼容
  */
-article, aside, details, figcaption, figure, footer, header, hgroup, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section {
     display: block
 }
 
@@ -61,12 +70,18 @@ article, aside, details, figcaption, figure, footer, header, hgroup, nav, sectio
 /**
 设置默认 a 标签 的文字颜色
  */
-a, .nav-link, .page-link {
+a,
+.nav-link,
+.page-link {
     color: var(--text-color);
     text-decoration: none;
 }
 
-a:hover, .nav-link:hover, .nav-link:focus, .nav-link:hover, .page-link:hover {
+a:hover,
+.nav-link:hover,
+.nav-link:focus,
+.nav-link:hover,
+.page-link:hover {
     color: var(--main-color-hover);
     text-decoration: none;
 }
@@ -117,13 +132,16 @@ a.disabled {
 /**
 自定义颜色 初音绿
  */
-.btn-miku, .badge-miku {
+.btn-miku,
+.badge-miku {
     color: var(--button-text-color);
     background-color: var(--main-color);
     border-color: var(--main-color);
 }
 
-.btn-miku:hover, .btn-miku:active, .btn-miku:focus-visible {
+.btn-miku:hover,
+.btn-miku:active,
+.btn-miku:focus-visible {
     color: var(--button-text-color) !important;
     background-color: var(--main-color-hover) !important;
     border-color: var(--main-color-hover) !important;
@@ -165,8 +183,8 @@ a.disabled {
     background-color: #00000080 !important;
 }
 
-.bg-gray-half{
-     background-color: var(--secondary-bg-color) !important;
+.bg-gray-half {
+    background-color: var(--secondary-bg-color) !important;
 }
 
 /*所有图片自动圆角*/
@@ -180,7 +198,7 @@ img {
 绝对定位专用属性
  */
 
- /*
+/*
 .top-0 {
     top: 0;
 }
@@ -199,7 +217,7 @@ img {
 /**
 替换默认面包屑的分隔符
  */
-.breadcrumb-item + .breadcrumb-item::before {
+.breadcrumb-item+.breadcrumb-item::before {
     content: ">";
 }
 
@@ -208,9 +226,10 @@ img {
 
 消息弹窗第一排显示
  */
-.my-toast-system{
+.my-toast-system {
     z-index: 1080;
 }
+
 /**
 自定义消息弹窗最小宽度
  */
@@ -253,13 +272,13 @@ div.my-toast-system .toast {
 /**
 字体放大
  */
-.large{
+.large {
     font-size: 120%;
     font-weight: 400;
 }
 
 /*清除浮动*/
-.clear-both{
+.clear-both {
     clear: both;
 }
 
@@ -270,19 +289,20 @@ div.my-toast-system .toast {
 .mh-90vh {
     min-height: 90vh;
 }
+
 .mh-75vh {
     min-height: 75vh;
 }
 
 
-.medium{
+.medium {
 
     font-size: medium;
     font-weight: normal;
 
 }
 
-.medium-bold{
+.medium-bold {
 
     font-size: medium;
     font-weight: 500;
@@ -290,26 +310,60 @@ div.my-toast-system .toast {
 }
 
 
-.text-1-rows{
+.text-1-rows {
     height: 2.00rem;
     overflow: hidden;
 }
 
-.text-2-rows{
+.text-2-rows {
     height: 3.75rem;
     overflow: hidden;
 }
 
-.cursor_pointer{
+.cursor_pointer {
     cursor: pointer;
 }
 
+.fs-100 {
+    font-size: 1rem !important;
+}
 
-.fs-75{
+.fs-75 {
     font-size: 0.75rem !important;
 }
 
-.fs-50{
+.fs-50 {
     font-size: 0.50rem !important;
+}
+
+/*sm*/
+@media (min-width: 576px) {
+    .fs-sm-100 {
+        font-size: 1rem !important;
+    }
+
+    .fs-sm-75 {
+        font-size: 0.75rem !important;
+    }
+
+    .fs-sm-50 {
+        font-size: 0.50rem !important;
+    }
+}
+
+
+/*md*/
+@media (min-width: 768px) {
+    .fs-md-100 {
+        font-size: 1rem !important;
+    }
+
+    .fs-md-75 {
+        font-size: 0.75rem !important;
+    }
+
+    .fs-md-50 {
+        font-size: 0.50rem !important;
+    }
 }
 

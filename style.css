@@ -6,20 +6,20 @@
 幻灯片底部渐变背景
  */
 .carousel .carousel-background {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 14;
+    /* position: absolute; */
+    /* bottom: 0; */
+    /* z-index: 1; */
+    /* width: 100%; */
     height: 30%;
     background-image: linear-gradient(transparent, black);
+    
 }
 
 /**
 幻灯片item标题z高度
  */
 .carousel .carousel-item .carousel-caption {
-    z-index: 15;
+    z-index: 1;
 }
 
 
@@ -109,34 +109,6 @@ body.single div.content .article-content img {
 
 /** ====================================================*/
 
-/** 全站 悬浮菜单 ====================================================*/
-
-/**
-浮动侧边栏菜单
- */
-#fixed-sidebar-menu {
-    bottom: 40%;
-    transform: translate(-5%, 0%);
-    z-index: 15;
-}
-
-
-#fixed-sidebar-menu .list-group-item.active {
-    background: var(--main-color);
-    border-color: var(--main-color);
-}
-
-/*md*/
-@media (min-width: 768px) {
-
-    #fixed-sidebar-menu {
-        bottom: 30%;
-        transform: translate(-30%, -50%);
-
-    }
-
-
-}
 
 
 /** ====================================================*/
@@ -178,7 +150,7 @@ body.single div.content .article-content img {
 /*xl*/
 @media (min-width: 1200px) {
     .carousel.top-slide .carousel-item img {
-        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin)) / 12 * 5);
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin)) / 12 * 4 * 1.15);
     }
 }
 
@@ -199,7 +171,7 @@ body.single div.content .article-content img {
 @media (min-width: 992px) {
 
     .top-hot-post-list .card-img-top {
-        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 2) / 12 * 7 / 3);
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 2) / 12 * 6 / 3);
     }
 
 }
@@ -209,7 +181,7 @@ body.single div.content .article-content img {
 @media (min-width: 1200px) {
 
     .top-hot-post-list .card-img-top {
-        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 3) / 12 * 7 / 4);
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 3) / 12 * 8 / 4);
     }
 
 }

@@ -54,7 +54,7 @@ $(function () {
     $('body').on('click', 'button.open_post_report_modal', '', function () {
 
         const post_id = $(this).data('post-id');
-        
+
         new MyPostReportModal(post_id).create().show();
 
     });
@@ -82,6 +82,16 @@ function hide_loading_modal() {
     $('.modal.loading-modal').modal('hide');
 }
 
+/**
+ * 显示确认模态窗
+ * @param {string} text 需要确认的信息
+ * @param {function|null} confirm_callback 确认触发的回调
+ * @param {function|null} cancel_callback 确认触发的回调
+ * @returns {void}
+ */
+function open_confirm_modal(text, confirm_callback , cancel_callback = null) {
+    new ConfirmModal(text).create(confirm_callback, cancel_callback).show();
+}
 
 /**
  * 打开视频播放窗口
@@ -186,5 +196,5 @@ function open_image_cropper_modal($input_file_element) {
     //开始阅读
     fileReader.readAsDataURL(file);
 
-
 }
+

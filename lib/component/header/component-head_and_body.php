@@ -108,9 +108,9 @@ HTML;
     $main_menu_component = <<<HTML
 
         <!-- 网站主菜单 -->
-        <div class="border-bottom px-3 px-md-4">
+        <div class="px-3 px-md-4 d-none d-md-block border-bottom">
             <div class="row ">
-                <div class="col main-menu d-none d-md-block">
+                <div class="col main-menu ">
                     <nav class="navbar navbar-expand small">
 
                         <!-- <div class="collapse navbar-collapse " id="site-main-menu"> -->
@@ -133,7 +133,7 @@ HTML;
                 </div>
 
                 <!-- 手机菜单 -->
-                <div class="col d-md-none text-center">
+                <!-- <div class="col d-md-none text-center">
                     <div class="my-2">
                         <button class="wap-menu-button btn btn-sm btn-outline-secondary w-75" type="button" data-bs-toggle="offcanvas" data-bs-target="#phone_sidebar_menu">
                             <i class="fa-solid fa-bars me-2"></i>
@@ -141,7 +141,7 @@ HTML;
                             <span class="badge text-bg-miku px-2">{$message_count}</span>
                         </button>
                     </div>
-                </div>
+                </div> -->
 
             </div>
         </div>
@@ -164,13 +164,13 @@ HTML;
 
                 <div class="row ">
 
-                    <div class="col pe-md-1">
+                    <div class="col">
                         <div class="rounded bg-gray-half p-2 h-100 ">
                             <span><i class="fa-solid fa-bullhorn me-2"></i> 公告:</span>
                             <div class="d-inline">{$announcement_text}</div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-auto ps-md-1 mt-2 mt-md-0 text-end">
+                    <!-- <div class="col-12 col-md-auto ps-md-1 mt-2 mt-md-0 text-end">
 
                         <div class="rounded bg-gray-half p-2 h-100" title="如果无法正常加载站内图片, 可以尝试开启备用图床 (备用图床的加载速度比默认的更缓慢)">
                             <span class="enable_backup_image_domain_title me-1">
@@ -182,7 +182,7 @@ HTML;
                             </div>
                         </div>    
 
-                    </div>
+                    </div> -->
 
                      <!-- 输出默认折叠区域 (qq群信息)-->
                     <div id="qq-group-info" class="col-12 my-2 collapse">
