@@ -181,13 +181,37 @@ function get_recent_forum_topic_list($posts_per_page = Config::RECENT_FORUM_TOPI
 		function () use ($wpdb, $posts_per_page)
 		{
 			$query = <<<SQL
-			SELECT 
-				*
-			FROM  
-				mm_wpforo_topics 
-			ORDER BY 
-				topicid DESC 
-			LIMIT 0 , {$posts_per_page}
+				SELECT 
+					topicid,
+					forumid,
+					first_postid,
+					userid,
+					title,
+					slug,
+					created,
+					modified,
+					last_post,
+					posts,
+					votes,
+					answers,
+					views,
+					meta_key,
+					meta_desc,
+					type,
+					solved,
+					closed,
+					has_attach,
+					private,
+					status,
+					name,
+					email,
+					prefix,
+					tags
+				FROM  
+					mm_wpforo_topics 
+				ORDER BY 
+					topicid DESC 
+				LIMIT 0 , {$posts_per_page}
 SQL;
 
 			$query_results = $wpdb->get_results($query);

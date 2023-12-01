@@ -11,7 +11,7 @@ namespace mikuclub;
  *
  * @return string html输出
  */
-function recently_posts_component( $post_list, $list_title, $more_link, $icon) {
+function print_home_post_list_component( $post_list, $list_title, $more_link, $icon) {
 
 	$post_list_html = '';
 

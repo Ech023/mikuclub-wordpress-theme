@@ -127,33 +127,33 @@ function home_main_page()
 		//首页 幻灯片下方横幅
 		if (get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC_ENABLE))
 		{
-			$home_content_output .= '<div class="pop-banner d-none d-md-block text-center my-4 py-2">' . get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC) . '</div>';
+			$home_content_output .= '<div class="pop-banner d-none d-md-block text-center my-2">' . get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC) . '</div>';
 		}
 		if (get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE_ENABLE))
 		{
-			$home_content_output .= '<div class="pop-banner d-block d-md-none text-center my-3">' . get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE) . '</div>';
+			$home_content_output .= '<div class="pop-banner d-block d-md-none text-center my-2">' . get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE) . '</div>';
 		}
 
 		//最新主题帖子
-		$home_content_output .= home_bbs_topic_component();
+		$home_content_output .= print_bbs_topic_list_component();
 
-		$home_content_output .= '<div class="my-4"><a class="btn btn-outline-secondary w-100" title="最新帖子" href="' . get_home_url() . '/forums">进入论坛 <i class="fa-solid fa-angle-right"></i></a></div>';
+		// $home_content_output .= '<div class="my-2"><a class="btn btn-outline-secondary w-100" title="最新帖子" href="' . get_home_url() . '/forums">进入论坛 <i class="fa-solid fa-angle-right"></i></a></div>';
 
 		//因为缓存导致关注列表不输出
 		//输出我关注的用户新投稿
 		//$followed_post_list_title = '我关注的';
 		//$followed_post_list_link  = get_home_url() . "/followed";
 		//$followed_post_list       = get_my_followed_post_list( $followed_post_list_length );
-		//$home_content_output      .= recently_posts_component( $followed_post_list, $followed_post_list_title, $followed_post_list_link, '' );
+		//$home_content_output      .= print_home_post_list_component( $followed_post_list, $followed_post_list_title, $followed_post_list_link, '' );
 
 		// 首页 - 最新发布上方横幅 广告
 		if (get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PC_ENABLE))
 		{
-			$home_content_output .= '<div class="pop-banner d-none d-md-block text-center my-4 py-2">' . get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PC) . '</div>';
+			$home_content_output .= '<div class="pop-banner d-none d-md-block text-center my-2">' . get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PC) . '</div>';
 		}
 		if (get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PHONE_ENABLE))
 		{
-			$home_content_output .= '<div class="pop-banner d-block d-md-none text-center my-3">' . get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PHONE) . '</div>';
+			$home_content_output .= '<div class="pop-banner d-block d-md-none text-center my-2">' . get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PHONE) . '</div>';
 		}
 
 		//输出最新文章列表
@@ -173,14 +173,14 @@ function home_main_page()
 			$recently_post_list[] = new My_Post_Model($wp_query->posts[$i]);
 		}
 
-		$recently_posts_component = recently_posts_component($recently_post_list, $recently_post_list_title, $recently_post_list_link, '');
+		$print_home_post_list_component = print_home_post_list_component($recently_post_list, $recently_post_list_title, $recently_post_list_link, '');
 		$hot_posts_sidebar_component = get_home_hot_posts_sidebar_component_by_random(Category::NO_ADULT_CATEGORY, 6);
 
 		$home_content_output .= <<<HTML
         <div class="my-4 row">
 
                 <div class="col-12 col-xl-9">
-                    {$recently_posts_component}
+                    {$print_home_post_list_component}
                 </div>
                 <div class="col-3 d-none d-xl-block">
                     {$hot_posts_sidebar_component}
@@ -202,7 +202,7 @@ HTML;
 			$cat_link = get_category_link($cat_id);
 			$post_list = get_recently_post_list($cat_id, $cat_list_length);
 
-			$recently_posts_component = recently_posts_component($post_list, $cat_name, $cat_link, $cat_icon);
+			$print_home_post_list_component = print_home_post_list_component($post_list, $cat_name, $cat_link, $cat_icon);
 
 			$hot_posts_sidebar_component = get_home_hot_posts_sidebar_component_by_random($cat_id, 6);
 
@@ -210,7 +210,7 @@ HTML;
             <div class="my-4 row">
     
                 <div class="col-12 col-xl-9">
-                    {$recently_posts_component}
+                    {$print_home_post_list_component}
                 </div>
                 <div class="col-3 d-none d-xl-block">
                     {$hot_posts_sidebar_component}

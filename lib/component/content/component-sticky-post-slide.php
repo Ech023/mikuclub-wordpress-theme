@@ -132,24 +132,26 @@ function print_sticky_post_slide_component_second_part($sticky_post_list)
             $post_sticky = $sticky_post_list[$i];
 
             //如果是超过第四个位置的文章
-            $display_class = $i >= 4 ? 'd-lg-flex' : "";
+            // $display_class = $i >= 4 ? 'd-lg-flex' : "";
 
             $post_list_html .= <<<HTML
 	
-                <div class="col card border-0 {$display_class}">
-                    <div class="card-img-container position-relative ">
-                        <div class="position-absolute end-0 bottom-0 me-1 mb-1">
-                            <div class="right-badge bg-transparent-half text-light rounded small p-1">
-                                <i class="fa-solid fa-thumbs-up"></i>
-                                {$post_sticky->post_likes}
+                <div class="col ">
+                    <div class="card border-0">
+                        <div class="card-img-container position-relative ">
+                            <div class="position-absolute end-0 bottom-0 me-1 mb-1">
+                                <div class="right-badge bg-transparent-half text-light rounded p-1 fs-75">
+                                    <i class="fa-solid fa-thumbs-up"></i>
+                                    {$post_sticky->post_likes}
+                                </div>
                             </div>
+                            <img class="card-img-top" src="{$post_sticky->post_image}" alt="{$post_sticky->post_title}"/>
                         </div>
-                        <img class="card-img-top" src="{$post_sticky->post_image}" alt="{$post_sticky->post_title}"/>
-                    </div>
-                    <div class="card-body py-2 overflow-hidden" style="height: 3.75rem">
-                        <a class="card-link stretched-link small"  title="{$post_sticky->post_title}" href="{$post_sticky->post_href}" target="_blank">
-                            {$post_sticky->post_title}
-                        </a>
+                        <div class="card-body py-2 overflow-hidden" style="height: 3.75rem">
+                            <a class="card-link stretched-link small"  title="{$post_sticky->post_title}" href="{$post_sticky->post_href}" target="_blank">
+                                {$post_sticky->post_title}
+                            </a>
+                        </div>
                     </div>
                 </div>
 
