@@ -6,12 +6,12 @@ namespace mikuclub;
  *
  * @param My_Post_Model[] $post_list
  * @param string $list_title
- * @param string $more_link
- * @param string $icon 图标名
+ * @param string $icon_class 图标名
+ * @param string|null $more_link
  *
  * @return string html输出
  */
-function print_home_post_list_component( $post_list, $list_title, $more_link, $icon) {
+function print_home_post_list_component( $post_list, $list_title, $icon_class, $more_link = null) {
 
 	$post_list_html = '';
 
@@ -19,24 +19,24 @@ function print_home_post_list_component( $post_list, $list_title, $more_link, $i
 
 		$post_list_html .= <<<HTML
 			
-
-			<div class="col card border-0">
-				<div class="card-img-container position-relative ">
-					<div class="position-absolute end-0 bottom-0 me-1 mb-1">
-				            <div class="right-badge bg-transparent-half text-light rounded small p-1">
-				                     <i class="fa-solid fa-eye"></i> {$my_post->post_views}
-		                   </div>
+		    <div class="col">
+				<div class="card border-0">
+					<div class="card-img-container position-relative ">
+						<div class="position-absolute end-0 bottom-0 me-1 mb-1">
+							<div class="right-badge bg-transparent-half text-light rounded p-1 fs-75">
+								<i class="fa-solid fa-eye"></i>
+								{$my_post->post_views}
+							</div>
+						</div>
+						<img class="card-img-top" src="{$my_post->post_image}" alt="{$my_post->post_title}"/>
 					</div>
-				    <img class="card-img-top" src="{$my_post->post_image}" alt="{$my_post->post_title}"/>
+					<div class="card-body py-2 text-center text-2-rows">
+						<a class="card-link stretched-link small" title="{$my_post->post_title}" href="{$my_post->post_href}" target="_blank">
+							{$my_post->post_title}
+						</a>
+					</div>
 				</div>
-				
-				<div class="card-body  py-2 text-center text-2-rows">
-					 <a class="card-link stretched-link small" title="{$my_post->post_title}" href="{$my_post->post_href}" target="_blank">
-					 	{$my_post->post_title}
-					</a>
-				</div>
-                  
-            </div>
+			</div>
 
 HTML;
 
@@ -44,26 +44,29 @@ HTML;
 
 	if ( $post_list_html ) {
 
+		//如果没有链接,就隐藏相关按钮
+		$more_link_class = !$more_link ? 'd-none' : '';
+
 		//最终输出内容
 		$post_list_html = <<<HTML
 
-		<div class="post-recently-list home-list">
-			<div  class="list-header row my-3">
-				<h4 class="col">
-					 <a title="{$list_title}" href="{$more_link}" target="_blank">
-			                <i class="{$icon}"></i> {$list_title}
-	                  </a>
-		        </h4>
-		        <div class="more-link col d-flex justify-content-end align-items-center">
-		            <a class="btn btn-outline-secondary" title="{$list_title}" href="{$more_link}" target="_blank">
-		                更多 <i class="fa-solid fa-angle-right"></i>
-		            </a>
-		        </div>
+			<div class="home-post-list my-2 pb-2 border-bottom">
+				<div class="row align-items-center my-2">
+					<div class="col-auto">
+						<h5 class="mb-0 fw-bold">
+							<i class="{$icon_class}"></i> {$list_title}
+						</h5>
+					</div>
+					<div class="col-auto">
+						<a class="btn btn-sm btn-outline-secondary px-4 {$more_link_class}"  title="{$list_title}" href="{$more_link}" target="_blank">
+						更多 <i class="fa-solid fa-angle-right"></i>
+						</a>
+					</div>
+				</div>
+				<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-6 gy-2">
+					{$post_list_html}
+				</div>
 			</div>
-			<div class="row row-cols-2 row-cols-md-4 row-cols-xl-5 gy-2">
-				{$post_list_html}
-			</div>
-		</div>
 
 HTML;
 

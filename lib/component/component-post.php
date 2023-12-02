@@ -32,7 +32,7 @@ function print_post_content($post_id)
 		$post_description_part = print_post_content_description($post_id);
 		$password_part = print_post_content_password($post_id);
 		$download_part = print_post_content_download($post_id);
-		$download_fast_link_part = print_post_content_download_fast_link($post_id);
+		//$download_fast_link_part = print_post_content_download_fast_link($post_id);
 
 
 		$result = <<<HTML
@@ -49,9 +49,7 @@ function print_post_content($post_id)
 			<div class="download-part my-4" id="download-part">
 				{$download_part}
 			</div>
-			<div class="download-fast-link-part my-4">
-				{$download_fast_link_part}
-			</div>
+			
 
 HTML;
 
@@ -418,6 +416,8 @@ HTML;
 }
 
 /**
+ * @deprecated 2023-12-01 秒传接口已经被封杀
+ * 
  * 输出文章HTML内容里的秒传链接部分
  *
  * @param int $post_id

@@ -121,6 +121,19 @@ function print_theme_config_page()
 
     $components .= $tag_hr;
 
+
+    $components .= create_code_component('首页-幻灯片热门列表第一广告位图片地址', Admin_Meta::HOME_SLIDE_TOP_LIST_FIRST_ENABLE, Admin_Meta::HOME_SLIDE_TOP_LIST_FIRST_IMAGE);
+    $components .= create_code_component('首页-幻灯片热门列表第一广告位标题', Admin_Meta::HOME_SLIDE_TOP_LIST_FIRST_ENABLE, Admin_Meta::HOME_SLIDE_TOP_LIST_FIRST_TITLE);
+    $components .= create_code_component('首页-幻灯片热门列表第一广告位链接地址', Admin_Meta::HOME_SLIDE_TOP_LIST_FIRST_ENABLE, Admin_Meta::HOME_SLIDE_TOP_LIST_FIRST_LINK);
+
+    $components .= create_code_component('首页-幻灯片热门列表第二广告位图片地址', Admin_Meta::HOME_SLIDE_TOP_LIST_SECOND_ENABLE, Admin_Meta::HOME_SLIDE_TOP_LIST_SECOND_IMAGE);
+    $components .= create_code_component('首页-幻灯片热门列表第二广告位标题', Admin_Meta::HOME_SLIDE_TOP_LIST_SECOND_ENABLE, Admin_Meta::HOME_SLIDE_TOP_LIST_SECOND_TITLE);
+    $components .= create_code_component('首页-幻灯片热门列表第二广告位链接地址', Admin_Meta::HOME_SLIDE_TOP_LIST_SECOND_ENABLE, Admin_Meta::HOME_SLIDE_TOP_LIST_SECOND_LINK);
+
+
+
+    $components .= $tag_hr;
+
     $components .= create_code_component('首页-幻灯片下方广告位', Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC_ENABLE, Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC);
     $components .= create_code_component('手机版首页-幻灯片下方广告位', Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE_ENABLE, Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE);
 

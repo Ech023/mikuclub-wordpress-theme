@@ -227,36 +227,38 @@ body.single div.content .article-content img {
 /**
 主页 普通文章列表
  */
-.post-recently-list img.card-img-top {
+.home-post-list img.card-img-top {
     height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-sm-margin) - var(--col-margin) * 1) / 2);
 }
 
 /*md*/
 @media (min-width: 768px) {
 
-    .post-recently-list img.card-img-top {
-        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin)) / 4);
+    .home-post-list img.card-img-top {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 2)  / 3);
     }
 
 }
 
-/*xl*/
-@media (min-width: 1200px) {
+/*lg*/
+@media (min-width: 992px) {
 
-    .post-recently-list img.card-img-top {
-        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin)) / 12 * 9 / 5);
+    .home-post-list img.card-img-top {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 3)  / 4);
+    }
+
+}
+
+/*xxl*/
+@media (min-width: 1400px) {
+
+    .home-post-list img.card-img-top {
+        height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 5) / 6);
     }
 
 }
 
 
-
-/**
-主页侧边栏热门文章列表图片高度
-*/
-.hot-post-sidebar .image_link {
-    height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin)) / 12 * 3 / 2.5);
-}
 
 
 

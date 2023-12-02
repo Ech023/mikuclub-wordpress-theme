@@ -39,19 +39,28 @@ class Config
     //关闭文件缓存
     const ENABLE_FILE_CACHE_SYSTEM = false;
 
-    //最新发布列表文章数量
-    const RECENTLY_POST_LIST_LENGTH = 15;
+    //主页 关注用户列表文章数量
+    const HOME_MY_FOLLOWED_POST_LIST_LENGTH = 12;
+    //主页 列表文章数量
+    const HOME_POST_LIST_LENGTH = 12;
+
 
     //幻灯片里显示的文章数量
     //主体列表长度 和 辅助列表的长度
     const STICKY_POST_FIRST_LIST_LENGTH = 3;
     const STICKY_POST_SECONDARY_LIST_LENGTH = 8;
 
-    //幻灯片置顶有效天数 (15天)
-    const STICKY_POST_EXPIRED_DAY = 15; 
+    //幻灯片(手动置顶)基础有效天数 (15天)
+    const STICKY_POST_MANUAL_EXPIRED_DAY = 15;
+    //幻灯片(高点赞)基础有效天数 (15天)
+    const STICKY_POST_TOP_LIKE_EXPIRED_DAY = 7;
 
     //热门列表文章数量
-    const HOT_POST_LIST_LENGTH = 8;
+    const HOT_POST_LIST_LENGTH = 6;
+    //热门文章基础有效天数
+    const HOT_POST_EXPIRED_DAY = 7;
+
+
     //内容页底部相关推荐里的文章数量
     const RELATED_POST_LIST_LENGTH = 8;
 
@@ -178,10 +187,18 @@ class Web_Domain
  */
 class Category
 {
+    //歌姬PV区
+    const DIVA = 7;
+    //MMD区
+    const MMD = 3;
     //其他区
     const OTHER = 1;
     //音乐区
     const MUSIC = 9;
+    //图片区
+    const IMAGE = 789;
+    //演唱会
+    const LIVE = 8;
     //动漫区
     const ANIME = 942;
     //软件区
@@ -192,7 +209,7 @@ class Category
     const FICTION = 294;
     //教程区
     const TUTORIAL = 8621;
-    //视频区
+    //视频番剧区
     const VIDEO = 9305;
     //舞蹈区
     const DANCE = 19828;
@@ -299,9 +316,9 @@ class Site_Menu
             case static::MAIN_PHONE_MENU:
                 $result = '网站手机版导航';
                 break;
-            // case static::PAGE_MENU:
-            //     $result = '页面导航';
-            //     break;
+                // case static::PAGE_MENU:
+                //     $result = '页面导航';
+                //     break;
             case static::TOP_LEFT_MENU:
                 $result = '顶部左菜单';
                 break;
@@ -335,16 +352,6 @@ class Expired
     const EXP_1_MONTH = 86400 * 30;
     const EXP_6_MONTHS = 86400 * 30 * 6;
     const EXP_1_YEAR = 86400 * 365;
-
-    /**
-     * 获取首页过期时间
-     *
-     * @return int
-     */
-    public static function get_home_exp_time()
-    {
-        return static::EXP_15_MINUTE;
-    }
 }
 
 /**

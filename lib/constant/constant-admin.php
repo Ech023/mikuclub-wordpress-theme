@@ -64,6 +64,18 @@ class Admin_Meta extends Constant
     const HOME_TOP_ADSENSE_PHONE_ENABLE = 'Mobiled_adindex_00_b';
     const HOME_TOP_ADSENSE_PHONE = 'Mobiled_adindex_00';
 
+    //首页幻灯片热门列表第一和第二广告位
+    const HOME_SLIDE_TOP_LIST_FIRST_ENABLE = 'd_home_slide_01_b';
+    const HOME_SLIDE_TOP_LIST_FIRST_IMAGE = 'd_home_slide_01_image';
+    const HOME_SLIDE_TOP_LIST_FIRST_TITLE = 'd_home_slide_01_title';
+    const HOME_SLIDE_TOP_LIST_FIRST_LINK = 'd_home_slide_01_link';
+
+    const HOME_SLIDE_TOP_LIST_SECOND_ENABLE = 'd_home_slide_02_b';
+    const HOME_SLIDE_TOP_LIST_SECOND_IMAGE = 'd_home_slide_02_image';
+    const HOME_SLIDE_TOP_LIST_SECOND_TITLE = 'd_home_slide_02_title';
+    const HOME_SLIDE_TOP_LIST_SECOND_LINK = 'd_home_slide_02_link';
+
+
     //首页幻灯片下方广告位
     const HOME_SLIDE_BOTTOM_ADSENSE_PC_ENABLE = 'd_adindex_01_b';
     const HOME_SLIDE_BOTTOM_ADSENSE_PC = 'd_adindex_01';

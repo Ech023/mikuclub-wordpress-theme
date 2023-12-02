@@ -44,30 +44,25 @@ HTML;
 	//最终输出内容
 	return <<< HTML
 
-<div class="topic-list my-2">
-	<div class="row align-items-center my-2">
-		<div class="col-auto">
-			<h5 class="mb-0">
-				<a class=""  title="最新帖子" href="{$forums_link}" target="_blank">
-					<i class="fa-solid fa-rss" aria-hidden="true"></i> 论坛最新帖子
-				</a>
-			</h5>
+		<div class="topic-list my-2 pb-2 border-bottom">
+			<div class="row align-items-center my-2">
+				<div class="col-auto">
+					<h5 class="mb-0 fw-bold">
+						<i class="fa-solid fa-rss" aria-hidden="true"></i> 论坛最新帖子
+					</h5>
+				</div>
+				<div class="col-auto">
+					<a class="btn btn-sm btn-outline-secondary"  title="进入论坛" href="{$forums_link}" target="_blank">
+						进入论坛 <i class="fa-solid fa-angle-right"></i>
+					</a>
+				</div>
+			</div>
+			<div class="row row-cols-1 row-md-cols-2 row-cols-xl-3 gy-2">
+			
+					{$topic_list_html}
+			
+			</div>
 		</div>
-		<div class="col-auto">
-			<a class="btn btn-sm btn-outline-secondary"  title="进入论坛" href="{$forums_link}" target="_blank">
-				进入论坛 <i class="fa-solid fa-angle-right"></i>
-			</a>
-
-		</div>
-	</div>
-	<div class="row row-cols-1 row-md-cols-2 row-cols-xl-3 gy-2">
-	
-			{$topic_list_html}
-	
-	</div>
-
-</div>
-
 
 HTML;
 }

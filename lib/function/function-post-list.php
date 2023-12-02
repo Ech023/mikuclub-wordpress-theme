@@ -202,7 +202,7 @@ function get_sticky_post_list($cat_id)
             Post_Query::DATE_QUERY => [
                 [
                     'column' => 'post_modified',
-                    'after' => '-' . Config::STICKY_POST_EXPIRED_DAY . ' days',
+                    'after' => '-' . Config::STICKY_POST_MANUAL_EXPIRED_DAY . ' days',
                 ],
             ],
             Post_Query::POST_STATUS => Post_Status::PUBLISH,
@@ -225,15 +225,15 @@ function get_sticky_post_list($cat_id)
 
             //创建一个时间数组用来累进的获取 最近的热高赞文章, 直到凑满需要的文章数量
             $array_additional_expired_day = [
-                Config::STICKY_POST_EXPIRED_DAY,
-                Config::STICKY_POST_EXPIRED_DAY * 2,
-                Config::STICKY_POST_EXPIRED_DAY * 4,
-                Config::STICKY_POST_EXPIRED_DAY * 8,
-                Config::STICKY_POST_EXPIRED_DAY * 16,
-                Config::STICKY_POST_EXPIRED_DAY * 32,
-                Config::STICKY_POST_EXPIRED_DAY * 64,
-                Config::STICKY_POST_EXPIRED_DAY * 128,
-                Config::STICKY_POST_EXPIRED_DAY * 256,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 2,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 4,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 8,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 16,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 32,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 64,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 128,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 256,
             ];
 
             foreach ($array_additional_expired_day as $additional_expired_day)
@@ -337,91 +337,87 @@ function get_recently_post_list($cat_id, $number)
  *
  * @param int|null $term_id 分类ID 或者 标签ID
  * @param string $meta_key 要统计的元数据名称
- * @param int $range_day 统计周期
  * @param int $number 文章数量
  *
  * @return My_Post_Model[] 文章数组
  */
-function get_hot_post_list($term_id, $meta_key, $range_day, $number = Config::HOT_POST_LIST_LENGTH)
+function get_hot_post_list($term_id, $meta_key, $number = Config::HOT_POST_LIST_LENGTH)
 {
 
     $cache_meta_key =  File_Cache::HOT_POST_LIST . '_' . create_hash_string([
         $term_id,
         $meta_key,
-        $range_day,
         $number,
     ]);
 
     //获取缓存
-    $output = File_Cache::get_cache_meta_with_callback($cache_meta_key, File_Cache::DIR_POSTS . DIRECTORY_SEPARATOR . File_Cache::HOT_POST_LIST, Expired::EXP_2_HOURS, function () use ($term_id, $meta_key, $range_day, $number)
+    $output = File_Cache::get_cache_meta_with_callback($cache_meta_key, File_Cache::DIR_POSTS . DIRECTORY_SEPARATOR . File_Cache::HOT_POST_LIST, Expired::EXP_4_HOURS, function () use ($term_id, $meta_key, $number)
     {
-        //当前时间
-        $now = time();
-        //统计的周期长度 (秒数)
-        $time_range = Expired::EXP_1_DAY * $range_day;
-        //开始统计的周期
-        $after_time = $now - $time_range;
 
-        $args = [
-            Post_Query::META_KEY => $meta_key,
-            Post_Query::ORDERBY => 'meta_value_num',
-            Post_Query::ORDER => 'DESC',
-            Post_Query::DATE_QUERY => [
-                [
-                    'column' => 'post_modified',
-                    'after ' => [
-                        'year'  => date('Y', $after_time),
-                        'month' => date('n', $after_time),
-                        'day'   => date('j', $after_time),
-                    ],
-                ]
-            ],
-            Post_Query::POSTS_PER_PAGE => $number,
-            Post_Query::POST_STATUS => Post_Status::PUBLISH,
-            Post_Query::POST_TYPE => Post_Type::POST,
+        $result = [];
+        $missing_length = $number;
+
+        //创建一个时间数组用来累进的获取 最近的热点击文章, 直到凑满需要的文章数量
+        $array_additional_expired_day = [
+            Config::HOT_POST_EXPIRED_DAY,
+            Config::HOT_POST_EXPIRED_DAY * 2,
+            Config::HOT_POST_EXPIRED_DAY * 4,
+            Config::HOT_POST_EXPIRED_DAY * 8,
+            Config::HOT_POST_EXPIRED_DAY * 16,
+            Config::HOT_POST_EXPIRED_DAY * 32,
+            Config::HOT_POST_EXPIRED_DAY * 64,
+            Config::HOT_POST_EXPIRED_DAY * 128,
+            Config::HOT_POST_EXPIRED_DAY * 256,
         ];
 
-        //如果是标签页
-        if (is_tag())
+        foreach ($array_additional_expired_day as $additional_expired_day)
         {
-            //使用tag id参数
-            $args[Post_Query::TAG_ID] = $term_id;
-        }
-        //其他情况
-        else
-        {
-            //使用cat id 参数
-            $args[Post_Query::CAT] = $term_id;
-        }
-
-        //查询文章
-        $results = get_posts($args);
-
-        //如果查询到的文章数量低于 列表需要的长度  就加长统计周期, 重新获取, 最多重试3次
-        for ($i = 2; $i < 5 && count($results) < $number; $i++)
-        {
-            //翻倍统计周期
-            $after_time = $now - $time_range * $i;
-            //重设开始统计的日期位置
-            $args[Post_Query::DATE_QUERY] = [
-                [
-                    'column' => 'post_modified',
-                    'after ' => [
-                        'year'  => date('Y', $after_time),
-                        'month' => date('n', $after_time),
-                        'day'   => date('j', $after_time),
-                    ],
-                ]
+            $args = [
+                Post_Query::META_KEY => $meta_key,
+                Post_Query::DATE_QUERY => [
+                    [
+                        'column' => 'post_modified',
+                        'after' => '-' . $additional_expired_day . ' days',
+                    ]
+                ],
+                Post_Query::POSTS_PER_PAGE => $missing_length,
+                Post_Query::POST_STATUS => Post_Status::PUBLISH,
+                Post_Query::POST_TYPE => Post_Type::POST,
+                Post_Query::IGNORE_STICKY_POSTS => 1,
+                Post_Query::ORDERBY => 'meta_value_num',
+                Post_Query::ORDER => 'DESC',
             ];
-            //重新获取文章
-            $results = get_posts($args);
+
+            //如果是标签页
+            if (is_tag())
+            {
+                //使用tag id参数
+                $args[Post_Query::TAG_ID] = $term_id;
+            }
+            //其他情况
+            else
+            {
+                //使用cat id 参数
+                $args[Post_Query::CAT] = $term_id;
+            }
+
+            //查询文章
+            $result = array_merge($result, get_posts($args));
+
+            //更新缺少的文章数量
+            $missing_length = $number - count($result);
+            //如果没有缺少 就结束循环
+            if ($missing_length <= 0)
+            {
+                break;
+            }
         }
 
         //把查询到的文章数组转换成自定义文章类
         $output = array_map(function ($element)
         {
             return new My_Post_Model($element);
-        }, $results);
+        }, $result);
 
         return $output;
     });
@@ -627,9 +623,12 @@ function get_my_followed_post_list($number)
     if ($user_followed)
     {
         $args = [
-            Post_Query::IGNORE_STICKY_POSTS => 1,
             Post_Query::AUTHOR => implode(',', $user_followed),
+            Post_Query::POST_STATUS => Post_Status::PUBLISH,
+            Post_Query::POST_TYPE => Post_Type::POST,
             Post_Query::POSTS_PER_PAGE => $number,
+            Post_Query::IGNORE_STICKY_POSTS => 1,
+            Post_Query::ORDERBY => 'modified',
         ];
 
         $results = get_posts($args);

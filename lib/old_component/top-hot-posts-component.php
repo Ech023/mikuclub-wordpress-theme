@@ -26,7 +26,7 @@ function top_hot_posts_component($term_id)
 
 	$output = '';
 
-	$post_list = get_hot_post_list($term_id, $meta_key, $range_day, $number);
+	$post_list = get_hot_post_list($term_id, $meta_key, $number);
 
 
 

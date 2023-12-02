@@ -34,7 +34,11 @@ class File_Cache
     const SUB_CATEGORY_LIST = 'sub_category_list';
 
     //网站菜单
-    const SITE_MENU ='site_menu';
+    const SITE_MENU = 'site_menu';
+
+    /*主页相关缓存 键名*/
+    const HOME_PART_1 = 'home_part_1';
+    const HOME_PART_2 = 'home_part_2';
 
     /*用户相关缓存 键名*/
     //用户文章数

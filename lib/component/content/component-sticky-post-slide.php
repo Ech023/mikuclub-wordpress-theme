@@ -2,6 +2,7 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Config;
 
 /**
@@ -14,6 +15,41 @@ function print_sticky_post_slide_component($cat_id)
 
     //获取置顶文章列表
     $sticky_post_list = get_sticky_post_list($cat_id);
+
+    //如果是首页
+    if (is_home() && !get_query_var('paged'))
+    {
+        //如果存在第一单元广告
+        if (get_theme_option(Admin_Meta::HOME_SLIDE_TOP_LIST_FIRST_ENABLE))
+        {
+            //抓取最后一个文章
+            $last_post = array_pop($sticky_post_list);
+            $last_post->post_image = get_theme_option(Admin_Meta::HOME_SLIDE_TOP_LIST_FIRST_IMAGE);
+            $last_post->post_title = get_theme_option(Admin_Meta::HOME_SLIDE_TOP_LIST_FIRST_TITLE);
+            $last_post->post_href = get_theme_option(Admin_Meta::HOME_SLIDE_TOP_LIST_FIRST_LINK);
+
+           
+
+            //把插入广告文章元素
+            $first_pub_offset = Config::STICKY_POST_FIRST_LIST_LENGTH;
+            array_splice($sticky_post_list, $first_pub_offset, 0, [$last_post]);
+        }
+        //如果存在第二单元广告
+        if (get_theme_option(Admin_Meta::HOME_SLIDE_TOP_LIST_SECOND_ENABLE))
+        {
+            //抓取最后一个文章
+            $last_post = array_pop($sticky_post_list);
+            $last_post->post_image = get_theme_option(Admin_Meta::HOME_SLIDE_TOP_LIST_SECOND_IMAGE);
+            $last_post->post_title = get_theme_option(Admin_Meta::HOME_SLIDE_TOP_LIST_SECOND_TITLE);
+            $last_post->post_href = get_theme_option(Admin_Meta::HOME_SLIDE_TOP_LIST_SECOND_LINK);
+
+            //把插入广告文章元素
+            $second_pub_offset = Config::STICKY_POST_FIRST_LIST_LENGTH + 1;
+            array_splice($sticky_post_list, $second_pub_offset, 0, [$last_post]);
+        }
+    }
+
+
 
     $first_part = print_sticky_post_slide_component_first_part(array_slice($sticky_post_list, 0, Config::STICKY_POST_FIRST_LIST_LENGTH));
     $second_part = print_sticky_post_slide_component_second_part(array_slice($sticky_post_list, Config::STICKY_POST_FIRST_LIST_LENGTH, Config::STICKY_POST_SECONDARY_LIST_LENGTH));

@@ -102,7 +102,7 @@ function hot_posts_most_views($term_id, $number = 6)
 
 	//获取文章列表
 	$term_id = get_queried_object() ? get_queried_object()->term_id : null;
-	$post_list = get_hot_post_list($term_id, $meta_key, $range_day, $number);
+	$post_list = get_hot_post_list($term_id, $meta_key, $number);
 	//转换成html输出
 	return hot_posts_component($post_list, $meta_key, $title, $title_icon, $item_icon);
 }
@@ -132,7 +132,7 @@ function hot_posts_most_rating($term_id, $number = 6)
 
 	//获取文章列表
 	$term_id = get_queried_object() ? get_queried_object()->term_id : null;
-	$post_list = get_hot_post_list($term_id, $meta_key, $range_day, $number);
+	$post_list = get_hot_post_list($term_id, $meta_key, $number);
 	//转换成html输出
 	return hot_posts_component($post_list, $meta_key, $title, $title_icon, $item_icon);
 }
@@ -162,7 +162,7 @@ function hot_posts_most_comments($term_id, $number = 6)
 
 	//获取文章列表
 	$term_id = get_queried_object() ? get_queried_object()->term_id : null;
-	$post_list = get_hot_post_list($term_id,  $meta_key, $range_day, $number);
+	$post_list = get_hot_post_list($term_id,  $meta_key, $number);
 	//转换成html输出
 	return hot_posts_component($post_list, $meta_key, $title, $title_icon, $item_icon);
 }
