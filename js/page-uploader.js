@@ -126,7 +126,7 @@ function getManagePostList() {
             errorInfo = '投稿列表为空';
         }
 
-        TOAST_SYSTEM.add(errorInfo, TOAST_TYPE.error);
+        MyToast.show_error(errorInfo);
         $button.children('.button-text').html(buttonText);
         $button.toggleDisabled();
 
@@ -182,7 +182,7 @@ function deletePostFromList(event) {
         //隐藏当前爷爷元素
         $grandparentElement.fadeOut(300);
         //创建通知弹窗
-        TOAST_SYSTEM.add('已删除投稿', TOAST_TYPE.success);
+        MyToast.show_success('已删除投稿');
 
 
     };
@@ -194,7 +194,7 @@ function deletePostFromList(event) {
     let failCallback = function () {
 
         //创建通知弹窗
-        TOAST_SYSTEM.add('请求错误 请重试', TOAST_TYPE.error);
+        MyToast.show_error('请求错误 请重试');
 
         //重新激活按钮
         $button.toggleDisabled();

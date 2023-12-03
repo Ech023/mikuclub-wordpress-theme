@@ -67,7 +67,19 @@ function init_new_smilies()
 	];
 }
 
-
+/**
+ * 替换自定义表情符号的加载域名
+ *
+ * @param string $smiley_url URL for the smiley image.
+ * @param string $img        Filename for the smiley image.
+ * @return string
+ */
+function fix_new_smilies_domain($smiley_url, $img)
+{
+	$url = get_bloginfo('template_directory') . '/img/smilies/' . $img;
+	$url = fix_image_domain_with_static($url);
+	return $url;
+}
 
 
 

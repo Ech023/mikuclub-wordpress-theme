@@ -96,6 +96,7 @@ class Web_Domain
 
     //CDN相关域名
     const CDN_MIKUCLUB_FUN = 'cdn.mikuclub.fun';
+    const STATIC_MIKUCLUB_FUN = 'static.mikuclub.fun';
     const FILE1_MIKUCLUB_FUN = 'file1.mikuclub.fun';
     const FILE2_MIKUCLUB_FUN = 'file2.mikuclub.fun';
     const FILE3_MIKUCLUB_FUN = 'file3.mikuclub.fun';
@@ -103,9 +104,10 @@ class Web_Domain
     const FILE5_MIKUCLUB_FUN = 'file5.mikuclub.fun';
     const FILE6_MIKUCLUB_FUN = 'file6.mikuclub.fun';
 
+
     //DEBUG专用域名
     const LOCALHOST = 'localhost/html';
-    const MIKUCLUB = 'mikuclub';
+    const HTML = 'html';
 
     //第三方域名
     const PAN_BAIDU_COM = 'pan.baidu.com';
@@ -134,7 +136,7 @@ class Web_Domain
             static::MIKUCLUB_UK,
             //debug专用
             static::LOCALHOST,
-            //static::MIKUCLUB,
+            static::HTML,
         ];
     }
 

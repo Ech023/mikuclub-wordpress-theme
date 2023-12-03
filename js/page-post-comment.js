@@ -235,11 +235,11 @@ function sendComment(event) {
     let comment_parent = $form.find('input[name="comment_parent"]').val();
 
     if (!comment_content) {
-        TOAST_SYSTEM.add("评论内容不能为空", TOAST_TYPE.error);
+        MyToast.show_error("评论内容不能为空");
         return;
     }
     if (comment_content.length < 2) {
-        TOAST_SYSTEM.add("评论内容太短了", TOAST_TYPE.error);
+        MyToast.show_error("评论内容太短了");
         return;
     }
 
@@ -327,7 +327,7 @@ function sendComment(event) {
             }
         }
 
-        TOAST_SYSTEM.add(errorText, TOAST_TYPE.error);
+        MyToast.show_error(errorText);
 
     };
 
@@ -484,7 +484,7 @@ function deleteComment(event) {
     let successCallback = function (response) {
 
         $deleteButton.parents(`.comment-item-${commentId}`).hide();
-        TOAST_SYSTEM.add('删除评论成功', TOAST_TYPE.success);
+        MyToast.show_success('删除评论成功');
 
         //更新下次请求的offset
         offset = parseInt(offset) > 0 ? parseInt(offset) - 1 : 0;
@@ -494,7 +494,7 @@ function deleteComment(event) {
 
     //错误的情况
     let failCallback = function () {
-        TOAST_SYSTEM.add('删除评论失败', TOAST_TYPE.error);
+        MyToast.show_error('删除评论失败');
     };
 
     let completeCallback = function () {

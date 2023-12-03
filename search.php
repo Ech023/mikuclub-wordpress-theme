@@ -8,9 +8,9 @@ get_header();
 
 <header class="search-header">
 
-    <h4>
-        <?php echo breadcrumbs_component(); ?>
-    </h4>
+   
+    <?php echo print_breadcrumbs_component(); ?>
+    
 
     <div class="my-4">
         <form class="site-search-form">

@@ -1,11 +1,11 @@
-/// <reference path="base.js" />
-/// <reference path="class-comment.js" />
-/// <reference path="class-message.js" />
-/// <reference path="class-modal.js" />
-/// <reference path="class-post.js" />
-/// <reference path="class-toast.js" />
-/// <reference path="class-ua-parser.js" />
-/// <reference path="class-user.js" />
+/// <reference path="common/base.js" />
+/// <reference path="class/class-comment.js" />
+/// <reference path="class/class-message.js" />
+/// <reference path="class/class-modal.js" />
+/// <reference path="class/class-post.js" />
+/// <reference path="class/class-toast.js" />
+/// <reference path="class/class-ua-parser.js" />
+/// <reference path="class/class-user.js" />
 /// <reference path="function.js" />
 /// <reference path="function-ajax.js" />
 
@@ -70,12 +70,8 @@ $(function () {
     // $body.on('click', '.modal.private-message-modal button.send-private-message', '', sendPrivateMessage);
 
 
-    /**
-     * 弹窗消失时触发
-     * 把弹窗从DOM中移除
-     */
-    $body.on('hidden.bs.toast', '.my-toast-system .toast', function () {
-        $(this).remove();
+    $body.on('click', 'button.show_toast', '', function(){
+        MyToast.show_success('发送成功');
     });
 
 

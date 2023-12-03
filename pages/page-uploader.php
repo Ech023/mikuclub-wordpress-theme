@@ -9,7 +9,7 @@
 
 use mikuclub\User_Capability;
 
-use function mikuclub\breadcrumbs_component;
+use function mikuclub\print_breadcrumbs_component;
 use function mikuclub\next_page_button;
 use function mikuclub\print_author_statistics;
 
@@ -26,10 +26,10 @@ $user = wp_get_current_user();
 
 <div class="page-uploader">
 
-    <header class="page-header">
-        <h4 class="my-4">
-            <?php echo breadcrumbs_component(); ?>
-        </h4>
+    <div class="page-header">
+       
+            <?php echo print_breadcrumbs_component(); ?>
+       
 
         <div class="row row-cols-3 row-cols-md-6 text-center g-2">
             <?php echo print_author_statistics($user->ID); ?>
@@ -48,7 +48,7 @@ $user = wp_get_current_user();
 
         </div>
 
-    </header>
+    </div>
 
     <hr />
 

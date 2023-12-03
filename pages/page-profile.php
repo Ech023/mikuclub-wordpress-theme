@@ -10,7 +10,7 @@ template name: 用户个人信息页
 use mikuclub\My_User_Model;
 use mikuclub\User_Capability;
 
-use function mikuclub\breadcrumbs_component;
+use function mikuclub\print_breadcrumbs_component;
 use function mikuclub\get_my_user_avatar;
 use function mikuclub\get_user_black_list;
 use function mikuclub\get_user_level;
@@ -30,14 +30,12 @@ $user = wp_get_current_user();
 
 <div class="page-profile">
 
-    <header class="page-header">
-        <h4 class="my-4">
-            <?php echo breadcrumbs_component(); ?>
-        </h4>
+   
+       
+            <?php echo print_breadcrumbs_component(); ?>
+        
 
-        <hr />
 
-    </header>
 
 
     <div class="page-content my-3 ">

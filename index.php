@@ -20,8 +20,8 @@ if (!get_query_var('paged'))
 }
 else
 {
-	//加载最新发布
-	echo home_recently_page();
+	//加载热门页面
+	echo print_home_hot_post_page_component();
 }
 
 

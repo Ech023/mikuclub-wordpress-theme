@@ -7,7 +7,7 @@
 
 use mikuclub\User_Capability;
 
-use function mikuclub\breadcrumbs_component;
+use function mikuclub\print_breadcrumbs_component;
 use function mikuclub\get_my_user_avatar;
 use function mikuclub\get_user_followed;
 use function mikuclub\post_list_component;
@@ -183,7 +183,7 @@ else
 HTML;
 }
 
-$breadcrumbs_component = breadcrumbs_component();
+$print_breadcrumbs_component = print_breadcrumbs_component();
 $number_followed = count($user_followed);
 
 
@@ -195,10 +195,10 @@ $output = <<<HTML
 
 <div class="page-followed">
 
-	<header class="page-header">
-		<h4 class="my-4">
-			{$breadcrumbs_component}
-		</h4>
+	<div class="page-header">
+		
+			{$print_breadcrumbs_component}
+		
 
 		<div class="row gy-3">
 			<div class="col-12 col-md-1">
@@ -220,7 +220,7 @@ $output = <<<HTML
 		</div>
 
 	
-	</header>
+	</div>
 
 	<!--分隔符-->
 	<hr />

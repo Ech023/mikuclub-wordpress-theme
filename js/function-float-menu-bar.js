@@ -1,12 +1,13 @@
-/// <reference path="base.js" />
+/// <reference path="common/base.js" />
+/// <reference path="common/constant.js" />
 /// <reference path="function-ajax.js" />
-/// <reference path="class-comment.js" />
-/// <reference path="class-message.js" />
-/// <reference path="class-modal.js" />
-/// <reference path="class-post.js" />
-/// <reference path="class-toast.js" />
-/// <reference path="class-ua-parser.js" />
-/// <reference path="class-user.js" />
+/// <reference path="class/class-comment.js" />
+/// <reference path="class/class-message.js" />
+/// <reference path="class/class-modal.js" />
+/// <reference path="class/class-post.js" />
+/// <reference path="class/class-toast.js" />
+/// <reference path="class/class-ua-parser.js" />
+/// <reference path="class/class-user.js" />
 
 
 const DARK_THEME_KEY = 'dark_theme';
@@ -224,7 +225,7 @@ function on_click_button_darkmode() {
             update_button_dark_theme();
 
             //创建通知弹窗
-            TOAST_SYSTEM.add('主题更改成功', TOAST_TYPE.success);
+            MyToast.show_success('主题更改成功');
 
 
         }
@@ -346,7 +347,7 @@ function on_click_backup_image_domain_button() {
             //更新数值
             setLocalStorage(LOCAL_STORAGE_KEY.enableBackupImageDomain, new_value);
             //创建通知弹窗
-            TOAST_SYSTEM.add('切换中, 请等待页面刷新', TOAST_TYPE.success);
+            MyToast.show_success('切换中, 请等待页面刷新');
             //刷新页面
             location.reload();
         }

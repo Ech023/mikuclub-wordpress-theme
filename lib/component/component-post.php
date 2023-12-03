@@ -40,7 +40,7 @@ function print_post_content($post_id)
 			<div class="first-image-part my-4" id="first-image-part">
 				{$first_image_part}
 			</div>
-			<div class="content-part my-4" >
+			<div class="content-part my-4" style="min-height: 100px">
 				{$post_description_part}
 			</div>
 			<div class="password-part my-4" id="password-part">

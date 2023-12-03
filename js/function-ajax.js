@@ -76,7 +76,7 @@ function getNextPage(event) {
      */
     let notMoreCallback = function () {
 
-        TOAST_SYSTEM.add('没有更多内容了', TOAST_TYPE.error);
+        MyToast.show_error('没有更多内容了');
 
         //注销按钮
         $button.toggleDisabled();
@@ -127,7 +127,7 @@ function sendPrivateMessage(event) {
     //如果内容为空
     if (!message_content) {
 
-        TOAST_SYSTEM.add('消息内容不能为空', TOAST_TYPE.error);
+        MyToast.show_error('消息内容不能为空');
 
     } else {
 
@@ -140,7 +140,7 @@ function sendPrivateMessage(event) {
         let successCallback = function (response) {
 
             //创建通知弹窗
-            TOAST_SYSTEM.add('消息已发送', TOAST_TYPE.success);
+            MyToast.show_success('消息已发送');
             //关闭模态窗
             $('.modal').modal('hide');
 
@@ -162,7 +162,7 @@ function sendPrivateMessage(event) {
             }
 
             //创建通知弹窗
-            TOAST_SYSTEM.add(errorText, TOAST_TYPE.error);
+            MyToast.show_error(errorText);
             //切换按钮激活状态 和 按钮显示内容
             $button.toggleDisabled();
             $button.children().toggle();
@@ -272,12 +272,12 @@ function add_user_black_list(target_user_id) {
 
     //成功的情况
     let successCallback = function (response) {
-        TOAST_SYSTEM.add('添加黑名单成功', TOAST_TYPE.success);
+        MyToast.show_success('添加黑名单成功');
     };
 
     //错误的情况
     let failCallback = function () {
-        TOAST_SYSTEM.add('添加黑名单失败', TOAST_TYPE.error);
+        MyToast.show_error('添加黑名单失败');
     };
 
     let completeCallback = function () {
@@ -308,12 +308,12 @@ function delete_user_black_list(target_user_id) {
 
         //成功的情况
         let successCallback = function (response) {
-            TOAST_SYSTEM.add('移除黑名单成功', TOAST_TYPE.success);
+            MyToast.show_success('移除黑名单成功');
         };
 
         //错误的情况
         let failCallback = function () {
-            TOAST_SYSTEM.add('移除黑名单失败', TOAST_TYPE.error);
+            MyToast.show_error('移除黑名单失败');
         };
 
         let completeCallback = function () {
@@ -370,7 +370,7 @@ function add_user_follow_list() {
     const successCallback = function (response) {
 
         //创建通知弹窗
-        TOAST_SYSTEM.add('已添加关注', TOAST_TYPE.success);
+        MyToast.show_success('已添加关注');
 
         //隐藏当前按钮
         $button.hide();
@@ -384,7 +384,7 @@ function add_user_follow_list() {
 
     //错误的情况
     const failCallback = function () {
-        TOAST_SYSTEM.add('添加关注失败', TOAST_TYPE.error);
+        MyToast.show_error('添加关注失败');
     };
 
     const completeCallback = function () {
@@ -437,7 +437,7 @@ function delete_user_follow_list() {
     const successCallback = function (response) {
 
         //创建通知弹窗
-        TOAST_SYSTEM.add('已取消关注', TOAST_TYPE.success);
+        MyToast.show_success('已取消关注');
 
         //隐藏当前按钮
         $button.hide();
@@ -451,7 +451,7 @@ function delete_user_follow_list() {
 
     //错误的情况
     const failCallback = function () {
-        TOAST_SYSTEM.add('取消关注失败', TOAST_TYPE.error);
+        MyToast.show_error('取消关注失败');
     };
 
     const completeCallback = function () {

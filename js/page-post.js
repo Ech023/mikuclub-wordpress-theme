@@ -1,4 +1,4 @@
-/// <reference path="base.js" />
+/// <reference path="common/base.js" />
 /// <reference path="function.js" />
 /// <reference path="function-ajax.js" />
 
@@ -63,7 +63,7 @@ function copySelectedText() {
     //复制到剪切板
     document.execCommand('copy');
     //提示框
-    TOAST_SYSTEM.add('已复制密码到剪切板', TOAST_TYPE.success);
+    MyToast.show_success('已复制密码到剪切板');
 }
 
 /**
@@ -109,12 +109,12 @@ function setPostLike(event) {
         if (!isActivated) {
             addArrayElementToLocalStorage(storageKey, post_id);
             updateButton($button, '已好评', 'btn-secondary', 'btn-outline-secondary', 1, true);
-            TOAST_SYSTEM.add('好评成功', TOAST_TYPE.success);
+            MyToast.show_success('好评成功');
         }
         else {
             deleteArrayElementFromLocalStorage(storageKey, post_id);
             updateButton($button, '好评', 'btn-outline-secondary', 'btn-secondary', -1, false);
-            TOAST_SYSTEM.add('已取消好评', TOAST_TYPE.success);
+            MyToast.show_success('已取消好评');
         }
 
         //更新文章评价等级
@@ -172,12 +172,12 @@ function setPostUnlike(event) {
         if (!isActivated) {
             addArrayElementToLocalStorage(storageKey, post_id);
             updateButton($button, '已差评', 'btn-secondary', 'btn-outline-secondary', 1, true);
-            TOAST_SYSTEM.add('差评成功', TOAST_TYPE.success);
+            MyToast.show_success('差评成功');
         }
         else {
             deleteArrayElementFromLocalStorage(storageKey, post_id);
             updateButton($button, '差评', 'btn-outline-secondary', 'btn-secondary', -1, false);
-            TOAST_SYSTEM.add('已取消差评', TOAST_TYPE.success);
+            MyToast.show_success('已取消差评');
         }
 
         //更新文章评价等级
@@ -257,12 +257,12 @@ function setPostFavorite(event) {
         if (!isActivated) {
             //addArrayElementToLocalStorage(storageKey, postId);
             updateButton($button, '已收藏', 'btn-secondary', 'btn-outline-secondary', 1, true);
-            TOAST_SYSTEM.add('收藏成功', TOAST_TYPE.success);
+            MyToast.show_success('收藏成功');
         }
         else {
             //deleteArrayElementFromLocalStorage(storageKey, postId);
             updateButton($button, '收藏', 'btn-outline-secondary', 'btn-secondary', -1, false);
-            TOAST_SYSTEM.add('已取消收藏', TOAST_TYPE.success);
+            MyToast.show_success('已取消收藏');
         }
 
     };
@@ -364,7 +364,7 @@ function setPostFailTime(event) {
 
         addArrayElementToLocalStorage(storageKey, postId);
         updateButton($button, '已反馈', 'btn-secondary', 'btn-outline-secondary', 1, true);
-        TOAST_SYSTEM.add('反馈成功', TOAST_TYPE.success);
+        MyToast.show_success('反馈成功');
 
     };
 
@@ -510,7 +510,7 @@ function copyBaiduFastLink() {
         //复制到剪切板
         document.execCommand('copy');
         //提示框
-        TOAST_SYSTEM.add('已复制秒传链接到剪切板', TOAST_TYPE.success);
+        MyToast.show_success('已复制秒传链接到剪切板');
 
     }
 

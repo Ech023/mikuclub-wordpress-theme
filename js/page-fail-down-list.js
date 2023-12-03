@@ -111,7 +111,7 @@ function resetFailTimes(event) {
     let successCallback = function (response) {
 
         //创建通知弹窗
-        TOAST_SYSTEM.add('已清零', TOAST_TYPE.success);
+        MyToast.show_success('已清零');
         //设置背景颜色
         $parentItem.css('background-color', '#ccc');
 
@@ -123,7 +123,7 @@ function resetFailTimes(event) {
     let failCallback = function () {
 
         //创建通知弹窗
-        TOAST_SYSTEM.add('请求错误 请重试', TOAST_TYPE.error);
+        MyToast.show_error('请求错误 请重试');
         //切换按钮状态
         $button.toggleDisabled();
 
@@ -158,7 +158,7 @@ function disableFailTimes(event) {
     let successCallback = function (response) {
 
         //创建通知弹窗
-        TOAST_SYSTEM.add('已关闭失效', TOAST_TYPE.success);
+        MyToast.show_success('已关闭失效');
         //设置背景颜色
         $parentItem.css('background-color', '#ccc');
 
@@ -170,7 +170,7 @@ function disableFailTimes(event) {
     let failCallback = function () {
 
         //创建通知弹窗
-        TOAST_SYSTEM.add('请求错误 请重试', TOAST_TYPE.error);
+        MyToast.show_error('请求错误 请重试');
         //切换按钮状态
         $button.toggleDisabled();
 
@@ -206,7 +206,7 @@ function rejectPostFromList(event) {
     let successCallback = function (response) {
 
         //创建通知弹窗
-        TOAST_SYSTEM.add('已退稿', TOAST_TYPE.success);
+        MyToast.show_success('已退稿');
         //设置背景颜色
         $parentItem.css('background-color', '#ccc');
 
@@ -218,7 +218,7 @@ function rejectPostFromList(event) {
     let failCallback = function () {
 
         //创建通知弹窗
-        TOAST_SYSTEM.add('请求错误 请重试', TOAST_TYPE.error);
+        MyToast.show_error('请求错误 请重试');
         //切换按钮状态
         $button.toggleDisabled();
 
@@ -258,7 +258,7 @@ function deletePostFromFailList(event) {
     let successCallback = function (response) {
 
         //创建通知弹窗
-        TOAST_SYSTEM.add('已删除', TOAST_TYPE.success);
+        MyToast.show_success('已删除');
         //设置背景颜色
         $parentItem.css('background-color', '#ccc');
 
@@ -270,7 +270,7 @@ function deletePostFromFailList(event) {
     let failCallback = function () {
 
         //创建通知弹窗
-        TOAST_SYSTEM.add('请求错误 请重试', TOAST_TYPE.error);
+        MyToast.show_error('请求错误 请重试');
         //切换按钮状态
         $button.toggleDisabled();
 

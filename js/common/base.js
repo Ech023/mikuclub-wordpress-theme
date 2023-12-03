@@ -9,14 +9,7 @@
 
 /*常量和全局变量*/
 
-//弹窗类型
-const TOAST_TYPE = Object.freeze({
-    error: 'error',
-    success: 'success',
-    continue: 'continue',
-});
-//默认全局弹窗管理对象
-const TOAST_SYSTEM = new MyToastSystem();
+
 
 //消息类型
 const MESSAGE_TYPE = {
@@ -450,7 +443,7 @@ function defaultFailCallback(jqXHR) {
         errorText = wpError.message;
     }
 
-    TOAST_SYSTEM.add(errorText, TOAST_TYPE.error);
+    MyToast.show_error(errorText);
 
 }
 
@@ -650,3 +643,4 @@ function send_file(url, data, pre_callback = null, done_callback = null, fail_ca
     }).done(done_callback).fail(fail_callback).always(always_callback);
 
 }
+

@@ -124,7 +124,8 @@ function set_post_list_query_vars($query_vars)
     {
         $query_vars[Post_Query::DATE_QUERY] =  [
             [
-                'after' => $custom_order_data_range . ' month ago'
+                'column' => 'post_modified',
+                'after' => '-' . $custom_order_data_range . ' days',
             ]
         ];
     }
@@ -240,6 +241,8 @@ function get_sticky_post_list($cat_id)
             {
 
                 $args = [
+                    //避免添加重复文章
+                    Post_Query::POST__NOT_IN => array_column($result, 'ID'),
                     Post_Query::META_KEY => Post_Meta::POST_LIKE,
                     Post_Query::CAT => $cat_id,
                     Post_Query::DATE_QUERY => [
@@ -284,6 +287,7 @@ function get_sticky_post_list($cat_id)
 
 /**
  * 获取最新文章列表
+ * @deprecated version
  *
  * @param int $cat_id 分类id
  * @param int $number 数量
@@ -373,6 +377,8 @@ function get_hot_post_list($term_id, $meta_key, $number = Config::HOT_POST_LIST_
         foreach ($array_additional_expired_day as $additional_expired_day)
         {
             $args = [
+                //避免添加重复文章
+                Post_Query::POST__NOT_IN => array_column($result, 'ID'),
                 Post_Query::META_KEY => $meta_key,
                 Post_Query::DATE_QUERY => [
                     [

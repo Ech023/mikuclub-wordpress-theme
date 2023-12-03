@@ -10,7 +10,7 @@ use mikuclub\constant\Message_Type;
 use mikuclub\Session_Cache;
 use mikuclub\User_Capability;
 
-use function mikuclub\breadcrumbs_component;
+use function mikuclub\print_breadcrumbs_component;
 use function mikuclub\get_user_comment_reply_unread_count;
 use function mikuclub\get_user_forum_notification_unread_count;
 use function mikuclub\get_user_private_message_unread_count;
@@ -100,12 +100,12 @@ $message_nav_component = '
 
 <div class="content page-message <?php echo $current_type; ?> mh-90vh">
 
-	<header class="page-header ">
-		<h4 class="my-4">
-			<?php echo breadcrumbs_component(); ?>
-		</h4>
+	<div class="page-header ">
+		
+			<?php echo print_breadcrumbs_component(); ?>
+		
 		<?php echo $message_nav_component; ?>
-	</header>
+	</div>
 
 
 	<div class="page-content message-list accordion my-4" id="accordion">

@@ -7,7 +7,7 @@
 use mikuclub\constant\Config;
 use mikuclub\User_Capability;
 
-use function mikuclub\breadcrumbs_component;
+use function mikuclub\print_breadcrumbs_component;
 
 use function mikuclub\is_sticky_post;
 
@@ -23,10 +23,10 @@ get_header();
 
 <div class="page-tougao">
 
-    <header class="page-header">
-        <h4 class="my-4">
-            <?php echo breadcrumbs_component(); ?>
-        </h4>
+    <div class="page-header">
+       
+            <?php echo print_breadcrumbs_component(); ?>
+        
 
         <?php
         if (array_key_exists('pid', $_GET) && isset($_GET['pid']))
@@ -77,7 +77,7 @@ get_header();
                             创建时间: <span class="text-primary"><?php echo get_the_date(Config::DATE_FORMAT, $_GET['pid']); ?></span>
                         </div>
                         <div class="col-auto">
-                            更新时间: <span class="text-info"><?php echo get_the_modified_date(Config::DATE_FORMAT, $_GET['pid']); ?></span>
+                            最后修改: <span class="text-info"><?php echo get_the_modified_date(Config::DATE_FORMAT, $_GET['pid']); ?></span>
                         </div>
                         <?php
 
@@ -202,7 +202,7 @@ get_header();
         }
         ?>
 
-    </header>
+    </div>
 
 
     <?php

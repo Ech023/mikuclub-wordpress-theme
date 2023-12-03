@@ -65,11 +65,11 @@ function updateUserProfile(event) {
     let password = $form.find('input[name="password"]').val().trim();
 
     if (!validateEmail(email) || email.includes('@fake.com')) {
-        TOAST_SYSTEM.add('请填写一个有效的邮箱地址', TOAST_TYPE.error);
+        MyToast.show_error('请填写一个有效的邮箱地址');
         return;
     }
     if (!name) {
-        TOAST_SYSTEM.add('昵称不能为空', TOAST_TYPE.error);
+        MyToast.show_error('昵称不能为空');
         return;
     }
 
@@ -91,7 +91,7 @@ function updateUserProfile(event) {
 
     //成功的情况
     let successCallback = function (response) {
-        TOAST_SYSTEM.add('保存成功', TOAST_TYPE.success);
+        MyToast.show_success('保存成功');
     };
 
     let completeCallback = function () {

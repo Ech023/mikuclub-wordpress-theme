@@ -2,7 +2,7 @@
 
 use mikuclub\constant\Admin_Meta;
 
-use function mikuclub\breadcrumbs_component;
+use function mikuclub\print_breadcrumbs_component;
 
 use function mikuclub\get_theme_option;
 use function mikuclub\post_list_component;
@@ -11,9 +11,9 @@ get_header(); ?>
 
 
 <header class="archive-header tag-header">
-    <h4>
-        <?php echo breadcrumbs_component(); ?>
-    </h4>
+   
+        <?php echo print_breadcrumbs_component(); ?>
+    
 </header>
 
 <?php

@@ -115,20 +115,7 @@ add_filter(
 /**
  * 修改表情的默认路径
  */
-add_filter(
-	'smilies_src',
-	/**
-	 * @param string $smiley_url URL for the smiley image.
-	 * @param string $img        Filename for the smiley image.
-	 * @return string
-	 */
-	function ($smiley_url, $img)
-	{
-		return get_bloginfo('template_directory') . '/img/smilies/' . $img;
-	},
-	10,
-	2
-);
+add_filter('smilies_src', 'mikuclub\fix_new_smilies_domain', 10, 2);
 
 /**
  * 禁用响应式图片属性srcset和sizes

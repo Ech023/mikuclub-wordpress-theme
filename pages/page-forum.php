@@ -19,9 +19,9 @@ if (is_user_logged_in())
 ?>
 
 
-<header class="page-header my-4">
+<div class="page-header my-4">
 
-</header>
+</div>
 
 <?php
 

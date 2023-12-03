@@ -194,13 +194,13 @@ class MyPrivateMessageModal extends MyModal {
         const message_content = this.$modal_element.find('textarea.message-content').val().trim();
 
         if (!this.recipient_id) {
-            TOAST_SYSTEM.add('缺少收件人ID', TOAST_TYPE.error);
+            MyToast.show_error('缺少收件人ID');
             return;
         }
 
         //如果内容为空
         if (!message_content) {
-            TOAST_SYSTEM.add('消息内容不能为空', TOAST_TYPE.error);
+            MyToast.show_error('消息内容不能为空');
             return;
         }
 
@@ -219,7 +219,7 @@ class MyPrivateMessageModal extends MyModal {
             },
             () => {
                 //创建通知弹窗
-                TOAST_SYSTEM.add('消息已发送', TOAST_TYPE.success);
+                MyToast.show_success('消息已发送');
                 this.hide();
             },
             defaultFailCallback,
@@ -401,7 +401,7 @@ class MyImageCropperModal extends MyModal {
             if (response && response.hasOwnProperty('guid') && response.guid.hasOwnProperty('rendered')) {
 
                 //创建通知弹窗
-                TOAST_SYSTEM.add('头像更新成功', TOAST_TYPE.success);
+                MyToast.show_success('头像更新成功');
                 this.hide();
 
                 // 刷新当前页面
@@ -538,14 +538,14 @@ class MyPostReportModal extends MyModal {
 
         //如果未选中任何投诉类型
         // if (!$reportTypeRadio.length) {
-        //     TOAST_SYSTEM.add('请先选择投诉类型', TOAST_TYPE.error);
+        //     MyToast.show_error('请先选择投诉类型');
         //     return;
         // }
 
         //获取表单内容
         const report_type = $reportTypeRadio.val();
         if (!report_type) {
-            TOAST_SYSTEM.add('请先选择投诉类型', TOAST_TYPE.error);
+            MyToast.show_error('请先选择投诉类型');
             return;
         }
 
@@ -553,7 +553,7 @@ class MyPostReportModal extends MyModal {
         const report_description = this.$modal_element.find('textarea[name="report_description"]').val().trim();
         //如果未填写描述
         if (!report_description) {
-            TOAST_SYSTEM.add('请描述具体问题', TOAST_TYPE.error);
+            MyToast.show_error('请描述具体问题');
             return;
         }
 
@@ -579,7 +579,7 @@ class MyPostReportModal extends MyModal {
             },
             () => {
                 //创建通知弹窗
-                TOAST_SYSTEM.add('投诉成功, 管理员将会在48小时内审核处理', TOAST_TYPE.success);
+                MyToast.show_success('投诉成功, 管理员将会在48小时内审核处理');
                 this.hide();
             },
             defaultFailCallback,

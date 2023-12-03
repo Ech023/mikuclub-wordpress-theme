@@ -115,10 +115,10 @@ function changeSubmitButtonText() {
         let previousValue = $submitButton.val();
 
         $submitButton.val('提交中...');
-        TOAST_SYSTEM.add('提交中...', TOAST_TYPE.continue);
+        MyToast.show_continue('提交中...');
         //设置定时任务, 如果超过一定时间还未提交成功, 说明出现错误 , 要重置按钮状态
         setTimeout(function () {
-            TOAST_SYSTEM.add('提交失败 请重试', TOAST_TYPE.error);
+            MyToast.show_error('提交失败 请重试');
             $submitButton.val(previousValue);
             $submitButton.removeClass('button-primary-disabled');
             $submitButton.toggleDisabled();
@@ -155,7 +155,7 @@ function deletePost(event) {
     //回调函数
     let successCallback = function (response) {
 
-        TOAST_SYSTEM.add('删除成功', TOAST_TYPE.success);
+        MyToast.show_success('删除成功');
         //跳转回稿件列表
         location.href = `${MY_SITE.home}/up_home_page`;
 
@@ -207,7 +207,7 @@ function draftPost(event) {
     //回调函数
     let successCallback = function (response) {
 
-        TOAST_SYSTEM.add('撤回成功', TOAST_TYPE.success);
+        MyToast.show_success('撤回成功');
         //刷新当前页面
         location.reload();
         //跳转回稿件列表
@@ -254,7 +254,7 @@ function setStickyPost(event) {
     //回调函数
     let successCallback = function (response) {
 
-        TOAST_SYSTEM.add('置顶成功', TOAST_TYPE.success);
+        MyToast.show_success('置顶成功');
         $button.html('取消置顶');
         $button.toggleClass('set-sticky-post').toggleClass('delete-sticky-post');
     };
@@ -296,7 +296,7 @@ function deleteStickyPost(event) {
     //回调函数
     let successCallback = function (response) {
 
-        TOAST_SYSTEM.add('取消置顶成功', TOAST_TYPE.success);
+        MyToast.show_success('取消置顶成功');
         $button.html('置顶投稿');
         $button.toggleClass('set-sticky-post').toggleClass('delete-sticky-post');
 
@@ -348,7 +348,7 @@ function rejectPost(event) {
     //回调函数
     let successCallback = function (response) {
 
-        TOAST_SYSTEM.add('退稿成功', TOAST_TYPE.success);
+        MyToast.show_success('退稿成功');
         $button.html('退稿成功');
         $button.toggleDisabled();
 
@@ -391,7 +391,7 @@ function updatePostDate(event) {
     //回调函数
     let successCallback = function (response) {
 
-        TOAST_SYSTEM.add('更新成功', TOAST_TYPE.success);
+        MyToast.show_success('更新成功');
         $button.html('更新成功');
         $button.toggleDisabled();
 
@@ -465,7 +465,7 @@ function actionOnInputSourceLink(event) {
 
     //如果链接无效
     if (!validateURL(value)) {
-        TOAST_SYSTEM.add('来源地址格式错误', TOAST_TYPE.error);
+        MyToast.show_error('来源地址格式错误');
         $input.val('');
     }
 
@@ -491,7 +491,7 @@ function actionOnInputDownload(event) {
 
     //如果是飞猫云
     if (value.includes('fmpan') || value.includes('fmapp')) {
-        TOAST_SYSTEM.add('禁止使用飞猫云', TOAST_TYPE.error);
+        MyToast.show_error('禁止使用飞猫云');
         $input.val('');
         return;
     }
@@ -545,7 +545,7 @@ function actionOnInputDownload(event) {
     }
 
     if (!validateURL(value) && !value.includes('magnet')) {
-        TOAST_SYSTEM.add('链接格式错误, 必须包含http或https', TOAST_TYPE.error);
+        MyToast.show_error('链接格式错误, 必须包含http或https');
         $input.val('');
         return;
     }
@@ -642,7 +642,7 @@ function actionOnInputBilibili(event) {
     let value = $input.val();
 
     if (!value.includes('av') && !value.includes('BV')) {
-        TOAST_SYSTEM.add('不是B站地址', TOAST_TYPE.error);
+        MyToast.show_error('不是B站地址');
         return;
     }
 
@@ -688,7 +688,7 @@ function actionOnInputVideo(event) {
     if (value.includes('[')) {
         $input.val(value);
     } else {
-        TOAST_SYSTEM.add('这不是正确的外链HTML播放地址', TOAST_TYPE.error);
+        MyToast.show_error('这不是正确的外链HTML播放地址');
         $input.val('');
     }
 

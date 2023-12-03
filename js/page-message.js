@@ -82,7 +82,7 @@ function getMessageList() {
 
     //如果未能正确获取 提示错误
     if (!messageType) {
-        TOAST_SYSTEM.add('TYPE参数错误或缺失', TOAST_TYPE.error);
+        MyToast.show_error('TYPE参数错误或缺失');
         return;
     }
 
@@ -135,7 +135,7 @@ function getMessageList() {
             errorInfo = '无相关信息';
         }
 
-        TOAST_SYSTEM.add(errorInfo, TOAST_TYPE.error);
+        MyToast.show_error(errorInfo);
         $button.html(buttonText);
 
     };
@@ -146,7 +146,7 @@ function getMessageList() {
     let failCallback = function () {
 
         //创建通知弹窗
-        TOAST_SYSTEM.add('请求错误 请重试', TOAST_TYPE.error);
+        MyToast.show_error('请求错误 请重试');
         //切换按钮激活状态 和 按钮显示内容
         $button.toggleDisabled();
         $button.children().toggle();
@@ -287,7 +287,7 @@ function delete_private_message_by_user(target_user_id) {
 
     //成功的情况
     let successCallback = function (response) {
-        TOAST_SYSTEM.add('删除私信成功', TOAST_TYPE.success);
+        MyToast.show_success('删除私信成功');
 
 
 
@@ -295,7 +295,7 @@ function delete_private_message_by_user(target_user_id) {
 
     //错误的情况
     let failCallback = function () {
-        TOAST_SYSTEM.add('删除私信失败', TOAST_TYPE.error);
+        MyToast.show_error('删除私信失败');
     };
 
     let completeCallback = function () {

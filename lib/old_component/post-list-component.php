@@ -116,23 +116,30 @@ HTML;
 	}
 
 
-
-	$post_list_output = post_list_order_component();
+	$post_list_output = '';
+	// $post_list_output = post_list_order_component();
 
 	//如果列表为空
 	if (count($post_list) === 0)
 	{
+		$post_list_html .= <<<HTML
 
-		//输出错误提示
-		$post_list_html .= '	<div class="m-5 mw-100 flex-fill">
+			<div class="m-5 mw-100 flex-fill">
     			<h4 class="text-center">抱歉, 没有找到相关内容</h4>
-    			<br/><br/><br/><br/><br/>
-			</div>';
+    			<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+			</div>
+
+HTML;
+
 	}
 
 
 	$post_list_output .= '
-			    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-5 post-list my-4" id="post-list">
+			    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-5 post-list my-2" id="post-list">
 			        ' . $post_list_html . '
 			    </div>
     	' . pagination_component();

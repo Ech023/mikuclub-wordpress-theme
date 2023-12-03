@@ -141,7 +141,7 @@ function getHistoryPostList(is_new_load = true) {
             errorInfo = '浏览历史为空';
         }
 
-        TOAST_SYSTEM.add(errorInfo, TOAST_TYPE.error);
+        MyToast.show_error(errorInfo);
         $button.find('.button-text').html(buttonText);
         $button.toggleDisabled();
 

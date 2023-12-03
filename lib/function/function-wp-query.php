@@ -63,6 +63,12 @@ function set_wp_query_custom_query_var($wp_query)
             //有自定义排序变量 的时候
             if ($custom_orderby)
             {
+                //如果是默认的可选排序
+                if (in_array($custom_orderby, ['modified', 'date']))
+                {
+                    set_query_var(Post_Query::ORDERBY, $custom_orderby);
+                }
+
                 set_query_var(Post_Query::META_KEY, $custom_orderby);
                 set_query_var(Post_Query::ORDERBY, 'meta_value_num');
             }

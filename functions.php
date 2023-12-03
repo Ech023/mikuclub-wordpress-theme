@@ -136,57 +136,58 @@ function setup_front_end_script()
         //JS变量
         [
             'name' => 'js-constant',
-            'path' => '/js/constant.js',
-            'in_footer' => false,
-        ],
-        //自定义JS 小弹窗类
-        [
-            'name' => 'js-class-toast',
-            'path' => '/js/class-toast.js',
-            'in_footer' => false,
-        ],
-        //自定义JS 模态窗类
-        [
-            'name' => 'js-class-modal',
-            'path' => '/js/class-modal.js',
-            'in_footer' => false,
-        ],
-        //自定义JS 文章类
-        [
-            'name' => 'js-class-post',
-            'path' => '/js/class-post.js',
-            'in_footer' => false,
-        ],
-        //自定义JS 用户类
-        [
-            'name' => 'js-class-user',
-            'path' => '/js/class-user.js',
-            'in_footer' => false,
-        ],
-        //自定义JS 消息类
-        [
-            'name' => 'js-class-message',
-            'path' => '/js/class-message.js',
-            'in_footer' => false,
-        ],
-        //自定义JS 评论类
-        [
-            'name' => 'js-class-comment',
-            'path' => '/js/class-comment.js',
-            'in_footer' => false,
-        ],
-        //自定义JS 评论类
-        [
-            'name' => 'js-class-ua-parser',
-            'path' => '/js/class-ua-parser.js',
+            'path' => '/js/common/constant.js',
             'in_footer' => false,
         ],
         //自定义基础JS函数和变量
         [
             'name' => 'js-base',
-            'path' => '/js/base.js',
+            'path' => '/js/common/base.js',
             'in_footer' => false,
         ],
+        //自定义JS 小弹窗类
+        [
+            'name' => 'js-class-toast',
+            'path' => '/js/class/class-toast.js',
+            'in_footer' => false,
+        ],
+        //自定义JS 模态窗类
+        [
+            'name' => 'js-class-modal',
+            'path' => '/js/class/class-modal.js',
+            'in_footer' => false,
+        ],
+        //自定义JS 文章类
+        [
+            'name' => 'js-class-post',
+            'path' => '/js/class/class-post.js',
+            'in_footer' => false,
+        ],
+        //自定义JS 用户类
+        [
+            'name' => 'js-class-user',
+            'path' => '/js/class/class-user.js',
+            'in_footer' => false,
+        ],
+        //自定义JS 消息类
+        [
+            'name' => 'js-class-message',
+            'path' => '/js/class/class-message.js',
+            'in_footer' => false,
+        ],
+        //自定义JS 评论类
+        [
+            'name' => 'js-class-comment',
+            'path' => '/js/class/class-comment.js',
+            'in_footer' => false,
+        ],
+        //自定义JS 评论类
+        [
+            'name' => 'js-class-ua-parser',
+            'path' => '/js/class/class-ua-parser.js',
+            'in_footer' => false,
+        ],
+        
         //名言名句变量
         [
             'name' => 'js-phrases',
@@ -235,6 +236,12 @@ function setup_front_end_script()
         [
             'name' => 'js-pub',
             'path' => '/js/pub.js',
+            'in_footer' => false,
+        ],
+        //JS 文章列表加载
+        [
+            'name' => 'js-post-list',
+            'path' => '/js/function-post-list.js',
             'in_footer' => false,
         ],
         //JS 投稿页面
@@ -525,6 +532,23 @@ function fix_image_domain_with_file_6($image_src)
     $array_search = array_merge(Web_Domain::get_array_site_domain(), Web_Domain::get_array_file_domain());
 
     $new_domain = Web_Domain::FILE6_MIKUCLUB_FUN;
+
+    $images_src = str_replace($array_search, $new_domain, $image_src);
+
+    return $images_src;
+}
+
+/**
+ * 使用static 替换默认图片域名
+ *
+ * @param string|string[] $image_src
+ * @return string|string[]
+ */
+function fix_image_domain_with_static($image_src)
+{
+    $array_search = array_merge(Web_Domain::get_array_site_domain(), Web_Domain::get_array_file_domain());
+
+    $new_domain = Web_Domain::STATIC_MIKUCLUB_FUN;
 
     $images_src = str_replace($array_search, $new_domain, $image_src);
 

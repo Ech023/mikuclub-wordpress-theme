@@ -54,11 +54,11 @@ function print_home_component_first_part()
         //首页 幻灯片下方横幅
         if (get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC_ENABLE))
         {
-            $output .= '<div class="pop-banner d-none d-md-block text-center my-2">' . get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC) . '</div>';
+            $output .= '<div class="pop-banner d-none d-md-block text-center my-2 pb-2 border-bottom">' . get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC) . '</div>';
         }
         if (get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE_ENABLE))
         {
-            $output .= '<div class="pop-banner d-block d-md-none text-center my-2">' . get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE) . '</div>';
+            $output .= '<div class="pop-banner d-block d-md-none text-center my-2 pb-2 border-bottom">' . get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE) . '</div>';
         }
 
         //最新主题帖子

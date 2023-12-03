@@ -5,7 +5,7 @@ namespace mikuclub;
 use mikuclub\constant\Admin_Meta;
 
 use function mikuclub\print_adult_404_content_for_no_logging_user;
-use function mikuclub\breadcrumbs_component;
+use function mikuclub\print_breadcrumbs_component;
 
 use function mikuclub\get_hot_list_by_random;
 use function mikuclub\get_sub_category_list;
@@ -39,12 +39,8 @@ else
 {
 ?>
 
-	<header class="archive-header">
-		<h4>
-			<?php echo breadcrumbs_component(); ?>
-		</h4>
-	</header>
-
+	<?php echo print_breadcrumbs_component(); ?>
+	
 	<?php
 	//只在第一页显示
 	if (!get_query_var('paged'))
@@ -58,7 +54,7 @@ else
 
 			if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 			{
-				echo '<div class="pop-banner  text-center my-4">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
+				echo '<div class="pop-banner text-center my-2 pb-2 border-bottom">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
 			}
 
 			$sub_categories = get_sub_category_list($cat_id);
@@ -101,7 +97,7 @@ else
 			echo get_hot_list_by_random($cat_id, 8);
 			if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 			{
-				echo '<div class="pop-banner  text-center my-4">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
+				echo '<div class="pop-banner text-center my-2 pb-2 border-bottom">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
 			}
 		}
 	}
@@ -112,7 +108,7 @@ else
 
 		if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 		{
-			echo '<div class="pop-banner  text-center my-4">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
+			echo '<div class="pop-banner text-center my-2 pb-2 border-bottom">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
 		}
 	}
 

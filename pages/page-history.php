@@ -7,7 +7,7 @@
 
 use mikuclub\User_Capability;
 
-use function mikuclub\breadcrumbs_component;
+use function mikuclub\print_breadcrumbs_component;
 use function mikuclub\next_page_button;
 use function mikuclub\print_category_button_component;
 
@@ -20,13 +20,13 @@ get_header();
 
 <div class="page-history">
 
-    <header class="page-header">
+    <div class="page-header">
 
         <div class="row my-4">
             <div class="col">
-                <h4 class="">
-                    <?php echo breadcrumbs_component(); ?>
-                </h4>
+                
+                    <?php echo print_breadcrumbs_component(); ?>
+               
 
             </div>
             <div class="col-auto">
@@ -70,7 +70,7 @@ get_header();
 
 
 
-    </header>
+    </div>
 
 
     <div class="page-content post-list my-3">

@@ -7,7 +7,7 @@
 
 use mikuclub\User_Capability;
 
-use function mikuclub\breadcrumbs_component;
+use function mikuclub\print_breadcrumbs_component;
 use function mikuclub\next_page_button;
 use function mikuclub\print_category_button_component;
 
@@ -20,12 +20,11 @@ get_header();
 
 <div class="page-favorite">
 
-    <header class="page-header">
+    <div class="page-header">
 
-        <h4 class="my-4">
-            <?php echo breadcrumbs_component(); ?>
-        </h4>
-
+       
+            <?php echo print_breadcrumbs_component(); ?>
+        
         <div class="my-4">
             
             <div class="inside-search ">
@@ -53,7 +52,7 @@ get_header();
 
 
 
-    </header >
+    </div >
 
 
 

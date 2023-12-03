@@ -122,7 +122,7 @@ function getFavoritePostList(is_new_load = true) {
             errorInfo = '没有找到相关内容';
         }
 
-        TOAST_SYSTEM.add(errorInfo, TOAST_TYPE.error);
+        MyToast.show_error(errorInfo);
         $button.find('.button-text').html(buttonText);
         $button.toggleDisabled();
 
@@ -178,7 +178,7 @@ function deleteFavorite(event) {
         //隐藏当前爷爷元素
         $grandparentElement.fadeOut(300);
         //创建通知弹窗
-        TOAST_SYSTEM.add('已取消收藏', TOAST_TYPE.success);
+        MyToast.show_success('已取消收藏');
 
     };
 
@@ -189,7 +189,7 @@ function deleteFavorite(event) {
     let failCallback = function () {
 
         //创建通知弹窗
-        TOAST_SYSTEM.add('请求错误 请重试', TOAST_TYPE.error);
+        MyToast.show_error('请求错误 请重试');
 
         //重新激活按钮
         $button.toggleDisabled();

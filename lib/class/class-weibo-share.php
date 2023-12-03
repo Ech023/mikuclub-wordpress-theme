@@ -212,7 +212,7 @@ HTML;
                     {$first_image_part}
             </div>
             <br/>
-            <div class="content-part my-4" >
+            <div class="content-part my-4" style="min-height: 100px">
 				{$post_description_part}
 			</div>
             <br/>

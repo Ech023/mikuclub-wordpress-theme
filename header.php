@@ -19,7 +19,7 @@ echo <<<HTML
     {$head_output}
 
     <!-- 如果是内容页, 增加滚动监听 -->
-    <body class="{$body_class}" >
+    <body class="{$body_class} overflow-x-hidden" >
 
     <!-- 谷歌跟踪代码 Google Tag Manager (noscript) -->
     <!-- <noscript>

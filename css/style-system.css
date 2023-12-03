@@ -214,12 +214,7 @@ img {
     background: url(https://www.mikuclub.cc/wp-content/themes/miku/img/placeholder_image.webp) center center / 50% no-repeat !important;
 }
 
-/**
-替换默认面包屑的分隔符
- */
-.breadcrumb-item+.breadcrumb-item::before {
-    content: ">";
-}
+
 
 /**
 消息弹窗 ====================================================

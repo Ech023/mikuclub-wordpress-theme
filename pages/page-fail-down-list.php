@@ -6,7 +6,7 @@ use mikuclub\constant\Post_Meta;
 use mikuclub\Input_Validator;
 use mikuclub\User_Capability;
 
-use function mikuclub\breadcrumbs_component;
+use function mikuclub\print_breadcrumbs_component;
 use function mikuclub\convert_link_to_https;
 use function mikuclub\get_down_link_from_old_post;
 use function mikuclub\get_fail_down_post_list;
@@ -157,16 +157,16 @@ HTML;
 
 <div class="page-fail-down-list">
 
-    <header class="page-header">
-        <h4 class="my-4">
-            <?php echo breadcrumbs_component(); ?>
-        </h4>
+    <div class="page-header">
+       
+            <?php echo print_breadcrumbs_component(); ?>
+     
 
 
         <div class="text-end">
             <?php echo print_page_edit_link(); ?>
         </div>
-    </header>
+    </div>
     <hr />
     <div class="page-content">
 

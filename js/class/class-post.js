@@ -181,7 +181,7 @@ class MyFavoritePost extends MyPostSlim {
                     </div>
                     <div class="mt-2 d-none d-md-block">
                         <span class="small me-2">发布时间 ${this.post_date}</span>
-                        <span class="small me-2">更新时间 ${this.post_modified_date}</span>
+                        <span class="small me-2">最后修改 ${this.post_modified_date}</span>
                     </div>
                 </div>
                 <div class="col-auto col-md-2 text-center  mt-3 mt-md-0">
@@ -231,7 +231,7 @@ class MyHistoryPost extends MyPostSlim {
                     </div>
                     <div class="mt-2 d-none d-md-block">
                         <span class="small me-2">发布时间 ${this.post_date}</span>
-                        <span class="small me-2">更新时间 ${this.post_modified_date}</span>
+                        <span class="small me-2">最后修改 ${this.post_modified_date}</span>
                     </div>
                 </div>
                 <div class="col-auto col-md-2 text-center  mt-3 mt-md-0">
@@ -293,7 +293,7 @@ class MyManagePost extends MyPostSlim {
                     </div>
                      <div class="mt-2">
                         <span class="small my-1 me-2">发布时间 ${this.post_date}</span>
-                        <span class="small my-1 me-2">更新时间 ${this.post_modified_date}</span>
+                        <span class="small my-1 me-2">最后修改 ${this.post_modified_date}</span>
                     </div>
                     <div>
                         <span class="small my-1 me-2">点击 ${this.post_views}</span>

@@ -424,7 +424,7 @@ function pending_posts_dashboard_widget_component()
 					</div>
 					<div style="margin-top: 5px;">
 						<span>投稿时间: {$my_post->post_date}</span>
-						<span>更新时间: {$my_post->post_modified_date}</span>
+						<span>最后修改: {$my_post->post_modified_date}</span>
 					</div>
 				</div>
 
@@ -517,7 +517,7 @@ function fail_down_posts_dashboard_widget_component()
 					</div>
 					<div>
 						<span>投稿时间: {$my_post->post_date}</span>
-						<span>更新时间: {$my_post->post_modified_date}</span>
+						<span>最后修改: {$my_post->post_modified_date}</span>
 					</div>
                 </div>
 

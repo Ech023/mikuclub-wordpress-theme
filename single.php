@@ -6,7 +6,7 @@ use mikuclub\constant\Post_Feedback_Rank;
 use mikuclub\User_Capability;
 
 use function mikuclub\print_adult_404_content_for_no_logging_user;
-use function mikuclub\breadcrumbs_component;
+use function mikuclub\print_breadcrumbs_component;
 use function mikuclub\get_custom_user;
 use function mikuclub\get_post_favorites;
 use function mikuclub\get_post_like;
@@ -143,7 +143,7 @@ HTML;
                         <!-- 网站面包屑-->
                         <div class="col-12 col-xl-auto">
                             <?php
-                            echo breadcrumbs_component();
+                            echo print_breadcrumbs_component();
 
                             $post_like = get_post_like($post_id);
                             $post_unlike = get_post_unlike($post_id);
@@ -159,7 +159,7 @@ HTML;
                         </div>
                         <div class="col-auto ">
                             <div class="post-modified-date ">
-                                更新时间 <?php echo get_the_modified_date(Config::DATE_FORMAT); ?>
+                                最后修改 <?php echo get_the_modified_date(Config::DATE_FORMAT); ?>
                             </div>
                         </div>
 

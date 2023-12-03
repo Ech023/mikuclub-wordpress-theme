@@ -1,12 +1,12 @@
-/// <reference path="base.js" />
+/// <reference path="common/base.js" />
 /// <reference path="function-ajax.js" />
-/// <reference path="class-comment.js" />
-/// <reference path="class-message.js" />
-/// <reference path="class-modal.js" />
-/// <reference path="class-post.js" />
-/// <reference path="class-toast.js" />
-/// <reference path="class-ua-parser.js" />
-/// <reference path="class-user.js" />
+/// <reference path="class/class-comment.js" />
+/// <reference path="class/class-message.js" />
+/// <reference path="class/class-modal.js" />
+/// <reference path="class/class-post.js" />
+/// <reference path="class/class-toast.js" />
+/// <reference path="class/class-ua-parser.js" />
+/// <reference path="class/class-user.js" />
 
 
 
@@ -171,13 +171,13 @@ function open_video_modal(value, video_type, post_id = undefined) {
 function open_image_cropper_modal($input_file_element) {
 
     if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
-        TOAST_SYSTEM.add('当前的浏览器不支持JS文件API', TOAST_TYPE.error);
+        MyToast.show_error('当前的浏览器不支持JS文件API');
         return;
     }
 
     //如果未选中文件
     if (!$input_file_element.prop('files').length) {
-        TOAST_SYSTEM.add('未选中正确文件', TOAST_TYPE.error);
+        MyToast.show_error('未选中正确文件');
         return;
     }
 

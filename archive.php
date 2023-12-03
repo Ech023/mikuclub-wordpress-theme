@@ -7,7 +7,7 @@ get_header();
 ?>
 
 
-<header class="archive-header">
+<div>
 	<h1><?php
 		if (is_day())
 		{
@@ -22,7 +22,7 @@ get_header();
 			the_time('Y年');
 		}
 		?>的内容</h1>
-</header>
+</div>
 <?php echo post_list_component() ?>
 
 
