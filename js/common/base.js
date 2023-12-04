@@ -288,6 +288,7 @@ function isVisibleOnScreen($element) {
     return ((elementBottom > winTop) && (elementTop < winBottom));
 }
 
+
 /**
  * 检测当前元素是否在屏幕上可见 (完全)
  * @param {JQuery}$element

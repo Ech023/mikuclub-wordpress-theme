@@ -8,6 +8,7 @@ namespace mikuclub;
  */
 function post_list_component()
 {
+	global $wp_query;
 
 	//获取默认文章列表
 	$post_list = get_wp_query_post_list();
@@ -116,8 +117,10 @@ HTML;
 	}
 
 
-	$post_list_output = '';
+	// $post_list_output = '';
 	// $post_list_output = post_list_order_component();
+	$post_list_header = print_post_list_header_component();
+	$post_list_pagination = pagination_component();
 
 	//如果列表为空
 	if (count($post_list) === 0)
@@ -137,13 +140,23 @@ HTML;
 
 	}
 
+	//储存列表的请求参数
+	$json_parameters = htmlspecialchars(json_encode($wp_query->query));
 
-	$post_list_output .= '
-			    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-5 post-list my-2" id="post-list">
-			        ' . $post_list_html . '
-			    </div>
-    	' . pagination_component();
+	$output = <<<HTML
+		<div class="post-list-container" data-parameters='{$json_parameters}'>
+			{$post_list_header}
 
+			<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-5 post-list my-2">
+				$post_list_html
+			</div>
+			<!-- 自动加载列表的触发标记 -->
+			<div class="post_list_footer">
+			</div>
+			
+		</div>
 
-	return $post_list_output;
+HTML;
+
+	return $output;
 }

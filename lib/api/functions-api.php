@@ -183,10 +183,9 @@ function delete_trash_post()
 
 	$result = array_map(function ($post)
 	{
-		
+
 		wp_delete_post($post->ID, true);
 		return $post->ID;
-
 	}, $posts);
 
 
@@ -201,65 +200,55 @@ function delete_trash_post()
  */
 function test_function($data)
 {
+	$number = Input_Validator::get_array_value($data, 'number', Input_Validator::TYPE_INT, true);
+
+	$paged = Input_Validator::get_array_value($data, 'paged', Input_Validator::TYPE_INT, true);
 
 	$args = [
-		'posts_per_page' => $data['number'],
+		'posts_per_page' => $number,
 		'ignore_sticky_posts' => 1,
 		'post_status'         => Post_Status::PUBLISH,
-		'paged' => $data['paged'],
+		'paged' => $paged,
 		'orderby' => 'ID',
+		'fields' => 'ids',  // 设置为 'ids' 只获取文章 ID
 	];
 
 	$result = [];
-	$posts = get_posts($args);
-	foreach ($posts as $post)
+	$array_id = get_posts($args);
+	foreach ($array_id as $post_id)
 	{
+		//更新文章的下载属性
+		set_post_array_down_type($post_id);
 
-		/*$imgs = Post_Image::get_array_image_large_src($post->ID);
-		if (count($imgs) > 1)
-		{
-			$img = $imgs[1];
-			$img = str_replace('www.mikuclub.cc', 'static.mikuclub.cc', $img);
-			
-			//发起请求
-			$response = wp_remote_get($img);
-			if (!is_wp_error($response))
-			{
-				$result[] = $post->ID;
-			}
-		}*/
+		// $array_image = Post_Image::get_array_image_thumbnail_src($post->ID);
+		// //$array_image = array_merge($array_image, Post_Image::get_array_image_large_src($post->ID));
+		// //$array_image = array_merge($array_image, Post_Image::get_array_image_full_src($post->ID));
 
-		//$img = Post_Image::get_thumbnail_src($post->ID);
+		// $array_search = [
+		// 	'file1.mikuclub.fun',
+		// 	'file2.mikuclub.fun',
+		// 	'file3.mikuclub.fun',
+		// 	'file4.mikuclub.fun',
+		// ];
 
-		$array_image = Post_Image::get_array_image_thumbnail_src($post->ID);
-		//$array_image = array_merge($array_image, Post_Image::get_array_image_large_src($post->ID));
-		//$array_image = array_merge($array_image, Post_Image::get_array_image_full_src($post->ID));
+		// $replace = 'file1.mikuclub.fun';
 
-		$array_search = [
-			'file1.mikuclub.fun',
-			'file2.mikuclub.fun',
-			'file3.mikuclub.fun',
-			'file4.mikuclub.fun',
-		];
+		// $array_image = str_replace($array_search, $replace, $array_image);
 
-		$replace = 'file1.mikuclub.fun';
+		// $result[$post->ID] = [];
 
-		$array_image = str_replace($array_search, $replace, $array_image);
-
-		$result[$post->ID] = [];
-
-		foreach ($array_image as $image)
-		{
-			//发起请求
-			$response = wp_remote_get($image, [
-				'timeout' => 60,
-			]);
-			$response_code = wp_remote_retrieve_response_code($response);
-			$result[$post->ID][] =  $response_code;
-		}
+		// foreach ($array_image as $image)
+		// {
+		// 	//发起请求
+		// 	$response = wp_remote_get($image, [
+		// 		'timeout' => 60,
+		// 	]);
+		// 	$response_code = wp_remote_retrieve_response_code($response);
+		// 	$result[$post->ID][] =  $response_code;
+		// }
 	}
 
-	return $result;
+	return $array_id;
 }
 
 
@@ -329,7 +318,7 @@ function register_custom_api()
 
 
 	register_rest_route('utils/v2', '/test', [
-		'methods'  => 'POST',
+		'methods'  => 'GET',
 		'callback' => 'mikuclub\test_function',
 	]);
 }

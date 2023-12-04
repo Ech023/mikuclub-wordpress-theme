@@ -4,6 +4,7 @@ namespace mikuclub;
 
 use mikuclub\constant\Category;
 use mikuclub\constant\Config;
+use mikuclub\constant\Download_Link_Type;
 use mikuclub\constant\Expired;
 use mikuclub\constant\Option_Meta;
 use mikuclub\constant\Post_Meta;
@@ -711,6 +712,8 @@ function post_submit_action($post_id)
     set_post_sub_cat_id($post_id);
     //更新分类ID数组
     set_post_array_cat_id($post_id);
+    //更新文章下载类型数据
+    set_post_array_down_type($post_id);
 
 
     $down = get_post_meta($post_id, Post_Meta::POST_DOWN, true);
@@ -739,39 +742,40 @@ function post_submit_action($post_id)
         update_post_status($post_id, Post_Status::PENDING);
     }
 
-     //判断文章是否已经公开过
-     $first_published = get_post_meta($post_id, Post_Meta::POST_IS_FIRST_PUBLISHED, true);
+    //判断文章是否已经公开过
+    // $first_published = get_post_meta($post_id, Post_Meta::POST_IS_FIRST_PUBLISHED, true);
 
-     //获取文章所属分类ID数组
-     $array_id_category = get_post_array_cat_id($post_id);
-     //如果是动漫区或者视频区或者从未公开过
-     if (
-         in_array(Category::ANIME, $array_id_category) ||
-         in_array(Category::VIDEO, $array_id_category) ||
-         empty($first_published)
-     )
-     {
-         //更新创建时间+状态
-         $time = current_time('mysql');
- 
-         $wpdb->update(
-             $wpdb->posts,
-             [
-                 'post_date' => $time,
-                 'post_date_gmt' => get_gmt_from_date($time),
-             ],
-             [
-                 'ID' => $post_id,
-             ],
-             [
-                 '%s',
-                 '%s',
-             ],
-             [
-                 '%d',
-             ]
-         );
-     }
+    //获取文章所属分类ID数组
+    // $array_id_category = get_post_array_cat_id($post_id);
+
+    //如果是动漫区或者视频区或者从未公开过
+    // if (
+    //     in_array(Category::ANIME, $array_id_category) ||
+    //     in_array(Category::VIDEO, $array_id_category) ||
+    //     empty($first_published)
+    // )
+    // {
+    //     //更新创建时间+状态
+    //     $time = current_time('mysql');
+
+    //     $wpdb->update(
+    //         $wpdb->posts,
+    //         [
+    //             'post_date' => $time,
+    //             'post_date_gmt' => get_gmt_from_date($time),
+    //         ],
+    //         [
+    //             'ID' => $post_id,
+    //         ],
+    //         [
+    //             '%s',
+    //             '%s',
+    //         ],
+    //         [
+    //             '%d',
+    //         ]
+    //     );
+    // }
 
     //清空bilibili视频缓存信息
     Bilibili_Video::delete_video_meta($post_id);
@@ -875,22 +879,22 @@ function update_post_status($post_id, $post_status)
     // //如果不是动漫区
     // else
     // {
-        //只更新状态
-        $wpdb->update(
-            $wpdb->posts,
-            [
-                'post_status' => $post_status,
-            ],
-            [
-                'ID' => $post_id,
-            ],
-            [
-                '%s',
-            ],
-            [
-                '%d',
-            ]
-        );
+    //只更新状态
+    $wpdb->update(
+        $wpdb->posts,
+        [
+            'post_status' => $post_status,
+        ],
+        [
+            'ID' => $post_id,
+        ],
+        [
+            '%s',
+        ],
+        [
+            '%d',
+        ]
+    );
     // }
 }
 
@@ -1202,4 +1206,38 @@ SQL;
 
 
     return intval($count);
+}
+
+
+/**
+ * 设置文章下载类型数组元数据
+ *
+ * @param int $post_id
+ * @return string
+ */
+function set_post_array_down_type($post_id)
+{
+    $result = [];
+
+    //获取文章的下载地址
+    $down = get_post_meta($post_id, Post_Meta::POST_DOWN, true) ?: '';
+    $down2 = get_post_meta($post_id, Post_Meta::POST_DOWN2, true) ?: '';
+
+    foreach ([$down, $down2] as $down_link)
+    {
+        //如果能识别出下载地址的类型
+        $type_down = Download_Link_Type::get_type_by_link($down_link);
+        if ($type_down)
+        {
+            //储存到下载类型数组内
+            $result[] = $type_down;
+        }
+    }
+
+    $result = implode(",", $result);
+
+    //保存数组元数据
+    update_post_meta($post_id, Post_Meta::POST_ARRAY_DOWN_TYPE, $result);
+
+    return $result;
 }

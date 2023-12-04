@@ -16,6 +16,8 @@ function pagination_component()
 	$wp_query->post  = null;
 	$wp_query->posts = null;
 
+	// var_dump($wp_query->query);
+	// var_dump($wp_query->query_vars);
 
 	//获取总页数
 	$max_page = $wp_query->max_num_pages;

@@ -22,6 +22,9 @@ class Post_Meta
     //文章的分享次数
     const POST_SHARE_COUNT = 'count_sharing';
 
+    //文章的下载地址类型数组
+    const POST_ARRAY_DOWN_TYPE = 'array_down_type';
+
     //来源说明
     const POST_SOURCE_NAME = 'source_name';
     //来源地址

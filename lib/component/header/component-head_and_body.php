@@ -215,7 +215,7 @@ HTML;
     }
 
     //首页-主菜单下方广告位
-    if (is_home() && !get_query_var('paged'))
+    if (is_home() && !get_query_var(Post_Query::PAGED))
     {
         if (get_theme_option(Admin_Meta::HOME_TOP_ADSENSE_PC_ENABLE))
         {

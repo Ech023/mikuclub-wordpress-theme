@@ -238,6 +238,12 @@ function setup_front_end_script()
             'path' => '/js/pub.js',
             'in_footer' => false,
         ],
+        //JS 文章列表头部加载
+        [
+            'name' => 'function-post-list-header',
+            'path' => '/js/function-post-list-header.js',
+            'in_footer' => false,
+        ],
         //JS 文章列表加载
         [
             'name' => 'js-post-list',

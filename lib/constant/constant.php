@@ -376,6 +376,8 @@ class Page_Type
     const SINGLE = 'single';
     //标准页
     const PAGE = 'page';
+    //未知类型
+    const UNKNOWN = 'unknown';
 
     /**
      * 获取当前页面的类型
@@ -383,35 +385,35 @@ class Page_Type
      */
     public static function get_current_type()
     {
-        $result = 'unknown';
+        $result = static::UNKNOWN;
 
         if (is_home())
         {
-            $result = 'home';
+            $result = static::HOME;
         }
         else if (is_single())
         {
-            $result = 'single';
+            $result = static::SINGLE;
         }
         else if (is_page())
         {
-            $result = 'page';
+            $result = static::PAGE;
         }
         else if (is_category())
         {
-            $result = 'category';
+            $result = static::CATEGORY;
         }
         else if (is_tag())
         {
-            $result = 'tag';
+            $result = static::TAG;
         }
         else if (is_author())
         {
-            $result = 'author';
+            $result = static::AUTHOR;
         }
         else if (is_search())
         {
-            $result = 'search';
+            $result = static::SEARCH;
         }
 
         return $result;
@@ -425,4 +427,149 @@ class Message_Type
 {
     const PRIVATE_MESSAGE = 'private_message';
     const COMMENT_REPLY = 'comment_reply';
+}
+
+/**
+ * 下载链接类型
+ */
+class Download_Link_Type
+{
+
+    //百度网盘
+    const BAIDU_PAN = 'baidu';
+    //夸克
+    const QUARK = 'quark';
+    //阿里云盘
+    const ALIYUN_DRIVE = 'aliyun_drive';
+    //UC
+    const UC_DRIVE = 'uc_drive';
+    //蓝奏云
+    const LANZOU = 'lanzou';
+    //腾讯微云
+    const TENCENT_WEIYUN = 'weiyun';
+    //115
+    const ONE_ONE_FIVE = '115_drive';
+    //迅雷
+    const XUNLEI = 'xunlei';
+    //城通
+    const CT_FILE = 'ct_drive';
+    //曲奇
+    const QUQI = 'quqi_drive';
+    //电信天翼云
+    const YUN_189 = '189_drive';
+    //移动和彩云
+    const YUN_139 = '139_drive';
+    //磁力
+    const MAGNET = 'magnet_link';
+    //ONE DRIVE
+    const ONE_DRIVE = 'one_drive';
+    //MEGA 盘
+    const MEGA = 'mega_drive';
+
+    /**
+     * 解析下载链接来获取对应的下载类型
+     *
+     * @param string $link
+     * @return string
+     */
+    public static function get_type_by_link($link)
+    {
+        $result = '';
+
+        if ($link)
+        {
+            $array_drive_path = [
+                'pan.baidu.com' => static::BAIDU_PAN,
+                'quark' => static::QUARK,
+                'aliyundrive' => static::ALIYUN_DRIVE,
+                'drive.uc' => static::UC_DRIVE,
+                'lanzou' => static::LANZOU,
+                'weiyun' => static::TENCENT_WEIYUN,
+                '115.com' => static::ONE_ONE_FIVE,
+                'xunlei' => static::XUNLEI,
+                //'t00y.com' => static::CT_FILE,
+                'quqi' => static::QUQI,
+                '189' => static::YUN_189,
+                '139' => static::YUN_139,
+                'magnet' => static::MAGNET,
+                'sharepoint' => static::ONE_DRIVE,
+                'mega' => static::MEGA,
+            ];
+
+            // 识别下载地址对应的网盘名称 一旦找到匹配的关键字，就可以结束循环
+            foreach ($array_drive_path as $drive_path => $type)
+            {
+                if (stripos($link, $drive_path) !== false)
+                {
+                    $result = $type;
+                    break;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * 获取下载类型描述
+     *
+     * @param string $type
+     * @return string
+     */
+    public static function get_description($type)
+    {
+
+        $result = '';
+
+        switch ($type)
+        {
+            case static::BAIDU_PAN:
+                $result = '百度网盘';
+                break;
+            case static::QUARK:
+                $result = '夸克网盘';
+                break;
+            case static::ALIYUN_DRIVE:
+                $result = '阿里云盘';
+                break;
+            case static::UC_DRIVE:
+                $result = 'UC网盘';
+                break;
+            case static::LANZOU:
+                $result = '蓝奏云';
+                break;
+            case static::TENCENT_WEIYUN:
+                $result = '腾讯微云';
+                break;
+            case static::ONE_ONE_FIVE:
+                $result = '115盘';
+                break;
+            case static::XUNLEI:
+                $result = '迅雷云盘';
+                break;
+            case static::CT_FILE:
+                $result = '城通盘';
+                break;
+            case static::QUQI:
+                $result = '曲奇云盘';
+                break;
+            case static::YUN_189:
+                $result = '天翼云';
+                break;
+            case static::YUN_139:
+                $result = '和彩云';
+                break;
+            case static::MAGNET:
+                $result = '磁力链接';
+                break;
+            case static::ONE_DRIVE:
+                $result = 'OneDrive';
+                break;
+            case static::MEGA:
+                $result = 'MEGA盘';
+                break;
+        }
+
+        return $result;
+    }
 }

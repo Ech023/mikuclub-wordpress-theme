@@ -27,7 +27,7 @@ function print_home_hot_post_page_component() {
 
 	$breadcrumbs = print_breadcrumbs_component();
 
-	$post_header = print_post_list_header_component();
+
 	//获取当前页面的文章列表
 	$post_list = post_list_component();
 
@@ -47,8 +47,6 @@ function print_home_hot_post_page_component() {
 
 	{$ad_banner}
 
-	{$post_header}
-	
 	{$post_list}
 	
 	

@@ -37,7 +37,7 @@ $(function () {
     /**
      * 分页导航下一页按钮点击事件
      */
-    $('.content .pagination-nav .btn.get-next-page').on('click', '', '', getNextPage);
+    $('.content .btn.get-next-page').on('click', '', '', getNextPage);
 
     /**
      * 分页导航跳转按钮点击事件

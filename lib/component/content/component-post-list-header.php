@@ -2,6 +2,7 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Download_Link_Type;
 use mikuclub\constant\Post_Meta;
 use mikuclub\Post_Query;
 
@@ -16,12 +17,14 @@ function print_post_list_header_component()
 		[
 			'group' => 'post_date',
 			'title' => '近期发布',
+			'icon' => 'fa-regular fa-clock',
 			'sub_orderby' => [
 				[
 					'title' => '最新更新',
 					'value' => 'modified',
 					'parameters' => [
 						Post_Query::CUSTOM_ORDERBY => 'modified',
+						// Post_Query::CUSTOM_ORDER_DATA_RANGE => '',
 					],
 				],
 				[
@@ -29,6 +32,7 @@ function print_post_list_header_component()
 					'value' => 'date',
 					'parameters' => [
 						Post_Query::CUSTOM_ORDERBY => 'date',
+						// Post_Query::CUSTOM_ORDER_DATA_RANGE => '',
 					],
 				],
 			],
@@ -39,14 +43,17 @@ function print_post_list_header_component()
 	$array_custom_orderby_post_meta = [
 		[
 			'group' => Post_Meta::POST_LIKE,
+			'icon' => 'fa-solid fa-thumbs-up',
 			'title' => '最多好评',
 		],
 		[
 			'group' => Post_Meta::POST_VIEWS,
+			'icon' => 'fa-solid fa-eye',
 			'title' => '最多点击',
 		],
 		[
 			'group' => Post_Meta::POST_COMMENT_COUNT,
+			'icon' => 'fa-solid fa-comment',
 			'title' => '最多评论',
 		],
 	];
@@ -73,6 +80,8 @@ function print_post_list_header_component()
 			'value' => 365,
 		],
 	];
+
+
 
 	$array_orderby = array_merge($array_orderby, array_map(function ($orderby_post_meta) use ($array_custom_order_data_range)
 	{
@@ -132,6 +141,7 @@ function print_post_list_header_component()
 		$orderby_items .= <<<HTML
 			<div class="col-auto">
 				<button class="btn btn-sm px-md-4 orderby_group {$button_class}" data-orderby-group="{$orderby['group']}">
+					<i class="{$orderby['icon']} me-2"></i>
 					{$orderby['title']}
 				</button>
 			</div>
@@ -163,7 +173,7 @@ HTML;
 
 			$sub_orderby_items .= <<<HTML
 			<div class="col-auto sub_orderby_container {$orderby['group']}" style="{$style}">
-				<button class="btn btn-sm px-md-4 sub_orderby {$button_class}"  data-orderby='{$json_parameters}'>
+				<button class="btn btn-sm px-md-4 sub_orderby {$button_class}"  data-parameters='{$json_parameters}'>
 					{$sub_orderby['title']}
 				</button>
 			</div>
@@ -172,20 +182,103 @@ HTML;
 		}
 	}
 
+
+	$download_type_items = print_download_type_by_items_component();
+
 	$output = <<<HTML
 
 		<div class="my-2">
 			<div class="row post_list_orderby align-items-center mb-2 gy-2 gx-2">
 				{$orderby_items}
 			</div>
-			<div class="row post_list_sub_orderby align-items-center gy-2 gx-2">
+			<div class="row post_list_sub_orderby align-items-center mb-2 gy-2 gx-2">
 				{$sub_orderby_items}
+			</div>
+			<div class="row post_list_download_type align-items-center gy-2 gx-2">
+				{$download_type_items}
 			</div>
 		</div>
 
 HTML;
 
 
+
+	return $output;
+}
+
+/**
+ * 输出和文章下载方式有关的过滤按钮
+ * 
+ * @return string
+ */
+function print_download_type_by_items_component()
+{
+	$active_custom_down_type = get_query_var(Post_Query::CUSTOM_DOWN_TYPE, '');
+
+	$array_download_type = [
+		[
+			'title' => '全部方式',
+			'value' => '',
+			'parameters' => [
+				Post_Query::CUSTOM_DOWN_TYPE => ''
+			],
+		],
+		[
+			'title' => '百度盘',
+			'value' => Download_Link_Type::BAIDU_PAN,
+			'parameters' => [
+				Post_Query::CUSTOM_DOWN_TYPE => Download_Link_Type::BAIDU_PAN,
+			],
+		],
+		[
+			'title' => '夸克盘',
+			'value' => Download_Link_Type::QUARK,
+			'parameters' => [
+				Post_Query::CUSTOM_DOWN_TYPE => Download_Link_Type::QUARK,
+			],
+		],
+		[
+			'title' => 'UC盘',
+			'value' => Download_Link_Type::UC_DRIVE,
+			'parameters' => [
+				Post_Query::CUSTOM_DOWN_TYPE => Download_Link_Type::UC_DRIVE,
+			],
+		],
+		[
+			'title' => '阿里云盘',
+			'value' => Download_Link_Type::ALIYUN_DRIVE,
+			'parameters' => [
+				Post_Query::CUSTOM_DOWN_TYPE => Download_Link_Type::ALIYUN_DRIVE,
+			],
+		],
+	];
+
+	$output = array_reduce($array_download_type, function ($carry, $item) use ($active_custom_down_type)
+	{
+
+		$button_class = '';
+		if ($item['value'] === $active_custom_down_type)
+		{
+			$button_class = 'btn-secondary active';
+		}
+		else
+		{
+			$button_class = 'btn-light bg-gray-half';
+		}
+
+		$json_parameters = htmlspecialchars(json_encode($item['parameters']));
+
+		$carry .= <<<HTML
+			<div class="col-auto">
+				<button class="btn btn-sm px-md-4 download_type {$button_class}"  data-parameters='{$json_parameters}'>
+					{$item['title']}
+				</button>
+			</div>
+
+HTML;
+
+		return $carry;
+	}, '');
 
 	return $output;
 }

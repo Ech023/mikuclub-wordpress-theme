@@ -13,7 +13,7 @@ get_header();
 
 
 //如果不存在分页变量
-if (!get_query_var('paged'))
+if (!get_query_var(Post_Query::PAGED))
 {
 	//加载首页组件
 	echo print_home_component();

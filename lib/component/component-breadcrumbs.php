@@ -100,7 +100,7 @@ HTML;
 	}
 
 	//如果是在分页并且大于1 添加页面数字说明
-	$paged = get_query_var('paged');
+	$paged = intval(get_query_var(Post_Query::PAGED));
 	if ($paged > 1)
 	{
 		$local_html .= ' 第 ' . $paged . ' 页';

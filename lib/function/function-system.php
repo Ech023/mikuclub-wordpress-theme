@@ -337,7 +337,7 @@ function create_site_title()
 {
 	$result =  get_option('blogname');
 
-	$paged = intval(get_query_var('paged'));
+	$paged = intval(get_query_var(Post_Query::PAGED));
 
 	//如果是首页
 	if (is_home())

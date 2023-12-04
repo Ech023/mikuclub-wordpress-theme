@@ -17,7 +17,7 @@ function print_sticky_post_slide_component($cat_id)
     $sticky_post_list = get_sticky_post_list($cat_id);
 
     //如果是首页
-    if (is_home() && !get_query_var('paged'))
+    if (is_home() && !get_query_var(Post_Query::PAGED))
     {
         //如果存在第一单元广告
         if (get_theme_option(Admin_Meta::HOME_SLIDE_TOP_LIST_FIRST_ENABLE))

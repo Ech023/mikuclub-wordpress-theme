@@ -606,4 +606,26 @@ function redirect_site_domain_deactivated() {
 
 }
 
+/**
+ * 创建一个加载占位行
+ * @param {jQuery} $parent_component 父元素
+ */
+function show_loading_row($parent_component) {
 
+    const $loading_row = $(`
+        <div class="loading-row my-5 text-center">
+            <div class="spinner-border fs-4" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    `);
+    $parent_component.append($loading_row);
+}
+
+/**
+ * 隐藏加载占位行
+ * @param {jQuery} $parent_component 父元素
+ */
+function hide_loading_row() {
+    $('.loading-row').remove();
+}

@@ -43,7 +43,7 @@ else
 	
 	<?php
 	//只在第一页显示
-	if (!get_query_var('paged'))
+	if (!get_query_var(Post_Query::PAGED))
 	{
 
 		//如果是有子分类的主分类
