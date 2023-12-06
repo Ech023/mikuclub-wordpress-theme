@@ -88,12 +88,12 @@ function getManagePostList() {
     let successCallback = function (response) {
 
         //确保不是空内容
-        if (isNotEmptyArray(response)) {
+        if (isNotEmptyArray(response.posts)) {
 
             //创建自定义文章列表
             let newPostList = new MyPostSlimList(POST_TYPE.managePost);
             //转换成自定义文章格式
-            newPostList.add(response);
+            newPostList.add(response.posts);
             //插入内容到页面中
             $pageElement.children('.post-list').append(newPostList.toHTML());
 
@@ -157,57 +157,54 @@ function getManagePostList() {
  */
 function deletePostFromList(event) {
 
-    //确认窗口
-    if (!confirm('确认要删除该投稿吗?')) {
-        return;
-    }
+    open_confirm_modal('确认要删除该投稿吗?', '', () => {
 
-    //获取按钮
-    const $button = $(this);
+        //获取按钮
+        const $button = $(this);
 
 
-    let $grandparentElement = $button.parent().parent();
+        let $grandparentElement = $button.parent().parent();
 
-    let postId = $button.data('post-id');
-
-
-    //注销按钮
-    $button.toggleDisabled();
-    $button.children().toggle();
-
-    //回调函数
-    let successCallback = function (response) {
+        let postId = $button.data('post-id');
 
 
-        //隐藏当前爷爷元素
-        $grandparentElement.fadeOut(300);
-        //创建通知弹窗
-        MyToast.show_success('已删除投稿');
-
-
-    };
-
-
-    /**
-     * 错误情况
-     */
-    let failCallback = function () {
-
-        //创建通知弹窗
-        MyToast.show_error('请求错误 请重试');
-
-        //重新激活按钮
+        //注销按钮
         $button.toggleDisabled();
         $button.children().toggle();
-    };
+
+        //回调函数
+        let successCallback = function (response) {
 
 
-    $.ajax({
-        url: URLS.posts + '/' + postId,
-        type: HTTP_METHOD.delete,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(failCallback);
+            //隐藏当前爷爷元素
+            $grandparentElement.fadeOut(300);
+            //创建通知弹窗
+            MyToast.show_success('已删除投稿');
 
+
+        };
+
+
+        /**
+         * 错误情况
+         */
+        let failCallback = function () {
+
+            //创建通知弹窗
+            MyToast.show_error('请求错误 请重试');
+
+            //重新激活按钮
+            $button.toggleDisabled();
+            $button.children().toggle();
+        };
+
+
+        $.ajax({
+            url: URLS.posts + '/' + postId,
+            type: HTTP_METHOD.delete,
+            headers: createAjaxHeader()
+        }).done(successCallback).fail(failCallback);
+    });
 
 }
 

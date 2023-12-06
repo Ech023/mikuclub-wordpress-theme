@@ -136,47 +136,48 @@ function changeSubmitButtonText() {
  */
 function deletePost(event) {
 
-    if (!confirm('确认删除?')) {
-        return;
-    }
-
-    //获取按钮
-    const $button = $(this);
-
-    let previousValue = $button.html();
-    let post_id = $button.data('post-id');
-    //let data = {force: true};
-
-    //切换按钮状态
-    $button.toggleDisabled();
-    $button.html('删除中...');
+    open_confirm_modal('确认要删除该投稿吗?', '', () => {
 
 
-    //回调函数
-    let successCallback = function (response) {
+        //获取按钮
+        const $button = $(this);
 
-        MyToast.show_success('删除成功');
-        //跳转回稿件列表
-        location.href = `${MY_SITE.home}/up_home_page`;
+        let previousValue = $button.html();
+        let post_id = $button.data('post-id');
+        //let data = {force: true};
 
-    };
-
-    /**
-     * 请求结束后
-     */
-    let completeCallback = function () {
-        //恢复按钮状态
+        //切换按钮状态
         $button.toggleDisabled();
-        $button.html(previousValue);
-    };
+        $button.html('删除中...');
 
 
-    $.ajax({
-        url: URLS.posts + '/' + post_id,
-        //data,
-        type: HTTP_METHOD.delete,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
+        //回调函数
+        let successCallback = function (response) {
+
+            MyToast.show_success('删除成功');
+            //跳转回稿件列表
+            location.href = `${MY_SITE.home}/up_home_page`;
+
+        };
+
+        /**
+         * 请求结束后
+         */
+        let completeCallback = function () {
+            //恢复按钮状态
+            $button.toggleDisabled();
+            $button.html(previousValue);
+        };
+
+
+        $.ajax({
+            url: URLS.posts + '/' + post_id,
+            //data,
+            type: HTTP_METHOD.delete,
+            headers: createAjaxHeader()
+        }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
+
+    });
 
 }
 
@@ -186,52 +187,51 @@ function deletePost(event) {
  */
 function draftPost(event) {
 
-    if (!confirm('撤回后投稿将不在公开, 需要重新提交审核, 确认撤回吗?')) {
-        return;
-    }
+    open_confirm_modal('确认要把稿件转为草稿状态吗?', '撤回后需要重新提交审核才会再次公开显示', () => {
 
-    //获取按钮
-    let $button = $(this);
+        //获取按钮
+        let $button = $(this);
 
-    let previousValue = $button.html();
-    let post_id = $button.data('post-id');
-    let data = {
-        post_id,
-    };
+        let previousValue = $button.html();
+        let post_id = $button.data('post-id');
+        let data = {
+            post_id,
+        };
 
-    //切换按钮状态
-    $button.toggleDisabled();
-    $button.html('撤回中...');
-
-
-    //回调函数
-    let successCallback = function (response) {
-
-        MyToast.show_success('撤回成功');
-        //刷新当前页面
-        location.reload();
-        //跳转回稿件列表
-        // location.href = `${MY_SITE.home}/up_home_page`;
-
-    };
-
-    /**
-     * 请求结束后
-     */
-    let completeCallback = function () {
-        //恢复按钮状态
+        //切换按钮状态
         $button.toggleDisabled();
-        $button.html(previousValue);
-    };
+        $button.html('撤回中...');
 
 
-    $.ajax({
-        url: URLS.draftPost,
-        data,
-        type: HTTP_METHOD.post,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
+        //回调函数
+        let successCallback = function (response) {
 
+            MyToast.show_success('撤回成功');
+            //刷新当前页面
+            location.reload();
+            //跳转回稿件列表
+            // location.href = `${MY_SITE.home}/up_home_page`;
+
+        };
+
+        /**
+         * 请求结束后
+         */
+        let completeCallback = function () {
+            //恢复按钮状态
+            $button.toggleDisabled();
+            $button.html(previousValue);
+        };
+
+
+        $.ajax({
+            url: URLS.draftPost,
+            data,
+            type: HTTP_METHOD.post,
+            headers: createAjaxHeader()
+        }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
+
+    });
 }
 
 /**
@@ -854,7 +854,7 @@ function actionOnFixedSubmitButton() {
 /**
  * 百度秒传链接栏 触发变化事件
  */
-function actionOnBaiduFastLink(){
+function actionOnBaiduFastLink() {
 
     let value = $(this).val();
 
@@ -862,7 +862,7 @@ function actionOnBaiduFastLink(){
 
     //如果是一键秒传地址
     if (value.includes(keywords)) {
-        
+
         //从链接中提取出秒传加密数值
         let index = value.indexOf(keywords);
         value = value.substr(index + keywords.length);
@@ -872,7 +872,7 @@ function actionOnBaiduFastLink(){
         value = value.replace(/[^a-z0-9#.\s]/gi, '_');
         //更新数值
         $(this).val(value);
-    } 
+    }
 
 }
 

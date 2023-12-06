@@ -12,7 +12,7 @@ function print_float_bottom_menu_bar_component()
     $menu_items = <<<HTML
 
         <!-- 打开手机菜单 -->
-        <div class="col col-md-auto px-2 px-md-auto">
+        <div class="col col-md-auto px-0 px-md-auto">
             <button class="btn w-100 px-auto px-md-4" data-bs-toggle="offcanvas" data-bs-target="#phone_sidebar_menu">
                 <i class="fa-solid fa-bars me-md-2"></i>
                 <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">菜单</span>
@@ -27,7 +27,7 @@ HTML;
         $login_url = wp_login_url();
 
         $menu_items .= <<<HTML
-            <div class="col col-md-auto px-2 px-md-auto">
+            <div class="col col-md-auto px-0 px-md-auto">
                 <a class="btn w-100 px-auto px-md-4" href="{$login_url}" title="登录/注册">
                     <i class="fa-solid fa-sign-in-alt me-md-2"></i>
                     <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">登录</span>
@@ -40,7 +40,7 @@ HTML;
 
         $menu_items .= <<<HTML
 
-            <div class="col col-md-auto px-2 px-md-auto">
+            <div class="col col-md-auto px-0 px-md-auto">
                 <button class="go_top btn w-100 px-auto px-md-4">
                     <i class="fa-solid fa-arrow-up me-md-2"></i>
                     <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">顶部</span>
@@ -56,13 +56,13 @@ HTML;
 
         $menu_items .= <<<HTML
 
-            <div class="col col-md-auto px-2 px-md-auto">
+            <div class="col col-md-auto px-0 px-md-auto">
                 <button class="go_download_port btn w-100 px-auto px-md-4">
                     <i class="fa-solid fa-cloud-arrow-down me-md-2"></i>
                     <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">下载</span>
                 </button>
             </div>
-            <div class="col col-md-auto px-2 px-md-auto">
+            <div class="col col-md-auto px-0 px-md-auto">
                 <button class="go_comments_part btn w-100 px-auto px-md-4">
                     <i class="fa-solid fa-comments me-md-2"></i>
                     <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">评论</span>
@@ -76,7 +76,18 @@ HTML;
 
         $menu_items .= <<<HTML
 
-        <div class="col col-md-auto px-2 px-md-auto">
+
+        <div class="col col-md-auto px-0 px-md-auto">
+            <button class="open_change_paged_modal btn w-100 px-auto px-md-4">
+                <i class="fa-solid fa-retweet me-md-2"></i>
+                <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">
+                    跳转
+                    <span class="paged small">1</span>
+                </span>
+
+            </button>
+        </div>
+        <div class="col col-md-auto px-0 px-md-auto">
             <button class="enable_backup_image_domain btn w-100 px-auto px-md-4">
                 <i class="fa-solid fa-images me-md-2"></i>
                 <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">备用图床</span>
@@ -90,7 +101,7 @@ HTML;
     $menu_items .= <<<HTML
 
        
-        <div class="col col-md-auto px-2 px-md-auto">
+        <div class="col col-md-auto px-0 px-md-auto">
             <button class="enable_dark_theme no_theme btn w-100 px-auto px-md-4" title="点击后开启白天模式">
                 <i class="fa-solid fa-cloud-sun me-md-2"></i>
                 <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">外观</span>

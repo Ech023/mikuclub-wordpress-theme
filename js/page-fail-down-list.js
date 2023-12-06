@@ -240,47 +240,45 @@ function rejectPostFromList(event) {
  */
 function deletePostFromFailList(event) {
 
-    if (!confirm('确认删除?')) {
-        return;
-    }
+    open_confirm_modal('确认要删除稿件吗?', '', () => {
 
-    //获取 列表主元素
-    const $button = $(this);
-    let $parentItem = $button.parents('.list-item');
+        //获取 列表主元素
+        const $button = $(this);
+        let $parentItem = $button.parents('.list-item');
 
-    //切换按钮状态
-    $button.toggleDisabled();
-
-    let data = event.data;
-
-
-    //回调函数
-    let successCallback = function (response) {
-
-        //创建通知弹窗
-        MyToast.show_success('已删除');
-        //设置背景颜色
-        $parentItem.css('background-color', '#ccc');
-
-    };
-
-    /**
-     * 错误情况
-     */
-    let failCallback = function () {
-
-        //创建通知弹窗
-        MyToast.show_error('请求错误 请重试');
         //切换按钮状态
         $button.toggleDisabled();
 
-    };
+        let data = event.data;
 
-    $.ajax({
-        url: URLS.posts + '/' + data.post_id,
-        data,
-        type: HTTP_METHOD.delete,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(failCallback);
+        //回调函数
+        let successCallback = function (response) {
 
+            //创建通知弹窗
+            MyToast.show_success('已删除');
+            //设置背景颜色
+            $parentItem.css('background-color', '#ccc');
+
+        };
+
+        /**
+         * 错误情况
+         */
+        let failCallback = function () {
+
+            //创建通知弹窗
+            MyToast.show_error('请求错误 请重试');
+            //切换按钮状态
+            $button.toggleDisabled();
+
+        };
+
+        $.ajax({
+            url: URLS.posts + '/' + data.post_id,
+            data,
+            type: HTTP_METHOD.delete,
+            headers: createAjaxHeader()
+        }).done(successCallback).fail(failCallback);
+
+    });
 }

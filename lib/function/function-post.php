@@ -1222,6 +1222,7 @@ function set_post_array_down_type($post_id)
     //获取文章的下载地址
     $down = get_post_meta($post_id, Post_Meta::POST_DOWN, true) ?: '';
     $down2 = get_post_meta($post_id, Post_Meta::POST_DOWN2, true) ?: '';
+    $post_content = get_post_field('post_content', $post_id);
 
     foreach ([$down, $down2] as $down_link)
     {
@@ -1233,6 +1234,15 @@ function set_post_array_down_type($post_id)
             $result[] = $type_down;
         }
     }
+
+    //检测描述里是否包含了字符串
+    $pattern = "/magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]+:[a-z0-9]+:[^&\s]+/";
+    // 使用正则表达式进行匹配
+    if (preg_match($pattern, $down . $down2 . $post_content))
+    {
+        $result[] = Download_Link_Type::MAGNET;
+    }
+
 
     $result = implode(",", $result);
 

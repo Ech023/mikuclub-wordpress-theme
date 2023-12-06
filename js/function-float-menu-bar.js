@@ -192,6 +192,7 @@ function on_click_button_darkmode() {
 
     let new_setting;
     let confirm_text;
+    let confirm_text_secondary = '';
     switch (init_dark_theme.dark_mode_setting) {
         case 0:
             new_setting = 1;
@@ -203,12 +204,14 @@ function on_click_button_darkmode() {
             break;
         case 2:
             new_setting = 0;
-            confirm_text = '是否要开启自动模式 (将会根据时间自动切换白色和夜间主题)?';
+            confirm_text = '是否要开启自动模式?';
+            confirm_text_secondary = '将会根据时间自动切换白色和夜间主题';
             break;
     }
 
     open_confirm_modal(
         confirm_text,
+        confirm_text_secondary,
         //确认
         () => {
 
@@ -330,10 +333,12 @@ function on_click_backup_image_domain_button() {
     const new_value = !value;
 
     let confirm_text;
+    let confirm_text_secondary = '';
 
     //如果是要开启
     if (new_value === true) {
-        confirm_text = '是否要启动备用图床? 如果无法正常加载站内图片, 可以尝试启动备用图床';
+        confirm_text = '是否要启动备用图床?';
+        confirm_text_secondary = '如果无法正常加载站内图片, 可以尝试启动备用图床';
     }
     //如果是关闭
     else {
@@ -342,6 +347,7 @@ function on_click_backup_image_domain_button() {
 
     open_confirm_modal(
         confirm_text,
+        confirm_text_secondary,
         //确认
         () => {
             //更新数值
@@ -353,4 +359,14 @@ function on_click_backup_image_domain_button() {
         }
     );
 
+}
+
+/**
+ * 更新页面跳转按钮显示的页码
+ * @param {number} paged
+ */
+function update_button_open_change_paged_modal_paged(paged) {
+
+    const $float_bottom_menu_bar = $('.float_bottom_menu_bar');
+    $float_bottom_menu_bar.find('.open_change_paged_modal .paged').html(paged);
 }

@@ -9,6 +9,10 @@ $(function () {
 
     //如果文章列表容器存在
     if ($post_list_container_component.length) {
+
+        //页面完成后自动加载
+        get_post_list();
+
         //绑定滚动事件
         $(document).on('scroll', function () {
 
@@ -21,14 +25,17 @@ $(function () {
         });
     }
 
+
+
 });
 
 /**
  * 加载文章列表
- * @param {bool} is_new_load true = 清空列表, false = 在现有基础上添加
+ * @param {bool} is_new_load true = 重新加载列表 (清空列表), false = 在现有基础上添加
+ * @param {bool} new_paged 在重新加载列表的时候 指定页码
  */
-function get_post_list(is_new_load = false) {
-    
+function get_post_list(is_new_load = false, new_paged = 1) {
+
     //如果是重新加载, 重置end属性
     if (is_new_load) {
         get_post_list.is_end = false;
@@ -59,7 +66,7 @@ function get_post_list(is_new_load = false) {
         //清空当前列表
         $post_list_component.empty();
         //重设为1
-        data.paged = 1;
+        data.paged = new_paged;
     }
     else {
         data.paged++;
@@ -70,12 +77,12 @@ function get_post_list(is_new_load = false) {
     const success_callback = (response) => {
 
         //不是空的
-        if (isNotEmptyArray(response)) {
+        if (isNotEmptyArray(response.posts)) {
 
             //创建自定义文章列表
             const newPostList = new MyPostSlimList(POST_TYPE.post);
             //转换成自定义文章格式
-            newPostList.add(response);
+            newPostList.add(response.posts);
 
             if (is_new_load) {
                 //再清空一次当前列表 避免多次请求下导致错误
@@ -85,7 +92,11 @@ function get_post_list(is_new_load = false) {
             $post_list_component.append(newPostList.toHTML());
 
             //更新参数
-            $post_list_container_component.data('parameters', data);
+            update_post_list_component_data(data);
+            //更新列表容器的最大页数
+            update_post_list_component_max_num_pages(response.max_num_pages);
+            //更新跳转按钮的显示页数
+            update_button_open_change_paged_modal_paged(data.paged);
 
         }
         //无内容的情况
@@ -115,4 +126,48 @@ function get_post_list(is_new_load = false) {
         }
 
     )
+}
+
+/**
+ * 更新 文章列表容器的请求参数
+ * @param {object} new_data 
+ */
+function update_post_list_component_data(new_data) {
+
+    const $post_list_container_component = $('.post-list-container');
+    const data = $post_list_container_component.data('parameters');
+    Object.assign(data, new_data);
+    $post_list_container_component.data('parameters', data);
+
+}
+
+/**
+ * 获取 文章列表容器的当前页数和最大页数
+ * @returns {object}
+ * [
+ *  'paged' => int,
+ *  'max_num_pages' => int,
+ * ]
+ */
+function get_post_list_component_paged_and_max_num_pages() {
+
+    const $post_list_container_component = $('.post-list-container');
+    const data = $post_list_container_component.data('parameters');
+    const max_num_pages = $post_list_container_component.data('max_num_pages');
+
+    return {
+        paged: data.paged || 1,
+        max_num_pages
+    }
+}
+
+/**
+ * 更新 文章列表容器的最大页数
+ * @param {number} max_num_pages 
+ */
+function update_post_list_component_max_num_pages(max_num_pages) {
+
+    const $post_list_container_component = $('.post-list-container');
+    $post_list_container_component.data('max_num_pages', parseInt(max_num_pages));
+
 }

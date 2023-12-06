@@ -49,7 +49,11 @@ function get_wp_query_post_list()
  * 获取文章列表
  *
  * @param array<string, mixed> $query_vars 查询参数
- * @return My_Post_Model[]
+ * @return array<string, mixed>
+ * [
+ *  'posts' => My_Post_Model[],
+ *  'max_num_pages' => int, 总页数
+ * ]
  */
 function get_post_list($query_vars)
 {
@@ -62,7 +66,7 @@ function get_post_list($query_vars)
     $cache_key = File_Cache::POST_LIST . '_' . create_hash_string($query_vars);
 
     //获取缓存
-    $array_post = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_POSTS . $group, Expired::EXP_15_MINUTE);
+    $result = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_POSTS . $group, Expired::EXP_15_MINUTE);
 
     //如果不存在 或者 有禁用缓存参数 或者
     if (empty($array_post) || isset($query_vars[Post_Query::CUSTOM_NO_CACHE]))
@@ -71,24 +75,31 @@ function get_post_list($query_vars)
         //根据场景 修正查询参数
         $query_vars = set_post_list_query_vars($query_vars);
 
-        $results = get_posts($query_vars);
+        // $query_result = get_posts($query_vars);
+        $query = new WP_Query($query_vars);
 
+        $result = [];
         //把查询到的文章数组转换成自定义文章类
-        $array_post = array_map(function ($element)
+        $result['posts'] = array_map(function ($element)
         {
             return new My_Post_Model($element);
-        }, $results);
+        }, $query->posts);
 
+        // 获取最大页数
+        $result['max_num_pages'] = $query->max_num_pages;
 
-        //只有在 没有设置搜索参数 或者 搜索参数短于100字 才会设置缓存
-        if (!isset($query_vars[Post_Query::SEARCH]) || (strlen($query_vars[Post_Query::SEARCH]) <= 100))
+        // 重置 post 数据，以免影响后续的 WordPress 查询
+        // wp_reset_postdata();
+
+        //只有在 没有禁用缓存参数 才会设置缓存
+        if (!isset($query_vars[Post_Query::CUSTOM_NO_CACHE]))
         {
-            File_Cache::set_cache_meta($cache_key,  File_Cache::DIR_POSTS . $group, $array_post);
+            File_Cache::set_cache_meta($cache_key,  File_Cache::DIR_POSTS . $group, $result);
         }
     }
 
 
-    return $array_post;
+    return $result;
 }
 
 

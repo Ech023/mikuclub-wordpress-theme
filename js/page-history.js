@@ -177,18 +177,14 @@ function getHistoryPostList(is_new_load = true) {
  */
 function clearHistory() {
 
-    //二次确认
-    let alertResult = confirm('确认要清除浏览历史吗?');
+    open_confirm_modal('确认要清除浏览历史吗?', '', () => {
 
-    //如果为否
-    if (alertResult === false) {
-        return;
-    }
+        //清空本地存储里的历史文章数组
+        clearHistoryPostArray();
 
-    //清空本地存储里的历史文章数组
-    clearHistoryPostArray();
+        //刷新页面
+        location.reload();
 
-    //刷新页面
-    location.reload();
+    });
 }
 

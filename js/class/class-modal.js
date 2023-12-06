@@ -1,3 +1,5 @@
+/// <reference path="../function-post-list.js" />
+
 /**
  * 自定义 模态窗类型
  */
@@ -150,7 +152,7 @@ class MyPrivateMessageModal extends MyModal {
         this.modal_class = 'modal-lg';
 
         this.body = `
-            <div class="mb-3">
+            <div class="">
                 <label for="message-content" class="form-label"></label>
                 <textarea class="form-control message-content" name="message-content" rows="10" placeholder="私信内容..."></textarea>
             </div>
@@ -158,14 +160,13 @@ class MyPrivateMessageModal extends MyModal {
 
         this.footer = `
         
-            <a class="btn btn-secondary d-none d-sm-block" href="${MY_SITE.home}/message?type=private_message" target="_blank">
-                我的私信
+            <a class="btn btn-secondary d-none d-sm-block px-4" href="${MY_SITE.home}/message?type=private_message" target="_blank">
+                私信记录
             </a>
-            <button type="button" class="btn btn-secondary me-auto d-none d-sm-block" data-bs-dismiss="modal">关闭</button>
-            <button type="button" class="btn btn-miku w-50 send_private_message">
+            <button type="button" class="btn btn-secondary ms-auto px-4 me-2" data-bs-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-miku px-4 send_private_message">
                 发送
             </button>
-            <input type="hidden" name="recipient_id" value="${this.recipient_id}">
         `;
 
 
@@ -264,7 +265,7 @@ class MyVideoModal extends MyModal {
 
         this.footer = `
         
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">关闭</button>
     
         `;
 
@@ -300,20 +301,22 @@ class MyImageCropperModal extends MyModal {
         `;
 
         this.footer = `
-
-            <div class="me-2">
-                预览
-            </div> 
-            <div class="preview me-auto">
+            <div class="col-12 col-md-auto mb-2 mb-md-auto">
+                <div class="me-2">
+                    预览
+                </div> 
+                <div class="preview">
+                </div>
             </div>
 
-            <button type="button" class="btn btn-secondary cropper_image">
+            <div class="col-auto ms-auto align-self-end">
+            <button type="button" class="btn btn-secondary px-4 me-2 cropper_image">
                 剪切
             </button>
-
-            <button type="button" class="btn btn-miku upload_image" disabled>
+            <button type="button" class="btn btn-miku px-4 upload_image" disabled>
                 保存
             </button>
+            </div>
         `;
     }
 
@@ -490,7 +493,7 @@ class MyPostReportModal extends MyModal {
                         </label>
                         <textarea class="form-control" name="report_description"></textarea>
                     </div>
-                    <div class="mb-3">
+                    <div class="">
                         <label class="form-label">
                             联系方式 (可选)
                         </label>
@@ -505,9 +508,9 @@ class MyPostReportModal extends MyModal {
 
         this.footer = `
 
-            <button type="button" class="btn btn-secondary me-auto" data-bs-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-secondary px-4 me-2" data-bs-dismiss="modal">取消</button>
         
-            <button type="button" class="btn btn-miku send_report">提交</button>
+            <button type="button" class="btn btn-miku px-4 send_report">提交</button>
  
         `;
     }
@@ -593,14 +596,97 @@ class MyPostReportModal extends MyModal {
 
 }
 
+
+class ChangePagedModal extends MyModal {
+
+    /**
+     * @param {number} paged 当前页数
+     * @param {number} max_num_pages  最大页数
+     */
+    constructor(paged, max_num_pages) {
+
+        super();
+
+        this.modal_container_class = 'change-paged-modal';
+        this.title = '跳转到指定页数';
+        this.modal_class = '';
+
+        this.paged = paged;
+        this.max_num_pages = max_num_pages;
+
+        this.body = `
+        <div>
+            <div class="">
+                <label for="change_paged_modal_input" class="form-label">当前页数/总页数</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" id="change_paged_modal_input" min="1" max="${this.max_num_pages}" step="1" value="${this.paged}">
+                    <span class="input-group-text">/</span>
+                    <span class="input-group-text">${this.max_num_pages}</span>
+                </div>
+            </div>
+            
+         </div>
+        
+     
+        `;
+
+        this.footer = `
+
+            <button type="button" class="btn btn-secondary px-4 me-2" data-bs-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-miku px-4 change_paged">跳转</button>
+
+        `;
+
+    }
+
+    /**
+     * @returns {ChangePagedModal}
+    */
+    create() {
+
+        const model = super.create();
+
+        this.$modal_element.find('.change_paged').on('click', () => {
+            this.on_click_change_paged();
+        });
+
+        return model;
+
+    }
+
+    /**
+     * 点击跳转按钮
+     */
+    on_click_change_paged() {
+
+        //获取新的页数
+        const new_paged = parseInt(this.$modal_element.find('#change_paged_modal_input').val());
+        //如果页面无效
+        if (isNaN(new_paged) || new_paged <= 0 || new_paged > this.max_num_pages) {
+            MyToast.show_error('页数无效');
+            return;
+        }
+
+        this.hide();
+
+        //重新加载列表
+        get_post_list(true, new_paged);
+
+    }
+
+
+}
+
 /**
  * 确认模态窗
  */
 class ConfirmModal extends MyModal {
 
-    /**
-     */
-    constructor(text) {
+   /**
+    * @param {string} text 
+    * @param {string} text_secondary 
+    */
+    constructor(text, text_secondary) {
 
         super();
 
@@ -613,15 +699,16 @@ class ConfirmModal extends MyModal {
 
         this.body = `
             <div class="text-center">
-               <div>${text}</div>
+               <div class="fw-bold mb-2">${text}</div>
+               <div class="small">${text_secondary}</div>
             </div>
         `;
 
         this.footer = `
 
            
-            <button type="button" class="btn btn-primary px-4 me-2 confirm">确定</button>
-            <button type="button" class="btn btn-secondary px-4 cancel">取消</button>
+            <button type="button" class="btn btn-secondary px-4 me-2 cancel">取消</button>
+            <button type="button" class="btn btn-primary px-4 confirm">确定</button>
 
         `;
 

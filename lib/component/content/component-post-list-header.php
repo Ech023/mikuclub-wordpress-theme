@@ -134,7 +134,7 @@ function print_post_list_header_component()
 		}
 		else
 		{
-			$button_class = 'btn-light bg-gray-half';
+			$button_class = 'bg-gray-half';
 		}
 
 
@@ -160,7 +160,7 @@ HTML;
 			}
 			else
 			{
-				$button_class = 'btn-light bg-gray-half';
+				$button_class = 'bg-gray-half';
 			}
 
 			//如果所属排序组未显示, 隐藏子排序
@@ -251,6 +251,13 @@ function print_download_type_by_items_component()
 				Post_Query::CUSTOM_DOWN_TYPE => Download_Link_Type::ALIYUN_DRIVE,
 			],
 		],
+		[
+			'title' => '磁力链接',
+			'value' => Download_Link_Type::MAGNET,
+			'parameters' => [
+				Post_Query::CUSTOM_DOWN_TYPE => Download_Link_Type::MAGNET,
+			],
+		],
 	];
 
 	$output = array_reduce($array_download_type, function ($carry, $item) use ($active_custom_down_type)
@@ -263,7 +270,7 @@ function print_download_type_by_items_component()
 		}
 		else
 		{
-			$button_class = 'btn-light bg-gray-half';
+			$button_class = 'bg-gray-half';
 		}
 
 		$json_parameters = htmlspecialchars(json_encode($item['parameters']));

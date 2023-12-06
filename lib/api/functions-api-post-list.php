@@ -9,8 +9,11 @@ use WP_REST_Request;
  * 通过api获取文章列表
  *
  * @param WP_REST_Request $data
- *
- * @return My_Post_Model[]
+ * @return array<string, mixed>
+ * [
+ *  'posts' => My_Post_Model[],
+ *  'max_num_pages' => int, 总页数
+ * ]
  */
 function api_get_post_list($data)
 {

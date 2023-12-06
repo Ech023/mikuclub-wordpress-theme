@@ -277,39 +277,39 @@ function getMessageListWithOneSender(event) {
  */
 function delete_private_message_by_user(target_user_id) {
 
-    if (!confirm('确认要删除该用户发送给你的所有私信吗?')) {
-        return;
-    }
-
-    const data = {
-        target_user_id,
-    }
-
-    //成功的情况
-    let successCallback = function (response) {
-        MyToast.show_success('删除私信成功');
+    open_confirm_modal('确认要删除该用户发送给你的所有私信记录吗?', '', () => {
 
 
+        const data = {
+            target_user_id,
+        }
 
-    };
-
-    //错误的情况
-    let failCallback = function () {
-        MyToast.show_error('删除私信失败');
-    };
-
-    let completeCallback = function () {
-
-    };
+        //成功的情况
+        let successCallback = function (response) {
+            MyToast.show_success('删除私信成功');
 
 
-    $.ajax({
-        url: URLS.privateMessage,
-        data,
-        type: HTTP_METHOD.delete,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(failCallback).always(completeCallback);
 
+        };
+
+        //错误的情况
+        let failCallback = function () {
+            MyToast.show_error('删除私信失败');
+        };
+
+        let completeCallback = function () {
+
+        };
+
+
+        $.ajax({
+            url: URLS.privateMessage,
+            data,
+            type: HTTP_METHOD.delete,
+            headers: createAjaxHeader()
+        }).done(successCallback).fail(failCallback).always(completeCallback);
+
+    });
 }
 
 

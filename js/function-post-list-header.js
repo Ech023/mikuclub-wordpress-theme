@@ -1,5 +1,6 @@
 /// <reference path="common/base.js" />
 /// <reference path="common/constant.js" /> 
+/// <reference path="function-post-list.js" />
 
 let $post_list_orderby_element;
 let $post_list_sub_orderby_element;
@@ -39,7 +40,7 @@ function on_click_button_orderby_group($button) {
     const orderby_group = $button.data('orderby-group');
 
     const active_class = 'btn-secondary active';
-    const no_active_class = 'btn-light bg-gray-half';
+    const no_active_class = 'bg-gray-half';
 
     //切换所有排序组的按钮class类名, 移除选中状态
     $post_list_orderby_element.find('.btn.orderby_group').removeClass(active_class).addClass(no_active_class);
@@ -68,7 +69,7 @@ function on_click_button_sub_orderby($button) {
 
 
     const active_class = 'btn-secondary active';
-    const no_active_class = 'btn-light bg-gray-half';
+    const no_active_class = 'bg-gray-half';
 
     //切换所有排序组的按钮class类名, 移除选中状态
     $post_list_sub_orderby_element.find('.btn.sub_orderby').removeClass(active_class).addClass(no_active_class);
@@ -78,11 +79,9 @@ function on_click_button_sub_orderby($button) {
 
     const local_data = $button.data('parameters');
 
-    //更新列表的请求参数+重新请求列表
-    const $post_list_container_component = $('.post-list-container');
-    const data = $post_list_container_component.data('parameters');
-    Object.assign(data, local_data);
-    $post_list_container_component.data('parameters', data);
+    //更新参数
+    update_post_list_component_data(local_data);
+    //重新请求列表
     get_post_list(true);
 
 }
@@ -96,7 +95,7 @@ function on_click_button_download_type($button) {
 
 
     const active_class = 'btn-secondary active';
-    const no_active_class = 'btn-light bg-gray-half';
+    const no_active_class = 'bg-gray-half';
 
     //切换所有排序组的按钮class类名, 移除选中状态
     $post_list_download_type_element.find('.btn.download_type').removeClass(active_class).addClass(no_active_class);
@@ -106,10 +105,8 @@ function on_click_button_download_type($button) {
 
     const local_data = $button.data('parameters');
 
-    //更新列表的请求参数+重新请求列表
-    const $post_list_container_component = $('.post-list-container');
-    const data = $post_list_container_component.data('parameters');
-    Object.assign(data, local_data);
-    $post_list_container_component.data('parameters', data);
+    //更新参数
+    update_post_list_component_data(local_data);
+    //重新请求列表
     get_post_list(true);
 }

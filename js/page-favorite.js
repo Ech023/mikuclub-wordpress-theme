@@ -153,57 +153,55 @@ function getFavoritePostList(is_new_load = true) {
  */
 function deleteFavorite(event) {
 
-    //确认窗口
-    if (!confirm('确认要取消收藏吗?')) {
-        return;
-    }
-
-    //获取按钮
-    const $button = $(this);
-
-    let $grandparentElement = $button.parent().parent();
-
-    //创建请求数据
-    let data = {
-        post_id: $button.data('post-id'),
-    };
-
-    //注销按钮
-    $button.toggleDisabled();
-    $button.children().toggle();
-
-    //回调函数
-    let successCallback = function (response) {
-
-        //隐藏当前爷爷元素
-        $grandparentElement.fadeOut(300);
-        //创建通知弹窗
-        MyToast.show_success('已取消收藏');
-
-    };
+    open_confirm_modal('确认要取消收藏吗?', '', () => {
 
 
-    /**
-     * 错误情况
-     */
-    let failCallback = function () {
+        //获取按钮
+        const $button = $(this);
 
-        //创建通知弹窗
-        MyToast.show_error('请求错误 请重试');
+        let $grandparentElement = $button.parent().parent();
 
-        //重新激活按钮
+        //创建请求数据
+        let data = {
+            post_id: $button.data('post-id'),
+        };
+
+        //注销按钮
         $button.toggleDisabled();
         $button.children().toggle();
-    };
+
+        //回调函数
+        let successCallback = function (response) {
+
+            //隐藏当前爷爷元素
+            $grandparentElement.fadeOut(300);
+            //创建通知弹窗
+            MyToast.show_success('已取消收藏');
+
+        };
 
 
-    $.ajax({
-        url: URLS.favorite,
-        data,
-        type: HTTP_METHOD.delete,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(failCallback);
+        /**
+         * 错误情况
+         */
+        let failCallback = function () {
+
+            //创建通知弹窗
+            MyToast.show_error('请求错误 请重试');
+
+            //重新激活按钮
+            $button.toggleDisabled();
+            $button.children().toggle();
+        };
 
 
+        $.ajax({
+            url: URLS.favorite,
+            data,
+            type: HTTP_METHOD.delete,
+            headers: createAjaxHeader()
+        }).done(successCallback).fail(failCallback);
+
+    });
 }
 

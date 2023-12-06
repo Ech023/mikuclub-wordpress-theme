@@ -14,9 +14,9 @@ $(function () {
         //更改按钮状态
         checkButtonStatus();
 
-      
 
-       
+
+
         //绑定密码表单 点击事件
         $('.password-part input').on('click', function () {
             selectAllAndCopy($(this));
@@ -30,7 +30,7 @@ $(function () {
         $('.functional-part .post-share a.dropdown-item').on('click', '', '', setPostShare);
         $('.functional-part button.set-post-fail-times').on('click', '', '', setPostFailTime);
 
-       
+
 
 
 
@@ -346,42 +346,42 @@ function setPostFailTime(event) {
         return;
     }
 
-    if (!confirm('确认下载地址已失效了吗? (管理员会根据用户反馈次数, 退回稿件并通知UP补档)')) {
-        //退出
-        return;
-    }
-
-    let storageKey = LOCAL_STORAGE_KEY.postFailTimes;
-
-    let data = { post_id: postId };
+    open_confirm_modal('确认要反馈下载地址失效吗?' , '管理员会根据总体的反馈次数, 退回稿件并通知UP主下载已失效', () => {
 
 
-    //注销按钮
-    $button.toggleDisabled();
+        let storageKey = LOCAL_STORAGE_KEY.postFailTimes;
 
-    //成功的情况
-    let successCallback = function (response) {
-
-        addArrayElementToLocalStorage(storageKey, postId);
-        updateButton($button, '已反馈', 'btn-secondary', 'btn-outline-secondary', 1, true);
-        MyToast.show_success('反馈成功');
-
-    };
+        let data = { post_id: postId };
 
 
-    let completeCallback = function () {
-        //激活按钮
+        //注销按钮
         $button.toggleDisabled();
-    };
+
+        //成功的情况
+        let successCallback = function (response) {
+
+            addArrayElementToLocalStorage(storageKey, postId);
+            updateButton($button, '已反馈', 'btn-secondary', 'btn-outline-secondary', 1, true);
+            MyToast.show_success('反馈成功');
+
+        };
+
+
+        let completeCallback = function () {
+            //激活按钮
+            $button.toggleDisabled();
+        };
 
 
 
-    $.ajax({
-        url: URLS.failDown,
-        data,
-        type: HTTP_METHOD.get,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
+        $.ajax({
+            url: URLS.failDown,
+            data,
+            type: HTTP_METHOD.get,
+            headers: createAjaxHeader()
+        }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
+
+    });
 }
 
 /**

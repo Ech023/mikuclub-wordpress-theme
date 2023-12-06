@@ -8,6 +8,9 @@
 /// <reference path="class/class-ua-parser.js" />
 /// <reference path="class/class-user.js" />
 
+/// <reference path="function-float-menu-bar.js" />
+
+
 
 
 /**
@@ -60,6 +63,19 @@ $(function () {
     });
 
 
+    /**
+    * 创建私信窗口按钮 点击事件
+    * 创建显示模态窗
+    */
+    $('body').on('click', 'button.open_change_paged_modal', '', function () {
+
+        const data = get_post_list_component_paged_and_max_num_pages();
+        const paged = data.paged;
+        const max_num_pages = data.max_num_pages;
+
+        new ChangePagedModal(paged, max_num_pages).create().show();
+    });
+
 
 });
 
@@ -84,13 +100,14 @@ function hide_loading_modal() {
 
 /**
  * 显示确认模态窗
- * @param {string} text 需要确认的信息
+ * @param {string} text 需要确认的标题
+ * @param {string} text_secondary 需要确认的副标题
  * @param {function|null} confirm_callback 确认触发的回调
  * @param {function|null} cancel_callback 确认触发的回调
  * @returns {void}
  */
-function open_confirm_modal(text, confirm_callback , cancel_callback = null) {
-    new ConfirmModal(text).create(confirm_callback, cancel_callback).show();
+function open_confirm_modal(text, text_secondary, confirm_callback, cancel_callback = null) {
+    new ConfirmModal(text, text_secondary).create(confirm_callback, cancel_callback).show();
 }
 
 /**

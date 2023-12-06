@@ -1,3 +1,16 @@
+/// <reference path="common/base.js" />
+/// <reference path="common/constant.js" />
+/// <reference path="class/class-comment.js" />
+/// <reference path="class/class-message.js" />
+/// <reference path="class/class-modal.js" />
+/// <reference path="class/class-post.js" />
+/// <reference path="class/class-toast.js" />
+/// <reference path="class/class-ua-parser.js" />
+/// <reference path="class/class-user.js" />
+/// <reference path="function-modal.js" />
+
+
+
 /***
  * JS函数文件
  */
@@ -261,36 +274,34 @@ function checkBaiduPanValidity(link, isValidCallback, isInvalidCallback, errorCa
  */
 function add_user_black_list(target_user_id) {
 
+    open_confirm_modal('确认要将该用户添加到黑名单里吗?', '添加后对方将无法在你的投稿里评论/无法发私信给你/对方的投稿将会被遮盖, 在个人的用户信息页里可以管理黑名单',  () => {
 
-    if (!confirm('确认要将该用户添加到黑名单里吗? (添加后对方将无法在你的投稿里评论/无法发私信给你/对方的投稿将会被遮盖, 后续可以在个人中心里移除黑名单)')) {
-        return;
-    }
+        const data = {
+            target_user_id,
+        }
 
-    const data = {
-        target_user_id,
-    }
+        //成功的情况
+        let successCallback = function (response) {
+            MyToast.show_success('添加黑名单成功');
+        };
 
-    //成功的情况
-    let successCallback = function (response) {
-        MyToast.show_success('添加黑名单成功');
-    };
+        //错误的情况
+        let failCallback = function () {
+            MyToast.show_error('添加黑名单失败');
+        };
 
-    //错误的情况
-    let failCallback = function () {
-        MyToast.show_error('添加黑名单失败');
-    };
+        let completeCallback = function () {
 
-    let completeCallback = function () {
+        };
 
-    };
+        $.ajax({
+            url: URLS.userBlackList,
+            data,
+            type: HTTP_METHOD.post,
+            headers: createAjaxHeader()
+        }).done(successCallback).fail(failCallback).always(completeCallback);
 
-
-    $.ajax({
-        url: URLS.userBlackList,
-        data,
-        type: HTTP_METHOD.post,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(failCallback).always(completeCallback);
+    });
 
 }
 
@@ -300,7 +311,7 @@ function add_user_black_list(target_user_id) {
  */
 function delete_user_black_list(target_user_id) {
 
-    open_confirm_modal('确认要将该用户从黑名单里移除吗?', () => {
+    open_confirm_modal('确认要将该用户从黑名单里移除吗?', '', () => {
 
         const data = {
             target_user_id,

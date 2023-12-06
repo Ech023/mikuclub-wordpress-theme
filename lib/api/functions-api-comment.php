@@ -58,7 +58,7 @@ function api_delete_comment($data)
 {
 	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-		//获取 id 参数
+				//获取 id 参数
 		$comment_id = Input_Validator::get_array_value($data, 'id', Input_Validator::TYPE_INT, true);
 
 		//当前登陆用户ID
@@ -107,6 +107,8 @@ function api_delete_comment($data)
 		{
 			throw new Exception('无权操作');
 		}
+
+		return $result;
 	});
 
 	return $result;

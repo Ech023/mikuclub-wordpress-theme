@@ -221,7 +221,7 @@ function sendComment(event) {
 
     //获取按钮
     let $submitButton = $(this);
-   
+
 
     //获取下一页请求参数
     let $getNextPageElement = $('.comments-part .get-next-page');
@@ -473,43 +473,43 @@ function deleteComment(event) {
         return;
     }
 
-    if (!confirm('确认要删除该评论吗?')) {
-        return;
-    }
+    open_confirm_modal('确认要删除该评论吗?', '', () => {
 
-    $deleteButton.data('loading', true);
-    $deleteButton.html('删除中...');
+        $deleteButton.data('loading', true);
+        $deleteButton.html('删除中...');
 
-    //成功的情况
-    let successCallback = function (response) {
+        //成功的情况
+        let successCallback = function (response) {
 
-        $deleteButton.parents(`.comment-item-${commentId}`).hide();
-        MyToast.show_success('删除评论成功');
+            $deleteButton.parents(`.comment-item-${commentId}`).hide();
+            MyToast.show_success('删除评论成功');
 
-        //更新下次请求的offset
-        offset = parseInt(offset) > 0 ? parseInt(offset) - 1 : 0;
-        $getNextPageElement.data('offset', offset);
+            //更新下次请求的offset
+            offset = parseInt(offset) > 0 ? parseInt(offset) - 1 : 0;
+            $getNextPageElement.data('offset', offset);
 
-    };
+        };
 
-    //错误的情况
-    let failCallback = function () {
-        MyToast.show_error('删除评论失败');
-    };
+        //错误的情况
+        let failCallback = function () {
+            MyToast.show_error('删除评论失败');
+        };
 
-    let completeCallback = function () {
+        let completeCallback = function () {
 
-        $deleteButton.removeData('loading');
-        $deleteButton.html('删除');
+            $deleteButton.removeData('loading');
+            $deleteButton.html('删除');
 
-    };
+        };
 
 
-    $.ajax({
-        url: URLS.comments + '/' + commentId,
-        type: HTTP_METHOD.delete,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(failCallback).always(completeCallback);
+        $.ajax({
+            url: URLS.comments + '/' + commentId,
+            type: HTTP_METHOD.delete,
+            headers: createAjaxHeader()
+        }).done(successCallback).fail(failCallback).always(completeCallback);
+
+    });
 
 }
 

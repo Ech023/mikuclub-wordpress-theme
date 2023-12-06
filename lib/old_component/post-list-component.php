@@ -2,6 +2,8 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Page_Type;
+
 /**
  * 文章列表组件
  * @return string
@@ -140,8 +142,10 @@ HTML;
 
 	}
 
+	$parameters = $wp_query->query;
+	$parameters[Post_Query::CUSTOM_PAGE_TYPE] = Page_Type::get_current_type();
 	//储存列表的请求参数
-	$json_parameters = htmlspecialchars(json_encode($wp_query->query));
+	$json_parameters = htmlspecialchars(json_encode($parameters));
 
 	$output = <<<HTML
 		<div class="post-list-container" data-parameters='{$json_parameters}'>
