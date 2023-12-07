@@ -28,12 +28,15 @@ function print_home_post_list_component( $post_list, $list_title, $icon_class, $
 								{$my_post->post_views}
 							</div>
 						</div>
-						<img class="card-img-top" src="{$my_post->post_image}" alt="{$my_post->post_title}"/>
+						<img class="card-img-top bg-light-2" src="{$my_post->post_image}" alt="{$my_post->post_title}"/>
 					</div>
-					<div class="card-body py-2 text-center text-2-rows">
-						<a class="card-link stretched-link small" title="{$my_post->post_title}" href="{$my_post->post_href}" target="_blank">
-							{$my_post->post_title}
-						</a>
+					<div class="card-body py-2 ">
+						<div class="text-center text-2-rows">
+							<a class="card-link stretched-link fs-75 fs-sm-875" title="{$my_post->post_title}" href="{$my_post->post_href}" target="_blank">
+								{$my_post->post_title}
+							</a>
+						</div>
+						
 					</div>
 				</div>
 			</div>

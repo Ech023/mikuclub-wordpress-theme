@@ -31,7 +31,7 @@ function related_posts_component()
                                                  <i class="fa-solid fa-eye"></i> {$my_post->post_views}
                                        </div>
                                 </div>
-                                <img class="card-img-top" src="{$my_post->post_image}" alt="{$my_post->post_title}"/>
+                                <img class="card-img-top bg-light-2" src="{$my_post->post_image}" alt="{$my_post->post_title}"/>
                             </div>
                             
                             <div class="card-body  py-2 text-center text-2-rows">

@@ -1,5 +1,7 @@
 <?php
 
+namespace mikuclub;
+
 use mikuclub\constant\Admin_Meta;
 
 use function mikuclub\print_breadcrumbs_component;
@@ -9,28 +11,34 @@ use function mikuclub\post_list_component;
 
 get_header(); ?>
 
-
-<header class="archive-header tag-header">
-   
-        <?php echo print_breadcrumbs_component(); ?>
-    
-</header>
-
 <?php
 
+$breadcrumbs = print_breadcrumbs_component();
+
+$ad_banner = '';
 if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 {
-    echo '<div class="pop-banner  text-center my-4">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
+    $ad_banner = '<div class="pop-banner text-center my-2 pb-2 border-bottom">' .  get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
 }
 
-?>
+$post_list_header = print_post_list_header_component();
+$post_list_component = post_list_component();
 
+$output = <<<HTML
 
-<?php echo post_list_component() ?>
+	{$breadcrumbs}
 
+	{$ad_banner}
 
+	{$post_list_header}
 
-<?php
+	{$post_list_component}
+	
+	
+HTML;
+
+echo $output;
+
 
 //get_sidebar(); 
 get_footer();

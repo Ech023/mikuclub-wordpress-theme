@@ -47,11 +47,11 @@ function set_email_reset_password_message($message, $key,  $user_login, $user_da
                 如果你申请了重置 {$user_login} 的密码，请打开下面的链接来设置新密码。如果你没有提出该请求，请忽略这封邮件。
             </p>
             <br/>
-            <h4><a href="{$url}" title="密码重置">重置密码</a></h4>
+            <h5><a href="{$url}" title="密码重置">重置密码</a></h5>
             <br/>
             <p>或者复制下面地址到浏览器地址栏来访问</p>
             <br/>
-            <h4>{$url}</h4>
+            <h5>{$url}</h5>
             <br/>
             <br/>
             <br/>

@@ -39,8 +39,8 @@ function on_click_button_orderby_group($button) {
 
     const orderby_group = $button.data('orderby-group');
 
-    const active_class = 'btn-secondary active';
-    const no_active_class = 'bg-gray-half';
+    const active_class = 'btn-dark-1 active';
+    const no_active_class = 'btn-light-2';
 
     //切换所有排序组的按钮class类名, 移除选中状态
     $post_list_orderby_element.find('.btn.orderby_group').removeClass(active_class).addClass(no_active_class);
@@ -67,9 +67,8 @@ function on_click_button_orderby_group($button) {
  */
 function on_click_button_sub_orderby($button) {
 
-
-    const active_class = 'btn-secondary active';
-    const no_active_class = 'bg-gray-half';
+    const active_class = 'btn-dark-1 active';
+    const no_active_class = 'btn-light-2';
 
     //切换所有排序组的按钮class类名, 移除选中状态
     $post_list_sub_orderby_element.find('.btn.sub_orderby').removeClass(active_class).addClass(no_active_class);
@@ -92,10 +91,8 @@ function on_click_button_sub_orderby($button) {
  */
 function on_click_button_download_type($button) {
 
-
-
-    const active_class = 'btn-secondary active';
-    const no_active_class = 'bg-gray-half';
+    const active_class = 'btn-dark-1 active';
+    const no_active_class = 'btn-light-2';
 
     //切换所有排序组的按钮class类名, 移除选中状态
     $post_list_download_type_element.find('.btn.download_type').removeClass(active_class).addClass(no_active_class);

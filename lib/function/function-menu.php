@@ -150,9 +150,11 @@ HTML;
 
             //最终输出
             $links_list_html = <<<HTML
-                <ul class="nav">
-                    {$links_list_html}
-                </ul>
+                <div class="friends-link my-2">
+                    <ul class="nav">
+                        {$links_list_html}
+                    </ul>
+                </div>
 HTML;
 
             return $links_list_html;

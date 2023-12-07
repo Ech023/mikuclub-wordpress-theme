@@ -187,7 +187,7 @@ class Weibo_Share
         if ($bilibili_video_id)
         {
             $video_part = <<<HTML
-                <h4>在线播放</h4>
+                <h5>在线播放</h5>
                 <div class=" py-2 py-md-0">
                     <h2>
                         <a class="btn btn-miku w-100 w-md-50" href="https://www.bilibili.com/video/{$bilibili_video_id}" target="_blank" rel="external nofollow">点击观看</a>
@@ -198,7 +198,7 @@ HTML;
 
         //下载部分
         $download_part = <<<HTML
-            <h4>下载地址</h4>
+            <h5>下载地址</h5>
             <div class=" py-2 py-md-0">
                 <h2>
                     <a href="{$post_link}" target="_blank">点击查看下载地址</a>

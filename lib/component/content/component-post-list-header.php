@@ -24,7 +24,7 @@ function print_post_list_header_component()
 					'value' => 'modified',
 					'parameters' => [
 						Post_Query::CUSTOM_ORDERBY => 'modified',
-						// Post_Query::CUSTOM_ORDER_DATA_RANGE => '',
+						Post_Query::CUSTOM_ORDER_DATA_RANGE => '',
 					],
 				],
 				[
@@ -32,7 +32,7 @@ function print_post_list_header_component()
 					'value' => 'date',
 					'parameters' => [
 						Post_Query::CUSTOM_ORDERBY => 'date',
-						// Post_Query::CUSTOM_ORDER_DATA_RANGE => '',
+						Post_Query::CUSTOM_ORDER_DATA_RANGE => '',
 					],
 				],
 			],
@@ -130,11 +130,11 @@ function print_post_list_header_component()
 		$button_class = '';
 		if ($orderby['group'] === $active_custom_orderby)
 		{
-			$button_class = 'btn-secondary active';
+			$button_class = 'btn-dark-1 active';
 		}
 		else
 		{
-			$button_class = 'bg-gray-half';
+			$button_class = 'btn-light-2';
 		}
 
 
@@ -156,11 +156,11 @@ HTML;
 			//兼容 最新修改 和 最新发布
 			if ($sub_orderby['value'] === $active_custom_order_data_range)
 			{
-				$button_class = 'btn-secondary active';
+				$button_class = 'btn-dark-1 active';
 			}
 			else
 			{
-				$button_class = 'bg-gray-half';
+				$button_class = 'btn-light-2';
 			}
 
 			//如果所属排序组未显示, 隐藏子排序
@@ -266,11 +266,11 @@ function print_download_type_by_items_component()
 		$button_class = '';
 		if ($item['value'] === $active_custom_down_type)
 		{
-			$button_class = 'btn-secondary active';
+			$button_class = 'btn-dark-1 active';
 		}
 		else
 		{
-			$button_class = 'bg-gray-half';
+			$button_class = 'btn-light-2';
 		}
 
 		$json_parameters = htmlspecialchars(json_encode($item['parameters']));

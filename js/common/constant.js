@@ -1,6 +1,6 @@
-/// <reference path="common/base.js" />
-/// <reference path="function.js" />
-/// <reference path="function-ajax.js" />
+/// <reference path="../common/base.js" />
+/// <reference path="../function.js" />
+/// <reference path="../function-ajax.js" />
 
 const POST_FEEDBACK_RANK = {
 

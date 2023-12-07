@@ -153,26 +153,26 @@ HTML;
     $site_announcement = '';
     if (!is_singular())
     {
-        $speedbar_class = !is_home() ? 'd-none d-sm-block' : '';
+        $announcement_class = !is_home() ? 'd-none d-sm-block' : '';
         $announcement_text = get_theme_option(Admin_Meta::SITE_ANNOUNCEMENT_TOP);
         $announcement_collapse_text = get_theme_option(Admin_Meta::SITE_ANNOUNCEMENT_TOP_COLLAPSE);
 
         $site_announcement = <<<HTML
 
             <!-- 公告栏-->
-            <div class="speedbar small my-2 px-3 px-md-4 {$speedbar_class}">
+            <div class="announcement small my-2 px-3 px-md-4 {$announcement_class}">
 
                 <div class="row ">
 
                     <div class="col">
-                        <div class="rounded bg-gray-half p-2 h-100 ">
+                        <div class="rounded bg-light-2 p-2 h-100 ">
                             <span><i class="fa-solid fa-bullhorn me-2"></i> 公告:</span>
                             <div class="d-inline">{$announcement_text}</div>
                         </div>
                     </div>
                     <!-- <div class="col-12 col-md-auto ps-md-1 mt-2 mt-md-0 text-end">
 
-                        <div class="rounded bg-gray-half p-2 h-100" title="如果无法正常加载站内图片, 可以尝试开启备用图床 (备用图床的加载速度比默认的更缓慢)">
+                        <div class="rounded bg-light-2 p-2 h-100" title="如果无法正常加载站内图片, 可以尝试开启备用图床 (备用图床的加载速度比默认的更缓慢)">
                             <span class="enable_backup_image_domain_title me-1">
                             站内图片无法加载?
                             </span>
@@ -186,7 +186,7 @@ HTML;
 
                      <!-- 输出默认折叠区域 (qq群信息)-->
                     <div id="qq-group-info" class="col-12 my-2 collapse">
-                        <div class="rounded bg-gray-half p-2">
+                        <div class="rounded bg-light-2 p-2">
                             {$announcement_collapse_text}
                         </div>
                     </div>

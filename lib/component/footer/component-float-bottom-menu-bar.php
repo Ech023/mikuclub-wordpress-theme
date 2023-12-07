@@ -71,7 +71,12 @@ HTML;
 
 HTML;
     }
-    else
+    else if (
+        (
+            is_home() && get_query_var(Post_Query::PAGED) > 0
+        )
+        || !is_home()
+    )
     {
 
         $menu_items .= <<<HTML

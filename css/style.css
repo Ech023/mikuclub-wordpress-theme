@@ -1,0 +1,99 @@
+/**
+网页全站范围
+ */
+
+
+/* 顶部封面图 */
+.image-windows {
+    height: 150px;
+    background-position: center -30px;
+    background-size: 2560px auto;
+}
+
+
+/* 顶部封面图里的文字信息 */
+.image-windows .copyright-text {
+    font-size: smaller;
+    transform: scale(0.6);
+    /*transform-origin: right;*/
+}
+
+
+/**
+公告栏里的 链接
+ */
+.announcement a {
+    color: var(--color-miku);
+}
+
+
+
+/**
+幻灯片底部渐变背景
+ */
+.carousel .carousel-background {
+    /* position: absolute; */
+    /* bottom: 0; */
+    /* z-index: 1; */
+    /* width: 100%; */
+    height: 30%;
+    background-image: linear-gradient(transparent, black);
+
+}
+
+/**
+幻灯片item标题z高度
+ */
+.carousel .carousel-item .carousel-caption {
+    z-index: 1;
+}
+
+
+/**
+全站 自定义主菜单选项 背景颜色
+ */
+nav.navbar .dropdown-item.active,
+.dropdown-item:active {
+    background-color: var(--color-miku-dark);
+}
+
+
+
+/** 消息页面 ====================================================*/
+
+/**
+自定义 消息页面 消息列表 改变 默认鼠标手势
+ */
+.message-page .message-item .card-header {
+    cursor: pointer;
+}
+
+/**
+自定义 消息页面 消息列表 增加 hover 效果
+ */
+.message-page .message-item .card-header:hover {
+    background-color: #f8f9fa !important;
+}
+
+
+/** ====================================================*/
+/*黑名单作者的文章遮罩*/
+
+.black-user-post-mask::before {
+    content: "黑名单作者";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* 白色透明遮罩 */
+    background-color: rgba(255, 255, 255, 0.90);
+    z-index: 1;
+    /* 确保遮罩位于内容上方 */
+    border-radius: var(--bs-card-border-radius);
+    color: var(--color-dark-1);
+    font-size: 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

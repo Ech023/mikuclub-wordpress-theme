@@ -3,6 +3,7 @@
 namespace mikuclub;
 
 use mikuclub\constant\Category;
+use mikuclub\constant\Config;
 use mikuclub\constant\Expired;
 use mikuclub\constant\Option_Meta;
 use mikuclub\constant\Page_Type;
@@ -32,7 +33,7 @@ function set_post_list_query_vars($query_vars)
     $query_vars[Post_Query::IGNORE_STICKY_POSTS] = 1;
 
     /*设置默认的文章显示数量*/
-    $query_vars[Post_Query::POSTS_PER_PAGE] = get_option(Option_Meta::POSTS_PER_PAGE);
+    $query_vars[Post_Query::POSTS_PER_PAGE] = Config::POST_LIST_LENGTH;
     //$query_vars['orderby']        = 'modified'; //使用最后修改时间作为默认排序
 
 

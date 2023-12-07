@@ -72,7 +72,7 @@ class MyToast {
 
         const $element = $(`
 
-            <div class="toast my-toast mb-2 p-1 bg-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast my-toast mb-2 p-1 bg-light-1" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
                     <i class="${icon} ${color_class} fa-lg me-2"></i>
                     <span class="${color_class} me-auto h5 mb-0">${this.title}</span>

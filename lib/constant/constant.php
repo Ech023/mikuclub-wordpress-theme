@@ -42,7 +42,7 @@ class Config
     //主页 关注用户列表文章数量
     const HOME_MY_FOLLOWED_POST_LIST_LENGTH = 12;
     //主页 列表文章数量
-    const HOME_POST_LIST_LENGTH = 12;
+    const HOME_POST_LIST_LENGTH = 6;
 
 
     //幻灯片里显示的文章数量
@@ -59,6 +59,9 @@ class Config
     const HOT_POST_LIST_LENGTH = 6;
     //热门文章基础有效天数
     const HOT_POST_EXPIRED_DAY = 7;
+
+    //默认文章列表数量
+    const POST_LIST_LENGTH = 48;
 
 
     //内容页底部相关推荐里的文章数量
@@ -418,6 +421,22 @@ class Page_Type
 
         return $result;
     }
+}
+
+/**
+ * 用来告诉JS, 需要使用的POST文章模板种类
+ */
+class Post_Template
+{
+    const DEFAULT = 'default';
+    //收藏夹文章
+    const FAVORITE_POST = 'favorite_post';
+    //访问历史文章
+    const HISTORY_POST = 'history_post';
+     //投稿管理文章
+     const MANAGE_POST = 'manage_post';
+    //下载失效里的文章
+    const FAIL_DOWNLOAD_POST = 'fail_download_post';
 }
 
 /**

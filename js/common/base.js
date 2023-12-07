@@ -20,11 +20,12 @@ const MESSAGE_TYPE = {
 };
 
 //文章类型
-const POST_TYPE = {
-    post: 'post',
+const POST_TEMPLATE = {
+    default: 'default',
     favoritePost: 'favorite_post',
-    managePost: 'manage_post',
     historyPost: 'history_post',
+    managePost: 'manage_post',
+    failDownloadPost: 'fail_download_post',
 
 };
 

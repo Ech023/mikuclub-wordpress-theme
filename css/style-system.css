@@ -3,51 +3,55 @@
  */
 
 :root {
-    --main-color: #39c5bb;
-    --main-color-hover: #30a59c;
 
     /*--dark-mode-bg-color: rgb(48,48,48);*/
 
-    --container-bg-color: #F1F2F3;
-
-    --container-color: white;
-
+    /* 网站主体最大宽度 */
     --container-max-width: 2560px;
+    /* 网站边距 */
+    --container-padding: calc(1rem * 2);
+    /* 图片比例 */
+    --image-scale: calc(1 / 16 * 9);
 
-    --image-scale: 1 / 16 * 9;
+    /* col 元素的默认边距*/
+    --col-padding: calc(1rem * 0.75 * 2);
 
-    --container-margin: calc(1.5rem * 2);
+    --color-miku: #39c5bb;
+    --color-miku-dark: #30a59c;
+    --color-miku-transparent: #39c5bbb0;
 
-    --container-sm-margin: calc(1rem * 2);
+    --color-light-1: white;
+    --color-light-2: rgba(0, 0, 0, 0.05);
+    --color-light-3: rgba(0, 0, 0, 0.1);
 
-    --col-margin: calc(1.5rem * 0.5 * 2);
+    --color-dark-1: #0f0f0f;
+    --color-dark-2: #606060;
 
-    --secondary-bg-color: #F1F2F3;
 
-    --footer-bg-color: #F8F9FA;
 
-    --text-color: var(--bs-black);
+}
 
-    --button-text-color: var(--bs-white);
+@media (min-width: 992px) {
 
+    :root {
+        --container-padding: calc(1.5rem * 2);
+    }
 }
 
 
 /**
 主体默认颜色
 */
+
 body {
-    background-color: var(--container-bg-color);
+    background-color: var(--color-light-2);
 }
 
 body .container-fluid {
-    background-color: var(--container-color);
+    background-color: var(--color-light-1);
     max-width: var(--container-max-width);
 }
 
-.footer {
-    background-color: var(--footer-bg-color);
-}
 
 
 /**
@@ -73,7 +77,7 @@ section {
 a,
 .nav-link,
 .page-link {
-    color: var(--text-color);
+    color: var(--color-dark-1);
     text-decoration: none;
 }
 
@@ -82,18 +86,23 @@ a:hover,
 .nav-link:focus,
 .nav-link:hover,
 .page-link:hover {
-    color: var(--main-color-hover);
-    text-decoration: none;
+    color: var(--color-miku);
 }
 
-/**
-设置 a标签 注销样式
- */
+
+/*设置 a标签 注销样式*/
 a.disabled {
-    color: var(--bs-btn-disabled-color);
-    opacity: .65;
+    color: var(--color-dark-2);
+    opacity: .75;
     pointer-events: none;
 }
+
+
+/*所有图片自动圆角*/
+img {
+    border-radius: .25rem;
+}
+
 
 /** ======================
 菜单相关
@@ -110,71 +119,125 @@ a.disabled {
 跳过第一个选项
  */
 .navbar .navbar-nav .nav-item.active:not(:first-child) .nav-link {
-    color: var(--main-color);
+    color: var(--color-miku);
 }
 
 
 /** ===================*/
 
-/**
-隐藏元素内文本, 但是保留其他东西的显示
- */
-.hide-text {
-    overflow: hidden;
-    text-indent: 100%;
-    white-space: nowrap;
+.bg-light-1{
+    background-color: var(--color-light-1) !important;
 }
 
-.text-body {
-    color: var(--text-color) !important;
+.bg-light-2{
+    background-color: var(--color-light-2) !important;
+}
+
+.text-dark-1 {
+    color: var(--color-dark-1) !important;
+}
+
+.text-dark-2 {
+    color: var(--color-dark-2) !important;
 }
 
 /**
 自定义颜色 初音绿
  */
-.btn-miku,
-.badge-miku {
-    color: var(--button-text-color);
-    background-color: var(--main-color);
-    border-color: var(--main-color);
-}
-
-.btn-miku:hover,
-.btn-miku:active,
-.btn-miku:focus-visible {
-    color: var(--button-text-color) !important;
-    background-color: var(--main-color-hover) !important;
-    border-color: var(--main-color-hover) !important;
-}
-
-.btn-miku a {
-    color: var(--button-text-color);
-}
 
 .text-miku {
-    color: var(--main-color) !important;
-}
-
-.text-bg-miku {
-    color: var(--button-text-color) !important;
-    background-color: var(--main-color) !important;
+    color: var(--color-miku) !important;
 }
 
 .bg-miku {
-    background-color: var(--main-color) !important;
+    background-color: var(--color-miku) !important;
+}
+
+.text-bg-miku {
+    color: #fff !important;
+    background-color: var(--color-miku) !important;
+}
+
+
+/**
+自定义 初音绿按钮
+ */
+
+.btn-miku {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--color-miku);
+    --bs-btn-border-color: var(--color-miku);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--color-miku-dark);
+    --bs-btn-hover-border-color: var(--color-miku-dark);
+    --bs-btn-focus-shadow-rgb: 60, 153, 110;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--color-miku-dark);
+    --bs-btn-active-border-color: var(--color-miku-dark);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--color-miku-transparent);
+    --bs-btn-disabled-border-color: var(--color-miku-transparent);
+
 }
 
 .btn-outline-miku {
-    color: var(--main-color);
-    border-color: var(--main-color);
+    --bs-btn-color: var(--color-miku);
+    --bs-btn-border-color: var(--color-miku);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--color-miku-dark);
+    --bs-btn-hover-border-color: var(--color-miku-dark);
+    --bs-btn-focus-shadow-rgb: 25, 135, 84;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--color-miku-dark);
+    --bs-btn-active-border-color: var(--color-miku-dark);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: var(--color-miku-transparent);
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: var(--color-miku-transparent);
+    --bs-gradient: none;
+
+    border: none;
+
 }
 
-.btn-outline-miku:hover {
-    color: var(--button-text-color);
-    border-color: var(--main-color-hover);
-    background-color: var(--main-color-hover);
+.btn-light-2 {
+    --bs-btn-color: var(--color-dark-1);
+    --bs-btn-bg: var(--color-light-2);
+    --bs-btn-border-color: var(--color-light-2);
+    --bs-btn-hover-color: var(--color-dark-1);
+    --bs-btn-hover-bg: var(--color-light-3);
+    --bs-btn-hover-border-color: var(--color-light-3);
+    --bs-btn-focus-shadow-rgb: 211, 212, 213;
+    --bs-btn-active-color: var(--color-dark-1);
+    --bs-btn-active-bg: var(--color-light-3);
+    --bs-btn-active-border-color: var(--color-light-3);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: var(--color-dark-1);
+    --bs-btn-disabled-bg: var(--color-light-3);
+    --bs-btn-disabled-border-color: var(--color-light-3);
+
+    border: none;
 }
 
+.btn-dark-1 {
+    --bs-btn-color: var(--color-light-1);
+    --bs-btn-bg: var(--color-dark-1);
+    --bs-btn-border-color: var(--color-dark-1);
+    --bs-btn-hover-color: var(--color-light-1);
+    --bs-btn-hover-bg: var(--color-dark-1);
+    --bs-btn-hover-border-color: var(--color-dark-1);
+    --bs-btn-focus-shadow-rgb: 66, 70, 73;
+    --bs-btn-active-color: var(--color-light-1);
+    --bs-btn-active-bg: var(--color-dark-1);
+    --bs-btn-active-border-color: var(--color-dark-1);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: var(--color-light-1);
+    --bs-btn-disabled-bg: var(--color-dark-1);
+    --bs-btn-disabled-border-color: var(--color-dark-1);
+
+    border: none;
+  }
 
 /**
 自定义背景颜色 半透明
@@ -183,14 +246,8 @@ a.disabled {
     background-color: #00000080 !important;
 }
 
-.bg-gray-half {
-    background-color: var(--secondary-bg-color) !important;
-}
 
-/*所有图片自动圆角*/
-img {
-    border-radius: .25rem;
-}
+
 
 
 
@@ -215,26 +272,6 @@ img {
 }
 
 
-
-/**
-消息弹窗 ====================================================
-
-消息弹窗第一排显示
- */
-.my-toast-system {
-    z-index: 1080;
-}
-
-/**
-自定义消息弹窗最小宽度
- */
-div.my-toast-system .toast {
-    min-width: 220px;
-}
-
-/*======================================================*/
-
-
 /** 滚动条 ====================================================*/
 
 /* 滚动槽宽度 */
@@ -245,37 +282,35 @@ div.my-toast-system .toast {
 /* 滚动槽 */
 ::-webkit-scrollbar-track {
     border-radius: .25rem;
-    background: rgba(0, 0, 0, 0.06);
+    background: var(--color-light-2);
 
 }
 
 /* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
     border-radius: .25rem;
-    background: var(--main-color);
+    background: var(--color-miku);
     width: 300px;
-
 }
 
 /* 滚动条滑块 hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--main-color-hover);
+    background: var(--color-miku-dark);
 }
 
 /** ====================================================*/
 
-/**
-字体放大
- */
-.large {
-    font-size: 120%;
-    font-weight: 400;
-}
 
 /*清除浮动*/
 .clear-both {
     clear: both;
 }
+
+/* 鼠标手势 */
+.cursor_pointer {
+    cursor: pointer;
+}
+
 
 
 /**
@@ -290,43 +325,37 @@ div.my-toast-system .toast {
 }
 
 
-.medium {
 
-    font-size: medium;
-    font-weight: normal;
-
-}
-
-.medium-bold {
-
-    font-size: medium;
-    font-weight: 500;
-
-}
 
 
 .text-1-rows {
-    height: 2.00rem;
+    height: 1.5rem;
     overflow: hidden;
 }
 
 .text-2-rows {
-    height: 3.75rem;
+    height: 2.5rem;
     overflow: hidden;
+    line-height: 1.25rem;
 }
 
-.cursor_pointer {
-    cursor: pointer;
+.text-3-rows {
+    height: 3.75rem;
+    overflow: hidden;
+    line-height: 1.25rem;
 }
+
+
 
 .fs-100 {
     font-size: 1rem !important;
 }
-
+.fs-875 {
+    font-size: 0.875rem !important;
+}
 .fs-75 {
     font-size: 0.75rem !important;
 }
-
 .fs-50 {
     font-size: 0.50rem !important;
 }
@@ -336,11 +365,12 @@ div.my-toast-system .toast {
     .fs-sm-100 {
         font-size: 1rem !important;
     }
-
+    .fs-sm-875 {
+        font-size: 0.875rem !important;
+    }
     .fs-sm-75 {
         font-size: 0.75rem !important;
     }
-
     .fs-sm-50 {
         font-size: 0.50rem !important;
     }
@@ -352,13 +382,83 @@ div.my-toast-system .toast {
     .fs-md-100 {
         font-size: 1rem !important;
     }
-
+    .fs-md-875 {
+        font-size: 0.875rem !important;
+    }
     .fs-md-75 {
         font-size: 0.75rem !important;
     }
-
     .fs-md-50 {
         font-size: 0.50rem !important;
     }
 }
 
+
+
+
+@media (min-width: 576px) {
+
+    .w-sm-auto {
+        width: auto !important;
+    }
+
+    .w-sm-50 {
+        width: 50% !important;
+    }
+
+  
+
+}
+
+
+/*md*/
+@media (min-width: 768px) {
+
+    .w-md-50 {
+        width: 50% !important;
+    }
+
+    .w-md-75 {
+        width: 75% !important;
+    }
+
+
+}
+
+/*lg*/
+@media (min-width: 992px) {
+
+    .w-lg-50 {
+        width: 50% !important;
+    }
+
+    .w-lg-75 {
+        width: 75% !important;
+    }
+
+}
+
+
+
+
+
+/*
+自适应性模板
+=================================================
+*/
+
+
+/*sm*/
+@media (min-width: 576px) {}
+
+/*md*/
+@media (min-width: 768px) {}
+
+/*lg*/
+@media (min-width: 992px) {}
+
+/*xl*/
+@media (min-width: 1200px) {}
+
+/*xxl*/
+@media (min-width: 1400px) {}

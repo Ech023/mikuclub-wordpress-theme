@@ -479,16 +479,19 @@ function addPostViews(post_id) {
         return;
     }
 
-    //降低请求的发送几率 , 降低数据库负载
-    let index = Math.floor(Math.random() * 5) + 1;
+    const view_number = 1;
+    $.get(URLS.postViewCount, { post_id, view_number }, null);
 
-    if (index === 3) {
+    // //降低请求的发送几率 , 降低数据库负载
+    // let index = Math.floor(Math.random() * 5) + 1;
 
-        let view_number = (Math.floor(Math.random() * 10) + 1);
+    // if (index === 3) {
 
-        //发送请求
-        $.get(URLS.postViewCount, { post_id, view_number }, null);
-    }
+    //     let view_number = (Math.floor(Math.random() * 10) + 1);
+
+    //     //发送请求
+    //     $.get(URLS.postViewCount, { post_id, view_number }, null);
+    // }
 
 
 

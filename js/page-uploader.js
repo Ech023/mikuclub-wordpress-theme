@@ -91,7 +91,7 @@ function getManagePostList() {
         if (isNotEmptyArray(response.posts)) {
 
             //创建自定义文章列表
-            let newPostList = new MyPostSlimList(POST_TYPE.managePost);
+            let newPostList = new MyPostSlimList(POST_TEMPLATE.managePost);
             //转换成自定义文章格式
             newPostList.add(response.posts);
             //插入内容到页面中

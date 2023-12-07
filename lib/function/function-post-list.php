@@ -69,7 +69,7 @@ function get_post_list($query_vars)
     $result = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_POSTS . $group, Expired::EXP_15_MINUTE);
 
     //如果不存在 或者 有禁用缓存参数 或者
-    if (empty($array_post) || isset($query_vars[Post_Query::CUSTOM_NO_CACHE]))
+    if (empty($result) || isset($query_vars[Post_Query::CUSTOM_NO_CACHE]))
     {
 
         //根据场景 修正查询参数
@@ -513,7 +513,7 @@ function get_my_favorite_post_list($cat, $search, $paged)
             Post_Query::IGNORE_STICKY_POSTS => 1,
             Post_Query::POST__IN => get_user_favorite(),
             Post_Query::ORDERBY => 'post__in',
-            Post_Query::POSTS_PER_PAGE => get_option(Option_Meta::POSTS_PER_PAGE),
+            Post_Query::POSTS_PER_PAGE => Config::POST_LIST_LENGTH,
 
         ];
 

@@ -1,3 +1,5 @@
+/// <reference path="../common/constant.js" />
+
 /**
  * 自定义 文章类
  */
@@ -82,7 +84,7 @@ class MyPostSlim {
 
             author_name += `
 
-                <a class="card-link small" title="查看UP主空间" href="${this.post_author.user_href}" target="_blank">
+                <a class="card-link small text-dark-2" title="查看UP主空间" href="${this.post_author.user_href}" target="_blank">
                     ${this.post_author.display_name}
                 </a>
             `;
@@ -92,57 +94,56 @@ class MyPostSlim {
 
         output = `
 
-         <div class="col card border-0 my-1 ${post_container_class}">
+            <div class="col">
+                <div class="card border-0 my-1 ${post_container_class}">
                     <div class="card-img-container position-relative">
-                        <div class="position-absolute end-0 top-0 me-1 mt-1">
-                            
-                        </div>
-                        
-                        <div class="position-absolute end-0 bottom-0 me-1 mb-1">
-                            <div class="right-badge bg-transparent-half text-light rounded small p-1">
+                    
+                        <div class="position-absolute end-0 bottom-0 me-1 mb-1 text-light fs-75">
+                            <div class="d-none d-sm-inline-block bg-transparent-half rounded p-1">
+                                <i class="fa-solid fa-thumbs-up"></i> ${this.post_likes}
+                            </div>
+                            <div class="d-none d-sm-inline-block bg-transparent-half rounded p-1">
+                                <i class="fa-solid fa-comments"></i> ${this.post_comments}
+                            </div>
+                            <div class="d-inline-block bg-transparent-half rounded p-1">
                                 <i class="fa-solid fa-eye"></i> ${this.post_views}
                             </div>
-                        </div>
-                  
+					    </div>
+                        
                         <div>
                             <a class="" href="${this.post_href}" title="${this.post_title}" target="_blank">
-                                      <img class="card-img-top" src="${this.post_image}" alt="${this.post_title}" />
+                                 <img class="card-img-top bg-light-2" src="${this.post_image}" alt="${this.post_title}" />
                               </a>
                         </div>
-          
-                                                  
+ 
                     </div>
-                    <div class="card-body  my-2 py-2 row g-0">
-        
-                         <div class="col-3 d-none d-sm-block d-lg-none d-xl-block">
-                            ${author_avatar}
-                        </div>
-                        <div class="col-12 col-sm-9 col-lg-12 col-xl-9">
-                     
-                            <h6 class="post-title text-1-rows text-2-rows-sm small medium-bold-sm">
-                                <a class="" href="${this.post_href}" title="${this.post_title}" target="_blank">
+                    <div class="row my-2 align-items-center">
+
+                        <div class="col-12 mb-2">
+                            <div class="post-title text-3-rows">
+                                <a class="fs-75 fs-sm-875" href="${this.post_href}" title="${this.post_title}" target="_blank">
                                     ${this.post_title}
                                 </a>
-                            </h6>
-                            
-                            <div class="my-2">
-                                ${author_name}
                             </div>
                             
-                            
-                            <div class="small d-none d-sm-block">
-                                    <span class="me-1"><i class="fa-solid fa-clock"></i> ${this.post_date} </span>
-                                    <span class="me-1"><i class="fa-solid fa-comments"></i> ${this.post_comments}</span>
-                                    <span class="me-1 d-none"><i class="fa-solid fa-star"></i> ${this.post_likes}</span>
-                                    <span class="d-none"><i class="fa-solid fa-heart"></i> ${this.post_favorites}</span>
-                            </div>
-                            
-        
                         </div>
-                        
+                        <div class="col-auto d-none d-md-block">
+                            ${author_avatar}
+                        </div>
+                        <div class="col">
+
+                            <div class="text-1-rows">
+                            ${author_name}
+                            </div>
+                            <div class="fs-75 d-none d-md-block text-dark-2">
+                                ${this.post_date}
+                            </div>
+
+                        </div>
         
                     </div>
                 </div>
+            </div>
         
         `;
 
@@ -338,9 +339,9 @@ class MyManagePost extends MyPostSlim {
 
 class MyPostSlimList extends Array {
 
-    constructor(postType) {
+    constructor(post_template) {
         super();
-        this.postType = postType;
+        this.post_template = post_template;
     }
 
     add(posts) {
@@ -349,25 +350,25 @@ class MyPostSlimList extends Array {
 
             posts.forEach((post) => {
 
-                let myPostSlim;
+                let new_post;
 
-                switch (this.postType) {
-                    case POST_TYPE.post:
-                        myPostSlim = new MyPostSlim(post);
+                switch (this.post_template) {
+                    case POST_TEMPLATE.default:
+                        new_post = new MyPostSlim(post);
                         break;
-                    case POST_TYPE.favoritePost:
-                        myPostSlim = new MyFavoritePost(post);
+                    case POST_TEMPLATE.favoritePost:
+                        new_post = new MyFavoritePost(post);
                         break;
-                    case POST_TYPE.historyPost:
-                        myPostSlim = new MyHistoryPost(post);
+                    case POST_TEMPLATE.historyPost:
+                        new_post = new MyHistoryPost(post);
                         break;
-                    case POST_TYPE.managePost:
-                        myPostSlim = new MyManagePost(post);
+                    case POST_TEMPLATE.managePost:
+                        new_post = new MyManagePost(post);
                         break;
 
                 }
 
-                this.push(myPostSlim);
+                this.push(new_post);
             });
 
         }

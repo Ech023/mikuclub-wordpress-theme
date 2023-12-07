@@ -17,120 +17,88 @@ use function mikuclub\is_adult_category;
 use function mikuclub\post_list_component;
 
 
-
 get_header();
 
 $cat_id = get_queried_object_id();
 
-
-?>
-
-
-
-
-<?php
+$output = '';
 
 //如果未登录 访问成人分类 和成人文章 输出404内容
 if (!is_user_logged_in() && is_adult_category())
 {
-	echo print_adult_404_content_for_no_logging_user();
+	$output = print_adult_404_content_for_no_logging_user();
 }
 else
 {
-?>
+	$breadcrumbs = print_breadcrumbs_component();
 
-	<?php echo print_breadcrumbs_component(); ?>
+	$sticky_post_slide =  print_sticky_post_slide_component($cat_id);
+	$post_list_header = print_post_list_header_component();
+	$post_list_component = post_list_component();
+
+	$ad_banner = '';
+	if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
+	{
+		$ad_banner = '<div class="pop-banner text-center my-2 pb-2 border-bottom">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
+	}
+
+	$sub_category_component = '';
+	//是有子分类的主分类 + 只在第一页
+	if (has_sub_category($cat_id)  && !get_query_var(Post_Query::PAGED))
+	{
+
+		$array_sub_category = get_sub_category_list($cat_id);
+		if ($array_sub_category)
+		{
+			$sub_category_items = array_reduce($array_sub_category, function ($result, $category)
+			{
+				$cat_link = get_category_link($category->term_id);
+				$result .= <<<HTML
+					<div class="col-auto">
+						<a class="btn btn-sm btn-light-2 px-4" href="{$cat_link}">
+							{$category->name}
+						</a>
+					</div>
+HTML;
+				return $result;
+			}, '');
+
+			$sub_category_component = <<<HTML
+
+					<div class="my-2 border-bottom pb-2">
+						<div class="mb-2">
+							<h5>
+								<i class="fa-solid fa-compass me-2"></i> 子分区
+							</h5>
+						</div>
+						<div class="row g-2">
+							{$sub_category_items}
+						</div>
+					</div>
+HTML;
+		}
+	}
+
+
+	$output = <<<HTML
+
+	{$breadcrumbs}
+
+	{$sticky_post_slide}
+
+	{$ad_banner}
+
+	{$sub_category_component}
+
+	{$post_list_header}
+
+	{$post_list_component}
 	
-	<?php
-	//只在第一页显示
-	if (!get_query_var(Post_Query::PAGED))
-	{
-
-		//如果是有子分类的主分类
-		//输出幻灯片+3种热门列表
-		if (has_sub_category($cat_id))
-		{
-			echo print_sticky_post_slide_component($cat_id);
-
-			if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
-			{
-				echo '<div class="pop-banner text-center my-2 pb-2 border-bottom">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
-			}
-
-			$sub_categories = get_sub_category_list($cat_id);
-			if ($sub_categories)
-			{
-				echo '
-                    <div>
-                        <div class="row my-4">
-                            <h4 class="col">
-                                子分区
-                            </h4>
-                        </div>
-                        <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 gy-4">';
-				foreach ($sub_categories as $sub_category)
-				{
-					echo '
-                                <div class="col">
-                                    <a class="btn btn-lg btn-outline-secondary w-100" href="' . get_category_link($sub_category->term_id) . '">' . $sub_category->name . '</a>
-                                </div>
-                            ';
-				}
-				echo '
-                        </div>
-                    </div>';
-			}
-
-
-			echo hot_posts_most_rating($cat_id, 8);
-
-			echo hot_posts_most_comments($cat_id, 8);
-		} 
-		
-		//如果是没有子分类的分类
-		else
-		{
-
-			echo print_sticky_post_slide_component($cat_id);
-
-			//随机输出一种热门文章
-			echo get_hot_list_by_random($cat_id, 8);
-			if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
-			{
-				echo '<div class="pop-banner text-center my-2 pb-2 border-bottom">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
-			}
-		}
-	}
-
-	else
-	{
-
-
-		if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
-		{
-			echo '<div class="pop-banner text-center my-2 pb-2 border-bottom">' . get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE) . '</div>';
-		}
-	}
-
-	?>
-
-
-
-
-
-	<?php echo post_list_component(); ?>
-
-<?php
+	
+HTML;
 }
-?>
 
-
-
-
-
-<?php
+echo $output;
 
 //get_sidebar(); 
 get_footer();
-
-?>

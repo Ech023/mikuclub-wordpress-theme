@@ -31,7 +31,7 @@ body {
 
     width: 100%;
     margin-top: 1rem;
-    background: var(--main-color);
+    background: var(--color-miku);
     font-size: larger;
     transition: .5s;
     border: none;
@@ -46,8 +46,8 @@ body {
 
 #login #wp-submit:hover {
     color: #fff;
-    background-color: var(--main-color-hover);
-    border-color: var(--main-color-hover);
+    background-color: var(--color-miku-dark);
+    border-color: var(--color-miku-dark);
 }
 
 .login #nav a, .login #backtoblog a {
@@ -142,6 +142,6 @@ body {
 }
 
 .login input[type=text]:focus, .login input[type=password]:focus {
-    border-color: var(--main-color-hover);
-    box-shadow: 0 0 0 1px var(--main-color-hover);
+    border-color: var(--color-miku-dark);
+    box-shadow: 0 0 0 1px var(--color-miku-dark);
 }

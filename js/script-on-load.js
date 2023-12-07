@@ -7,7 +7,7 @@ $(function () {
 
 
     //输出名言名句
-    printPhrase();
+    // printPhrase();
 
     //输出当前年份
     printCurrentYear();

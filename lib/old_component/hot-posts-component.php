@@ -39,7 +39,7 @@ function hot_posts_component($post_list, $meta_key, $title, $title_icon, $item_i
 							                      <i class="{$item_icon}"></i> {$meta_value}
 					                   </div>
 								</div>
-							    <img class="card-img-top" src="{$my_post->post_image}" alt="{$my_post->post_title}"/>
+							    <img class="card-img-top bg-light-2" src="{$my_post->post_image}" alt="{$my_post->post_title}"/>
 							</div>
 							
 							<div class="card-body  py-2 px-0 overflow-hidden post-title text-2-rows">

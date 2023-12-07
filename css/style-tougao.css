@@ -17,7 +17,7 @@ input 和 textarea
 
 div.page-tougao form.wpuf-form-add.wpuf-style ul.wpuf-form li .wpuf-fields input, div.page-tougao .wpuf-form-add.wpuf-style ul.wpuf-form .wpuf-fields textarea {
     background: none;
-    color: var(--text-color);
+    color: var(--color-dark-1);
     box-shadow: none;
     width: 100%;
 
@@ -106,7 +106,7 @@ div.page-tougao ul.wpuf-form li.category .wpuf-loading {
     border-radius: 50%;
     -webkit-animation: spinner-border .75s linear infinite;
     animation: spinner-border .75s linear infinite;
-    color: var(--main-color);
+    color: var(--color-miku);
     margin: .75rem .50rem 0;
 }
 
@@ -134,8 +134,8 @@ div.page-tougao ul.wpuf-form li .wpuf-fields  #wpuf-insert-image-container{
 div.page-tougao ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image {
     font-size: 1rem;
     border-radius: .25rem;
-    background: var(--main-color);
-    border-color: var(--main-color);
+    background: var(--color-miku);
+    border-color: var(--color-miku);
     color: #fff;
     font-weight: 400;
     text-align: center;
@@ -147,8 +147,8 @@ div.page-tougao ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf
 }
 
 div.page-tougao ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image:hover {
-    background-color: var(--main-color-hover);
-    border-color: var(--main-color-hover);
+    background-color: var(--color-miku-dark);
+    border-color: var(--color-miku-dark);
 }
 
 div.page-tougao ul.wpuf-form li .wpuf-fields #wpuf-insert-image-container a.wpuf-insert-image:focus {
@@ -168,7 +168,7 @@ div.page-tougao ul.wpuf-form li .wpuf-fields .upload-item .progress{
 div.page-tougao ul.wpuf-form li .wpuf-fields .upload-item .progress .bar{
     box-shadow: none;
     /*background: none;*/
-    background: var(--main-color);
+    background: var(--color-miku);
 
     border-radius: .25rem;
 }
@@ -186,8 +186,8 @@ div.page-tougao ul.wpuf-form li .wpuf-fields a.file-selector {
     display: block;
     margin-bottom: 1rem;
     width: 100%;
-    background: var(--main-color);
-    border-color: var(--main-color);
+    background: var(--color-miku);
+    border-color: var(--color-miku);
     color: #fff;
     font-weight: 400;
     text-align: center;
@@ -203,8 +203,8 @@ div.page-tougao ul.wpuf-form li .wpuf-fields a.file-selector {
 }
 
 div.page-tougao ul.wpuf-form li .wpuf-fields a.file-selector:hover {
-    background-color: var(--main-color-hover);
-    border-color: var(--main-color-hover);
+    background-color: var(--color-miku-dark);
+    border-color: var(--color-miku-dark);
 }
 
 div.page-tougao ul.wpuf-form li .wpuf-fields a.file-selector:focus {
@@ -279,9 +279,9 @@ div.page-tougao ul.wpuf-form li.wpuf-submit {
 
 
 div.page-tougao ul.wpuf-form li.wpuf-submit input[type="submit"] {
-    background-color: var(--main-color) !important;
+    background-color: var(--color-miku) !important;
     background-image: none !important;
-    border-color: var(--main-color) !important;
+    border-color: var(--color-miku) !important;
     height: auto !important;
     transition: .5s;
     margin: 0 !important;
@@ -298,8 +298,8 @@ div.page-tougao ul.wpuf-form li.wpuf-submit input[type="submit"] {
 }
 
 div.page-tougao ul.wpuf-form li.wpuf-submit input[type="submit"]:hover {
-    background-color: var(--main-color-hover) !important;
-    border-color: var(--main-color-hover) !important;
+    background-color: var(--color-miku-dark) !important;
+    border-color: var(--color-miku-dark) !important;
 }
 div.page-tougao ul.wpuf-form li.wpuf-submit input[type="submit"]:focus {
     outline: 0 !important;
@@ -333,8 +333,8 @@ div.page-tougao form.wpuf-form-add.wpuf-style ul.wpuf-form li .wpuf-fields .link
 }
 
 div.page-tougao form.wpuf-form-add.wpuf-style ul.wpuf-form li .wpuf-fields .link-valid {
-    border-color: var(--main-color);
-    color: var(--main-color);
+    border-color: var(--color-miku);
+    color: var(--color-miku);
 }
 
 
@@ -390,13 +390,13 @@ div.page-tougao form.wpuf-form-add.wpuf-style ul.wpuf-form li .wpuf-fields .link
 */
 div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li div.attachment-name img {
     max-height: 100%;
-    height: calc( ( min( 100vw, var(--container-max-width)) * var(--image-scale) - var(--container-sm-margin) - var(--col-margin) * 2 )  / 2 );
+    height: calc( ( min( 100vw, var(--container-max-width)) * var(--image-scale) - var(--container-padding) - var(--col-padding) * 2 )  / 2 );
 }
 
 @media (min-width: 768px) {
 
     div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li div.attachment-name img {
-        height: calc( ( min( 100vw, var(--container-max-width)) * var(--image-scale) - var(--container-margin) - var(--col-margin) * 2 )  / 3 );
+        height: calc( ( min( 100vw, var(--container-max-width)) * var(--image-scale) - var(--container-padding) - var(--col-padding) * 2 )  / 3 );
     }
 
 }

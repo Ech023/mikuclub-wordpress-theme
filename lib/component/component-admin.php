@@ -416,9 +416,9 @@ function pending_posts_dashboard_widget_component()
             $post_list_html .= <<<HTML
 
 				<div style="border: 1px solid #c3c4c7; padding: 5px; margin-top: 5px">
-					<h4>
+					<h5>
 						<a href="{$edit_url}" target="_blank" style="text-decoration:none;">{$my_post->post_title}</a>
-					</h4>
+					</h5>
 					<div>
 						作者: <a href="{$my_post->post_author->user_href}" target="_blank" style="text-decoration:none;">{$my_post->post_author->display_name}</a> 分类:  {$cat_name_concatenated}
 					</div>
@@ -507,11 +507,11 @@ function fail_down_posts_dashboard_widget_component()
             $post_list_html .= <<<HTML
 
                 <div style="border: 1px solid #c3c4c7; padding: 5px; margin-top: 5px">
-					<h4>
+					<h5>
 						<a href="{$my_post->post_href}" target="_blank" style="text-decoration:none;">
 							{$my_post->post_title} <span class="badge bg-danger">{$fail_time}</span>
 						</a>
-					</h4>
+					</h5>
 					<div>
 						作者: <a href="{$my_post->post_author->user_href}" target="_blank" style="text-decoration:none;">{$my_post->post_author->display_name}</a> 分类:  {$cat_name_concatenated}
 					</div>

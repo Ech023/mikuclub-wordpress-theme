@@ -245,7 +245,7 @@ HTML;
 
 		$output = <<<HTML
 
-			<h4>密码</h4>
+			<h5>密码</h5>
 			<div class="row my-3">
 				$password1_part
 				$password2_part
@@ -275,8 +275,8 @@ function print_password_form($class_name, $label_name, $value)
 	{
 		$output = <<<HTML
 		<div class="input-group w-100 w-md-50 my-2">
-			<span class="input-group-text bg-white">{$label_name}</span>
-			<input class="form-control bg-white {$class_name}"  type="text" value="{$value}" readonly />
+			<span class="input-group-text bg-light-1">{$label_name}</span>
+			<input class="form-control bg-light-1 {$class_name}"  type="text" value="{$value}" readonly />
 		</div>
 			
 
@@ -313,7 +313,7 @@ function print_post_content_download($post_id)
 	if ($download_part)
 	{
 		$output = <<<HTML
-			<h4>下载</h4>
+			<h5>下载</h5>
 			<div class="row my-3">
 				{$download_part}
 			</div>
@@ -444,7 +444,7 @@ function print_post_content_download_fast_link($post_id)
 
 			<h4 class="mt-3">秒传链接</h4>
 			<div class="my-3">
-                <textarea class="baidu-fast-link form-control small bg-white" style="font-size: 0.75rem;" rows="3" readonly>{$baidu_fast_link}</textarea>
+                <textarea class="baidu-fast-link form-control small bg-light-1" style="font-size: 0.75rem;" rows="3" readonly>{$baidu_fast_link}</textarea>
 			</div>
 			<div class="my-3">
 				<a class="btn btn-info me-1 me-sm-2 mb-2 mb-sm-0 px-4" target="_blank" rel="external nofollow" href="{$baidu_fast_link_href}">一键秒传</a>
@@ -539,7 +539,7 @@ HTML;
 	if ($output)
 	{
 		$output = <<<HTML
-			<h4>在线播放</h4>
+			<h5>在线播放</h5>
 			$output
 HTML;
 	}
@@ -584,7 +584,7 @@ HTML;
 	if ($output)
 	{
 		$output = <<<HTML
-			<h4>预览</h4>
+			<h5>预览</h5>
 			<div class="py-2 py-md-0">
 				{$output}
 			</div>
@@ -708,7 +708,7 @@ HTML;
 
 		<div class="collapse mt-2" id="unzip-help">
 			<div  class="card card-body">
-				<h4>文件解压教程</h4>
+				<h5>文件解压教程</h5>
 				<p class="my-1">
 					首先准备好解压工具, 电脑端安装 <b>WINRAR</b>, 手机端安装 <b>Zarchiver</b> 或者 <b>ES文件管理器</b>
 				</p>
@@ -788,8 +788,8 @@ function print_adult_404_content_for_no_logging_user()
 			<div class="m-3">该页面可能因为如下原因无法访问</div>
 			<ul class="list-group list-group-flush">
 				<li class="list-group-item">投稿已被删除</li>
-				<li class="list-group-item">投稿内容正在重新审核</li>
-				<!--li class="list-group-item">也许是您忘了登陆  <a class="btn btn-miku m-2" href="">点击登陆</a></li-->
+				<li class="list-group-item">投稿正被重新审核</li>
+				<li class="list-group-item">用户权限不足</li>
 			</ul>
 
 		</div>

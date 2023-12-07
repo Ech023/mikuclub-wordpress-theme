@@ -204,7 +204,7 @@ $output = <<<HTML
 			<div class="col-12 col-md-1">
 				<div class="text-center">
 					<div>关注</div>
-					<div class="fw-bold large">{$number_followed}</div>
+					<div class="fw-bold fs-5">{$number_followed}</div>
 				</div>
 			</div>
 			<div class="col-10 col-md-9 col-xxl-10">

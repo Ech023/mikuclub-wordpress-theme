@@ -23,10 +23,10 @@ function print_top_menu_bar_component()
     //如果不是搜索页
     $top_center_search_input = !is_search() ? <<<HTML
 
-    <form class="input-group input-group-sm site-search-form mx-auto" style="max-width: 500px;">
+    <form class="input-group input-group-sm top_menu_bar_search_form mx-auto" style="max-width: 500px;">
             <input type="text" class="form-control" placeholder="搜索" name="search" autocomplete="off">
 
-            <button class="btn btn-sm btn-miku" type="submit">
+            <button class="btn btn-sm btn-miku px-4" type="submit">
                 <i class="fa-solid fa-search"></i>
             </button>
     </form>

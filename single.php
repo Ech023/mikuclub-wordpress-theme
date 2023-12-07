@@ -1,10 +1,13 @@
 <?php
 
+namespace mikuclub;
+
 use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Config;
 use mikuclub\constant\Post_Feedback_Rank;
 use mikuclub\User_Capability;
 
+use function mikuclub\add_post_views;
 use function mikuclub\print_adult_404_content_for_no_logging_user;
 use function mikuclub\print_breadcrumbs_component;
 use function mikuclub\get_custom_user;
@@ -347,6 +350,7 @@ else
 {
     echo print_adult_404_content_for_no_logging_user();
 }
+
 
 
 get_footer();

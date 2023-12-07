@@ -179,8 +179,8 @@ function print_home_component_second_part()
         //页底 查看更多
         $output .= <<<HTML
 
-        <div class="my-2 text-center">
-            <a class="btn btn-outline-secondary btn-lg w-50" title="最新发布" href="{$recently_post_list_link}">
+        <div class="my-4 text-center">
+            <a class="btn btn-light-2 btn-lg w-50" title="最新发布" href="{$recently_post_list_link}">
                 查看更多 <i class="fa-solid fa-angle-right"></i>
             </a>
         </div>

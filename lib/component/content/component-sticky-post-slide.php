@@ -107,7 +107,7 @@ HTML;
          
              <div class="carousel-item {$active_class}" data-bs-interval="10000">
                  <a class="position-relative" style="" href="{$post_sticky->post_href}" target="_blank">
-                     <img class="d-block w-100" src="{$post_sticky->post_image_large}" alt="{$post_sticky->post_title}" skip_lazyload />
+                     <img class="d-block w-100 bg-light-2" src="{$post_sticky->post_image_large}" alt="{$post_sticky->post_title}" skip_lazyload />
                      <div class="carousel-caption d-none d-sm-block ">
                          <div class="small">{$post_sticky->post_title}</div>
                      </div>
@@ -168,11 +168,11 @@ function print_sticky_post_slide_component_second_part($sticky_post_list)
             $post_sticky = $sticky_post_list[$i];
 
             //如果是超过第四个位置的文章
-            // $display_class = $i >= 4 ? 'd-lg-flex' : "";
+            $display_class = $i >= 6 ? 'd-none d-xl-flex' : "";
 
             $post_list_html .= <<<HTML
 	
-                <div class="col ">
+                <div class="col {$display_class}">
                     <div class="card border-0">
                         <div class="card-img-container position-relative ">
                             <div class="position-absolute end-0 bottom-0 me-1 mb-1">
@@ -181,12 +181,14 @@ function print_sticky_post_slide_component_second_part($sticky_post_list)
                                     {$post_sticky->post_likes}
                                 </div>
                             </div>
-                            <img class="card-img-top" src="{$post_sticky->post_image}" alt="{$post_sticky->post_title}"/>
+                            <img class="card-img-top bg-light-2" src="{$post_sticky->post_image}" alt="{$post_sticky->post_title}"/>
                         </div>
-                        <div class="card-body py-2 overflow-hidden" style="height: 3.75rem">
-                            <a class="card-link stretched-link small"  title="{$post_sticky->post_title}" href="{$post_sticky->post_href}" target="_blank">
-                                {$post_sticky->post_title}
-                            </a>
+                        <div class="card-body py-2">
+                            <div class="text-2-rows">
+                                <a class="card-link stretched-link fs-75 fs-sm-875"  title="{$post_sticky->post_title}" href="{$post_sticky->post_href}" target="_blank">
+                                    {$post_sticky->post_title}
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

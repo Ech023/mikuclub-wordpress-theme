@@ -98,6 +98,8 @@ class Post_Type
     const ATTACHMENT = 'attachment';
 }
 
+
+
 /**
  * 文章的状态
  */

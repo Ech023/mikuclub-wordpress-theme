@@ -11,26 +11,11 @@ use mikuclub\constant\Category;
 function print_home_hot_post_page_component() {
 
 
-	$hot_post_list = '';
-	$ad_banner     = '';
-
-
-	//$breadcrumbs = '';
-
-	//在第一页的时候 输出热门文章列表
-	if ( get_query_var( 'paged' ) == 1 ) {
-		// $hot_post_list = get_hot_list_by_random(Category::NO_ADULT_CATEGORY, 8 );
-	} //其他页面的话 输出面包屑
-	else {
-		//$breadcrumbs = print_breadcrumbs_component();
-	}
-
 	$breadcrumbs = print_breadcrumbs_component();
 
-
+	$post_list_header = print_post_list_header_component();
 	//获取当前页面的文章列表
-	$post_list = post_list_component();
-
+	$post_list_component = post_list_component();
 
 	$ad_banner = '';
 	//PC端+手机端
@@ -47,7 +32,8 @@ function print_home_hot_post_page_component() {
 
 	{$ad_banner}
 
-	{$post_list}
+	{$post_list_header}
+	{$post_list_component}
 	
 	
 HTML;

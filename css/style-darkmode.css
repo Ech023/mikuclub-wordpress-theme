@@ -1,17 +1,31 @@
 /**
 暗夜模式专用CSS
 */
+:root[data-bs-theme="dark"] {
+
+    --color-light-1: var(--bs-body-bg);
+    --color-light-2: rgba(255, 255, 255, 0.1);
+    --color-light-3: rgba(255, 255, 255, 0.2);
+
+    --color-dark-1: #f1f1f1;
+    --color-dark-2: #aaa;
 
 
-body.darkmode {
+}
 
-    --container-bg-color: #212121;
-    --container-color: #181818;
-    --secondary-bg-color: #383838;
-    --footer-bg-color: #383838;
-    --text-color: var(--bs-body-color);
-    --button-text-color: var(--bs-body-color);
+:root[data-bs-theme="dark"] a:hover {
+    color: var(--color-miku);
+}
 
+:root[data-bs-theme="dark"] body {
+    background-color: var(--color-light-1);
+}
+
+:root[data-bs-theme="dark"] input,
+:root[data-bs-theme="dark"] textarea {
+    /* background-color: var(--color-light-1) !important; */
+    caret-color: var(--color-dark-1);
+    color: var(--color-dark-1) !important;
 }
 
 /*
@@ -40,148 +54,119 @@ body.darkmode .list-group-item
 /*}*/
 
 
-body.darkmode a:hover {
-    color: var(--main-color-hover);
+
+
+/* body.darkmode .btn:hover {
+    color: var(--color-dark-1);
+} */
+
+/* 幻灯片标题名称 */
+:root[data-bs-theme="dark"] .carousel .carousel-caption,
+:root[data-bs-theme="dark"] .carousel .carousel-caption {
+    color: var(--color-dark-1);
 }
 
-body.darkmode .btn:hover {
-    color: var(--text-color);
+:root[data-bs-theme="dark"] .btn-close {
+    /* background-color: white; */
 }
-
-
-
-body.darkmode input,
-body.darkmode textarea {
-    background-color: var(--secondary-bg-color) !important;
-    caret-color: var(--text-color);
-    color: var(--text-color) !important;
-}
-
-/**
-降低 投稿页面 内容编辑器的亮度
-*/
-body.darkmode .page-tougao ul.wpuf-form li .wp-editor-wrap {
-    filter: brightness(80%);
-}
-
-
-/*移除bootstrap自带的白色背景*/
-body.darkmode .card {
-    background-color: transparent !important;
-}
-
-
-body.darkmode .carousel .carousel-caption,
-body.darkmode .carousel .carousel-caption {
-    color: var(--text-color);
-}
-
-
-/*
-body.darkmode .page-link{
-    background-color: transparent !important;
-    color: white !important;
-}
-
-body.darkmode .page-link:hover{
-    background-color: transparent !important;
-    color: var(--main-color-hover) !important;
-}
-
-
-body.darkmode .dropdown-menu{
-    background-color: var(--container-bg-color) !important;
-}
-
-*/
-
-
 
 /*加载占位图*/
-
-body.darkmode .sl_lazyimg {
+:root[data-bs-theme="dark"] .sl_lazyimg {
     background: url(https://www.mikuclub.cc/wp-content/themes/miku/img/placeholder_image_dark.png) center center / 50% no-repeat !important;
 
 }
 
-
-
-
-/**
-全站通告栏 链接的默认颜色
- */
-/*
- body.darkmode .speedbar a,
- body.darkmode .page-item.disabled .page-link
- {
-    color: var(--main-color)  !important;
-}*/
-
-/* 菜单栏图标 */
-body.darkmode #wpforo #wpforo-wrap .wpf-breadcrumb div:after,
-body.darkmode #wpforo #wpforo-wrap .wpf-breadcrumb div.active:after,
-body.darkmode #wpforo #wpforo-wrap {
-    background-color: var(--secondary-bg-color);
-}
-
-
-
-body.darkmode #wpforo #wpforo-wrap #wpforo-title,
-body.darkmode #wpforo #wpforo-wrap .wpforo-post-head .wpf-post-head-top .wpf-post-stat .wpf-post-stat-box span,
-body.darkmode #wpforo #wpforo-wrap .wpfl-4 .wpf-thread-box.wpf-thread-title a,
-body.darkmode #wpforo #wpforo-wrap .wpfl-4 .wpf-threads-head .wpf-head-box,
-body.darkmode #wpforo #wpforo-wrap .mce-btn button,
-body.darkmode #wpforo #wpforo-wrap .wpf-search .wpf-search-form i,
-body.darkmode #wpforo #wpforo-wrap .wpf-search input[type="text"].wpf-search-field,
-body.darkmode #wpforo #wpforo-wrap * {
-    color: var(--text-color);
-}
-
-
-body.darkmode .bg-white,
-body.darkmode .form-select,
-body.darkmode .toast-header,
-body.darkmode .modal-content,
-body.darkmode .popover-header,
-body.darkmode .popover-body,
-body.darkmode .nav-tabs .nav-item.show .nav-link,
-body.darkmode .nav-tabs .nav-link.active,
-body.darkmode div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li,
-body.darkmode div.page-tougao .wpuf-form-add.wpuf-style ul.wpuf-form .category-wrap select,
-body.darkmode .list-group-item,
-body.darkmode #wpforo #wpforo-wrap .wpfl-4 .wpf-parent-post .wpf-right .wpf-content,
-body.darkmode #wpforo #wpforo-wrap .wpfl-4 .wpf-content-foot,
-body.darkmode #wpforo #wpforo-wrap .wpfl-4 .wpforo-post .wpforo-post-footer,
-body.darkmode #wpforo #wpforo-wrap .wpforo-portable-form-wrap,
-body.darkmode #wpforo #wpforo-wrap .wpfl-4 .wpf-child-post .wpf-reply-content,
-body.darkmode #wpforo #wpforo-wrap .wpforo-post blockquote,
-body.darkmode #wpforo #wpforo-wrap .wpforo-revision-body blockquote,
-body.darkmode #wpforo #wpforo-wrap #wpforo-stat-body,
-body.darkmode #wpforo #wpforo-wrap * {
-    background-color: var(--secondary-bg-color) !important;
-}
-
-body.darkmode .btn-close {
-    background-color: white;
-}
-
-body.darkmode #wpforo #wpforo-wrap .wpfl-4 .wpf-content-foot .wpf-reply .wpf-action,
-body.darkmode .wpfbg-9 {
-    background: transparent !important;
-}
-
-body.darkmode #wpforo #wpforo-wrap .wpf-head-bar .wpf-head-bar-right .wpf-button,
-body.darkmode #wpforo #wpforo-wrap .wpforo-portable-form-wrap button[type="submit"],
-body.darkmode #wpforo #wpforo-wrap .wpforo-portable-form-wrap button[type="reset"] {
-    border: 1px solid;
-}
-
-
 /** ====================================================*/
 /*黑名单作者的文章遮罩*/
 
-body.darkmode .black-user-post-mask::before {
+:root[data-bs-theme="dark"] .black-user-post-mask::before {
     /* 黑色透明遮罩 */
     background-color: rgba(24, 24, 24, 0.80);
 
+}
+
+/*移除bootstrap自带的白色背景*/
+/* body.darkmode .card {
+    background-color: transparent !important;
+} */
+
+
+
+/*
+投稿页面
+================================================================
+*/
+
+/**
+ 投稿页面 降低 内容编辑器的亮度
+*/
+:root[data-bs-theme="dark"] .page-tougao ul.wpuf-form li .wp-editor-wrap {
+    filter: brightness(80%);
+}
+
+/**
+投稿页面 修正 附件图片的背景
+*/
+:root[data-bs-theme="dark"] div.page-tougao ul.wpuf-form li .wpuf-fields ul.wpuf-attachment-list li,
+:root[data-bs-theme="dark"] div.page-tougao .wpuf-form-add.wpuf-style ul.wpuf-form .category-wrap select {
+    background-color: var(--color-light-1) !important;
+}
+
+
+/*
+论坛
+================================================================
+*/
+
+
+/* 菜单栏图标 */
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpf-breadcrumb div:after,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpf-breadcrumb div.active:after,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap {
+    background-color: var(--color-light-1);
+}
+
+
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap #wpforo-title,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpforo-post-head .wpf-post-head-top .wpf-post-stat .wpf-post-stat-box span,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpfl-4 .wpf-thread-box.wpf-thread-title a,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpfl-4 .wpf-threads-head .wpf-head-box,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .mce-btn button,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpf-search .wpf-search-form i,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpf-search input[type="text"].wpf-search-field,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap * {
+    color: var(--color-dark-1);
+}
+
+
+/* :root[data-bs-theme="dark"] .form-select, */
+/* :root[data-bs-theme="dark"] .toast-header, */
+/* :root[data-bs-theme="dark"] .modal-content, */
+/* :root[data-bs-theme="dark"] .popover-header, */
+/* :root[data-bs-theme="dark"] .popover-body, */
+/* :root[data-bs-theme="dark"] .nav-tabs .nav-item.show .nav-link, */
+/* :root[data-bs-theme="dark"] .nav-tabs .nav-link.active, */
+/* :root[data-bs-theme="dark"] .list-group-item, */
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpfl-4 .wpf-parent-post .wpf-right .wpf-content,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpfl-4 .wpf-content-foot,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpfl-4 .wpforo-post .wpforo-post-footer,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpforo-portable-form-wrap,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpfl-4 .wpf-child-post .wpf-reply-content,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpforo-post blockquote,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpforo-revision-body blockquote,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap #wpforo-stat-body,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap * {
+    background-color: var(--color-light-1) !important;
+}
+
+
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpfl-4 .wpf-content-foot .wpf-reply .wpf-action,
+:root[data-bs-theme="dark"] .wpfbg-9 {
+    background: transparent !important;
+}
+
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpf-head-bar .wpf-head-bar-right .wpf-button,
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpforo-portable-form-wrap button[type="submit"],
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpforo-portable-form-wrap button[type="reset"] {
+    border: 1px solid;
 }

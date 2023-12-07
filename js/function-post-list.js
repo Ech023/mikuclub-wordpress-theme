@@ -79,8 +79,9 @@ function get_post_list(is_new_load = false, new_paged = 1) {
         //不是空的
         if (isNotEmptyArray(response.posts)) {
 
+            const post_template = get_post_list_component_post_template();
             //创建自定义文章列表
-            const newPostList = new MyPostSlimList(POST_TYPE.post);
+            const newPostList = new MyPostSlimList(post_template);
             //转换成自定义文章格式
             newPostList.add(response.posts);
 
@@ -101,9 +102,15 @@ function get_post_list(is_new_load = false, new_paged = 1) {
         }
         //无内容的情况
         else {
-            MyToast.show_success('列表已全部加载');
+            MyToast.show_success('无更多结果');
             //添加end属性 用来避免继续尝试
             get_post_list.is_end = true;
+
+            //如果列表原本就是空的
+            if ($post_list_component.children().length === 0) {
+                //显示无结果
+                show_not_found_row($post_list_component);
+            }
         }
 
     };
@@ -169,5 +176,16 @@ function update_post_list_component_max_num_pages(max_num_pages) {
 
     const $post_list_container_component = $('.post-list-container');
     $post_list_container_component.data('max_num_pages', parseInt(max_num_pages));
+}
 
+/**
+ * 获取列表的文章类型模板
+ * @returns {string}
+ */
+function get_post_list_component_post_template() {
+
+    const $post_list_container_component = $('.post-list-container');
+    const post_template = $post_list_container_component.data('post-template');
+
+    return post_template || POST_TEMPLATE.default;
 }

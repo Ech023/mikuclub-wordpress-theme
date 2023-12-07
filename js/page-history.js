@@ -107,7 +107,7 @@ function getHistoryPostList(is_new_load = true) {
         if (isNotEmptyArray(response)) {
 
             //创建自定义文章列表
-            let newPostList = new MyPostSlimList(POST_TYPE.historyPost);
+            let newPostList = new MyPostSlimList(POST_TEMPLATE.historyPost);
             //转换成自定义文章格式
             newPostList.add(response);
             //插入内容到页面中

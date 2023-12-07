@@ -181,67 +181,8 @@ function printCurrentYear() {
 
 }
 
-/**
- * 分页导航跳转功能
- */
-function changePagingPage() {
-
-    let $input = $('.change-page input.change-page-value');
-    //获取要跳转的页码
-    let paged = $input.val();
-    if (paged) {
-
-        //提取当前链接地址, 然后替换掉123456占位符
-        let href = $('.change-page input.change-page-href').val().replace('123456', paged);
-        //跳转
-        location.href = href;
-
-    } else {
-        $input.trigger('focus');
-        MyToast.show_error('请先输入页数');
-    }
 
 
-}
-
-/**
- * 限制用户输入在input大小限制内
- */
-function respectInputValueRange() {
-
-    let max = parseInt($(this).attr('max'));
-    let min = parseInt($(this).attr('min'));
-    let value = $(this).val();
-    if (value > max) {
-        value = max;
-    } else if (value.val() < min) {
-        value = min;
-    }
-
-    //修正页码数值
-    $(this).val(value);
-
-}
-
-/**
- * 使用自定义列表排序参数 来刷新页面
- */
-function postListCustomOrder() {
-
-    //获取当前URL查询参数的对象
-    let queryObject = getQueryParameters();
-    $('.post-list-order select').each((index, element) => {
-        //获取自定义排序参数
-        let name = $(element).attr('name');
-        let value = $(element).val();
-
-        queryObject[name] = value;
-
-    });
-
-    refreshPostListPage(queryObject);
-
-}
 
 
 /**
@@ -355,9 +296,6 @@ function actionOnMediumScreen() {
         toggleDropDownMenu(this, false);
     });
 
-    //临时雪花特效
-    //显示雪花
-    $('#websnowjqcan').show();
 
 }
 
@@ -369,9 +307,6 @@ function actionOnSmallScreen() {
     //菜单选项 移除滑动事件监听
     $('nav.navbar ul li.dropdown').off('mouseenter').off('mouseleave');
 
-    //临时雪花特效
-    //隐藏雪花
-    $('#websnowjqcan').hide();
 
 }
 
@@ -387,7 +322,7 @@ function hideEmptyAdSense() {
         $adsense.each((index, element) => {
             //console.log('检测谷歌广告');
             if ($(element).css('height') === '0px') {
-                console.log('广告不存在, 移除元素');
+                // console.log('广告不存在, 移除元素');
                 $(element).remove();
             } else {
                 //console.log('广告存在');
@@ -613,7 +548,7 @@ function redirect_site_domain_deactivated() {
 function show_loading_row($parent_component) {
 
     const $loading_row = $(`
-        <div class="loading-row my-5 text-center">
+        <div class=" loading-row w-100 my-5 text-center">
             <div class="spinner-border fs-4" style="width: 3rem; height: 3rem;" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
@@ -628,4 +563,60 @@ function show_loading_row($parent_component) {
  */
 function hide_loading_row() {
     $('.loading-row').remove();
+}
+
+/**
+ * 创建一个无内容占位行
+ * @param {jQuery} $parent_component 父元素
+ */
+function show_not_found_row($parent_component) {
+
+    const $not_found_row = $(`
+        <div class="not-found-row w-100 my-5 ">
+            <div class="text-center fs-5">
+                未查找到符合条件的内容
+            </div>
+        </div>
+    `);
+    $parent_component.append($not_found_row);
+}
+
+/**
+ * 自动显示论坛未读消息的图标
+ */
+function show_wpforo_notification_alert() {
+
+    const $alertIconElement = $("#wpforo #wpforo-wrap .wpf-bar-right .wpf-alerts");
+    const query = getQueryParameters();
+
+    //如果是在论坛页, 并且有要求显示消息的参数
+    if ($($alertIconElement).length && query.hasOwnProperty('show_notification')) {
+
+        //在消息图标上延时触发点击事件
+        setTimeout(function () {
+            $alertIconElement.trigger('click');
+        }, 500);
+
+    }
+
+
+}
+
+/**
+ * 打开搜索页
+ * @param {jQuery} $form 
+ */
+function open_search_page($form) {
+
+    const search_value = $form.find('input[name="search"]').val();
+
+    //如果搜索内容为空
+    if (!search_value) {
+        MyToast.show_error('搜索内容为空');
+        return;
+    }
+
+    const path = encodeURIComponent(search_value);
+    location.href = `${MY_SITE.home}/search/${path}`;
+
 }

@@ -215,7 +215,7 @@ get_header();
 
             <?php the_content(); ?>
 
-            <div class="fixed-submit-button-div position-fixed bottom-0 start-0 end-0 bg-white text-center p-4 border-top shadow" style="z-index: 99">
+            <div class="fixed-submit-button-div position-fixed bottom-0 start-0 end-0 bg-light-1 text-center p-4 border-top shadow" style="z-index: 99">
                 <button class="btn btn-large btn-miku w-75">
                     <?php echo array_key_exists('pid', $_GET) && isset($_GET['pid']) ? "更新" : "提交审核"; ?>
                 </button>

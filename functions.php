@@ -84,35 +84,35 @@ function setup_front_end_css()
             'name' => 'style-system',
             'path' => '/css/style-system.css',
         ],
+        //夜间模式CSS
+        [
+            'name' => 'style-darkmode',
+            'path' => '/css/style-darkmode.css',
+        ],
         //自定义CSS
         [
             'name' => 'style',
-            'path' => '/style.css',
+            'path' => '/css/style.css',
+        ],
+        //图片相关CSS
+        [
+            'name' => 'style-image',
+            'path' => '/css/style-image.css',
+        ],
+        //文章页CSS
+        [
+            'name' => 'style-single',
+            'path' => '/css/style-single.css',
         ],
         //论坛CSS
         [
             'name' => 'style-forums',
             'path' => '/css/style-forums.css',
         ],
-        //主页CSS
-        [
-            'name' => 'style-home',
-            'path' => '/css/style-home.css',
-        ],
         //投稿页CSS
         [
             'name' => 'style-tougao',
             'path' => '/css/style-tougao.css',
-        ],
-        //手机CSS
-        [
-            'name' => 'style-wap',
-            'path' => '/css/style-wap.css',
-        ],
-        //夜间模式CSS
-        [
-            'name' => 'style-darkmode',
-            'path' => '/css/style-darkmode.css',
         ],
     ];
 
@@ -187,7 +187,7 @@ function setup_front_end_script()
             'path' => '/js/class/class-ua-parser.js',
             'in_footer' => false,
         ],
-        
+
         //名言名句变量
         [
             'name' => 'js-phrases',
