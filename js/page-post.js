@@ -18,10 +18,12 @@ $(function () {
 
 
         //绑定密码表单 点击事件
-        $('.password-part input').on('click', function () {
-            selectAllAndCopy($(this));
+        $('.download-part input').on('click', function () {
+            copy_to_clipboard($(this));
         });
-        $('.download-part a.download').on('click', '', '', findDownPassword);
+        $('.download-part a.download').on('click', () => {
+            find_access_password($(this));
+        });
 
         //绑定功能按钮 点击事件
         $('.functional-part button.set-post-like').on('click', '', '', setPostLike);
@@ -31,53 +33,60 @@ $(function () {
         $('.functional-part button.set-post-fail-times').on('click', '', '', setPostFailTime);
 
 
-
-
-
         //绑定打开百度盘按钮
         $('a.baidupan-home-link, textarea.baidu-fast-link').on('click', copyBaiduFastLink);
+
+
+        //初始化图片灯箱 自定义配置
+        lightbox.option({
+            'albumLabel': "第 %1 张 / 总共 %2 张",
+            wrapAround: true,
+            disableScrolling: true
+        });
 
     }
 });
 
 
-
-
-
-/**
- * 选择表单全部内容并复制
- * @param {JQuery}$element
- */
-function selectAllAndCopy($element) {
-
-    $element.trigger('select');
-    //复制到剪切板
-    copySelectedText();
-
-}
-
-/**
- * 复制选中内容到剪切板
- */
-function copySelectedText() {
-    //复制到剪切板
-    document.execCommand('copy');
-    //提示框
-    MyToast.show_success('已复制密码到剪切板');
-}
-
 /**
  * 根据下载按钮找到对应的访问密码
- * @param event
+ * @param {jQuery} $button
  */
-function findDownPassword(event) {
+function find_access_password($button) {
 
-    const $button = $(this);
-    let passwordId = $button.data('password-id');
-    //选中复制对应的密码栏
-    selectAllAndCopy($('.password-part input.' + passwordId));
+    const $input_access_password = $button.closest('.download_container').find('input.access_password');
+    //复制对应的密码栏到剪切板
+    copy_to_clipboard($input_access_password);
 
 }
+
+
+/**
+ * 复制INPUT的数值到剪切板
+ * @param {JQuery} $input
+ */
+function copy_to_clipboard($input) {
+
+    // $element.trigger('select');
+    const value = $input.val();
+    //使用新版方法复制到剪切板
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(value);
+    }
+    //否则继续用旧版复制方法
+    else {
+        $input.trigger('select');
+        //复制到剪切板
+        document.execCommand('copy');
+    }
+
+    //提示框
+    MyToast.show_success('已自动复制密码: ' + value + ' 到剪切板');
+}
+
+
+
+
 
 /**
  * 添加/取消好评
@@ -346,7 +355,7 @@ function setPostFailTime(event) {
         return;
     }
 
-    open_confirm_modal('确认要反馈下载地址失效吗?' , '管理员会根据总体的反馈次数, 退回稿件并通知UP主下载已失效', () => {
+    open_confirm_modal('确认要反馈下载地址失效吗?', '管理员会根据总体的反馈次数, 退回稿件并通知UP主下载已失效', () => {
 
 
         let storageKey = LOCAL_STORAGE_KEY.postFailTimes;
@@ -459,12 +468,6 @@ function updateButton($button, text, oldClass, newClass, addCount, isActivated) 
 
 
 }
-
-
-
-
-
-
 
 
 

@@ -65,7 +65,7 @@ class Config
 
 
     //内容页底部相关推荐里的文章数量
-    const RELATED_POST_LIST_LENGTH = 8;
+    const RELATED_POST_LIST_LENGTH = 6;
 
 
     //最新发布的论坛帖子列表长度
@@ -591,4 +591,5 @@ class Download_Link_Type
 
         return $result;
     }
+
 }

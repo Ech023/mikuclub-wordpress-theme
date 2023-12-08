@@ -62,6 +62,12 @@ class File_Cache
 
 
     /*文章列表相关缓存 键名*/
+
+
+    //文章列表头部分类过滤
+    const POST_LIST_HEADER_CATEGORY = 'post_list_header_category';
+
+
     //普通文章列表
     const POST_LIST = 'post_list';
     //热门榜文章列表
@@ -72,6 +78,8 @@ class File_Cache
     const RELATED_POST_LIST = 'related_post_list';
 
     /*文章相关缓存 键名*/
+    const POST_HEAD = 'post_head';
+    const POST_TAGS = 'post_tags';
     const POST_CONTENT_PART_1 = 'post_content_part_1';
     const POST_CONTENT_PART_2 = 'post_content_part_2';
 

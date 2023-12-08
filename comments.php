@@ -81,7 +81,7 @@ HTML;
 
 <div class="comments-part my-4" id="comments-part">
 
-    <h4 class="my-2 comments-part-title"><?php echo get_post_comments() ?> 评论</h4>
+    <h5 class="my-2 comments-part-title"><?php echo get_post_comments() ?> 评论</h5>
 
     <div class="my-2 row comment-form-container">
 

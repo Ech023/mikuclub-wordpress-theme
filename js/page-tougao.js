@@ -15,14 +15,13 @@ $(function () {
 
         $pageTougaoElement.find('form').on('submit', '', '', changeSubmitButtonText);
 
-        $pageTougaoElement.on('click', 'button.delete-post', '', deletePost);
+        
         $pageTougaoElement.on('click', 'button.set-sticky-post', '', setStickyPost);
         $pageTougaoElement.on('click', 'button.delete-sticky-post', '', deleteStickyPost);
 
 
-        $pageTougaoElement.on('click', 'button.draft-post', '', draftPost);
+      
 
-        $pageTougaoElement.on('click', 'button.reject-post', '', rejectPost);
 
         $pageTougaoElement.on('click', 'button.update-post-date', '', updatePostDate);
 
@@ -130,109 +129,7 @@ function changeSubmitButtonText() {
 }
 
 
-/**
- * 删除投稿
- * @param {Event} event
- */
-function deletePost(event) {
 
-    open_confirm_modal('确认要删除该投稿吗?', '', () => {
-
-
-        //获取按钮
-        const $button = $(this);
-
-        let previousValue = $button.html();
-        let post_id = $button.data('post-id');
-        //let data = {force: true};
-
-        //切换按钮状态
-        $button.toggleDisabled();
-        $button.html('删除中...');
-
-
-        //回调函数
-        let successCallback = function (response) {
-
-            MyToast.show_success('删除成功');
-            //跳转回稿件列表
-            location.href = `${MY_SITE.home}/up_home_page`;
-
-        };
-
-        /**
-         * 请求结束后
-         */
-        let completeCallback = function () {
-            //恢复按钮状态
-            $button.toggleDisabled();
-            $button.html(previousValue);
-        };
-
-
-        $.ajax({
-            url: URLS.posts + '/' + post_id,
-            //data,
-            type: HTTP_METHOD.delete,
-            headers: createAjaxHeader()
-        }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
-
-    });
-
-}
-
-/**
- * 撤回投稿
- * @param {Event} event
- */
-function draftPost(event) {
-
-    open_confirm_modal('确认要把稿件转为草稿状态吗?', '撤回后需要重新提交审核才会再次公开显示', () => {
-
-        //获取按钮
-        let $button = $(this);
-
-        let previousValue = $button.html();
-        let post_id = $button.data('post-id');
-        let data = {
-            post_id,
-        };
-
-        //切换按钮状态
-        $button.toggleDisabled();
-        $button.html('撤回中...');
-
-
-        //回调函数
-        let successCallback = function (response) {
-
-            MyToast.show_success('撤回成功');
-            //刷新当前页面
-            location.reload();
-            //跳转回稿件列表
-            // location.href = `${MY_SITE.home}/up_home_page`;
-
-        };
-
-        /**
-         * 请求结束后
-         */
-        let completeCallback = function () {
-            //恢复按钮状态
-            $button.toggleDisabled();
-            $button.html(previousValue);
-        };
-
-
-        $.ajax({
-            url: URLS.draftPost,
-            data,
-            type: HTTP_METHOD.post,
-            headers: createAjaxHeader()
-        }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
-
-    });
-}
 
 /**
  * 设置置顶文章
@@ -322,54 +219,6 @@ function deleteStickyPost(event) {
 
 
 
-/**
- * 驳回投稿
- * @param {Event} event
- */
-function rejectPost(event) {
-
-    //获取按钮
-    const $button = $(this);
-
-    let post_id = $button.data('post-id');
-    let cause = prompt('退稿原因', '下载失效');
-    //如果取消 则结束函数
-    if (!cause) {
-        return;
-    }
-
-
-    let data = { post_id, cause };
-
-    //切换按钮状态
-    $button.toggleDisabled();
-
-
-    //回调函数
-    let successCallback = function (response) {
-
-        MyToast.show_success('退稿成功');
-        $button.html('退稿成功');
-        $button.toggleDisabled();
-
-    };
-
-    /**
-     * 请求结束后
-     */
-    let completeCallback = function () {
-        //恢复按钮状态
-        $button.toggleDisabled();
-    };
-
-    $.ajax({
-        url: URLS.rejectPost,
-        data,
-        type: HTTP_METHOD.post,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
-
-}
 
 
 /**

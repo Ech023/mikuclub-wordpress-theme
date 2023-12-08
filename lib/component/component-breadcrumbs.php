@@ -38,6 +38,9 @@ function print_breadcrumbs_component()
 	{
 		$local_html = $item_start_active . '搜索页' . $item_end;
 	}
+	else if (is_author()){
+		$local_html = $item_start_active . '个人空间' . $item_end;
+	}
 
 	//如果是分类 或者 文章页
 	else if (is_category() || is_single())

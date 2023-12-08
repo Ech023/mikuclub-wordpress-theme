@@ -219,57 +219,6 @@ function get_sticky_post_list($cat_id)
 }
 
 
-
-/**
- * 获取最新文章列表
- * @deprecated version
- *
- * @param int $cat_id 分类id
- * @param int $number 数量
- *
- * @return My_Post_Model[] 自定义文章列表
- */
-function get_recently_post_list($cat_id, $number)
-{
-
-    $output = File_Cache::get_cache_meta_with_callback(File_Cache::RECENTLY_POST_LIST . '_' . ($cat_id ?: 0), File_Cache::DIR_POSTS . DIRECTORY_SEPARATOR . File_Cache::RECENTLY_POST_LIST, Expired::EXP_2_HOURS, function () use ($cat_id, $number)
-    {
-        //文章查询参数
-        $args = [
-            Post_Query::CAT => $cat_id,
-            Post_Query::POSTS_PER_PAGE => $number,
-            Post_Query::POST_STATUS => Post_Status::PUBLISH,
-            Post_Query::POST_TYPE => Post_Type::POST,
-        ];
-
-        // //如果存在 分类ID
-        // if ($cat_id > 0)
-        // {
-        // 	//设置该分类过滤
-        // 	$args['cat'] = $cat_id;
-        // }
-        // else
-        // {
-        // 	//排除成人区
-        // 	$args['cat'] = Category::NO_ADULT_CATEGORY;
-        // }
-
-        $results = get_posts($args);
-
-        //把查询到的文章数组转换成自定义文章类
-        $output = array_map(function ($element)
-        {
-            return new My_Post_Model($element);
-        }, $results);
-
-        return $output;
-    });
-
-    return $output;
-}
-
-
-
 /**
  *
  * 获取热门文章列表 (根据文章元数据统计)
@@ -381,31 +330,31 @@ function get_related_post_list($post_id, $number = Config::RELATED_POST_LIST_LEN
     //创建缓存键值
     $cache_key = File_Cache::RELATED_POST_LIST . '_' . $post_id . '_' . $number;
     //获取缓存
-    $output = File_Cache::get_cache_meta_with_callback($cache_key, File_Cache::DIR_POSTS . DIRECTORY_SEPARATOR . File_Cache::RELATED_POST_LIST, Expired::EXP_7_DAYS, function () use ($post_id, $number)
+    $output = File_Cache::get_cache_meta_with_callback($cache_key, File_Cache::DIR_POSTS . DIRECTORY_SEPARATOR . File_Cache::RELATED_POST_LIST, Expired::EXP_3_DAYS, function () use ($post_id, $number)
     {
 
         $args = [
-            Post_Query::IGNORE_STICKY_POSTS => 1,
-            Post_Query::ORDERBY => 'rand',
             Post_Query::POSTS_PER_PAGE => $number,
             Post_Query::POST__NOT_IN => [$post_id],
-            Post_Query::POST_STATUS => Post_Status::PUBLISH,
             Post_Query::POST_TYPE => Post_Type::POST,
+            Post_Query::IGNORE_STICKY_POSTS => 1,
+            Post_Query::POST_STATUS => Post_Status::PUBLISH,
+            Post_Query::ORDERBY => 'rand',
         ];
 
         //设置分类
-        if (get_post_sub_cat_id($post_id))
+        $post_sub_cat = get_post_sub_cat_id($post_id);
+        if ($post_sub_cat)
         {
-            $args[Post_Query::CAT] = get_post_sub_cat_id($post_id);
+            $args[Post_Query::CAT] = $post_sub_cat;
         }
 
         //获取标签
-        $tags = get_the_tags();
+        $tags = get_the_tags($post_id);
 
         //如果有标签
         if ($tags)
         {
-
             //提取标签id数组
             $tag_ids = array_map(function (WP_Term $tag)
             {
@@ -416,26 +365,27 @@ function get_related_post_list($post_id, $number = Config::RELATED_POST_LIST_LEN
         }
 
         //查询文章
-        $results = get_posts($args);
+        $result = get_posts($args);
+
+        //更新缺少的文章数量
+        $missing_length = $number - count($result);
 
         //如果结果数量不够 再获取同分类的文章
-        if (count($results) < $number)
+        if ($missing_length > 0)
         {
             //移除标签限制
             unset($args[Post_Query::TAG__IN]);
             //修改需求数量
-            $args[Post_Query::POSTS_PER_PAGE] = $number - count($results);
-            //重新查询文章
-            $results2 = get_posts($args);
-            //合并结果
-            $results = array_merge($results, $results2);
+            $args[Post_Query::POSTS_PER_PAGE] = $missing_length;
+            //重新查询文章 + 合并结果
+            $result = array_merge($result, get_posts($args));
         }
 
         //把查询到的文章数组转换成自定义文章类
         $output = array_map(function ($element)
         {
             return new My_Post_Model($element);
-        }, $results);
+        }, $result);
 
         return $output;
     });
@@ -481,13 +431,13 @@ function get_fail_down_post_list($author, $cat, $paged, $number = 20)
     }
 
     //查询文章
-    $results = get_posts($args);
+    $result = get_posts($args);
 
     //把查询到的文章数组转换成自定义文章类
     $output = array_map(function ($element)
     {
         return new My_Post_Model($element);
-    }, $results);
+    }, $result);
 
     return $output;
 }
@@ -533,13 +483,13 @@ function get_my_favorite_post_list($cat, $search, $paged)
             $args[Post_Query::PAGED] = $paged;
         }
 
-        $results = get_posts($args);
+        $result = get_posts($args);
 
         //把查询到的文章数组转换成自定义文章类
         $output = array_map(function ($element)
         {
             return new My_Post_Model($element);
-        }, $results);
+        }, $result);
     }
 
     return $output;
@@ -572,13 +522,13 @@ function get_my_followed_post_list($number)
             Post_Query::ORDERBY => 'modified',
         ];
 
-        $results = get_posts($args);
+        $result = get_posts($args);
 
         //把查询到的文章数组转换成自定义文章类
         $output = array_map(function ($element)
         {
             return new My_Post_Model($element);
-        }, $results);
+        }, $result);
     }
 
     return $output;

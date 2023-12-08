@@ -8,8 +8,7 @@
 use mikuclub\User_Capability;
 
 use function mikuclub\print_breadcrumbs_component;
-use function mikuclub\next_page_button;
-use function mikuclub\print_category_button_component;
+
 
 
 User_Capability::prevent_not_logged_user();
@@ -39,7 +38,7 @@ get_header();
 
                 </div>
 
-                <?php echo print_category_button_component(); ?>
+              
 
             </div>
 
@@ -62,10 +61,7 @@ get_header();
 
     </div>
 
-    <div class="my-2">
-        <?php echo next_page_button('下一页'); ?>
-
-    </div>
+  
 
 
 </div>

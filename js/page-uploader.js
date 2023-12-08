@@ -13,8 +13,7 @@ $(function () {
 
         //绑定 下一页按钮点击事件
         $uploaderPageElement.find('button.get-next-page').on('click', '', '', getManagePostList);
-        //绑定删除按钮事件
-        $uploaderPageElement.on('click', 'button.delete-post', '', deletePostFromList);
+        
 
         //绑定搜索按钮事件
         $uploaderPageElement.on('click', 'button.search-post-button', '', sendManagePostListSearch);
@@ -148,63 +147,6 @@ function getManagePostList() {
         headers: createAjaxHeader()
     }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
 
-
-}
-
-/**
- * 删除文章
- * @param {Event} event
- */
-function deletePostFromList(event) {
-
-    open_confirm_modal('确认要删除该投稿吗?', '', () => {
-
-        //获取按钮
-        const $button = $(this);
-
-
-        let $grandparentElement = $button.parent().parent();
-
-        let postId = $button.data('post-id');
-
-
-        //注销按钮
-        $button.toggleDisabled();
-        $button.children().toggle();
-
-        //回调函数
-        let successCallback = function (response) {
-
-
-            //隐藏当前爷爷元素
-            $grandparentElement.fadeOut(300);
-            //创建通知弹窗
-            MyToast.show_success('已删除投稿');
-
-
-        };
-
-
-        /**
-         * 错误情况
-         */
-        let failCallback = function () {
-
-            //创建通知弹窗
-            MyToast.show_error('请求错误 请重试');
-
-            //重新激活按钮
-            $button.toggleDisabled();
-            $button.children().toggle();
-        };
-
-
-        $.ajax({
-            url: URLS.posts + '/' + postId,
-            type: HTTP_METHOD.delete,
-            headers: createAjaxHeader()
-        }).done(successCallback).fail(failCallback);
-    });
 
 }
 

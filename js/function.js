@@ -13,124 +13,8 @@
  * JS函数文件
  */
 
-/**
- * 让未登录用户跳转离开魔法区
- */
-function mofaRedirect() {
-    //成人区分类ids
-    let adultCategoryIds = [
-        1120,
-        3055,
-        211,
-        1741,
-        1121,
-        1192,
-        5998,
-        6678,
-        6713,
-    ];
-
-    //如果是未登录用户
-    if (parseInt(MY_SITE.user_id) === 0) {
-        //不是搜索引擎  + 在成人区分类或成人区文章页面
-        if (!isSearchSpider() && (adultCategoryIds.includes(parseInt(MY_SITE.post_main_cat)) || adultCategoryIds.includes(parseInt(MY_SITE.category_id)))) {
-            //跳转
-            window.location.href = MY_SITE.home + '/404?mofa=true';
-        }
-
-    }
-
-}
-
-/**
- * 检测用户是否是搜索引起的蜘蛛
- * @return boolean
- */
-function isSearchSpider() {
-    //搜索引擎列表
-    let searchSpiderlist = [
-        'mediapartners',
-        'google',
-        'baiduspider',
-        'yisouspider',
-        'www.sogou.com',
-        'sospider',
-        '360spider',
-        'haosouspider',
-        'easou',
-        'yisou',
-        'bingbot',
-        'yahoo.com',
-        'spider',
-    ];
-    let isSpider = false;
-    let userAgent = navigator.userAgent.toLowerCase();
-    //检测是否是搜索引擎
-    for (let i = 0; i < searchSpiderlist.length; i++) {
-        if (userAgent.indexOf(searchSpiderlist[i]) !== -1) {
-            isSpider = true;
-            i = 99;
-        }
-    }
-    return isSpider;
-
-}
-
-/**
- * 更新分类按钮的类名
- * @param {jQuery} $button
- */
-function update_category_button_group_class($button) {
-
-    //移除分类组和子分类组里所有选中状态
-    $('.array_cat_button_group button.category, .array_sub_cat_group button.category').removeClass('selected');
-    //只为当前点击的按钮添加识别类名
-    $button.addClass('selected');
 
 
-}
-
-/**
- * 发送搜索
- * @param {jQuery} $form
- */
-function sendSearch($form) {
-
-
-    const $input = $form.find('input[name="search"]');
-
-    //获取搜索内容
-    let searchValue = $input.val();
-
-    //如果搜索内容为空
-    if (!searchValue) {
-        MyToast.show_error('搜索内容为空');
-        return;
-    }
-
-    //获取被选中的分类和子分类按钮里的ID
-    const main_cat = $form.find('button.main_cat.selected').data('main_cat');
-    const sub_cat = $form.find('button.sub_cat.selected').data('sub_cat');
-
-    const data = {};
-    //如果cat存在
-    if (main_cat) {
-        data.main_cat = main_cat;
-    }
-    //如果sub_cat存在
-    else if (sub_cat) {
-        data.sub_cat = sub_cat;
-    }
-
-    let params = '';
-    //如果有分类选项
-    if (Object.keys(data).length) {
-        params = '?' + $.param(data);
-    }
-
-    let path = encodeURIComponent(searchValue);
-    location.href = `${MY_SITE.home}/search/${path}${params}`;
-}
 
 /**
  * 在顶部菜单中显示 新发布投稿数量
@@ -144,73 +28,6 @@ function showNewPostCountInTopMenu(number) {
 }
 
 
-/**
- * 切换显示下拉菜单
- * @param navItem
- * @param isAdd
- */
-function toggleDropDownMenu(navItem, isAdd) {
-
-
-    //切换类名 来显示下拉列表
-    if (isAdd) {
-        $(navItem).addClass('show').children('.dropdown-menu').show();
-    } else {
-
-        $(navItem).removeClass('show').children('.dropdown-menu').hide();
-    }
-
-}
-
-/**
- * 输出名言名句
- */
-function printPhrase() {
-
-    let randomIndex = Math.floor(Math.random() * phrases.length);
-    $("#custom-phrase").html(`"${phrases[randomIndex]}"`);
-}
-
-/**
- * 输出当前年份
- */
-function printCurrentYear() {
-
-    let year = new Date().getFullYear();
-    $("#current-year").html(year);
-
-}
-
-
-
-
-
-/**
- * 使用新参数重新刷新文章列表页面
- * @param {Object} queryObject
- */
-function refreshPostListPage(queryObject) {
-
-    //遍历对象, 删除键值为空的 键值对
-    let keys = Object.keys(queryObject);
-    for (let i = 0; i < keys.length; i++) {
-        if (!queryObject[keys[i]]) {
-            delete queryObject[keys[i]];
-        }
-    }
-
-    //重新生成URL, 移除可能存在的page页数变量
-    let url = `${location.protocol}//${location.host}${location.pathname.split('/page')[0].toString()}/page/1`;
-
-    //如果有请求参数
-    if (Object.keys(queryObject).length) {
-        //把请求参数对象转换成字符串加入url
-        url += `?${$.param(queryObject)}`;
-    }
-
-    //跳转
-    location.href = url;
-}
 
 
 
@@ -265,59 +82,12 @@ function randomDisplayElement() {
 
 
 /**
- * 根据窗口大小触发的动作
- */
-function actionOnBrowserSize() {
-
-    let windowWidth = $(window).width() + 15; //需要手动加15px (进度条宽度) 才能获得实际大小
-    let windowHeight = $(window).height();
-
-    if (windowWidth >= 768) {
-        actionOnMediumScreen();
-    } else {
-        actionOnSmallScreen();
-    }
-
-
-}
-
-
-/**
- * 在宽度768px 以上屏幕 触发的动作
- */
-function actionOnMediumScreen() {
-
-    //菜单选项 增加滑动事件监听
-    $('nav.navbar ul li.dropdown').on('mouseenter', function () {
-
-        toggleDropDownMenu(this, true);
-    }).on('mouseleave', function () {
-
-        toggleDropDownMenu(this, false);
-    });
-
-
-}
-
-/**
- * 在宽度768px 以下屏幕 触发的动作
- */
-function actionOnSmallScreen() {
-
-    //菜单选项 移除滑动事件监听
-    $('nav.navbar ul li.dropdown').off('mouseenter').off('mouseleave');
-
-
-}
-
-/**
  * 隐藏空白谷歌广告 (只隐藏0px高度的广告)
- * @param event
  * @link https://stackoverflow.com/questions/49677547/how-to-programmatically-collapse-space-in-empty-div-when-google-ad-does-not-show
  */
 function hideEmptyAdSense() {
 
-    let $adsense = $('div ins.adsbygoogle');
+    let $adsense = $('div.pop-banner ins.adsbygoogle');
     if ($adsense.length) {
         $adsense.each((index, element) => {
             //console.log('检测谷歌广告');
@@ -333,64 +103,6 @@ function hideEmptyAdSense() {
 
 }
 
-/**
- * 获取浏览记录数组
- * @return {array}
- */
-function getHistoryPostArray() {
-
-    //从本地存储获取浏览记录
-    let history = getLocalStorage(LOCAL_STORAGE_KEY.postHistory);
-    //如果浏览记录数组为空
-    if (!history) {
-        history = [];
-    }
-
-
-    return history;
-
-
-}
-
-/**
- * 设置浏览记录
- * @param {int} postId
- */
-function setHistoryPostArray(postId) {
-
-    const HISTORY_LENGTH = 200;
-
-    //如果ID为空 结束函数
-    if (!postId) {
-        return;
-    }
-
-    //获取浏览记录
-    let history = getHistoryPostArray();
-    //如果浏览记录超过最大长度
-    if (history.length >= HISTORY_LENGTH) {
-        //移除最后一个元素
-        history.pop();
-    }
-
-    //过滤掉已存在与数组中的同iD
-    history = history.filter(element => (+element) !== (+postId));
-    //添加ID到头部
-    history.unshift(postId);
-
-    //保存新的浏览记录到本地数组中
-    setLocalStorage(LOCAL_STORAGE_KEY.postHistory, history);
-
-
-}
-
-/**
- * 清除浏览记录
- */
-function clearHistoryPostArray() {
-    //清除本地储存的历史数组
-    setLocalStorage(LOCAL_STORAGE_KEY.postHistory, []);
-}
 
 
 
@@ -619,4 +331,92 @@ function open_search_page($form) {
     const path = encodeURIComponent(search_value);
     location.href = `${MY_SITE.home}/search/${path}`;
 
+}
+
+/**
+ * 提交搜索时触发
+ * @param {jQuery} $form 
+ */
+function on_submit_search_form($form) {
+
+    const search_value = $form.find('input[name="search"]').val();
+
+    //如果搜索内容为空
+    // if (!search_value) {
+    //     MyToast.show_error('搜索内容为空');
+    //     return;
+    // }
+
+    //更新参数
+    update_post_list_component_data({ s: search_value });
+    //重新请求列表
+    get_post_list(true);
+}
+
+
+/*
+======================================================
+*/
+
+/**
+ * 
+ * 根据窗口大小触发的动作
+ * 
+ * 给Bootstrap Dropdowns组件增加hover显示功能
+ */
+function actionOnBrowserSize() {
+
+    let windowWidth = $(window).width() + 15; //需要手动加15px (进度条宽度) 才能获得实际大小
+    let windowHeight = $(window).height();
+
+    //在宽度768px 以上屏幕 触发的动作
+    if (windowWidth >= 768) {
+        //菜单选项 增加滑动事件监听
+        $('nav.navbar ul li.dropdown').on('mouseenter', function () {
+
+            toggleDropDownMenu(this, true);
+        }).on('mouseleave', function () {
+
+            toggleDropDownMenu(this, false);
+        });
+    }
+    //在宽度768px 以下屏幕 触发的动作
+    else {
+        //菜单选项 移除滑动事件监听
+        $('nav.navbar ul li.dropdown').off('mouseenter').off('mouseleave');
+
+    }
+
+
+}
+
+
+/**
+ * 
+ * 切换显示下拉菜单
+ * @param navItem
+ * @param isAdd
+ */
+function toggleDropDownMenu(navItem, isAdd) {
+
+
+    //切换类名 来显示下拉列表
+    if (isAdd) {
+        $(navItem).addClass('show').children('.dropdown-menu').show();
+    } else {
+
+        $(navItem).removeClass('show').children('.dropdown-menu').hide();
+    }
+
+}
+
+
+/**
+ * @deprecated
+ * 输出名言名句
+ */
+function printPhrase() {
+
+    let randomIndex = Math.floor(Math.random() * phrases.length);
+    $("#custom-phrase").html(`"${phrases[randomIndex]}"`);
 }

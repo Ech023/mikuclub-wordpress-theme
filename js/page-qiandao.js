@@ -34,7 +34,7 @@ function printQiandaoButton() {
     }
     //否则添加上次签到时间
     else{
-        content = `<h4 class="">今天您已经签到成功了, 签到时间为 ${qiandao}</h4>`;
+        content = `<h5 class="">今天您已经签到成功了, 签到时间为 ${qiandao}</h5>`;
     }
 
     $container.append(content);
@@ -55,7 +55,7 @@ function setQiandao(){
     setCookie(cookieName, cookieValue, 0);
 
     let $container = $('.qiandao-button-container');
-    let content =   `<h4 class="">发射评论,留下你的痕迹吧!</h4>`;
+    let content =   `<h5 class="">发射评论,留下你的痕迹吧!</h5>`;
     $container.empty().append(content);
 
 

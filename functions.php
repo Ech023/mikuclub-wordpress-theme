@@ -188,12 +188,12 @@ function setup_front_end_script()
             'in_footer' => false,
         ],
 
-        //名言名句变量
-        [
-            'name' => 'js-phrases',
-            'path' => '/js/phrases.js',
-            'in_footer' => false,
-        ],
+        // //名言名句变量
+        // [
+        //     'name' => 'js-phrases',
+        //     'path' => '/js/phrases.js',
+        //     'in_footer' => false,
+        // ],
 
         //通用JS
         [
@@ -213,19 +213,14 @@ function setup_front_end_script()
             'path' => '/js/function-float-menu-bar.js',
             'in_footer' => false, //必须在顶部, 不然会有视觉延时
         ],
-
+        
         //通用JS AJAX的函数
         [
             'name' => 'js-function-ajax',
             'path' => '/js/function-ajax.js',
-            'in_footer' => false,
+            'in_footer' => true,
         ],
-        //JS 页面加载完成后自动运行
-        [
-            'name' => 'js-on-load',
-            'path' => '/js/script-on-load.js',
-            'in_footer' => false,
-        ],
+        
         //JS 监听
         [
             'name' => 'js-listener',
@@ -242,13 +237,25 @@ function setup_front_end_script()
         [
             'name' => 'function-post-list-header',
             'path' => '/js/function-post-list-header.js',
-            'in_footer' => false,
+            'in_footer' => true,
         ],
         //JS 文章列表加载
         [
             'name' => 'js-post-list',
             'path' => '/js/function-post-list.js',
-            'in_footer' => false,
+            'in_footer' => true,
+        ],
+        //JS 文章
+        [
+            'name' => 'js-post',
+            'path' => '/js/function-post.js',
+            'in_footer' => true,
+        ],
+        //JS 用户
+        [
+            'name' => 'js-user',
+            'path' => '/js/function-user.js',
+            'in_footer' => true,
         ],
         //JS 投稿页面
         [
@@ -282,13 +289,13 @@ function setup_front_end_script()
         ],
         //JS 文章页面
         [
-            'name' => 'js-post',
+            'name' => 'js-page-post',
             'path' => '/js/page-post.js',
             'in_footer' => false,
         ],
         //JS 文章页面评论功能
         [
-            'name' => 'js-post-comment',
+            'name' => 'js-page-post-comment',
             'path' => '/js/page-post-comment.js',
             'in_footer' => false,
         ],

@@ -90,7 +90,7 @@ class MyToast {
         //如果容器元素不存在
         let $container_element = $('.' + this.container_class_name);
         if ($container_element.length === 0) {
-            $container_element = $('<div class="my-toast-container position-fixed end-0 top-0 mt-2 mx-3 mx-md-4" style="z-index: 1100;"></div>');
+            $container_element = $('<div class="my-toast-container position-fixed end-0 top-0 mt-2 mx-3 mx-md-4" style="z-index: 1100; max-width: 90vw;"></div>');
             //创建一个新的容器 并添加到ROOT里
             $(this.root_element).append($container_element);
         }

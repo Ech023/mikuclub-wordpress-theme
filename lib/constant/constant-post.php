@@ -34,14 +34,26 @@ class Post_Meta
     const POST_DOWN = 'down';
     //下载栏2
     const POST_DOWN2 = 'down2';
+    //下载栏3
+    const POST_DOWN3 = 'down3';
     //访问密码栏1
     const POST_PASSWORD = 'password';
     //访问密码栏2
     const POST_PASSWORD2 = 'password2';
+    //访问密码栏3
+    const POST_PASSWORD3 = 'password3';
     //解压密码栏1
     const POST_UNZIP_PASSWORD = 'unzip_password';
     //解压密码栏2
     const POST_UNZIP_PASSWORD2 = 'unzip_password2';
+    //解压密码栏3
+    const POST_UNZIP_PASSWORD3 = 'unzip_password3';
+    //二级解压密码栏1
+    const POST_UNZIP_SUB_PASSWORD = 'unzip_sub_password';
+    //二级解压密码栏2
+    const POST_UNZIP_SUB_PASSWORD2 = 'unzip_sub_password2';
+    //二级解压密码栏3
+    const POST_UNZIP_SUB_PASSWORD3 = 'unzip_sub_password3';
 
     //百度秒传地址
     const POST_BAIDU_FAST_LINK = 'baidu_fast_link';
@@ -111,6 +123,37 @@ class Post_Status
     const PENDING = 'pending';
     //草稿
     const DRAFT = 'draft';
+    //已删除
+    const TRASH = 'trash';
+
+    /**
+     * 获取文章状态说明
+     *
+     * @param string $status
+     * @return string
+     */
+    public static function get_description($status)
+    {
+
+        $result = '';
+        switch ($status)
+        {
+            case static::PUBLISH:
+                $result = '已公开';
+                break;
+            case static::PENDING:
+                $result = '等待审核';
+                break;
+            case static::DRAFT:
+                $result = '草稿';
+                break;
+            case static::TRASH:
+                $result = '已删除';
+                break;
+        }
+
+        return $result;
+    }
 }
 
 /**

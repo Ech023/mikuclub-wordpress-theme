@@ -4,42 +4,34 @@ namespace mikuclub;
 
 get_header();
 
-?>
-
-<header class="search-header">
-
-   
-    <?php echo print_breadcrumbs_component(); ?>
-    
-
-    <div class="my-4">
-        <form class="site-search-form">
-            <div class="input-group mb-4">
-
-                <input type="text" class="form-control form-control-lg" name="search" autocomplete="off" value="<?php echo sanitize_text_field(get_query_var('s')); ?>" />
-
-                <button type="submit" class="btn btn-lg btn-miku"><i class="fa-solid fa-search"></i> 搜索</button>
-
-            </div>
+$search_value = sanitize_text_field(get_query_var('s'));
+$search_form = post_list_header_search_form();
 
 
-            <?php echo print_category_button_component(); ?>
+$breadcrumbs = print_breadcrumbs_component();
+$post_list_header_category = print_post_list_header_category();
+$post_list_header =  print_post_list_header_component();
+$post_list_component =  print_post_list_component();
 
-            <?php echo print_sub_category_button_component(); ?>
+$output = <<<HTML
 
-        </form>
+	{$breadcrumbs}
+
+    <div class="my-4 w-md-50 mx-auto">
+        {$search_form}
     </div>
 
-</header>
+    <div class="my-2 border-bottom">
+        {$post_list_header_category}
+    </div>
+	{$post_list_header}
 
-<?php
+	{$post_list_component}
+	
+	
+HTML;
 
-echo post_list_component();
-?>
+echo $output;
 
-
-
-<?php
 //get_sidebar();
 get_footer();
-?>

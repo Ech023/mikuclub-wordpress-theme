@@ -112,7 +112,7 @@ function get_parent_category_id($category_id)
  * 获取分类列表
  * @return My_Category_Model[]
  */
-function get_main_category_list()
+function get_array_main_category()
 {
 
 	$result = File_Cache::get_cache_meta_with_callback(
@@ -149,7 +149,7 @@ function get_main_category_list()
  * @param int $cat_id
  * @return My_Category_Model[]
  */
-function get_sub_category_list($cat_id)
+function get_array_sub_category($cat_id)
 {
 	$result = [];
 

@@ -310,7 +310,7 @@ class MyManagePost extends MyPostSlim {
                 </div>
                 <div class="col-12 col-md-2 text-center">
                     <a class="btn btn-secondary my-1 mx-2 px-5 px-md-4 " href="${MY_SITE.home}/edit?pid=${this.id}" target="_blank">编辑</a>
-                    <button class="btn btn-danger my-1 mx-2 px-5 px-md-4 delete-post" type="button" data-post-id="${this.id}">
+                    <button class="btn btn-danger my-1 mx-2 px-5 px-md-4 delete_post" type="button" data-post-id="${this.id}">
                         <span>删除</span>
                         <span class="spinner-border spinner-border-sm" style="display: none"></span>
                     </button>

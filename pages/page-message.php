@@ -14,7 +14,7 @@ use function mikuclub\print_breadcrumbs_component;
 use function mikuclub\get_user_comment_reply_unread_count;
 use function mikuclub\get_user_forum_notification_unread_count;
 use function mikuclub\get_user_private_message_unread_count;
-use function mikuclub\next_page_button;
+
 
 use function mikuclub\set_user_private_message_as_read;
 
@@ -113,10 +113,7 @@ $message_nav_component = '
 
 	</div>
 
-	<div class="my-2">
-		<?php echo next_page_button('下一页'); ?>
-		<input type="hidden" name="paged" value="0">
-	</div>
+
 
 
 </div>

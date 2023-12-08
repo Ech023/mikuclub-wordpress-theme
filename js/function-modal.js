@@ -111,6 +111,18 @@ function open_confirm_modal(text, text_secondary, confirm_callback, cancel_callb
 }
 
 /**
+ * 显示对话输入模态窗
+ * @param {string} text 需要确认的标题
+ * @param {string} default_value 默认内容
+ * @param {function|null} confirm_callback 确认触发的回调
+ * @param {function|null} cancel_callback 确认触发的回调
+ * @returns {void}
+ */
+function open_prompt_modal(text, default_value, confirm_callback, cancel_callback = null) {
+    new PromptModal(text, default_value).create(confirm_callback, cancel_callback).show();
+}
+
+/**
  * 打开视频播放窗口
  * 
  * @param {string} value

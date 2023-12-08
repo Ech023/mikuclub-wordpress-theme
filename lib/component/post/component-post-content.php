@@ -3,12 +3,13 @@
 namespace mikuclub;
 
 use mikuclub\constant\Admin_Meta;
+use mikuclub\constant\Download_Link_Type;
 use mikuclub\constant\Expired;
 use mikuclub\constant\Post_Feedback_Rank;
 use mikuclub\constant\Post_Meta;
 
 /**
- * 输出文章HTML内容
+ * 输出文章页HTML内容
  *
  * @param int $post_id
  * @return string
@@ -30,26 +31,34 @@ function print_post_content($post_id)
 
 		$first_image_part = print_post_content_first_image($post_id);
 		$post_description_part = print_post_content_description($post_id);
-		$password_part = print_post_content_password($post_id);
+
 		$download_part = print_post_content_download($post_id);
 		//$download_fast_link_part = print_post_content_download_fast_link($post_id);
-
+		$video_part = print_post_content_video($post_id);
 
 		$result = <<<HTML
 
-			<div class="first-image-part my-4" id="first-image-part">
-				{$first_image_part}
+			<div class="row">
+				<div class="col-12 col-xl-6 order-0 ">
+					<div class="first-image-part my-2 border-end pe-xl-2" id="first-image-part">
+						{$first_image_part}
+					</div>
+				</div>
+				<div class="col-12 col-xl-6 order-2 order-xl-1">
+					
+					<div class="download-part my-2" id="download-part">
+						{$download_part}
+					</div>
+					<div class="video-part my-2" id="video-part">
+						{$video_part}
+					</div>
+				</div>
+				<div class="col-12 order-1  order-xl-2">
+					<div class="content-part my-2" style="min-height: 100px">
+						{$post_description_part}
+					</div>
+				</div>
 			</div>
-			<div class="content-part my-4" style="min-height: 100px">
-				{$post_description_part}
-			</div>
-			<div class="password-part my-4" id="password-part">
-				{$password_part}
-			</div>
-			<div class="download-part my-4" id="download-part">
-				{$download_part}
-			</div>
-			
 
 HTML;
 
@@ -59,14 +68,12 @@ HTML;
 	//文章内容第二部分
 	$post_content_part_2 = File_Cache::get_cache_meta_with_callback(File_Cache::POST_CONTENT_PART_2, File_Cache::DIR_POST . DIRECTORY_SEPARATOR . $post_id, Expired::EXP_7_DAYS, function () use ($post_id)
 	{
-		$video_part = print_post_content_video($post_id);
+
 		$preview_images_part = print_post_content_previews_image($post_id);
 
 		$result = <<<HTML
-			<div class="video-part my-4" id="video-part">
-				{$video_part}
-			</div>
-			<div class="preview-images-part my-4" id="preview-images-part">
+			
+			<div class="preview-images-part my-2" id="preview-images-part">
 				{$preview_images_part}
 			</div>
 HTML;
@@ -80,20 +87,20 @@ HTML;
 	//PC端 文章页 - 正文中间
 	if (get_theme_option(Admin_Meta::POST_CONTENT_ADSENSE_PC_ENABLE))
 	{
-		$pc_adsense = '<div class="pop-banner text-center my-4 d-none d-md-block">' . get_theme_option(Admin_Meta::POST_CONTENT_ADSENSE_PC) . '</div>';
+		$pc_adsense = '<div class="pop-banner text-center my-2 d-none d-md-block">' . get_theme_option(Admin_Meta::POST_CONTENT_ADSENSE_PC) . '</div>';
 	}
 	$mobile_adsense = '';
 	//手机端 文章页 - 正文中间
 	if (get_theme_option(Admin_Meta::POST_CONTENT_ADSENSE_PHONE_ENABLE))
 	{
-		$mobile_adsense = '<div class="pop-banner text-center my-3 d-md-none">' . get_theme_option(Admin_Meta::POST_CONTENT_ADSENSE_PHONE) . '</div>';
+		$mobile_adsense = '<div class="pop-banner text-center my-2 d-md-none">' . get_theme_option(Admin_Meta::POST_CONTENT_ADSENSE_PHONE) . '</div>';
 	}
 
 
 	$output = <<<HTML
 
 		{$post_content_part_1}
-		<div class="functional-part my-4 ">
+		<div class="functional-part my-2">
 			{$post_functional_button_part}
 		</div>
 		{$pc_adsense}
@@ -118,17 +125,17 @@ function print_post_content_first_image($post_id)
 
 	//获取图片地址数组
 	$images_full_src = Post_Image::get_array_image_full_src($post_id);
-	$images_src = Post_Image::get_array_image_large_src($post_id);
+	// $images_src = Post_Image::get_array_image_large_src($post_id);
 
 	$first_image_full_src = $images_full_src[0] ?? '';
-	$first_image_src = $images_src[0] ?? '';
+	// $first_image_src = $images_src[0] ?? '';
 
 	//2个图片的地址必须存在
-	if ($first_image_full_src && $first_image_src)
+	if ($first_image_full_src /*&& $first_image_src*/)
 	{
 		$output = <<<HTML
 			<a href="{$first_image_full_src}" data-lightbox="images">
-				<img class="img-fluid" src="{$first_image_src}" alt="封面图" />
+				<img class="img-fluid" src="{$first_image_full_src}" alt="封面图" />
 			</a>
 HTML;
 	}
@@ -192,99 +199,6 @@ HTML;
 	return $output;
 }
 
-/**
- * 输出文章HTML内容里的密码部分
- *
- * @param int $post_id
- * @return string
- */
-function print_post_content_password($post_id)
-{
-
-	$output = '';
-
-	$password1 = get_post_meta($post_id, Post_Meta::POST_PASSWORD, true) ?: '';
-	$password2 = get_post_meta($post_id, Post_Meta::POST_PASSWORD2, true) ?: '';
-	$password_unzip1 = get_post_meta($post_id, Post_Meta::POST_UNZIP_PASSWORD, true) ?: '';
-	$password_unzip2 = get_post_meta($post_id, Post_Meta::POST_UNZIP_PASSWORD2, true) ?: '';
-
-
-	//密码1部分
-	$password1_part = print_password_form(Post_Meta::POST_PASSWORD, '提取密码', $password1);
-	$password1_part .= print_password_form(Post_Meta::POST_UNZIP_PASSWORD, '解压密码', $password_unzip1);
-
-	//密码2部分
-
-	$password2_part = print_password_form(Post_Meta::POST_PASSWORD2, '提取密码2', $password2);
-	$password2_part .= print_password_form(Post_Meta::POST_UNZIP_PASSWORD2, '解压密码2', $password_unzip2);
-
-
-	//如果有密码1 或者 密码2
-	if ($password1_part || $password2_part)
-	{
-
-		//密码1部分存在
-		if ($password1_part)
-		{
-			$password1_part  = <<<HTML
-				<div class="col-12 col-sm-6">
-					$password1_part
-				</div>
-HTML;
-		}
-
-		//如果密码2部分存在
-		if ($password2_part)
-		{
-			$password2_part  = <<<HTML
-				<div class="col-12 col-sm-6">
-					$password2_part
-				</div>
-HTML;
-		}
-
-		$output = <<<HTML
-
-			<h5>密码</h5>
-			<div class="row my-3">
-				$password1_part
-				$password2_part
-			</div>
-
-HTML;
-	}
-
-	return $output;
-}
-
-
-/**
- * 输出密码表单
- *
- * @param string $class_name
- * @param string $label_name
- * @param string $value
- *
- * @return string 如果value为空, 返回空字符串
- */
-function print_password_form($class_name, $label_name, $value)
-{
-	$output = '';
-
-	if ($value !== '')
-	{
-		$output = <<<HTML
-		<div class="input-group w-100 w-md-50 my-2">
-			<span class="input-group-text bg-light-1">{$label_name}</span>
-			<input class="form-control bg-light-1 {$class_name}"  type="text" value="{$value}" readonly />
-		</div>
-			
-
-HTML;
-	}
-
-	return $output;
-}
 
 
 /**
@@ -300,25 +214,36 @@ function print_post_content_download($post_id)
 
 	$down = get_post_meta($post_id, Post_Meta::POST_DOWN, true) ?: '';
 	$down2 = get_post_meta($post_id, Post_Meta::POST_DOWN2, true) ?: '';
-	$password1 = get_post_meta($post_id, Post_Meta::POST_PASSWORD, true) ?: '';
-	$password2 = get_post_meta($post_id, Post_Meta::POST_PASSWORD2, true) ?: '';
-
+	$down3 = get_post_meta($post_id, Post_Meta::POST_DOWN3, true) ?: '';
+	$password = get_post_meta($post_id, Post_Meta::POST_PASSWORD, true) ?? '';
+	$password2 = get_post_meta($post_id, Post_Meta::POST_PASSWORD2, true) ?? '';
+	$password3 = get_post_meta($post_id, Post_Meta::POST_PASSWORD3, true) ?? '';
+	$unzip_password = get_post_meta($post_id, Post_Meta::POST_UNZIP_PASSWORD, true) ?? '';
+	$unzip_password2 = get_post_meta($post_id, Post_Meta::POST_UNZIP_PASSWORD2, true) ?? '';
+	$unzip_password3 = get_post_meta($post_id, Post_Meta::POST_UNZIP_PASSWORD3, true) ?? '';
+	$unzip_sub_password = get_post_meta($post_id, Post_Meta::POST_UNZIP_SUB_PASSWORD, true) ?? '';
+	$unzip_sub_password2 = get_post_meta($post_id, Post_Meta::POST_UNZIP_SUB_PASSWORD2, true) ?? '';
+	$unzip_sub_password3 = get_post_meta($post_id, Post_Meta::POST_UNZIP_SUB_PASSWORD3, true) ?? '';
 
 	//如果有下载地址
-	$download_part = print_download_button('下载1', $down, Post_Meta::POST_PASSWORD, $password1);
-	$download_part .= print_download_button('下载2', $down2, Post_Meta::POST_PASSWORD2, $password2);
+	$download_box_1 = print_download_box('下载1', $down, $password, $unzip_password, $unzip_sub_password);
+	$download_box_2 = print_download_box('下载2', $down2, $password2, $unzip_password2, $unzip_sub_password2);
+	$download_box_3  = print_download_box('下载3', $down3, $password3, $unzip_password3, $unzip_sub_password3);
 
 
 
-	if ($download_part)
+	if ($download_box_1 || $download_box_2 ||  $download_box_3)
 	{
 		$output = <<<HTML
-			<h5>下载</h5>
-			<div class="row my-3">
-				{$download_part}
-			</div>
-			<div class="small">
+			{$download_box_1}
+			
+			{$download_box_2}
+			
+			{$download_box_3}
+			<div class="text-dark-1 fs-75 fs-sm-875  ">
 				点击下载会自动复制提取密码到剪切板
+			</div>
+			<div class="row border-bottom my-2">
 			</div>
 HTML;
 	}
@@ -329,88 +254,126 @@ HTML;
 
 
 
+
+
 /**
  * 输出下载按钮
  *
- * @param string $button_text 按钮名称
+ * @param string $title 标题
  * @param string $down_link 下载链接
- * @param string $password_id 访问码ID
- * @param string $password 访问码 用来实现自动填充功能
- *
+ * @param string $access_password
+ * @param string $unzip_password
+ * @param string $unzip_sub_password
  * @return string 如果缺少下载地址 返回空字符串
  */
-function print_download_button($button_text, $down_link, $password_id, $password)
+function print_download_box($title, $down_link, $access_password, $unzip_password, $unzip_sub_password)
 {
-
 	$output = '';
 
 	if ($down_link)
 	{
+		$down_type = Download_Link_Type::get_type_by_link($down_link);
 
-		//给下载链接添加自动填充访问码的参数
-		if (stripos($down_link, 'pan.baidu.com') !== false)
+		//如果有独立的访问密码 
+		if ($access_password)
 		{
-			//如果是标准百度分享地址 并且存在访问密码 , 并且 不存在 ? 参数
-			if (stripos($down_link, 'pan.baidu.com/s/1') !== false && $password && stripos($down_link, '?') === false)
+
+			//如果是百度网盘和夸克的分享 + 不包含 ? 问号
+			if (($down_type === Download_Link_Type::BAIDU_PAN || $down_type === Download_Link_Type::QUARK) && stripos($down_link, '?') === false)
 			{
-				//移除#符号和后面的内容, 添加访问密码到下载链接里
-				$down_link = explode('#', $down_link)[0] . '?' . http_build_query([
-					'pwd' => $password,
-				]);
+				$params = '';
+
+				//如果是百度盘 还需要额外检查格式
+				if ($down_type === Download_Link_Type::BAIDU_PAN)
+				{
+					//如果是标准没有带访问密码的百度分享地址 + 链接里没有 ? 问号
+					if (stripos($down_link, 'pan.baidu.com/s/1') !== false)
+					{
+						$params = [
+							'pwd' => $access_password,
+						];
+					}
+				}
+				else if ($down_type === Download_Link_Type::QUARK)
+				{
+					$params = [
+						'passcode' => $access_password,
+					];
+				}
+
+				//如果有正确生成参数
+				if ($params)
+				{
+					//移除#符号和后面的内容, 添加访问密码到下载链接里
+					$down_link = explode('#', $down_link)[0] . '?' . http_build_query($params);
+				}
 			}
 		}
-		else if (stripos($down_link, 'quark') !== false)
-		{
-			//如果存在访问密码 , 并且 不存在 ? 参数
-			if ($password && stripos($down_link, '?') === false)
-			{
-				//移除#符号和后面的内容, 添加访问密码到下载链接里
-				$down_link = explode('#', $down_link)[0] . '?' . http_build_query([
-					'passcode' => $password,
-				]);
-			}
-		}
 
 
-		$array_drive_path = [
-			'pan.baidu.com' => '(百度网盘)',
-			'quark' => '(夸克网盘)',
-			'aliyundrive' => '(阿里云盘)',
-			'lanzou' => '(蓝奏云)',
-			'weiyun' => '(腾讯微云)',
-			'115.com' => '(115盘)',
-			'xunlei' => '(迅雷云盘)',
-			't00y.com' => '(城通盘)',
-			'quqi' => '(曲奇云盘)',
-			'189' => '(天翼云)',
-			'139' => '(和彩云)',
-			'drive.uc' => '(UC网盘)',
-			'magnet' => '(磁力链接)',
-			'sharepoint' => '(OneDrive 要梯子)',
-			'mega' => '(MEGA盘 要梯子)'
-		];
+		$button_text = Download_Link_Type::get_description($down_type) ?: '下载';
 
-		// 识别下载地址对应的网盘名称 一旦找到匹配的关键字，就可以结束循环
-		foreach ($array_drive_path as $drive_path => $drive_name)
-		{
-			if (stripos($down_link, $drive_path) !== false)
-			{
-				$button_text .= ' ' . $drive_name;
-				break;
-			}
-		}
+		$access_password_component = $access_password !== '' ? <<<HTML
+
+			<div class="col-auto">
+				<div class="input-group">
+					<div class="input-group-text bg-light-2">访问码</div>
+					<input class="access_password form-control form-control-sm bg-light-2 disabled " type="text" value="{$access_password}" readonly />
+				</div>
+			</div>
+HTML : '';
+
+		$unzip_password_component = $unzip_password !== '' ? <<<HTML
+
+			<div class="col-auto">
+				<div class="input-group">
+					<div class="input-group-text bg-light-2">解压密码</div>
+					<input class="unzip_password form-control form-control-sm bg-light-2 disabled" type="text" value="{$unzip_password}" readonly />
+				</div>
+			</div>
+HTML : '';
+
+		$unzip_sub_password_component = $unzip_sub_password !== '' ? <<<HTML
+
+			<div class="col-auto">
+				<div class="input-group">
+					<div class="input-group-text bg-light-2">解压密码2</div>
+					<input class="unzip_sub_password form-control form-control-sm bg-light-2 disabled" type="text" value="{$unzip_sub_password}" readonly />
+				</div>
+			</div>
+
+HTML : '';
+
 
 
 		$output = <<<HTML
 
-			<div class="col-12 col-sm-6 my-2 my-sm-0">
-				<a class="btn btn-miku w-100 w-md-50 download" title="{$button_text}" href="{$down_link}" target="_blank" data-password-id="{$password_id}">
-					{$button_text}
-				</a>
+			<div class="download_container row align-items-center my-2 pb-2 border-bottom">
+				<div class="col-auto">
+					<div>
+						<i class="fa-solid fa-download me-2"></i>
+						{$title}
+					</div>
+				</div>
+				<div class="col">
+					<div class="download_container row align-items-center g-2">
+						{$access_password_component}
+						{$unzip_password_component}
+						{$unzip_sub_password_component}
+						<div class="m-0 mt-3"></div>
+						<div class="col-6">
+							<a class="download btn btn-sm btn-miku w-100" href="{$down_link}" target="_blank">
+							{$button_text}
+							</a>
+						</div>
+						<div class="m-0 mb-3"></div>
+					</div>
+				</div>
 			</div>
 
 HTML;
 	}
+
 
 	return $output;
 }
@@ -442,14 +405,14 @@ function print_post_content_download_fast_link($post_id)
 
 		$output = <<<HTML
 
-			<h4 class="mt-3">秒传链接</h4>
+			<h5 class="mt-3">秒传链接</h5>
 			<div class="my-3">
                 <textarea class="baidu-fast-link form-control small bg-light-1" style="font-size: 0.75rem;" rows="3" readonly>{$baidu_fast_link}</textarea>
 			</div>
 			<div class="my-3">
 				<a class="btn btn-info me-1 me-sm-2 mb-2 mb-sm-0 px-4" target="_blank" rel="external nofollow" href="{$baidu_fast_link_href}">一键秒传</a>
 				<a class="baidupan-home-link btn btn-primary me-1 me-sm-2 mb-2 mb-sm-0 px-4" target="_blank" rel="external nofollow" href="{$baidu_drive_home}">打开百度盘</a>
-				<a class="btn  btn-secondary mb-2 mb-sm-0" target="_blank" href="{$baidu_fast_link_help}">秒传链接使用教程</a>
+				<a class="btn  btn-light-2 mb-2 mb-sm-0" target="_blank" href="{$baidu_fast_link_help}">秒传链接使用教程</a>
 			</div>
 			<div class="small">
 				确保秒传脚本为3.1.6+版本, 否则无法使用, 新版脚本需要授权码, 请根据教程里的说明来获取
@@ -471,31 +434,32 @@ function print_post_content_video($post_id)
 	$output = '';
 
 	$bilibili_video_id = get_post_meta($post_id, Post_Meta::POST_BILIBILI, true) ?: '';
+	$bilibili_play_button = '';
+
 	$video = get_post_meta($post_id, Post_Meta::POST_VIDEO, true) ?: '';
+	$video_play_button = '';
 
 	if ($bilibili_video_id)
 	{
 
-		$output = <<<HTML
+		$bilibili_play_button = <<<HTML
 
-			<div class="row my-3">
-				<div class="col-12 col-sm-6">
-					<button class="btn btn-miku w-100 w-md-50 open_video_modal" value="{$bilibili_video_id}" data-video-type="bilibili" data-post-id="{$post_id}">
-						<span class="button-text">点击播放</span>
-						<span class="button-loading spinner-border spinner-border-sm" style="display: none" role="status" aria-hidden="true"></span>
-					</button>
-				</div>
-				<div class="col-12 col-sm-6 mt-3 my-sm-0">
-					<a class="btn btn-miku w-100 w-md-50" href="https://www.bilibili.com/video/{$bilibili_video_id}" target="_blank" rel="external nofollow">
-						前往B站观看
-					</a>
-				</div>
+			<div class="col-auto">
+				<button class="btn btn-sm btn-light-2 px-4 open_video_modal" value="{$bilibili_video_id}" data-video-type="bilibili" data-post-id="{$post_id}">
+					播放B站视频
+				</button>
 			</div>
-
+			<div class="col-auto">
+				<a class="btn btn-sm btn-light-2 px-4" href="https://www.bilibili.com/video/{$bilibili_video_id}" target="_blank" rel="external nofollow">
+					前往B站观看
+				</a>
+			</div>
+	
 HTML;
 	}
-	//如果是其他在线地址 并且 包含识别符号
-	else if ($video && stripos($video, '[') !== false)
+
+	//如果有其他在线地址 并且 包含识别符号
+	if ($video && stripos($video, '[') !== false)
 	{
 		//把[]符号 改回 <>
 		$video = str_ireplace(['[', ']'], ['<', '>'], $video);
@@ -514,33 +478,44 @@ HTML;
 		//将字符串进行 URL 编码
 		$value = urlencode($value);
 
-		$output = <<<HTML
-			<div class="row my-3">
-				<div class="col-12 col-sm-6">
-					<button class="btn btn-miku w-100 w-md-50 open_video_modal" value="{$value}" data-video-type="{$type}">
-						<span class="button-text">点击播放</span>
-						<span class="button-loading spinner-border spinner-border-sm" style="display: none" role="status" aria-hidden="true"></span>
-					</button>
-				</div>
+		$video_play_button = <<<HTML
+			<div class="col-auto">
+				<button class="btn btn-sm btn-light-2 px-4 open_video_modal" value="{$value}" data-video-type="{$type}">
+					播放Youtube视频
+				</button>
 			</div>
+			
 HTML;
 
-		//如果是youtube地址 增加翻墙提示
-		if (stripos($video, 'youtube') !== false)
-		{
-			$output .= <<<HTML
-				<div class="small">
-					需要科学上网才能正常播放
-				</div>
-HTML;
-		}
+// 		//如果是youtube地址 增加翻墙提示
+// 		if (stripos($video, 'youtube') !== false)
+// 		{
+// 			$video_play_button .= <<<HTML
+// 				<div class="m-0"></div>
+// 				<div class="col-12 fs-75 fs-sm-875">
+// 					需要科学上网才能正常播放
+// 				</div>
+// HTML;
+// 		}
 	}
 
-	if ($output)
+	if ($bilibili_play_button || $video_play_button)
 	{
 		$output = <<<HTML
-			<h5>在线播放</h5>
-			$output
+			<div class="video_container row align-items-center my-2">
+				<div class="col-auto">
+					<div>
+						<i class="fa-solid fa-video me-2"></i>
+						在线播放
+					</div>
+				</div>
+				<div class="col">
+					<div class="download_container row align-items-center g-2">
+						{$bilibili_play_button}
+						{$video_play_button}
+					</div>
+				</div>
+			</div>
 HTML;
 	}
 
@@ -558,23 +533,23 @@ function print_post_content_previews_image($post_id)
 	$output = '';
 
 	//获取图片地址数组
-	$images_src = Post_Image::get_array_image_large_src($post_id);
+	// $images_src = Post_Image::get_array_image_large_src($post_id);
 	$images_full_src = Post_Image::get_array_image_full_src($post_id);
 
 	//忽略第一张图片
-	array_shift($images_src);
+	// array_shift($images_src);
 	array_shift($images_full_src);
 
 	//循环输出图片
-	for ($i = 0; $i < count($images_src); $i++)
+	for ($i = 0; $i < count($images_full_src); $i++)
 	{
 		$image_href = $images_full_src[$i] ?? '';
-		$image_src = $images_src[$i] ?? '';
+		// $image_src = $images_src[$i] ?? '';
 
 		$output .= <<<HTML
-			<div class="m-1">
+			<div class="col-12 col-xxl-6">
 				<a href="{$image_href}" data-lightbox="images">
-					<img class="img-fluid" src="{$image_src}" alt="预览图 {$i}"  />
+					<img class="img-fluid" src="{$image_href}" alt="预览图 {$i}"  />
 				</a>
 			</div>
 HTML;
@@ -584,8 +559,8 @@ HTML;
 	if ($output)
 	{
 		$output = <<<HTML
-			<h5>预览</h5>
-			<div class="py-2 py-md-0">
+			<h5 class="mt-2">预览</h5>
+			<div class="row g-2">
 				{$output}
 			</div>
 HTML;
@@ -618,16 +593,16 @@ function print_post_content_functional_button($post_id)
 	$like_button = <<<HTML
 
         <div class="btn-group w-100">
-            <button class="btn btn-sm btn-secondary set-post-like  " data-post-id="{$post_id}">
+            <button class="btn btn-sm btn-light-2 set-post-like  " data-post-id="{$post_id}">
                 <i class="fa-solid fa-thumbs-up  my-2 my-md-0"></i> 
                 <span class="text">好评</span>
 				<br class="d-sm-none" />
 				( <span class="count">{$post_like}</span> )
             </button>
-            <div class="btn btn-sm btn-secondary disabled text-bg-secondary fw-bold w-25 post_feedback_rank">
+            <div class="btn btn-sm btn-light-2 disabled text-bg-secondary fw-bold w-25 post_feedback_rank">
                 {$post_feedback_rank}
             </div>
-            <button class="btn btn-sm btn-secondary set-post-unlike  " data-post-id="{$post_id}">
+            <button class="btn btn-sm btn-light-2 set-post-unlike  " data-post-id="{$post_id}">
                 <i class="fa-solid fa-thumbs-down  my-2 my-md-0"></i>
                 <span class="text">差评</span>
 				<br class="d-sm-none" />
@@ -649,7 +624,7 @@ HTML;
 
 	$favorite_button = <<<HTML
 
-		<button class="btn btn-sm btn-secondary set-post-favorite w-100" data-post-id="{$post_id}" {$favorite_button_disabled}>
+		<button class="btn btn-sm btn-light-2 set-post-favorite w-100" data-post-id="{$post_id}" {$favorite_button_disabled}>
 			<i class="fa-solid fa-heart my-2 my-md-0" aria-hidden="true"></i> 
 			<span class="text">收藏</span>
 			<br class="d-sm-none" />
@@ -666,7 +641,7 @@ HTML;
 		$open_social_share_html = open_social_share_html();
 		$sharing_button = <<<HTML
 	 		<div class="dropdown post-share">
-				<button class="btn btn-sm btn-secondary dropdown-toggle w-100 set-post-share" type="button" data-bs-toggle="dropdown" data-post-id="{$post_id}">
+				<button class="btn btn-sm btn-light-2 dropdown-toggle w-100 set-post-share" type="button" data-bs-toggle="dropdown" data-post-id="{$post_id}">
 					<i class="fa-solid fa-share-alt my-2 my-md-0"></i>
 					<span class="text">分享</span>
 					<br class="d-sm-none" />
@@ -681,7 +656,7 @@ HTML;
 
 	//获取失效次数统计
 	$fail_down_button = <<<HTML
-		<button class="btn btn-sm btn-secondary w-100 set-post-fail-times" data-post-id="{$post_id}">
+		<button class="btn btn-sm btn-light-2 w-100 set-post-fail-times" data-post-id="{$post_id}">
 			<i class="fa-solid fa-bug  my-2 my-md-0" aria-hidden="true"></i>
 			<span class="text">反馈失效</span>
 			<br class="d-sm-none" />
@@ -691,13 +666,13 @@ HTML;
 
 
 	$down_suggestion_button = <<<HTML
-		<button type="button" class="btn btn-sm btn-secondary w-100" data-bs-toggle="collapse" data-bs-target="#unzip-help">
+		<button type="button" class="btn btn-sm btn-light-2 w-100" data-bs-toggle="collapse" data-bs-target="#unzip-help">
 			<i class="fa-solid fa-life-ring d-none d-md-inline-block my-2 my-md-0"></i> 文件解压教程
 		</button>
 HTML;
 
 	$report_button = <<<HTML
-		<button type="button" class="btn btn-sm btn-secondary w-100 open_post_report_modal" data-post-id="{$post_id}">
+		<button type="button" class="btn btn-sm btn-light-2 w-100 open_post_report_modal" data-post-id="{$post_id}">
 			<i class="fa-solid fa-paper-plane d-none d-md-inline-block my-2 my-md-0"></i>
 			<span>稿件投诉</span>
 		</button>

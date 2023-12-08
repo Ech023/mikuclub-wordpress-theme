@@ -3,6 +3,7 @@
 namespace mikuclub;
 
 use mikuclub\constant\Download_Link_Type;
+use mikuclub\constant\Expired;
 use mikuclub\constant\Post_Meta;
 use mikuclub\Post_Query;
 
@@ -183,7 +184,7 @@ HTML;
 	}
 
 
-	$download_type_items = print_download_type_by_items_component();
+	$download_type_items = print_post_list_header_download_type();
 
 	$output = <<<HTML
 
@@ -207,11 +208,11 @@ HTML;
 }
 
 /**
- * 输出和文章下载方式有关的过滤按钮
+ * 输出和文章下载方式有关的列表过滤按钮
  * 
  * @return string
  */
-function print_download_type_by_items_component()
+function print_post_list_header_download_type()
 {
 	$active_custom_down_type = get_query_var(Post_Query::CUSTOM_DOWN_TYPE, '');
 
@@ -286,6 +287,170 @@ HTML;
 
 		return $carry;
 	}, '');
+
+	return $output;
+}
+
+/**
+ * 输出和分类有关的列表过滤按钮
+ * 
+ * @return string
+ */
+function print_post_list_header_category()
+{
+	$active_sub_cat_id = get_query_var(Post_Query::CUSTOM_CAT, 0);
+	$active_main_cat_id = 0;
+
+	//如果存在
+	if ($active_sub_cat_id)
+	{
+		//确保获取到主分类ID
+		$active_main_cat_id = get_parent_category_id($active_sub_cat_id) ?: $active_sub_cat_id;
+		//如果参数为主分类ID, 就把 子分类ID重置为0
+		if ($active_main_cat_id === $active_sub_cat_id)
+		{
+			$active_sub_cat_id = 0;
+		}
+	}
+
+
+	//获取缓存
+	$output = File_Cache::get_cache_meta(File_Cache::POST_LIST_HEADER_CATEGORY, File_Cache::DIR_COMPONENTS, Expired::EXP_30_MINUTE);
+
+	//如果没有缓存 或者 没有分类请求参数 
+	if (empty($output) || $active_sub_cat_id > 0 || $active_main_cat_id > 0)
+	{
+
+		//获取分类id列表
+		$array_category = get_array_main_category();
+
+		//创建伪分类
+		$total_category = new My_Category_Model();
+		$total_category->term_id = 0;
+		$total_category->name = '全部分区';
+
+		array_unshift($array_category, $total_category);
+
+		$category_items = '';
+		$sub_category_items = '';
+
+		//便利每个排序按钮分类
+		foreach ($array_category as $category)
+		{
+			$array_sub_category = get_array_sub_category($category->term_id);
+			$data_custom_cat = null;
+			$data_category_group = null;
+			//如果没有子分区
+			if (count($array_sub_category) === 0)
+			{
+				//直接设置分类请求参数
+				$data_custom_cat = $category->term_id;
+			}
+			//否则设置分类分组
+			else
+			{
+				$data_category_group = 'category_group_' . $category->term_id;
+
+				//创建伪子分类
+				$total_sub_category = new My_Category_Model();
+				$total_sub_category->term_id = $category->term_id;
+				$total_sub_category->name = '全部子分区';
+
+				array_unshift($array_sub_category, $total_sub_category);
+			}
+
+			$button_class = '';
+			if ($category->term_id === $active_main_cat_id)
+			{
+				$button_class = 'btn-dark-1 active';
+			}
+			else
+			{
+				$button_class = 'btn-light-2';
+			}
+
+			$category_items .= <<<HTML
+			<div class="col-auto">
+				<button class="btn btn-sm px-md-4 category_group {$button_class}" data-custom_cat="{$data_custom_cat}" data-category_group="{$data_category_group}">
+					{$category->name}
+				</button>
+			</div>
+HTML;
+
+
+			//便利每个子排序按钮
+			foreach ($array_sub_category as $sub_category)
+			{
+				$data_custom_cat = $sub_category->term_id;
+
+				$button_class = '';
+				$style = '';
+				if ($sub_category->term_id === $active_sub_cat_id)
+				{
+					$button_class = 'btn-dark-1 active';
+				}
+				else
+				{
+					$button_class = 'btn-light-2';
+				}
+
+				//如果所属排序组未显示, 隐藏子排序
+				if ($category->term_id !== $active_main_cat_id)
+				{
+					$style = 'display: none;';
+				}
+
+				$sub_category_items .= <<<HTML
+			<div class="col-auto sub_category_container {$data_category_group}" style="{$style}">
+				<button class="btn btn-sm px-md-4 sub_category {$button_class}" data-custom_cat="{$data_custom_cat}">
+					{$sub_category->name}
+				</button>
+			</div>
+HTML;
+			}
+		}
+
+		$output = <<<HTML
+
+		<div class="my-2">
+			<div class="row post_list_category align-items-center mb-2 gy-2 gx-2">
+				{$category_items}
+			</div>
+			<div class="row post_list_sub_category align-items-center mb-2 gy-2 gx-2">
+				{$sub_category_items}
+			</div>
+		</div>
+
+HTML;
+	}
+
+
+	return $output;
+}
+
+/**
+ * 输出搜索框
+ *	
+ * @param string $placeholder
+ * @return string
+ */
+function post_list_header_search_form($placeholder = '')
+{
+
+	$search_value = sanitize_text_field(get_query_var('s'));
+
+	$output = <<<HTML
+
+		<div class="my-2">
+			<form class="site-search-form input-group">
+				<input type="text" class="form-control" name="search" autocomplete="off" placeholder="{$placeholder}" value="{$search_value}"/>
+				<button type="submit" class="btn btn-sm btn-miku px-4">
+					<i class="fa-solid fa-search me-2"></i> 搜索
+				</button>
+			</form>
+		</div>
+
+HTML;
 
 	return $output;
 }

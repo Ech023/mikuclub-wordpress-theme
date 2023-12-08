@@ -472,7 +472,7 @@ function register_custom_post_api()
 		'post',
 		'metadata',
 		[
-			'get_callback' => 'api_custom_post_metadata',
+			'get_callback' => 'mikuclub\api_custom_post_metadata',
 		]
 	);
 }

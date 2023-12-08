@@ -7,7 +7,7 @@ use mikuclub\constant\Admin_Meta;
 use function mikuclub\print_breadcrumbs_component;
 
 use function mikuclub\get_theme_option;
-use function mikuclub\post_list_component;
+
 
 get_header(); ?>
 
@@ -22,7 +22,7 @@ if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 }
 
 $post_list_header = print_post_list_header_component();
-$post_list_component = post_list_component();
+$post_list_component = print_post_list_component();
 
 $output = <<<HTML
 

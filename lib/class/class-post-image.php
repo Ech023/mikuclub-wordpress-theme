@@ -252,14 +252,20 @@ class Post_Image
 
 
         //随机选择一个cdn主机
-        switch ($post_id % 2)
+        switch ($post_id % 3)
         {
             case 0:
-                $array_image_full_src = fix_image_domain_with_file_1($array_image_full_src);
+                $array_image_full_src = fix_image_domain_with_file_2($array_image_full_src);
                 break;
             case 1:
+                $array_image_full_src = fix_image_domain_with_file_3($array_image_full_src);
+                break;
+            case 2:
                 $array_image_full_src = fix_image_domain_with_file_4($array_image_full_src);
                 break;
+            // case 3:
+            //     $array_image_full_src = fix_image_domain_with_file_4($array_image_full_src);
+            //     break;
         }
 
         return $array_image_full_src;

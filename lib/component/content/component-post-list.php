@@ -10,7 +10,7 @@ use mikuclub\constant\Post_Template;
  * @param string $post_template
  * @return string
  */
-function post_list_component($post_template = Post_Template::DEFAULT)
+function print_post_list_component($post_template = Post_Template::DEFAULT)
 {
 	global $wp_query;
 

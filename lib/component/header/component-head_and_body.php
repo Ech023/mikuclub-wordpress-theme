@@ -112,36 +112,9 @@ HTML;
             <div class="row ">
                 <div class="col main-menu ">
                     <nav class="navbar navbar-expand small">
-
-                        <!-- <div class="collapse navbar-collapse " id="site-main-menu"> -->
                             {$main_menu_items}
-                            <!-- 手机菜单搜索-->
-                            <!-- <div class="d-md-none my-2">
-                                <form class="form-inline flex-grow-1 site-search-form">
-                                    <div class="input-group flex-grow-1">
-                                        <input type="text" class="form-control" placeholder="搜索" name="search">
-                                        <button class="btn btn-miku" type="submit">
-                                            <i class="fa-solid fa-search"></i> 搜索
-                                        </button>
-
-                                    </div>
-                                </form>
-                            </div> -->
-                        <!-- </div> -->
-
                     </nav>
                 </div>
-
-                <!-- 手机菜单 -->
-                <!-- <div class="col d-md-none text-center">
-                    <div class="my-2">
-                        <button class="wap-menu-button btn btn-sm btn-outline-secondary w-75" type="button" data-bs-toggle="offcanvas" data-bs-target="#phone_sidebar_menu">
-                            <i class="fa-solid fa-bars me-2"></i>
-                            <span class="d-none d-sm-inline">{$site_name}</span><span>菜单</span>
-                            <span class="badge text-bg-miku px-2">{$message_count}</span>
-                        </button>
-                    </div>
-                </div> -->
 
             </div>
         </div>

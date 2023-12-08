@@ -7,14 +7,13 @@ use mikuclub\constant\Admin_Meta;
 use function mikuclub\print_adult_404_content_for_no_logging_user;
 use function mikuclub\print_breadcrumbs_component;
 
-use function mikuclub\get_hot_list_by_random;
-use function mikuclub\get_sub_category_list;
+
+use function mikuclub\get_array_sub_category;
 use function mikuclub\get_theme_option;
 use function mikuclub\has_sub_category;
-use function mikuclub\hot_posts_most_comments;
-use function mikuclub\hot_posts_most_rating;
+
 use function mikuclub\is_adult_category;
-use function mikuclub\post_list_component;
+
 
 
 get_header();
@@ -34,7 +33,7 @@ else
 
 	$sticky_post_slide =  print_sticky_post_slide_component($cat_id);
 	$post_list_header = print_post_list_header_component();
-	$post_list_component = post_list_component();
+	$post_list_component = print_post_list_component();
 
 	$ad_banner = '';
 	if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
@@ -47,7 +46,7 @@ else
 	if (has_sub_category($cat_id)  && !get_query_var(Post_Query::PAGED))
 	{
 
-		$array_sub_category = get_sub_category_list($cat_id);
+		$array_sub_category = get_array_sub_category($cat_id);
 		if ($array_sub_category)
 		{
 			$sub_category_items = array_reduce($array_sub_category, function ($result, $category)

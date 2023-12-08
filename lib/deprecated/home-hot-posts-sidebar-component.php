@@ -68,9 +68,9 @@ HTML;
 
 		<div class="hot-post-sidebar">
 			<div class="list-header row my-3">
-				<h4>
+				<h5>
 	                <i class="{$title_icon}"></i> {$title}
-	            </h4>
+	            </h5>
 			</div>
 			<div  class="list-header my-2">
 				

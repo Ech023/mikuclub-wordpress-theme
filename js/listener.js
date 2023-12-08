@@ -23,39 +23,25 @@ $(function () {
         open_search_page($(this));
     });
 
-
-
-
     //监听搜索表单 的提交事件
     $('form.site-search-form').on('submit', function (event) {
         event.preventDefault();
-        sendSearch($(this));
+        on_submit_search_form($(this));
     });
-    //监听搜索表单里的分类按钮check点击事件
-    $('form.site-search-form button.category').on('click', function (event) {
-
-        //更新分类和子分类按钮组件的识别类名
-        update_category_button_group_class($(this));
-
-        //触发表单的提交事件
-        $(this).closest('form.site-search-form').trigger('submit');
-    });
-
-
-
-
-
-
 
 
 
 
 
     //监听所有 关注按钮点击事件
-    $body.on('click', 'button.add-user-follow-list', '', add_user_follow_list);
+    $body.on('click', 'button.add-user-follow-list', function () {
+        add_user_follow_list($(this));
+    });
 
     //监听所有 取消关注按钮点击事件
-    $body.on('click', 'button.delete-user-follow-list', '', delete_user_follow_list);
+    $body.on('click', 'button.delete-user-follow-list', function () {
+        delete_user_follow_list($(this));
+    });
 
 
     //监听所有 添加黑名单按钮点击事件
@@ -85,9 +71,9 @@ $(function () {
     }
 
     //监听屏幕大小变化
-    // $(window).on('resize', '', '', actionOnBrowserSize);
+    $(window).on('resize', '', '', actionOnBrowserSize);
     // 根据窗口大小触发的动作
-    // actionOnBrowserSize();
+    actionOnBrowserSize();
 
     //简体谷歌广告事件
     //隐藏空白广告
@@ -113,6 +99,9 @@ $(function () {
      */
     update_image_src_of_element_to_backup_image_domain();
 
+
+    //输出名言名句
+    // printPhrase();
 
 
 

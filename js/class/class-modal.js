@@ -19,7 +19,7 @@ class MyModal {
         this.options = {
             backdrop: 'static',
             focus: true,
-            keyboard: false,
+            keyboard: true,
             //show: true,
         };
 
@@ -127,6 +127,24 @@ class MyModal {
         return this;
     }
 
+    /**
+     * 绑定enter按键
+     * @param {function} enter_callback 
+     */
+    bind_enter_key(enter_callback) {
+        this.$modal_element.on('keydown', (event) => {
+            event.preventDefault();
+            const code = event.keyCode || event.which;
+            //ENTER按键
+            if (code === 13 && isFunction(enter_callback)) {
+                enter_callback();
+            }
+        });
+    }
+
+
+
+
 
 }
 
@@ -183,6 +201,11 @@ class MyPrivateMessageModal extends MyModal {
             this.on_click_send_private_message();
         });
 
+        // this.bind_enter_key(() => {
+        //     this.on_click_send_private_message();
+        // });
+
+
         return model;
 
     }
@@ -191,6 +214,11 @@ class MyPrivateMessageModal extends MyModal {
      * 发送私信
      */
     on_click_send_private_message() {
+
+        if (!MY_SITE.user_id) {
+            MyToast.show_error('请先进行登陆');
+            return;
+        }
 
         const message_content = this.$modal_element.find('textarea.message-content').val().trim();
 
@@ -272,7 +300,18 @@ class MyVideoModal extends MyModal {
 
     }
 
+    /**
+    * @returns {MyVideoModal}
+    */
+    create() {
 
+        const model = super.create();
+
+
+
+        return model;
+
+    }
 
 }
 
@@ -527,6 +566,10 @@ class MyPostReportModal extends MyModal {
             this.send_post_report();
         });
 
+        // this.bind_enter_key(() => {
+        //     this.send_post_report();
+        // });
+
         return model;
 
     }
@@ -650,6 +693,10 @@ class ChangePagedModal extends MyModal {
             this.on_click_change_paged();
         });
 
+        // this.bind_enter_key(() => {
+        //     this.on_click_change_paged();
+        // });
+
         return model;
 
     }
@@ -682,10 +729,10 @@ class ChangePagedModal extends MyModal {
  */
 class ConfirmModal extends MyModal {
 
-   /**
-    * @param {string} text 
-    * @param {string} text_secondary 
-    */
+    /**
+     * @param {string} text 
+     * @param {string} text_secondary 
+     */
     constructor(text, text_secondary) {
 
         super();
@@ -723,23 +770,110 @@ class ConfirmModal extends MyModal {
 
         const model = super.create();
 
-        this.$modal_element.find('.confirm').on('click', () => {
+
+        const confirm = () => {
 
             this.hide();
 
             if (isFunction(confirm_callback)) {
                 confirm_callback();
             }
-        });
+        };
 
-        this.$modal_element.find('.cancel').on('click', () => {
+        const cancel = () => {
 
             this.hide();
 
             if (isFunction(cancel_callback)) {
                 cancel_callback();
             }
-        });
+        };
+
+        // this.bind_enter_key(() => {
+        //     this.$modal_element.find('.confirm').trigger('click');
+        // });
+
+
+        this.$modal_element.find('.confirm').on('click', confirm);
+        this.$modal_element.find('.cancel').on('click', cancel);
+
+
+        return model;
+
+    }
+
+}
+
+/**
+ * 输入对话模态窗
+ */
+class PromptModal extends MyModal {
+
+    /**
+     * @param {string} text 
+     * @param {string} default_value 
+     */
+    constructor(text, default_value = '') {
+
+        super();
+
+
+        this.modal_container_class = 'confirm-modal';
+        this.modal_class = '';
+        this.modal_header_class = 'd-none';
+
+        // this.title = '确认';
+
+        this.body = `
+            <div class="text-center">
+               <div class="fw-bold mb-2">${text}</div>
+               <div>
+                    <input class="input_prompt form-control" type="text" value="${default_value}"/>
+               </div>
+            </div>
+        `;
+
+        this.footer = `
+            <button type="button" class="btn btn-secondary px-4 me-2 cancel">取消</button>
+            <button type="button" class="btn btn-primary px-4 confirm">确定</button>
+        `;
+
+    }
+
+    /**
+    * @param {function|null} confirm_callback 点击确认的时候触发的回调
+    * @param {function|null} cancel_callback 点击取消的时候触发的回调
+    * @returns {PromptModal}
+    */
+    create(confirm_callback, cancel_callback) {
+
+        const model = super.create();
+
+        const confirm = () => {
+
+            const value = this.$modal_element.find('input.input_prompt').val();
+
+            this.hide();
+
+            if (isFunction(confirm_callback)) {
+                confirm_callback(value);
+            }
+        };
+
+        const cancel = () => {
+
+            this.hide();
+
+            if (isFunction(cancel_callback)) {
+                cancel_callback();
+            }
+        };
+
+        // this.bind_enter_key(confirm);
+
+
+        this.$modal_element.find('.confirm').on('click', confirm);
+        this.$modal_element.find('.cancel').on('click', cancel);
 
 
         return model;

@@ -121,7 +121,7 @@ get_header();
                             <?php if ($show_draft_button)
                             { ?>
                                 <!--  转为草稿链接 -->
-                                <button class="btn btn-warning draft-post " data-post-id="<?php echo $post_id; ?>">
+                                <button class="btn btn-warning draft_post " data-post-id="<?php echo $post_id; ?>">
                                     转为草稿
                                 </button>
                             <?php } ?>
@@ -130,7 +130,7 @@ get_header();
                         <div class="col-auto">
 
                             <!--  删除投稿链接 -->
-                            <button class="btn btn-danger delete-post " data-post-id="<?php echo $post_id; ?>">
+                            <button class="btn btn-danger delete_post " data-post-id="<?php echo $post_id; ?>">
                                 删除投稿
                             </button>
 
@@ -179,7 +179,7 @@ get_header();
                             </div>
 
                             <div class="col-auto">
-                                <button class="btn btn-warning  reject-post" data-post-id="<?php echo $post_id; ?>">
+                                <button class="btn btn-warning  reject_post" data-post-id="<?php echo $post_id; ?>">
                                     驳回投稿
                                 </button>
                             </div>

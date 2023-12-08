@@ -10,7 +10,7 @@
 use mikuclub\User_Capability;
 
 use function mikuclub\print_breadcrumbs_component;
-use function mikuclub\next_page_button;
+
 use function mikuclub\print_author_statistics;
 
 
@@ -57,11 +57,7 @@ $user = wp_get_current_user();
 
     </div>
 
-    <div class="my-2">
-        <?php echo next_page_button('下一页'); ?>
-        <input type="hidden" name="paged" value="0">
-        <input type="hidden" name="author" value="<?php echo $user->ID; ?>">
-    </div>
+
 
 
 </div>

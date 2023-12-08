@@ -137,14 +137,14 @@ foreach ($post_list as $my_post)
                 </div>
             </div>
           <div class="col-1 d-flex align-items-center">
-            <h4 class="text-danger mb-2 fail-time">{$post_fail_time}</h4>
+            <h5 class="text-danger mb-2 fail-time">{$post_fail_time}</h5>
           </div>
              <div class="col-2">
                 <button class="btn btn-secondary m-2 reset-fail-times">清零</button>
                 <button  class="btn btn-primary m-2 disable-fail-times">关闭失效</button>
-                <button  class="btn btn-warning m-2 reject-post">一键退稿</button>
+                <button  class="btn btn-warning m-2 reject_post" data-post-id="{$my_post->id}">一键退稿</button>
                 <a class="btn btn-info m-2 edit-post" href="{$post_edit_link}" target="_blank">编辑</a>
-                <button class="btn btn-danger m-2 delete-post">删除</button>
+                <button class="btn btn-danger m-2 delete_post" data-post-id="{$my_post->id}">删除</button>
               </div>
         </div>
 

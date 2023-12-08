@@ -5,12 +5,14 @@
 
 //如果未登陆 重定向回首页
 
+namespace mikuclub;
+
 use mikuclub\User_Capability;
 
 use function mikuclub\print_breadcrumbs_component;
 use function mikuclub\get_my_user_avatar;
 use function mikuclub\get_user_followed;
-use function mikuclub\post_list_component;
+
 use function mikuclub\print_user_avatar;
 
 
@@ -82,7 +84,7 @@ if ($user_followed)
 	$wp_query->is_home     = $wp_query->is_archive = $wp_query->is_author = false;
 	$wp_query->is_singular = $wp_query->is_page = true;
 
-	$content = post_list_component();
+	$content = print_post_list_component();
 
 
 	// 获取关注作者的实例数组
@@ -177,7 +179,7 @@ else
 {
 	$content = <<<HTML
 	<div class="m-5 mw-100 flex-fill">
-		<h4 class="text-center">抱歉, 您还没有添加任何关注</h4>
+		<h5 class="text-center">抱歉, 您还没有添加任何关注</h5>
 			<br/><br/><br/><br/><br/>
 	</div>
 HTML;

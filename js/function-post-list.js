@@ -54,9 +54,9 @@ function get_post_list(is_new_load = false, new_paged = 1) {
 
     //如果是搜索词语, 需要解义
     if (data.s) {
-        data.s = decodeURIComponent(parameters.s);
+        data.s = decodeURIComponent(data.s);
         //关闭缓存
-        data.no_cache = true;
+        // data.no_cache = true;
     }
 
     //获取当前页数
@@ -88,6 +88,7 @@ function get_post_list(is_new_load = false, new_paged = 1) {
             if (is_new_load) {
                 //再清空一次当前列表 避免多次请求下导致错误
                 $post_list_component.empty();
+                MyToast.show_success('当前页数' + data.paged + '/' + response.max_num_pages + '总页数');
             }
             //输出成html加入到页面里
             $post_list_component.append(newPostList.toHTML());

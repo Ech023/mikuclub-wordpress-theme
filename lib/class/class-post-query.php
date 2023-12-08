@@ -46,24 +46,28 @@ class Post_Query
 
     const PAGED = 'paged';
 
-    //自定义分类ID
-    const CUSTOM_MAIN_CAT = 'main_cat';
-    //自定义子分类ID
-    const CUSTOM_SUB_CAT = 'sub_cat';
     //自定义排序
     const CUSTOM_ORDERBY = 'custom_orderby';
     //自定义日期范围
     const CUSTOM_ORDER_DATA_RANGE = 'custom_order_data_range';
     //自定义下载类型
     const CUSTOM_DOWN_TYPE = 'custom_down_type';
+    //自定义分类ID
+    const CUSTOM_CAT = 'custom_cat';
+
+    //自定义页面类型
+    const CUSTOM_PAGE_TYPE = 'page_type';
+    //自定义禁用缓存标识
+    const CUSTOM_NO_CACHE = 'no_cache';
+
+
 
     //自定义搜索
     const CUSTOM_SEARCH = 'custom_search';
-    //自定义页面类型
-    const CUSTOM_PAGE_TYPE = 'page_type';
-
-    //自定义禁用缓存标识
-    const CUSTOM_NO_CACHE = 'no_cache';
+    //自定义分类ID
+    const CUSTOM_MAIN_CAT = 'main_cat';
+    //自定义子分类ID
+    const CUSTOM_SUB_CAT = 'sub_cat';
 
     /**
      * 添加 自定义query变量支持 到系统Wp_query里
@@ -76,7 +80,9 @@ class Post_Query
         $query_vars[] = Post_Query::CUSTOM_ORDERBY;
         $query_vars[] = Post_Query::CUSTOM_ORDER_DATA_RANGE;
         $query_vars[] = Post_Query::CUSTOM_DOWN_TYPE;
-        $query_vars[] = Post_Query::CUSTOM_SEARCH;
+        $query_vars[] = Post_Query::CUSTOM_CAT;
+
+        // $query_vars[] = Post_Query::CUSTOM_SEARCH;
         $query_vars[] = Post_Query::CUSTOM_MAIN_CAT;
         $query_vars[] = Post_Query::CUSTOM_SUB_CAT;
 

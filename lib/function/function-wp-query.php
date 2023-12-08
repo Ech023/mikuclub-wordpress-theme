@@ -2,6 +2,7 @@
 
 namespace mikuclub;
 
+use Exception;
 use mikuclub\constant\Category;
 use mikuclub\constant\Config;
 use mikuclub\constant\Expired;
@@ -36,6 +37,13 @@ function set_post_list_query_vars($query_vars)
     $query_vars[Post_Query::POSTS_PER_PAGE] = Config::POST_LIST_LENGTH;
     //$query_vars['orderby']        = 'modified'; //使用最后修改时间作为默认排序
 
+    //如果存在自定义 分类变量
+    $custom_cat = $query_vars[Post_Query::CUSTOM_CAT] ?? 0;
+    if ($custom_cat)
+    {
+        //设置分类ID
+        $query_vars[Post_Query::CAT] = $custom_cat;
+    }
 
     //如果有设置自定义排序
     $custom_orderby = $query_vars[Post_Query::CUSTOM_ORDERBY] ?? 'modified';
@@ -89,13 +97,13 @@ function set_post_list_query_vars($query_vars)
     //如果页面参数是 作者页
     if ($page_type === Page_Type::AUTHOR)
     {
-        $custom_search = $query_vars[Post_Query::CUSTOM_SEARCH] ?? '';
-        //如果有自定义搜索
-        if ($custom_search)
-        {
-            //替换默认搜索
-            $query_vars[Post_Query::SEARCH] = $custom_search;
-        }
+        // $custom_search = $query_vars[Post_Query::CUSTOM_SEARCH] ?? '';
+        // //如果有自定义搜索
+        // if ($custom_search)
+        // {
+        //     //替换默认搜索
+        //     $query_vars[Post_Query::SEARCH] = $custom_search;
+        // }
     }
 
     //如果页面参数是搜索页

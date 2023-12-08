@@ -1,6 +1,6 @@
 /// <reference path="constant.js" />
-/// <reference path="function.js" />
-/// <reference path="function-ajax.js" />
+/// <reference path="../function.js" />
+/// <reference path="../function-ajax.js" />
 
 /**.
  * 基础JS函数
