@@ -4,18 +4,20 @@
   description: 新建投稿和编辑投稿页面
  */
 
+namespace mikuclub;
+
 use mikuclub\constant\Config;
 use mikuclub\User_Capability;
 
 use function mikuclub\print_breadcrumbs_component;
-
 use function mikuclub\is_sticky_post;
 
 
-$home = get_home_url();
 
 //如果未登陆 重定向回首页
 User_Capability::prevent_not_logged_user();
+
+$home = get_home_url();
 
 get_header();
 
@@ -24,9 +26,9 @@ get_header();
 <div class="page-tougao">
 
     <div class="page-header">
-       
-            <?php echo print_breadcrumbs_component(); ?>
-        
+
+        <?php echo print_breadcrumbs_component(); ?>
+
 
         <?php
         if (array_key_exists('pid', $_GET) && isset($_GET['pid']))

@@ -172,7 +172,7 @@ function print_author_statistics($author_id, $col_class = '')
 		'value' => get_user_post_count($author_id),
 	];
 	$arra_count[] = [
-		'title' => '获点赞数',
+		'title' => '获好评数',
 		'icon' => 'fa-solid fa-thumbs-up',
 		'value' => get_user_post_total_likes($author_id),
 	];

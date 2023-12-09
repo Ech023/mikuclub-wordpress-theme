@@ -1,6 +1,7 @@
 <?php
 
 //如果不是管理员
+namespace mikuclub;
 
 use mikuclub\constant\Post_Meta;
 use mikuclub\Input_Validator;

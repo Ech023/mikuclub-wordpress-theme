@@ -28,8 +28,11 @@ class Post_Query
     //文章状态
     const POST_STATUS = 'post_status';
 
+    const PAGENAME = 'pagename';
+
     //作者ID
     const AUTHOR = 'author';
+    const AUTHOR__IN = 'author__in';
 
     //排序
     const ORDERBY = 'orderby';
@@ -41,6 +44,7 @@ class Post_Query
     const META_KEY = 'meta_key';
 
     //文章ID数组
+    const P = 'p';
     const POST__IN = 'post__in';
     const POST__NOT_IN = 'post__not_in';
 

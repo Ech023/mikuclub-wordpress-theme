@@ -17,11 +17,11 @@ body.single .popover {
 /**
 内容页自定义弹出框的图片效果
  */
-body.single .popover img.smile {
+body.single .popover .emoji_container img.emoji {
     transition: .3s;
 }
 
-body.single .popover img.smile:hover {
+body.single .popover .emoji_container img.emoji:hover {
     background: #cccccc;
 }
 
@@ -84,13 +84,13 @@ body.single div.content .article-content img {
 
 
  .comment-list .children img.avatar {
-    display: none;
+    /* display: none; */
 }
 
 @media (min-width: 576px) {
 
     .comment-list .children img.avatar {
-        display: block;
+        /* display: block; */
     }
 }
 

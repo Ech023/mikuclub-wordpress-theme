@@ -115,7 +115,7 @@ class Post_Type
 /**
  * 文章的状态
  */
-class Post_Status
+class Post_Status extends Constant
 {
     //公开
     const PUBLISH = 'publish';

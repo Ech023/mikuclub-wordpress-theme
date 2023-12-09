@@ -8,15 +8,7 @@
 
 $(function () {
 
-/*
-    const app1 = Vue.createApp({
-        data() {
-            return {
-              test: 'Hello, Vue!'
-            };
-          }
-    })
-    app1.mount('.page-followed');*/
+
   
 
 });

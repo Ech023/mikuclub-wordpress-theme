@@ -138,6 +138,13 @@ body.darkmode .list-group-item
     color: var(--color-dark-1);
 }
 
+/**
+论坛搜索框
+*/
+:root[data-bs-theme="dark"] #wpforo #wpforo-wrap .wpf-search input[type="text"].wpf-search-field {
+    background-color: hsla(0, 0%, 100%, 0) !important;
+}
+
 
 /* :root[data-bs-theme="dark"] .form-select, */
 /* :root[data-bs-theme="dark"] .toast-header, */

@@ -6,12 +6,10 @@ let $post_list_container_component;
 $(function () {
 
     $post_list_container_component = $('.post-list-container');
+    const $history_page = $('body.page .page-history');
 
     //如果文章列表容器存在
     if ($post_list_container_component.length) {
-
-        //页面完成后自动加载
-        get_post_list();
 
         //绑定滚动事件
         $(document).on('scroll', function () {
@@ -23,6 +21,24 @@ $(function () {
             }
 
         });
+
+        //如果是历史页面, 
+        if ($history_page.length) {
+            // 用个性化加载文章列表
+            const array_history_post_id = get_array_history_post_id();
+            update_post_list_component_data({
+                post__in : array_history_post_id,
+                custom_orderby: 'post__in',
+            })
+          
+            get_post_list();
+        }
+        //其他页面
+        else {
+            //用默认方式加载文章列表
+            get_post_list();
+        }
+
     }
 
 
@@ -60,7 +76,7 @@ function get_post_list(is_new_load = false, new_paged = 1) {
     }
 
     //获取当前页数
-    data.paged = parseInt(data.paged) || 1;
+    data.paged = parseInt(data.paged) || 0;
     //如果是清空列表
     if (is_new_load) {
         //清空当前列表
@@ -123,10 +139,7 @@ function get_post_list(is_new_load = false, new_paged = 1) {
             show_loading_row($post_list_container_component);
         },
         success_callback,
-        (jqXHR) => {
-
-            defaultFailCallback(jqXHR);
-        },
+        defaultFailCallback,
         () => {
             hide_loading_row();
             //关闭loading属性

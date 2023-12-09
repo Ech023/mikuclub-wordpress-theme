@@ -61,7 +61,7 @@ HTML;
 						</h5>
 					</div>
 					<div class="col-auto">
-						<a class="btn btn-sm btn-outline-secondary px-4 {$more_link_class}"  title="{$list_title}" href="{$more_link}" target="_blank">
+						<a class="btn btn-sm btn-light-2 px-4 {$more_link_class}"  title="{$list_title}" href="{$more_link}" target="_blank">
 						更多 <i class="fa-solid fa-angle-right"></i>
 						</a>
 					</div>

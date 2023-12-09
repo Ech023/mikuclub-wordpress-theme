@@ -3,6 +3,8 @@
 	template name: 签到页面
 */
 
+namespace mikuclub;
+
 use mikuclub\constant\Web_Domain;
 
 use function mikuclub\print_breadcrumbs_component;
@@ -10,69 +12,69 @@ use function mikuclub\print_page_edit_link;
 
 get_header();
 
-global $post;
-?>
+while (have_posts())
+{
+    the_post();
 
-    <div class="page-qiandao">
+    $breadcrumbs = print_breadcrumbs_component();
+    $page_edit_link = print_page_edit_link();
+    $content = get_the_content();
 
-        <div class="page-header">
-           
-			<?php echo print_breadcrumbs_component(); ?>
-            
-            <div class="text-end">
-				<?php echo print_page_edit_link(); ?>
+    $max         = 1256;
+    $rand_image = rand(1, $max);
+    //在左方添加0
+    $rand_image = str_pad(strval($rand_image), 3, '0', STR_PAD_LEFT);
+
+    $link = 'https://' . Web_Domain::CDN_MIKUCLUB_FUN . '/project_sekai_cg/' . $rand_image . '.jpg';
+
+
+
+    $output = <<<HTML
+
+        <div class="page-qiandao">
+
+            <div class="page-header row">
+
+                <div class="col">
+                    {$breadcrumbs}
+                </div>
+
+                <div class="col-auto ms-auto">
+                    {$page_edit_link}
+                </div>
+
             </div>
-        </div>
-
-		<?php
-		while ( have_posts() ) {
-			the_post();
-
-			$max         = 1256;
-			$rand_image = rand( 1, $max );
-            //在左方添加0
-            $rand_image = str_pad(strval($rand_image), 3, '0', STR_PAD_LEFT);
-
-            $link = 'https://'.Web_Domain::CDN_MIKUCLUB_FUN.'/project_sekai_cg/'.$rand_image.'.jpg';
-
-			?>
-            <div class="page-content page-qiandao my-2">
+            <div class="page-content my-2">
 
                 <div class="qiandao-img text-center my-4 row">
-				
-                        <div class="col-12">
-                            <a href="<?php echo $link; ?>"
-                               data-lightbox="qiandao-images">
-                                <img class="img-fluid"
-                                     src="<?php echo $link; ?>"
-                                     alt="签到壁纸">
-                            </a>
-                        </div>
-
+                    <div class="col-12">
+                        <a href="{$link}" data-lightbox="qiandao-images">
+                            <img class="img-fluid" src="{$link}" alt="签到壁纸">
+                        </a>
+                    </div>
                 </div>
-                <hr class="my-4"/>
+
+                <hr class="my-4" />
 
                 <div class="qiandao-button-container my-4 text-center">
-
                 </div>
 
                 <div class="my-4">
-
-					<?php the_content(); ?>
-
+                    {$content}
                 </div>
+
+                <hr />
 
             </div>
 
-            <hr/>
+        </div>
+
+HTML;
+
+    echo $output;
+
+    comments_template('', true);
+}
 
 
-			<?php
-			comments_template( '', true );
-		}
-		?>
-
-
-    </div>
-
-<?php get_footer(); ?>
+get_footer();

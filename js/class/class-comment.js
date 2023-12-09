@@ -69,7 +69,7 @@ class MyComment {
         }
 
         // 默认头像大小
-        let avatarSize = 50;
+        let avatarSize = 40;
         //如果是子评论
         if (this.depth) {
             avatarSize = 40;
@@ -85,8 +85,8 @@ class MyComment {
         //添加高亮显示
         if (is_post_author) {
             authorDisplayName = `
-                <span class="px-1  me-1 border border-danger rounded text-danger small ">UP主</span>
-                <span class="text-danger">${authorDisplayName}</span>
+                <span class="px-1 me-1 border border-danger rounded text-danger">UP主</span>
+                <span class="text-danger fw-bold">${authorDisplayName}</span>
             `;
         }
 
@@ -196,13 +196,13 @@ class MyComment {
 
         likeButtons = `
         <div class="comment-likes">
-            <a href="javascript:void(0);" class="text-muted ${addCommentLikesButtonClass}" >
+            <a href="javascript:void(0);" class="text-dark-2 ${addCommentLikesButtonClass}" >
                 <i class="${addCommentLikesButtonIcon}"></i> 点赞
             </a>
             <span class="mx-2 comment-likes-count">
                 ${this.comment_likes}
             </span>
-             <a href="javascript:void(0);" class="text-muted ${deleteCommentLikesButtonClass}">
+             <a href="javascript:void(0);" class="text-dark-2 ${deleteCommentLikesButtonClass}">
                 <i class="${deleteCommentLikesButtonIcon}"></i> 踩
             </a>
         </div>
@@ -212,7 +212,7 @@ class MyComment {
         //如果有登陆, 并且不是作者自己 才输出回复按钮
         let respondButton = '';
         if (MY_SITE.user_id > 0 && !is_comment_author) {
-            respondButton = `<a class="respond-button text-muted" href="javascript:void(0);" data-respond="${this.comment_id}" data-respond-name="${this.author.display_name}">回复</a>`;
+            respondButton = `<a class="respond-button btn btn-sm btn-light-2" href="javascript:void(0);" data-respond="${this.comment_id}" data-respond-name="${this.author.display_name}">回复</a>`;
         }
 
 
@@ -245,7 +245,6 @@ class MyComment {
              <li><a class="dropdown-item small ${black_list_button_class}" href="javascript:void(0);" data-target-user-id="${this.author.id}">${black_list_button_text}</a></li>
          `;
 
-
         }
 
         //如果要输出删除按钮 或者 拉黑按钮
@@ -253,7 +252,7 @@ class MyComment {
             //显示更多菜单
             moreButton = `
                 <div class="dropdown" >
-                    <a class="p-2" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" title="更多操作">
+                    <a class="btn btn-sm btn-light-2" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" title="更多操作">
                         <i class="fa-solid fa-ellipsis-vertical"></i>
                     </a>
                     <ul class="dropdown-menu">
@@ -264,14 +263,6 @@ class MyComment {
                 </div>
             `;
         }
-
-
-
-
-
-
-
-
 
 
         let styleClass = '';
@@ -297,37 +288,44 @@ class MyComment {
 
         return `
 
-            <div class="my-2 comment-item comment-item-${this.comment_id}" data-comment_id="${this.comment_id}">
+            <div class="comment-item comment-item-${this.comment_id}" data-comment_id="${this.comment_id}">
             
-                    <div class="row comment-body   border-bottom ${this.depth ? 'ms-2 ms-md-5 ' : ''} ${styleClass}">
+                    <div class="row comment-body pb-2 border-bottom ${this.depth ? 'ms-4 ms-md-5 ' : ''} ${styleClass}">
                     
-                            <div class="col-auto col-md-1 my-2 avatar-container">
+                            <div class="col-12 col-sm-auto avatar-container text-center text-sm-start">
                                  ${authorAvatar}
                             </div>
-                            <div class="col col-md-10 my-2">
-                                <div class="user-meta">
-                                    <a class="m-1 d-block d-sm-inline" href="${this.author.user_href} " title="查看用户主空间" target="_blank">${authorDisplayName}</a>
-                                    <span class="badge text-bg-miku rounded-1 m-1">${this.author.user_level}</span>
-                                    ${authorBadges}
-                                </div>
-                                <div class="comment-content my-3" style="white-space: pre-line;" >${this.comment_content}</div>
-                                <div class="comment-meta small  text-muted row g-2">
-                                    <div class="col-auto">
+                            <div class="col">
+                                <div class="row align-items-center g-2">
+                                    <div class="col-12">
+                                        <div class="user-meta text-center text-sm-start">
+                                            <a class="m-1 d-block d-sm-inline small" href="${this.author.user_href} " title="查看用户主空间" target="_blank">${authorDisplayName}</a>
+                                            <span class="badge text-bg-miku rounded-1 m-1">${this.author.user_level}</span>
+                                            ${authorBadges}
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="comment-content my-2 small" style="white-space: pre-line;" >${this.comment_content}</div>
+                                    </div>
+                                  
+                                    <div class="col-auto fs-75 fs-sm-875">
                                         <span class="">${this.comment_date}</span>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-auto fs-75 fs-875">
                                         ${deviceInfo}
                                     </div>
-                                    <div class="m-0 w-100 d-lg-none"></div>
-                                    <div class="col-auto">
+                                    <div class="my-2 w-100 d-lg-none"></div>
+                                    <div class="col-auto fs-875">
                                         ${likeButtons}
                                     </div>
-                                    <div class="col-auto ms-4">
+                                    <div class="col-auto ms-auto ms-sm-4 fs-875">
                                         ${respondButton}
-                                     </div>
-                                     <div class="col-auto ms-auto ms-md-4">
+                                    </div>
+                                    <div class="col-auto ms-2 fs-875">
                                         ${moreButton}
-                                     </div>
+                                    </div>
+                                       
+                                    
                                 </div>
                                 
                             </div>
@@ -337,7 +335,7 @@ class MyComment {
 
                     </div>
                     
-                    <div class="children my-2">
+                    <div class="children my-2 ">
                                 ${childComments}
                     </div>
                 

@@ -55,7 +55,7 @@ $(function () {
         const post_id = $(this).data('post-id');
         delete_post(post_id, () => {
 
-            const $parentItem = $(this).parents('.list-item');
+            const $parentItem = $(this).closest('.list-item');
             //更新元素的背景颜色
             $parentItem.css('background-color', '#ccc');
 
@@ -78,7 +78,7 @@ $(function () {
         const post_id = $(this).data('post-id');
         reject_post(post_id, '下载地址失效', () => {
 
-            const $parentItem = $(this).parents('.list-item');
+            const $parentItem = $(this).closest('.list-item');
             //设置背景颜色
             $parentItem.css('background-color', '#ccc');
 
@@ -208,3 +208,4 @@ function reject_post(post_id, cause = '', success_callback = null) {
     }
 
 }
+

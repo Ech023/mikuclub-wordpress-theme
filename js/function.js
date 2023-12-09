@@ -260,7 +260,7 @@ function redirect_site_domain_deactivated() {
 function show_loading_row($parent_component) {
 
     const $loading_row = $(`
-        <div class=" loading-row w-100 my-5 text-center">
+        <div class="loading-row w-100 my-5 text-center">
             <div class="spinner-border fs-4" style="width: 3rem; height: 3rem;" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
@@ -410,6 +410,26 @@ function toggleDropDownMenu(navItem, isAdd) {
 
 }
 
+
+
+/**
+ * 把base64data转换成 blob文件类型
+ * @param {String} dataURL
+ * @return {Blob}
+ */
+function dataURLtoBlob(dataURL) {
+    let array, binary, i;
+    binary = atob(dataURL.split(',')[1]);
+    array = [];
+    i = 0;
+    while (i < binary.length) {
+        array.push(binary.charCodeAt(i));
+        i++;
+    }
+    return new Blob([new Uint8Array(array)], {
+        type: 'image/jpeg'
+    });
+}
 
 /**
  * @deprecated

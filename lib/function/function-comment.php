@@ -7,6 +7,7 @@ use mikuclub\constant\Config;
 use mikuclub\constant\Expired;
 use mikuclub\User_Capability;
 use WP_Comment;
+use WP_Comment_Query;
 use WP_Error;
 use WP_REST_Request;
 
@@ -164,15 +165,16 @@ function add_comment_like($comment_id)
 function delete_comment_like($comment_id)
 {
     $count = get_comment_like($comment_id);
-    //如果评论点赞数大于0
-    if ($count > 0)
-    {
-        $count--;
-    }
-    else
-    {
-        $count = 0;
-    }
+    $count--;
+    // //如果评论点赞数大于0
+    // if ($count > 0)
+    // {
+    //     $count--;
+    // }
+    // else
+    // {
+    //     $count = 0;
+    // }
 
     update_comment_meta($comment_id, Comment_Meta::COMMENT_LIKES, $count);
 
@@ -191,6 +193,7 @@ function delete_comment_like($comment_id)
  */
 function get_comment_list($post_id, $offset, $number = Config::NUMBER_COMMENT_PER_PAGE)
 {
+
     $cache_key = implode('_', [
         File_Cache::COMMENT_LIST,
         $post_id,
@@ -201,7 +204,7 @@ function get_comment_list($post_id, $offset, $number = Config::NUMBER_COMMENT_PE
     $result = File_Cache::get_cache_meta_with_callback(
         $cache_key,
         File_Cache::DIR_COMMENTS . DIRECTORY_SEPARATOR . $post_id,
-        Expired::EXP_30_MINUTE,
+        Expired::EXP_2_HOURS,
         function () use ($post_id, $offset, $number)
         {
             //高点赞评论列表
@@ -214,11 +217,13 @@ function get_comment_list($post_id, $offset, $number = Config::NUMBER_COMMENT_PE
             if (empty($offset))
             {
                 $array_top_like_comment_list = get_top_like_comment_list($post_id);
+               
                 $array_exclude_id = array_map(function (My_Comment_Model $comment)
                 {
                     return $comment->comment_id;
                 }, $array_top_like_comment_list);
             }
+
 
             $args_normal_comment = [
                 'comment__not_in' => $array_exclude_id,
@@ -234,11 +239,17 @@ function get_comment_list($post_id, $offset, $number = Config::NUMBER_COMMENT_PE
             ];
 
             $comments = get_comments($args_normal_comment);
+            // $comment_query = new WP_Comment_Query($args_normal_comment);
+            // $comments = $comment_query->get_comments();
+
+        
+
             $array_comment_list = array_map(function (WP_Comment $comment)
             {
                 return new My_Comment_Model($comment);
             }, $comments);
-
+     
+            
             $result = array_merge($array_top_like_comment_list, $array_comment_list);
 
             return $result;
@@ -247,6 +258,8 @@ function get_comment_list($post_id, $offset, $number = Config::NUMBER_COMMENT_PE
 
     return $result;
 }
+
+
 
 /**
  * 获取高赞评论列表

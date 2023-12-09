@@ -75,6 +75,7 @@ use function mikuclub\get_theme_option;
 echo print_footer_js_script_component();
 echo print_phone_sidebar_menu_component();
 echo print_float_bottom_menu_bar_component();
+
 ?>
 
 </body>

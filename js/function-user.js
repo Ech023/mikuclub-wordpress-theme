@@ -20,7 +20,7 @@
  */
 function add_user_black_list(target_user_id) {
 
-    if(!MY_SITE.user_id){
+    if (!MY_SITE.user_id) {
         MyToast.show_error('请先进行登陆');
         return;
     }
@@ -58,7 +58,7 @@ function add_user_black_list(target_user_id) {
  */
 function delete_user_black_list(target_user_id) {
 
-    if(!MY_SITE.user_id){
+    if (!MY_SITE.user_id) {
         MyToast.show_error('请先进行登陆');
         return;
     }
@@ -100,7 +100,7 @@ function delete_user_black_list(target_user_id) {
  */
 function add_user_follow_list($button) {
 
-    if(!MY_SITE.user_id){
+    if (!MY_SITE.user_id) {
         MyToast.show_error('请先进行登陆');
         return;
     }
@@ -157,7 +157,7 @@ function add_user_follow_list($button) {
  */
 function delete_user_follow_list($button) {
 
-    if(!MY_SITE.user_id){
+    if (!MY_SITE.user_id) {
         MyToast.show_error('请先进行登陆');
         return;
     }
@@ -213,7 +213,7 @@ function delete_user_follow_list($button) {
  * 获取浏览记录数组
  * @return {array}
  */
-function getHistoryPostArray() {
+function get_array_history_post_id() {
 
     //从本地存储获取浏览记录
     let history = getLocalStorage(LOCAL_STORAGE_KEY.postHistory);
@@ -224,24 +224,23 @@ function getHistoryPostArray() {
 
     return history;
 
-
 }
 
 /**
- * 设置浏览记录
- * @param {int} postId
+ * 添加新的浏览记录
+ * @param {int} post_id
  */
-function setHistoryPostArray(postId) {
+function push_in_array_history_post_id(post_id) {
 
     const HISTORY_LENGTH = 200;
 
     //如果ID为空 结束函数
-    if (!postId) {
+    if (!post_id) {
         return;
     }
 
     //获取浏览记录
-    let history = getHistoryPostArray();
+    let history = get_array_history_post_id();
     //如果浏览记录超过最大长度
     if (history.length >= HISTORY_LENGTH) {
         //移除最后一个元素
@@ -249,9 +248,9 @@ function setHistoryPostArray(postId) {
     }
 
     //过滤掉已存在与数组中的同iD
-    history = history.filter(element => (+element) !== (+postId));
+    history = history.filter(element => (+element) !== (+post_id));
     //添加ID到头部
-    history.unshift(postId);
+    history.unshift(post_id);
 
     //保存新的浏览记录到本地数组中
     setLocalStorage(LOCAL_STORAGE_KEY.postHistory, history);
@@ -259,10 +258,12 @@ function setHistoryPostArray(postId) {
 
 }
 
+
 /**
  * 清除浏览记录
  */
-function clearHistoryPostArray() {
+function clear_array_history_post_id() {
     //清除本地储存的历史数组
     setLocalStorage(LOCAL_STORAGE_KEY.postHistory, []);
 }
+

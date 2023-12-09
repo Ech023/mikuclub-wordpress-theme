@@ -21,8 +21,6 @@ $array_file_path_to_require = array_merge(
     glob($theme_lib_directory . 'action' . DIRECTORY_SEPARATOR . '*.php'),
     //导入API接口
     glob($theme_lib_directory . 'api' . DIRECTORY_SEPARATOR . '*.php'),
-    //导入旧HTML组件
-    glob($theme_lib_directory . 'old_component' . DIRECTORY_SEPARATOR . '*.php'),
     //导入HTML组件
     glob($theme_lib_directory . 'component' . DIRECTORY_SEPARATOR . '*.php'),
     //导入子目录里的HTML组件

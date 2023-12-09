@@ -40,7 +40,7 @@ function print_post_content($post_id)
 
 			<div class="row">
 				<div class="col-12 col-xl-6 order-0 ">
-					<div class="first-image-part my-2 border-end pe-xl-2" id="first-image-part">
+					<div class="first-image-part my-2 " id="first-image-part">
 						{$first_image_part}
 					</div>
 				</div>
@@ -54,7 +54,7 @@ function print_post_content($post_id)
 					</div>
 				</div>
 				<div class="col-12 order-1  order-xl-2">
-					<div class="content-part my-2" style="min-height: 100px">
+					<div class="content-part my-2 text-break" style="min-height: 100px">
 						{$post_description_part}
 					</div>
 				</div>
@@ -487,16 +487,16 @@ HTML;
 			
 HTML;
 
-// 		//如果是youtube地址 增加翻墙提示
-// 		if (stripos($video, 'youtube') !== false)
-// 		{
-// 			$video_play_button .= <<<HTML
-// 				<div class="m-0"></div>
-// 				<div class="col-12 fs-75 fs-sm-875">
-// 					需要科学上网才能正常播放
-// 				</div>
-// HTML;
-// 		}
+		// 		//如果是youtube地址 增加翻墙提示
+		// 		if (stripos($video, 'youtube') !== false)
+		// 		{
+		// 			$video_play_button .= <<<HTML
+		// 				<div class="m-0"></div>
+		// 				<div class="col-12 fs-75 fs-sm-875">
+		// 					需要科学上网才能正常播放
+		// 				</div>
+		// HTML;
+		// 		}
 	}
 
 	if ($bilibili_play_button || $video_play_button)
@@ -599,7 +599,7 @@ function print_post_content_functional_button($post_id)
 				<br class="d-sm-none" />
 				( <span class="count">{$post_like}</span> )
             </button>
-            <div class="btn btn-sm btn-light-2 disabled text-bg-secondary fw-bold w-25 post_feedback_rank">
+            <div class="btn btn-sm btn-light-2 disabled fw-bold w-25 post_feedback_rank">
                 {$post_feedback_rank}
             </div>
             <button class="btn btn-sm btn-light-2 set-post-unlike  " data-post-id="{$post_id}">

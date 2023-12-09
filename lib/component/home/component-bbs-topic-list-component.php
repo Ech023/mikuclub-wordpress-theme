@@ -52,7 +52,7 @@ HTML;
 					</h5>
 				</div>
 				<div class="col-auto">
-					<a class="btn btn-sm btn-outline-secondary"  title="进入论坛" href="{$forums_link}" target="_blank">
+					<a class="btn btn-sm btn-light-2"  title="进入论坛" href="{$forums_link}" target="_blank">
 						进入论坛 <i class="fa-solid fa-angle-right"></i>
 					</a>
 				</div>

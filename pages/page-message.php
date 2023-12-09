@@ -5,6 +5,7 @@
 */
 
 //如果未登陆 重定向回首页
+namespace mikuclub;
 
 use mikuclub\constant\Message_Type;
 use mikuclub\Session_Cache;

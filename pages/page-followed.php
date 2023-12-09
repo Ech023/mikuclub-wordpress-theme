@@ -20,151 +20,54 @@ User_Capability::prevent_not_logged_user();
 
 get_header();
 
-//获取当前的id author 请求参数
-$p_id_author = isset($_GET['id_author']) ? intval($_GET['id_author']) : 0;
-
-$current_page_url =  get_permalink(get_the_ID());
 
 
 //获取用户关注列表
 $user_followed = get_user_followed();
 
-
-//创建作者页面链接
-$author_page_link_element = '';
-if ($p_id_author)
-{
-
-	$author_page_link = get_author_posts_url($p_id_author);
-
-	$author_page_link_element = <<<HTML
-	<a href="{$author_page_link}" class="btn btn-secondary" title="查看UP主页面">查看UP主页面</a>
-HTML;
-}
-
+$breadcrumbs = print_breadcrumbs_component();
+$number_followed = count($user_followed);
 
 
 //关注列表元素
 $array_author_element = '';
 
+$post_list_header_category = print_post_list_header_category();
+$post_list_header_order = print_post_list_header_order();
+$post_list_header_download_type = print_post_list_header_download_type();
 
-$content = '';
+
+$custom_post_query = [
+	Post_Query::AUTHOR__IN => $user_followed,
+];
+$post_list_component = print_post_list_component($custom_post_query);
+
 
 //如果关注列表不是空
 if ($user_followed)
 {
-	global $wp_query;
-
-	$args = [
-		'posts_per_page'      => get_option('posts_per_page'),
-		'ignore_sticky_posts' => '1',
-		'author'              => implode(',', $user_followed),
-		'paged'               => get_query_var('paged', 1),
-		//'no_cache'            => true, //缓存
-		'page_type'           => 'page'
-	];
-
-	unset($wp_query->query['pagename']);
-	unset($wp_query->query['page']);
-
-	//如果存在 作者id请求参数
-	if ($p_id_author)
-	{
-		//更改查询参数
-		$args['author'] = $p_id_author;
-	}
-	
-
-	$wp_query->query = array_merge($args, $wp_query->query);
-
-	//改变主循环
-	$wp_query->query($wp_query->query);
-
-	//修复当前页面属性
-	$wp_query->is_home     = $wp_query->is_archive = $wp_query->is_author = false;
-	$wp_query->is_singular = $wp_query->is_page = true;
-
-	$content = print_post_list_component();
-
 
 	// 获取关注作者的实例数组
 	$array_user = get_users(array(
 		'include' => $user_followed,
 	));
 
-	//创建关注作者列表数组
-	$array_author = array_merge([
-		[
-			'id' => 0,
-			'display_name' => '全部关注',
-			'user_image' => '',
-		]
-	], array_map(function ($user)
-	{
-		return [
-			'id' => $user->ID,
-			'display_name' => $user->display_name,
-			'user_image' =>  get_my_user_avatar($user->ID),
-		];
-	}, $array_user));
-
 	//转换成html元素
-	$array_author_element = array_reduce($array_author, function ($result, $author) use ($p_id_author, $current_page_url)
+	$array_author_element = array_reduce($array_user, function ($result, $user)
 	{
-		$id_author = $author['id'];
-		$display_name = $author['display_name'];
-		$user_image_url =  $author['user_image'];
-		$href = $current_page_url;
-		$class_activated = '';
 
-
-		//如果不出来作者ID
-		if (empty($id_author))
-		{
-
-			//如果不存在 作者ID请求参数
-			if (empty($p_id_author))
-			{
-				//设置专属类名
-				$class_activated = 'text-miku';
-			}
-
-			//输出 自定义 图标
-			$user_image = <<<HTML
-			<div  style="width: 50px; height: 50px" class="mx-auto">
-				<i class="fa-solid fa-border-all fa-3x"></i>
-			</div>
-HTML;
-		}
-		//如果有作者ID
-		else
-		{
-			//如果作者ID 和 请求参数 一样
-			if ($id_author ===  $p_id_author)
-			{
-				//设置专属类名
-				$class_activated = 'text-miku';
-			}
-
-			//设置专属链接
-			$href .= '?' . http_build_query([
-				'id_author' => $id_author,
-			]);
-
-			//输出img标签
-			$user_image = print_user_avatar($user_image_url);
-		}
-
-
+		$display_name = $user->display_name;
+		$user_image = print_user_avatar(get_my_user_avatar($user->ID));
+		$href = get_author_posts_url($user->ID);;
 
 		$result .= <<<HTML
 
 			<div class="col-auto">
-				<a class="text-center {$class_activated}" href="{$href}" data-id_author="{$id_author}">
+				<a class="text-center" href="{$href}">
 					<div>
 						{$user_image}
 					</div>
-					<div class="text-break overflow-hidden mt-2" style="width: 80px; height: 48px;">
+					<div class="small text-break mt-2 text-2-rows" style="width: 80px;">
 						{$display_name}
 					</div>
 				</a>
@@ -174,23 +77,18 @@ HTML;
 		return $result;
 	}, '');
 }
-//如果没有关注过其他用户, 输出错误信息
 else
 {
-	$content = <<<HTML
-	<div class="m-5 mw-100 flex-fill">
-		<h5 class="text-center">抱歉, 您还没有添加任何关注</h5>
-			<br/><br/><br/><br/><br/>
+	$array_author_element = <<<HTML
+
+	<div class="col my-4">
+		<div class="text-center fs-5">
+			抱歉, 目前没有正在关注的用户
+		</div>
 	</div>
+
 HTML;
 }
-
-$print_breadcrumbs_component = print_breadcrumbs_component();
-$number_followed = count($user_followed);
-
-
-
-
 
 
 $output = <<<HTML
@@ -199,35 +97,34 @@ $output = <<<HTML
 
 	<div class="page-header">
 		
-			{$print_breadcrumbs_component}
-		
-
-		<div class="row gy-3">
-			<div class="col-12 col-md-1">
+		{$breadcrumbs}
+	
+		<div class="row gy-3 my-2">
+			<div class="col-12 col-md-auto align-self-center">
 				<div class="text-center">
-					<div>关注</div>
+					<div>我关注的用户数量</div>
 					<div class="fw-bold fs-5">{$number_followed}</div>
 				</div>
 			</div>
-			<div class="col-10 col-md-9 col-xxl-10">
-				<div class="row g-4  pb-4 overflow-y-auto" style="max-height: 312px">
+			<div class="col-12 col-md">
+				<div class="row g-2 mt-2 pb-2 overflow-y-auto" style="max-height: 312px">
 					{$array_author_element}
 				</div>
-
-			</div>
-			<div class="col-12 col-md-2 col-xxl-1 text-center">
-				{$author_page_link_element}
 			</div>
 
 		</div>
-
 	
 	</div>
 
-	<!--分隔符-->
-	<hr />
+	<div class="page-content my-2">
+		<div class="my-2 border-bottom">
+			{$post_list_header_category}
+		</div>
+		{$post_list_header_order}
+		{$post_list_header_download_type}
 
-	{$content}
+		{$post_list_component}
+	</div>
 
 </div>
 

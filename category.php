@@ -32,7 +32,8 @@ else
 	$breadcrumbs = print_breadcrumbs_component();
 
 	$sticky_post_slide =  print_sticky_post_slide_component($cat_id);
-	$post_list_header = print_post_list_header_component();
+	$post_list_header_order = print_post_list_header_order();
+	$post_list_header_download_type = print_post_list_header_download_type();
 	$post_list_component = print_post_list_component();
 
 	$ad_banner = '';
@@ -89,7 +90,9 @@ HTML;
 
 	{$sub_category_component}
 
-	{$post_list_header}
+	{$post_list_header_order}
+
+	{$post_list_header_download_type}
 
 	{$post_list_component}
 	

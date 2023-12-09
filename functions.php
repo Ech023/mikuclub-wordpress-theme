@@ -269,12 +269,7 @@ function setup_front_end_script()
             'path' => '/js/page-fail-down-list.js',
             'in_footer' => false,
         ],
-        //JS 作者页面
-        [
-            'name' => 'js-author',
-            'path' => '/js/page-author.js',
-            'in_footer' => false,
-        ],
+       
         //JS 收藏页面
         [
             'name' => 'js-favorite',

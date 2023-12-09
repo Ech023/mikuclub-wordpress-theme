@@ -5,13 +5,14 @@ namespace mikuclub;
 use mikuclub\constant\Download_Link_Type;
 use mikuclub\constant\Expired;
 use mikuclub\constant\Post_Meta;
+use mikuclub\constant\Post_Status;
 use mikuclub\Post_Query;
 
 /**
  * 文章列表自定义排序组件
  * @return string
  */
-function print_post_list_header_component()
+function print_post_list_header_order()
 {
 
 	$array_orderby = [
@@ -184,19 +185,14 @@ HTML;
 	}
 
 
-	$download_type_items = print_post_list_header_download_type();
-
 	$output = <<<HTML
 
-		<div class="my-2">
-			<div class="row post_list_orderby align-items-center mb-2 gy-2 gx-2">
+		<div>
+			<div class="row post_list_orderby align-items-center mb-2 g-2">
 				{$orderby_items}
 			</div>
-			<div class="row post_list_sub_orderby align-items-center mb-2 gy-2 gx-2">
+			<div class="row post_list_sub_orderby align-items-center mb-2 g-2">
 				{$sub_orderby_items}
-			</div>
-			<div class="row post_list_download_type align-items-center gy-2 gx-2">
-				{$download_type_items}
 			</div>
 		</div>
 
@@ -287,6 +283,83 @@ HTML;
 
 		return $carry;
 	}, '');
+
+	$output = <<<HTML
+		<div class="row post_list_download_type align-items-center mb-2 g-2">
+			{$output}
+		</div>
+HTML;
+
+	return $output;
+}
+
+/**
+ * 输出和文章下载方式有关的列表过滤按钮
+ * 
+ * @return string
+ */
+function print_post_list_header_post_status()
+{
+	$active_post_status = get_query_var(Post_Query::POST_STATUS, Post_Status::PUBLISH);
+
+	$array_post_status = [
+		'', //伪状态
+		Post_Status::PUBLISH,
+		Post_Status::PENDING,
+		Post_Status::DRAFT,
+	];
+
+	$output = array_reduce($array_post_status, function ($result, $status) use ($active_post_status)
+	{
+
+		$button_class = '';
+		if ($status === $active_post_status)
+		{
+			$button_class = 'btn-dark-1 active';
+		}
+		else
+		{
+			$button_class = 'btn-light-2';
+		}
+
+		//如果是特定状态
+		if ($status)
+		{
+			$status_description = Post_Status::get_description($status);
+			$parameters = [
+				Post_Query::POST_STATUS => $status,
+			];
+		}
+		//否则是指全部状态
+		else
+		{
+			$status_description = '全部状态';
+			$parameters = [
+				Post_Query::POST_STATUS => Post_Status::get_to_array(),
+			];
+		}
+
+		$json_parameters = htmlspecialchars(json_encode($parameters));
+
+		$result .= <<<HTML
+			<div class="col-auto">
+				<button class="btn btn-sm px-md-4 post_status {$button_class}"  data-parameters='{$json_parameters}'>
+					{$status_description}
+				</button>
+			</div>
+
+HTML;
+
+		return $result;
+	}, '');
+
+	$output = <<<HTML
+		<div>
+			<div class="row post_list_post_status align-items-center mb-2 g-2">
+				{$output}
+			</div>
+		</div>
+HTML;
 
 	return $output;
 }
@@ -413,10 +486,10 @@ HTML;
 		$output = <<<HTML
 
 		<div class="my-2">
-			<div class="row post_list_category align-items-center mb-2 gy-2 gx-2">
+			<div class="row post_list_category align-items-center mb-2 g-2">
 				{$category_items}
 			</div>
-			<div class="row post_list_sub_category align-items-center mb-2 gy-2 gx-2">
+			<div class="row post_list_sub_category align-items-center mb-2 g-2">
 				{$sub_category_items}
 			</div>
 		</div>

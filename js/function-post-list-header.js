@@ -7,6 +7,7 @@ let $post_list_sub_category_element;
 let $post_list_orderby_element;
 let $post_list_sub_orderby_element;
 let $post_list_download_type_element;
+let $post_list_post_status_element;
 
 
 
@@ -18,6 +19,7 @@ $(function () {
     $post_list_orderby_element = $('.post_list_orderby');
     $post_list_sub_orderby_element = $('.post_list_sub_orderby');
     $post_list_download_type_element = $('.post_list_download_type');
+    $post_list_post_status_element = $('.post_list_post_status');
 
     //绑定 排序组按钮的点击事件
     $post_list_orderby_element.find('.btn.orderby_group').on('click', function () {
@@ -44,6 +46,10 @@ $(function () {
         on_click_button_download_type($(this));
     })
 
+    //绑定 文章状态过滤按钮的点击事件
+    $post_list_post_status_element.find('.btn.post_status').on('click', function () {
+        on_click_button_post_status($(this));
+    })
 });
 
 /**
@@ -119,7 +125,7 @@ function on_click_button_sub_orderby($button) {
 function on_click_button_category_group($button) {
 
     const custom_cat = parseInt($button.data('custom_cat'));
-    const category_group = $button.data('category_group') ;
+    const category_group = $button.data('category_group');
 
     const active_class = 'btn-dark-1 active';
     const no_active_class = 'btn-light-2';
@@ -133,7 +139,7 @@ function on_click_button_category_group($button) {
     $post_list_sub_category_element.find('.sub_category_container').hide();
 
 
-   ;
+    ;
     //如果拥有请求分类数据
     if (custom_cat || custom_cat === 0) {
         //更新参数
@@ -201,3 +207,25 @@ function on_click_button_download_type($button) {
     get_post_list(true);
 }
 
+
+/**
+ * 文章状态过滤按钮点击时触发
+ * @param {*} $button 
+ */
+function on_click_button_post_status($button) {
+
+    const active_class = 'btn-dark-1 active';
+    const no_active_class = 'btn-light-2';
+
+    //切换所有排序组的按钮class类名, 移除选中状态
+    $post_list_post_status_element.find('.btn.post_status').removeClass(active_class).addClass(no_active_class);
+    //只给触发点击事件的 排序组按钮 添加激活类名
+    $button.removeClass(no_active_class).addClass(active_class);
+
+    const local_data = $button.data('parameters');
+
+    //更新参数
+    update_post_list_component_data(local_data);
+    //重新请求列表
+    get_post_list(true);
+}

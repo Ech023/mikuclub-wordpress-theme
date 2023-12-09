@@ -90,10 +90,10 @@ class My_Comment_Model
 			$this->author = get_custom_user(intval($comment->user_id));
 
 			//获取子评论
-			$this->children = array_map(function (WP_Comment $children_comment)
+			$this->children = array_values(array_map(function (WP_Comment $children_comment)
 			{
 				return new My_Comment_Model($children_comment);
-			}, $comment->get_children());
+			}, $comment->get_children()));
 
 			
 		}

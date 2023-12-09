@@ -95,7 +95,7 @@ function resetFailTimes(event) {
 
     //获取 列表主元素
     const $button = $(this);
-    let $parentItem = $button.parents('.list-item');
+    let $parentItem = $button.closest('.list-item');
 
     //切换按钮状态
     $button.toggleDisabled();
@@ -142,7 +142,7 @@ function disableFailTimes(event) {
 
     //获取 列表主元素
     const $button = $(this);
-    let $parentItem = $button.parents('.list-item');
+    let $parentItem = $button.closest('.list-item');
 
     //切换按钮状态
     $button.toggleDisabled();

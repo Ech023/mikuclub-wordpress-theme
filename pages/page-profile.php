@@ -6,6 +6,7 @@ template name: 用户个人信息页
 
 //如果未登陆 重定向回首页
 
+namespace mikuclub;
 
 use mikuclub\My_User_Model;
 use mikuclub\User_Capability;
@@ -25,21 +26,17 @@ get_header();
 
 
 $user = wp_get_current_user();
+$breadcrumbs = print_breadcrumbs_component();
 
 ?>
 
 <div class="page-profile">
 
-   
+    <div class="page-header">
+        <?php echo print_breadcrumbs_component(); ?>
+    </div>
        
-            <?php echo print_breadcrumbs_component(); ?>
-        
-
-
-
-
-    <div class="page-content my-3 ">
-
+    <div class="page-content my-2 ">
 
         <form class="row user-profile">
 
@@ -73,10 +70,6 @@ $user = wp_get_current_user();
                     <input type="password" class="form-control" id="password" name="password" autocomplete="new-password" />
                     <small class="form-text text-muted">如果不需要修改密码, 留空即可, 本密码不影响社交账号登陆</small>
                 </div>
-
-
-
-
 
             </div>
 
@@ -132,7 +125,6 @@ $user = wp_get_current_user();
             <div class="w-100 my-4 border-top"></div>
 
 
-
             <div class="col-12">
                 <button type="submit" class="btn btn-miku w-100">
                     <span>保存</span>
@@ -186,7 +178,7 @@ $user = wp_get_current_user();
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-auto">
-                                            <a class="btn btn-secondary delete-user-black-list" href="javascript:void(0);" data-target-user-id="{$black_user_id}">从黑名单里移除</a>
+                                            <a class="btn btn-sm btn-light-2 delete-user-black-list" href="javascript:void(0);" data-target-user-id="{$black_user_id}">从黑名单里移除</a>
                                         </div>
                                     </div>
                              
@@ -194,7 +186,6 @@ $user = wp_get_current_user();
 HTML;
                     }
                 }
-                
 
                 echo <<<HTML
                      <div class="mb-3">黑名单管理 {$user_black_list_length}</div>
@@ -204,15 +195,8 @@ HTML;
 HTML;
                 ?>
 
-
             </div>
-
-
-
-
         </form>
-
-
     </div>
 
 

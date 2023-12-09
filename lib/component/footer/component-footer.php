@@ -41,9 +41,9 @@ function print_footer_js_script_component()
                 //设置最新文章数量
                 showNewPostCountInTopMenu({$new_post_count});
                 //记录浏览记录 如果ID不存在则什么都不会发生
-                setHistoryPostArray({$post_id});
+                push_in_array_history_post_id({$post_id});
                 //增加文章点击数 如果ID不存在则什么都不会发生
-                addPostViews({$post_id});
+                add_post_views({$post_id});
 
             });
         </script>

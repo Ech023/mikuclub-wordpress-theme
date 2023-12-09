@@ -3,6 +3,8 @@
 	template name: 论坛页面
 */
 
+namespace mikuclub;
+
 use mikuclub\Session_Cache;
 
 use function mikuclub\print_adult_404_content_for_no_logging_user;
@@ -16,15 +18,6 @@ if (is_user_logged_in())
 }
 
 
-?>
-
-
-<div class="page-header my-4">
-
-</div>
-
-<?php
-
 //如果未登录 输出404内容
 if (!is_user_logged_in())
 {
@@ -36,21 +29,25 @@ else
 	while (have_posts())
 	{
 		the_post();
-?>
 
-		<div class="page-content my-3">
+		echo <<<HTML
+	
+		<div class="page-forum">
+			<div class="page-header">
+			</div>
+			<div class="page-content my-2">
+		
+HTML;
 
-			<?php the_content(); ?>
+		the_content();
 
+		echo <<<HTML
+			</div>
 		</div>
-
-<?php
+HTML;
 	}
 }
 
-?>
 
 
-
-
-<?php get_footer(); ?>
+get_footer();

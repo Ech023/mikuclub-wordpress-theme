@@ -13,7 +13,8 @@ function print_home_hot_post_page_component() {
 
 	$breadcrumbs = print_breadcrumbs_component();
 
-	$post_list_header = print_post_list_header_component();
+	$post_list_header_order = print_post_list_header_order();
+	$post_list_header_download_type = print_post_list_header_download_type();
 	//获取当前页面的文章列表
 	$post_list_component = print_post_list_component();
 
@@ -32,7 +33,8 @@ function print_home_hot_post_page_component() {
 
 	{$ad_banner}
 
-	{$post_list_header}
+	{$post_list_header_order}
+	{$post_list_header_download_type}
 	{$post_list_component}
 	
 	

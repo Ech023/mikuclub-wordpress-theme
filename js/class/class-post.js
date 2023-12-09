@@ -94,7 +94,7 @@ class MyPostSlim {
 
         output = `
 
-            <div class="col">
+            <div class="col post-element">
                 <div class="card border-0 my-1 ${post_container_class}">
                     <div class="card-img-container position-relative">
                     
@@ -136,7 +136,7 @@ class MyPostSlim {
                             ${author_name}
                             </div>
                             <div class="fs-75 d-none d-md-block text-dark-2">
-                                ${this.post_date}
+                                ${this.post_modified_date}
                             </div>
 
                         </div>
@@ -160,42 +160,102 @@ class MyFavoritePost extends MyPostSlim {
 
     toHTML() {
 
-        return `
+        let output = '';
+        let author_avatar = '';
+        let author_name = '';
+        let post_container_class = this.setBlackPostMaskClass();
 
-          <div class="row my-2">
-            
-                <div class="col-12 col-md-2">
-                    <a href="${this.post_href}" target="_blank">
-                        <img class="img-fluid" src="${this.post_image}" alt="${this.post_title}" />
-                    </a>
-                </div>
-                <div class="col col-md-8 mt-3 mt-md-0">
-                     <div >
-                        <a class="" title="${this.post_title}" href="${this.post_href}" target="_blank">
-                            ${this.post_title}
-                        </a>
-                    </div>
-                    <div class="mt-2">
-                        <a class="small" title="查看UP主空间" href="${this.post_author.user_href}" target="_blank">
-                            作者:  ${this.post_author.display_name}
-                        </a>
-                    </div>
-                    <div class="mt-2 d-none d-md-block">
-                        <span class="small me-2">发布时间 ${this.post_date}</span>
-                        <span class="small me-2">最后修改 ${this.post_modified_date}</span>
-                    </div>
-                </div>
-                <div class="col-auto col-md-2 text-center  mt-3 mt-md-0">
-                    <button class="btn btn-secondary delete-favorite" type="button" data-post-id="${this.id}">
-                        <span>取消收藏</span>
-                        <span class="spinner-border spinner-border-sm" style="display: none"></span>
-                    </button>
-                </div>
-            
+        //如果有作者信息
+        if (this.post_author) {
 
+            author_avatar += `
+
+                <a href="${this.post_author.user_href}" title="查看UP主空间" target="_blank">
+                    <img class="avatar rounded-circle" src="${this.post_author.user_image}" width="40" height="40" alt="用户头像">
+                </a>`;
+
+            author_name += `
+
+                <a class="card-link small text-dark-2" title="查看UP主空间" href="${this.post_author.user_href}" target="_blank">
+                    ${this.post_author.display_name}
+                </a>
+            `;
+
+        }
+
+
+        output = `
+
+            <div class="col post-element">
+                <div class="card border-0 my-1 ${post_container_class}">
+                    <div class="card-img-container position-relative">
+
+                        <div class="position-absolute end-0 top-0 me-1 mt-1 text-light fs-75">
+                            <div class="d-none d-sm-inline-block bg-transparent-half rounded p-1">
+                                 <span>${this.post_cat_name}</span>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="position-absolute end-0 bottom-0 me-1 mb-1 text-light fs-75">
+                            <div class="d-none d-sm-inline-block bg-transparent-half rounded p-1">
+                                <i class="fa-solid fa-thumbs-up"></i> ${this.post_likes}
+                            </div>
+                            <div class="d-none d-sm-inline-block bg-transparent-half rounded p-1">
+                                <i class="fa-solid fa-comments"></i> ${this.post_comments}
+                            </div>
+                            <div class="d-inline-block bg-transparent-half rounded p-1">
+                                <i class="fa-solid fa-eye"></i> ${this.post_views}
+                            </div>
+					    </div>
+                        
+                        <div>
+                            <a class="" href="${this.post_href}" title="${this.post_title}" target="_blank">
+                                 <img class="card-img-top bg-light-2" src="${this.post_image}" alt="${this.post_title}" />
+                              </a>
+                        </div>
+ 
+                    </div>
+                    <div class="row my-2 align-items-center">
+
+                        <div class="col-12 mb-2">
+                            <div class="post-title text-3-rows">
+                                <a class="fs-75 fs-sm-875" href="${this.post_href}" title="${this.post_title}" target="_blank">
+                                    ${this.post_title}
+                                </a>
+                            </div>
+                            
+                        </div>
+                        <div class="col-auto d-none d-md-block">
+                            ${author_avatar}
+                        </div>
+                        <div class="col">
+
+                            <div class="text-1-rows">
+                            ${author_name}
+                            </div>
+                            <div class="fs-75 d-none d-md-block text-dark-2">
+                                ${this.post_modified_date}
+                            </div>
+
+                        </div>
+                        <div class=""></div>
+                        <div class="col-auto mt-2 fw-bold small">
+                            状态: ${POST_STATUS.get_description(this.post_status)}
+                        </div>
+                        <div class="col-auto mt-2 ms-auto">
+                            <button class="btn btn-sm btn-light-2 delete_favorite" data-post_id="${this.id}">
+                                取消收藏
+                            </button>
+                        </div>
+        
+                    </div>
+                </div>
             </div>
         
         `;
+
+        return output;
 
 
     }
@@ -210,38 +270,98 @@ class MyHistoryPost extends MyPostSlim {
 
     toHTML() {
 
-        return `
+        let output = '';
+        let author_avatar = '';
+        let author_name = '';
+        let post_container_class = this.setBlackPostMaskClass();
 
-          <div class="row my-2">
-            
-                <div class="col-12 col-md-2">
-                    <a href="${this.post_href}" target="_blank">
-                        <img class="img-fluid" src="${this.post_image}" alt="${this.post_title}" />
-                    </a>
-                </div>
-                <div class="col col-md-8 mt-3 mt-md-0">
-                     <div >
-                        <a class="" title="${this.post_title}" href="${this.post_href}" target="_blank">
-                            ${this.post_title}
-                        </a>
-                    </div>
-                    <div class="mt-2">
-                        <a class="small" title="查看UP主空间" href="${this.post_author.user_href}" target="_blank">
-                            作者:  ${this.post_author.display_name}
-                        </a>
-                    </div>
-                    <div class="mt-2 d-none d-md-block">
-                        <span class="small me-2">发布时间 ${this.post_date}</span>
-                        <span class="small me-2">最后修改 ${this.post_modified_date}</span>
-                    </div>
-                </div>
-                <div class="col-auto col-md-2 text-center  mt-3 mt-md-0">
-                </div>
-            
+        //如果有作者信息
+        if (this.post_author) {
 
+            author_avatar += `
+
+                <a href="${this.post_author.user_href}" title="查看UP主空间" target="_blank">
+                    <img class="avatar rounded-circle" src="${this.post_author.user_image}" width="40" height="40" alt="用户头像">
+                </a>`;
+
+            author_name += `
+
+                <a class="card-link small text-dark-2" title="查看UP主空间" href="${this.post_author.user_href}" target="_blank">
+                    ${this.post_author.display_name}
+                </a>
+            `;
+
+        }
+
+
+        output = `
+
+            <div class="col post-element">
+                <div class="card border-0 my-1 ${post_container_class}">
+                    <div class="card-img-container position-relative">
+
+                        <div class="position-absolute end-0 top-0 me-1 mt-1 text-light fs-75">
+                            <div class="d-none d-sm-inline-block bg-transparent-half rounded p-1">
+                                 <span>${this.post_cat_name}</span>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="position-absolute end-0 bottom-0 me-1 mb-1 text-light fs-75">
+                            <div class="d-none d-sm-inline-block bg-transparent-half rounded p-1">
+                                <i class="fa-solid fa-thumbs-up"></i> ${this.post_likes}
+                            </div>
+                            <div class="d-none d-sm-inline-block bg-transparent-half rounded p-1">
+                                <i class="fa-solid fa-comments"></i> ${this.post_comments}
+                            </div>
+                            <div class="d-inline-block bg-transparent-half rounded p-1">
+                                <i class="fa-solid fa-eye"></i> ${this.post_views}
+                            </div>
+					    </div>
+                        
+                        <div>
+                            <a class="" href="${this.post_href}" title="${this.post_title}" target="_blank">
+                                 <img class="card-img-top bg-light-2" src="${this.post_image}" alt="${this.post_title}" />
+                              </a>
+                        </div>
+ 
+                    </div>
+                    <div class="row my-2 align-items-center">
+
+                        <div class="col-12 mb-2">
+                            <div class="post-title text-3-rows">
+                                <a class="fs-75 fs-sm-875" href="${this.post_href}" title="${this.post_title}" target="_blank">
+                                    ${this.post_title}
+                                </a>
+                            </div>
+                            
+                        </div>
+                        <div class="col-auto d-none d-md-block">
+                            ${author_avatar}
+                        </div>
+                        <div class="col">
+
+                            <div class="text-1-rows">
+                            ${author_name}
+                            </div>
+                            <div class="fs-75 d-none d-md-block text-dark-2">
+                                ${this.post_modified_date}
+                            </div>
+
+                        </div>
+                        <div class=""></div>
+                        <div class="col-auto mt-2 fw-bold small">
+                            状态: ${POST_STATUS.get_description(this.post_status)}
+                        </div>
+                      
+        
+                    </div>
+                </div>
             </div>
         
         `;
+
+        return output;
 
 
     }
@@ -276,53 +396,55 @@ class MyManagePost extends MyPostSlim {
 
         return `
 
-          <div class="row my-3">
-            
-                <div class="col-12 col-md-2">
-                    <a href="${this.post_href}" target="_blank">
-                        <img class="img-fluid" src="${this.post_image}" alt="${this.post_title}" />
-                    </a>
-                </div>
-                <div class="col col-md-6 my-2 my-md-0">
-                     <div >
-                        <a class="" title="${this.post_title}" href="${this.post_href}" target="_blank">
-                            ${this.post_title}
-                        </a>
-                    </div>
-                    <div class="mt-2">
-                        <span class="small">分类 <b>${this.post_cat_name}</b></span>
-                    </div>
-                     <div class="mt-2">
-                        <span class="small my-1 me-2">发布时间 ${this.post_date}</span>
-                        <span class="small my-1 me-2">最后修改 ${this.post_modified_date}</span>
-                    </div>
-                    <div>
-                        <span class="small my-1 me-2">点击 ${this.post_views}</span>
-                        <span class="small my-1 me-2">评论 ${this.post_comments}</span>
-                        <span class="small my-1 me-2">点赞 ${this.post_likes}</span>
-                        <span class="small my-1 me-2">收藏 ${this.post_favorites}</span>
-                        <span class="small my-1 me-2">分享 ${this.post_shares}</span>
-                    </div>
+            <div class="col-12">
+                <div class="row">
                     
-                </div>
-                <div class="col-auto col-md-2 text-center ${postStatusColor} large fw-bold my-2 my-md-0">
-                    ${postStatusText}
-                </div>
-                <div class="col-12 col-md-2 text-center">
-                    <a class="btn btn-secondary my-1 mx-2 px-5 px-md-4 " href="${MY_SITE.home}/edit?pid=${this.id}" target="_blank">编辑</a>
-                    <button class="btn btn-danger my-1 mx-2 px-5 px-md-4 delete_post" type="button" data-post-id="${this.id}">
-                        <span>删除</span>
-                        <span class="spinner-border spinner-border-sm" style="display: none"></span>
-                    </button>
-                </div>
-                
-                <div class="col-12">
-                    <hr/>
-                </div>
-                 
-            
+                        <div class="col-12 col-md-2">
+                            <a href="${this.post_href}" target="_blank">
+                                <img class="img-fluid" src="${this.post_image}" alt="${this.post_title}" />
+                            </a>
+                        </div>
+                        <div class="col col-md-6 my-2 my-md-0">
+                            <div >
+                                <a class="" title="${this.post_title}" href="${this.post_href}" target="_blank">
+                                    ${this.post_title}
+                                </a>
+                            </div>
+                            <div class="mt-2">
+                                <span class="small">分类 <b>${this.post_cat_name}</b></span>
+                            </div>
+                            <div class="mt-2">
+                                <span class="small my-1 me-2">发布时间 ${this.post_date}</span>
+                                <span class="small my-1 me-2">最后修改 ${this.post_modified_date}</span>
+                            </div>
+                            <div>
+                                <span class="small my-1 me-2">点击 ${this.post_views}</span>
+                                <span class="small my-1 me-2">评论 ${this.post_comments}</span>
+                                <span class="small my-1 me-2">点赞 ${this.post_likes}</span>
+                                <span class="small my-1 me-2">收藏 ${this.post_favorites}</span>
+                                <span class="small my-1 me-2">分享 ${this.post_shares}</span>
+                            </div>
+                            
+                        </div>
+                        <div class="col-auto col-md-2 text-center ${postStatusColor} large fw-bold my-2 my-md-0">
+                            ${postStatusText}
+                        </div>
+                        <div class="col-12 col-md-2 text-center">
+                            <a class="btn btn-secondary my-1 mx-2 px-5 px-md-4 " href="${MY_SITE.home}/edit?pid=${this.id}" target="_blank">编辑</a>
+                            <button class="btn btn-danger my-1 mx-2 px-5 px-md-4 delete_post" type="button" data-post-id="${this.id}">
+                                <span>删除</span>
+                                <span class="spinner-border spinner-border-sm" style="display: none"></span>
+                            </button>
+                        </div>
+                        
+                        <div class="col-12">
+                            <hr/>
+                        </div>
+                        
+                    
 
-            </div>
+                    </div>
+                </div>
         
         `;
 

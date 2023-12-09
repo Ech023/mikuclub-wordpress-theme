@@ -19,6 +19,9 @@ use WP_Query;
 影响WORDPRESS主查询相关的函数
 */
 
+
+
+
 /**
  * 修正文章列表的请求参数
  *
@@ -32,6 +35,10 @@ function set_post_list_query_vars($query_vars)
 
     //排除置顶文章
     $query_vars[Post_Query::IGNORE_STICKY_POSTS] = 1;
+
+    //禁止pagename参数
+    unset($query_vars[Post_Query::PAGENAME]);
+
 
     /*设置默认的文章显示数量*/
     $query_vars[Post_Query::POSTS_PER_PAGE] = Config::POST_LIST_LENGTH;
@@ -50,7 +57,7 @@ function set_post_list_query_vars($query_vars)
     if ($custom_orderby)
     {
         //如果是默认的可选排序
-        if (in_array($custom_orderby, ['modified', 'date']))
+        if (in_array($custom_orderby, ['modified', 'date', 'post__in']))
         {
             $query_vars[Post_Query::ORDERBY] = $custom_orderby;
         }
@@ -140,9 +147,20 @@ function set_post_list_query_vars($query_vars)
     return $query_vars;
 }
 
+/**
+ * 变相禁用默认主查询
+ * 
+ * @param WP_Query $wp_query
+ * @return void
+ */
+function disable_main_wp_query($wp_query)
+{
+   
+}
 
 /**
  * 修改WORDPRESS主查询的变量
+ * @deprecated 旧版
  *
  * @param WP_Query $wp_query
  * @return void
@@ -207,40 +225,4 @@ function set_wp_query_custom_query_var($wp_query)
             set_query_var(Post_Query::CAT, $cat);
         }
     }
-}
-
-
-/**
- * 获取主查询实例里的用到的请求参数数组, 并且排除无数值的参数
- *
- * @return array<string,mixed>
- */
-function get_array_main_query_vars_filtered()
-{
-
-    global $wp_query;
-
-    $array_query_var_filtered = array_filter($wp_query->query_vars, function ($value)
-    {
-        $result = true;
-        //过滤空字符串
-        if ($value === '')
-        {
-            $result = false;
-        }
-        //过滤空数组
-        else if (is_array($value) && empty($value))
-        {
-            $result = false;
-        }
-        //过滤 bool数值
-        if (is_bool($value))
-        {
-            $result = false;
-        }
-
-        return $result;
-    });
-
-    return $array_query_var_filtered;
 }

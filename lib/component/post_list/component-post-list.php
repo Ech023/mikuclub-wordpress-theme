@@ -7,18 +7,63 @@ use mikuclub\constant\Post_Template;
 
 /**
  * 文章列表组件
+ * @param array<string,mixed> $custom_post_query
  * @param string $post_template
  * @return string
  */
-function print_post_list_component($post_template = Post_Template::DEFAULT)
+function print_post_list_component($custom_post_query = [], $post_template = Post_Template::DEFAULT)
 {
 	global $wp_query;
 
+
+	$post_list_html = '';
+
+
+	$class_post_list = 'row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-6';
+	//如果文章模板为 投稿管理类型
+	if ($post_template === Post_Template::MANAGE_POST)
+	{
+		//更改默认的文章列表类名
+		$class_post_list = '';
+	}
+
+	$parameters = array_merge($wp_query->query, $custom_post_query);
+	// unset($parameters['pagename']);
+
+	$parameters[Post_Query::CUSTOM_PAGE_TYPE] = Page_Type::get_current_type();
+	//储存列表的请求参数
+	$json_parameters = htmlspecialchars(json_encode($parameters));
+
+
+
+	$output = <<<HTML
+		<div class="post-list-container" data-parameters='{$json_parameters}' data-post-template="{$post_template}">
+			
+			<div class="post-list row my-2 {$class_post_list}">
+				$post_list_html
+			</div>
+			<!-- 自动加载列表的触发标记 -->
+			<div class="post_list_footer">
+			</div>
+			
+		</div>
+
+HTML;
+
+	return $output;
+}
+
+/**
+ *	@deprecated version
+ *	@return string
+ */
+function print_default_post_list_component()
+{
 	//获取默认文章列表
 	$post_list = get_wp_query_post_list();
 
-
 	$post_list_html = '';
+
 	foreach ($post_list as $my_post)
 	{
 
@@ -105,7 +150,7 @@ HTML;
 							{$author_name}
 						</div>
 						<div class="fs-75 d-none d-md-block text-dark-2">
-							{$my_post->post_date}
+							{$my_post->post_modified_date}
 						</div>
 
 					</div>
@@ -119,28 +164,5 @@ HTML;
 HTML;
 	}
 
-
-	
-
-	$parameters = $wp_query->query;
-	$parameters[Post_Query::CUSTOM_PAGE_TYPE] = Page_Type::get_current_type();
-	//储存列表的请求参数
-	$json_parameters = htmlspecialchars(json_encode($parameters));
-
-	$output = <<<HTML
-		<div class="post-list-container" data-parameters='{$json_parameters}' data-post-template="{$post_template}">
-			
-
-			<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-6 post-list my-2">
-				$post_list_html
-			</div>
-			<!-- 自动加载列表的触发标记 -->
-			<div class="post_list_footer">
-			</div>
-			
-		</div>
-
-HTML;
-
-	return $output;
+	return $post_list_html;
 }

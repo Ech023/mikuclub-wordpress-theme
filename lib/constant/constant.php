@@ -30,14 +30,14 @@ class Config
     const CSS_JS_VERSION = '1.00';
 
     //默认时间格式
-    const DATE_FORMAT_SHORT = 'y-m-d';
+    const DATE_FORMAT_SHORT = 'Y-m-d';
     const DATE_FORMAT = 'y-m-d H:i:s';
     const DATE_FORMAT_MYSQL = 'Y-m-d H:i:s';
 
     //启动文件缓存系统
-    // const ENABLE_FILE_CACHE_SYSTEM = true;
+    const ENABLE_FILE_CACHE_SYSTEM = true;
     //关闭文件缓存
-    const ENABLE_FILE_CACHE_SYSTEM = false;
+    // const ENABLE_FILE_CACHE_SYSTEM = false;
 
     //主页 关注用户列表文章数量
     const HOME_MY_FOLLOWED_POST_LIST_LENGTH = 12;
@@ -72,7 +72,7 @@ class Config
     const RECENT_FORUM_TOPIC_LIST_LENGTH = 8;
 
     //单页的评论数量
-    const NUMBER_COMMENT_PER_PAGE = 30;
+    const NUMBER_COMMENT_PER_PAGE = 40;
     //单页的高赞评论数量
     const NUMBER_TOP_LIKE_COMMENT_PER_PAGE = 3;
 

@@ -69,11 +69,11 @@ function api_set_post_like($data)
 
 		if ($cancel)
 		{
-			$result = add_post_like($post_id);
+			$result = delete_post_like($post_id);
 		}
 		else
 		{
-			$result = delete_post_like($post_id);
+			$result = add_post_like($post_id);
 		}
 
 		return $result;
@@ -99,11 +99,11 @@ function api_set_post_unlike($data)
 
 		if ($cancel)
 		{
-			$result = add_post_unlike($post_id);
+			$result = delete_post_unlike($post_id);
 		}
 		else
 		{
-			$result = delete_post_unlike($post_id);
+			$result = add_post_unlike($post_id);
 		}
 
 
