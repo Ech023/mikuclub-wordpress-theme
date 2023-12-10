@@ -165,18 +165,18 @@ function get_sticky_post_list($cat_id)
             $array_additional_expired_day = [
                 Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY,
                 Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 2,
-                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 4,
-                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 8,
-                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 16,
-                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 32,
-                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 64,
-                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 128,
-                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 256,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 4,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 8,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 16,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 32,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 64,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 128,
+                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 256,
             ];
 
             foreach ($array_additional_expired_day as $additional_expired_day)
             {
-
+               
                 $args = [
                     //避免添加重复文章
                     Post_Query::POST__NOT_IN => array_column($result, 'ID'),
@@ -185,7 +185,7 @@ function get_sticky_post_list($cat_id)
                     Post_Query::DATE_QUERY => [
                         [
                             'column' => 'post_modified',
-                            'after ' =>  '-' . $additional_expired_day . ' days',
+                            'after' =>  '-' . $additional_expired_day . ' days',
                         ]
                     ],
                     Post_Query::POST_STATUS => Post_Status::PUBLISH,
