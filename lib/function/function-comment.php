@@ -352,7 +352,7 @@ function get_comment_reply_list($paged = 1, $number_per_page = Config::NUMBER_CO
         foreach ($result as $comment)
         {
             //如果评论回复还是未读
-            if ($comment->comment_parent_user_read)
+            if (!$comment->comment_parent_user_read)
             {
                 //把所有请求过的评论更新为已读
                 update_comment_parent_user_as_read($comment->comment_id);

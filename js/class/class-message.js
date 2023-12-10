@@ -54,9 +54,9 @@ class MyPrivateMessage {
                     <div class="card-header row bg-transparent  align-items-center border-0 py-3 cursor_pointer" data-bs-toggle="collapse" data-bs-target="#sender-id-${this.sender_id}">
                             <div class="col-6 col-md-2 ">
                                 ${author_avatar}
-                                <span class="mx-2 display-name">${this.author.display_name}</span>
+                                <span class="mx-2 display-name small">${this.author.display_name}</span>
                             </div>
-                            <div class="col-6 col-md-2">
+                            <div class="col-6 col-md-2 small">
                                 <i class="fa-solid fa-clock"></i> ${this.date}
                             </div>
                             <div class="col-9 col-md-6 text-truncate mt-2 mt-md-0">
@@ -177,14 +177,14 @@ class MyCommentReply {
                     <div class="card-header row bg-transparent  align-items-center border-0 py-3 cursor_pointer"  >
                             <div class="col-6 col-md-2 ">
                                 ${author_avatar}
-                                <span class="mx-2 display-name">${this.author.display_name}</span>
+                                <span class="mx-2 display-name small">${this.author.display_name}</span>
                             </div>
-                            <div class="col-6 col-md-2">
+                            <div class="col-6 col-md-2 small">
                                 <i class="fa-solid fa-clock"></i> ${this.comment_date}
                             </div>
                             <div class="col-9 col-md-6 text-truncate mt-2 mt-md-0">
                                 <div class="">${this.comment_content}</div>
-                                <div class="small mt-3">评论来源: ${this.comment_post_title}</div> 
+                                <div class="small text-dark-2 mt-3">评论来源: ${this.comment_post_title}</div> 
                             </div>
                             <div class="col-1">
                                 ${unread}

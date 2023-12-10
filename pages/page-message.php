@@ -85,9 +85,9 @@ foreach ($nav_items as $nav_item)
 
 	$nav_items_html .= <<<HTML
 		<div class="col">
-			<a class="btn w-100 {$nav_item['active']}" href="{$href}">
+			<a class="btn btn-sm w-100 {$nav_item['active']}" href="{$href}">
 				{$nav_item['name']}
-				<span class="badge text-bg-miku">{$nav_item['count']}</span>
+				<span class="d-block d-sm-inline">{$nav_item['count']}</span>
 			</a>
 		</div>
 HTML;
