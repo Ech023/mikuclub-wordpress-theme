@@ -17,6 +17,8 @@ use WP_Query;
 use WP_Term;
 
 /**
+ *	@deprecated version
+ * 
  * 从wp query里获取默认的文章列表
  * 转换成自定义文章格式
  * @return My_Post_Model[]
@@ -163,13 +165,13 @@ function get_sticky_post_list($cat_id)
             $array_additional_expired_day = [
                 Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY,
                 Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 2,
-                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 4,
-                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 8,
-                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 16,
-                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 32,
-                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 64,
-                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 128,
-                Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 256,
+                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 4,
+                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 8,
+                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 16,
+                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 32,
+                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 64,
+                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 128,
+                // Config::STICKY_POST_TOP_LIKE_EXPIRED_DAY * 256,
             ];
 
             foreach ($array_additional_expired_day as $additional_expired_day)
