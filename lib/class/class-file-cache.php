@@ -113,6 +113,11 @@ class File_Cache
         //@phpstan-ignore-next-line
         if (Config::ENABLE_FILE_CACHE_SYSTEM)
         {
+            //如果用户未登陆, 使用特殊备份
+            if (!is_user_logged_in())
+            {
+                $meta_key . '_no_login';
+            }
 
             //创建完整文件路径
             $file_path =  static::build_file_path($sub_directory, $meta_key);
@@ -146,6 +151,12 @@ class File_Cache
         //@phpstan-ignore-next-line
         if (Config::ENABLE_FILE_CACHE_SYSTEM)
         {
+            //如果用户未登陆, 使用特殊备份
+            if (!is_user_logged_in())
+            {
+                $meta_key . '_no_login';
+            }
+
             //创建完整文件路径
             $file_path =  static::build_file_path($sub_directory, $meta_key);
             //新建文件
@@ -194,6 +205,12 @@ class File_Cache
         //@phpstan-ignore-next-line
         if (Config::ENABLE_FILE_CACHE_SYSTEM)
         {
+            //如果用户未登陆, 使用特殊备份
+            if (!is_user_logged_in())
+            {
+                $meta_key . '_no_login';
+            }
+
             //创建完整文件路径
             $file_path =  static::build_file_path($sub_directory, $meta_key);
 
