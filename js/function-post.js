@@ -180,7 +180,7 @@ function reject_post(post_id, cause = '', success_callback = null) {
             URLS.rejectPost,
             data,
             () => {
-                show_loading_modal();
+                // show_loading_modal();
             },
             () => {
                 MyToast.show_success('退稿成功');
@@ -190,7 +190,7 @@ function reject_post(post_id, cause = '', success_callback = null) {
             },
             defaultFailCallback,
             () => {
-                hide_loading_modal();
+                // hide_loading_modal();
             }
         );
     }
