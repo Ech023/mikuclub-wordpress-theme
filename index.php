@@ -11,7 +11,6 @@ use mikuclub\constant\Expired;
 get_header();
 
 
-
 //如果不存在分页变量
 if (!get_query_var(Post_Query::PAGED))
 {
