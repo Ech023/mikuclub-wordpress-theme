@@ -161,7 +161,7 @@ function copy_to_clipboard($input) {
     }
 
     //提示框
-    MyToast.show_success('已自动复制密码: ' + value + ' 到剪切板');
+    MyToast.show_success('已自动复制: ' + value);
 }
 
 

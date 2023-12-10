@@ -8,6 +8,29 @@ namespace mikuclub;
  */
 function print_float_bottom_menu_bar_component()
 {
+    //判断是否显示页面跳转按钮
+    $show_change_page_button = false;
+    if (
+        (
+            is_home() && get_query_var(Post_Query::PAGED) > 0
+        )
+        || is_category() || is_tag() || is_search() || is_author()
+    )
+    {
+        $show_change_page_button = true;
+    }
+    else if (is_page())
+    {
+        //如果是页面, 只在特定页面显示
+        $array_page_with_post_list = [
+            'followed', //关注页
+            'favorite', //收藏夹
+            'history',  //历史
+            'up_home_page', //投稿管理
+        ];
+        $pagename = get_query_var(Post_Query::PAGENAME);
+        $show_change_page_button = in_array($pagename, $array_page_with_post_list);
+    }
 
     $menu_items = <<<HTML
 
@@ -71,33 +94,32 @@ HTML;
 
 HTML;
     }
-    else if (
-        (
-            is_home() && get_query_var(Post_Query::PAGED) > 0
-        )
-        || !is_home()
-    )
-    {
 
+    if ($show_change_page_button){
+        $menu_items .= <<<HTML
+            <div class="col col-md-auto px-0 px-md-auto">
+                <button class="open_change_paged_modal btn w-100 px-auto px-md-4">
+                    <i class="fa-solid fa-retweet me-md-2"></i>
+                    <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">
+                        跳转
+                        <span class="paged small">1</span>
+                    </span>
+
+                </button>
+            </div>
+HTML;
+    }
+
+    if (!is_single())
+    {
         $menu_items .= <<<HTML
 
-
-        <div class="col col-md-auto px-0 px-md-auto">
-            <button class="open_change_paged_modal btn w-100 px-auto px-md-4">
-                <i class="fa-solid fa-retweet me-md-2"></i>
-                <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">
-                    跳转
-                    <span class="paged small">1</span>
-                </span>
-
-            </button>
-        </div>
-        <div class="col col-md-auto px-0 px-md-auto">
-            <button class="enable_backup_image_domain btn w-100 px-auto px-md-4">
-                <i class="fa-solid fa-images me-md-2"></i>
-                <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">备用图床</span>
-            </button>
-        </div>
+            <div class="col col-md-auto px-0 px-md-auto">
+                <button class="enable_backup_image_domain btn w-100 px-auto px-md-4">
+                    <i class="fa-solid fa-images me-md-2"></i>
+                    <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">备用图床</span>
+                </button>
+            </div>
 
 HTML;
     }

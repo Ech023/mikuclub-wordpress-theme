@@ -217,7 +217,7 @@ function get_comment_list($post_id, $offset, $number = Config::NUMBER_COMMENT_PE
             if (empty($offset))
             {
                 $array_top_like_comment_list = get_top_like_comment_list($post_id);
-               
+
                 $array_exclude_id = array_map(function (My_Comment_Model $comment)
                 {
                     return $comment->comment_id;
@@ -242,14 +242,14 @@ function get_comment_list($post_id, $offset, $number = Config::NUMBER_COMMENT_PE
             // $comment_query = new WP_Comment_Query($args_normal_comment);
             // $comments = $comment_query->get_comments();
 
-        
+
 
             $array_comment_list = array_map(function (WP_Comment $comment)
             {
                 return new My_Comment_Model($comment);
             }, $comments);
-     
-            
+
+
             $result = array_merge($array_top_like_comment_list, $array_comment_list);
 
             return $result;
@@ -326,7 +326,7 @@ function get_top_like_comment_list($post_id, $number = Config::NUMBER_TOP_LIKE_C
 function get_comment_reply_list($paged = 1, $number_per_page = Config::NUMBER_COMMENT_REPLY_PER_PAGE)
 {
 
-    $comment_reply_list = [];
+    $result = [];
 
     $user_id = get_current_user_id();
 
@@ -341,15 +341,15 @@ function get_comment_reply_list($paged = 1, $number_per_page = Config::NUMBER_CO
             'number' => $number_per_page,
         ];
 
-        $results = get_comments($args);
+        $query_result = get_comments($args);
 
-        $comment_replies = array_map(function (WP_Comment $wp_comment)
+        $result = array_map(function (WP_Comment $wp_comment)
         {
             return new My_Comment_Reply_Model($wp_comment);
-        }, $results);
+        }, $query_result);
 
         //遍历结果
-        foreach ($comment_replies as $comment)
+        foreach ($result as $comment)
         {
             //如果评论回复还是未读
             if ($comment->comment_parent_user_read)
@@ -360,7 +360,7 @@ function get_comment_reply_list($paged = 1, $number_per_page = Config::NUMBER_CO
         }
     }
 
-    return $comment_reply_list;
+    return $result;
 }
 
 /**

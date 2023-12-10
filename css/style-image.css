@@ -10,24 +10,28 @@
 .carousel.top-slide .carousel-item img {
     height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-padding)));
 }
+
 /*md*/
 @media (min-width: 992px) {
     .carousel.top-slide .carousel-item img {
         height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-padding)) / 12 * 6);
     }
 }
+
 /*xl*/
 @media (min-width: 1200px) {
     .carousel.top-slide .carousel-item img {
         height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-padding)) / 12 * 4 * 1.15);
     }
 }
+
 /**
 * 顶部热门文章图片高度
 */
 .top-hot-post-list .card-img-top {
     height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-padding) - var(--col-padding)) / 2);
 }
+
 /*lg*/
 @media (min-width: 992px) {
 
@@ -36,6 +40,7 @@
     }
 
 }
+
 /*xl*/
 @media (min-width: 1200px) {
 
@@ -157,6 +162,20 @@
 
     .related-posts img.card-img-top {
         height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-padding) - var(--col-padding) * 1) / 6);
+    }
+
+}
+
+
+/*lg*/
+@media (min-width: 992px) {
+
+    /**
+    投稿管理 文章列表 图片高度
+    */
+    .post-list .manage_post_element img {
+        width: 500px;
+        height: 280px;
     }
 
 }

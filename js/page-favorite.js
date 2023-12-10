@@ -29,7 +29,7 @@ function delete_favorite_from_favorite_page($button) {
 
     open_confirm_modal('确认要取消收藏吗?', '', () => {
 
-        const $post_element = $button.closest('.post-element');
+        const $post_element = $button.closest('.post_element');
 
         //创建请求数据
         const data = {

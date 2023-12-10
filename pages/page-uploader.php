@@ -19,15 +19,18 @@ User_Capability::prevent_not_logged_user();
 
 get_header();
 
+
+
+
 $user = wp_get_current_user();
 $breadcrumbs = print_breadcrumbs_component();
 $author_author_statistics = print_author_statistics($user->ID);
 
 $search_form = post_list_header_search_form();
 $post_list_header_category = print_post_list_header_category();
-$post_list_header_order = print_post_list_header_order();
+$post_list_header_order = print_post_list_header_order(true);
 $post_list_header_download_type = print_post_list_header_download_type();
-$post_list_header_post_status = print_post_list_header_post_status();
+$post_list_header_post_status = print_post_list_header_post_status(Post_Status::get_to_array());
 $custom_post_query = [
     Post_Query::AUTHOR => $user->ID,
     //显示所有状态的文章
@@ -35,6 +38,9 @@ $custom_post_query = [
     Post_Query::CUSTOM_NO_CACHE => true,
 ];
 $post_list_component = print_post_list_component($custom_post_query, Post_Template::MANAGE_POST);
+
+
+
 
 $output = <<<HTML
 

@@ -24,7 +24,7 @@ function print_breadcrumbs_component()
 	//如果是 主页-最新发布页面
 	if (is_home())
 	{
-		$local_html = $item_start_active . '全站排行' . $item_end;
+		$local_html = $item_start_active . '最新发布' . $item_end;
 	} //标签页
 	else if (is_tag())
 	{

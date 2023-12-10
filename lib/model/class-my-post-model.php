@@ -40,6 +40,10 @@ class My_Post_Model
 	 * @var int
 	 */
 	public $post_likes;
+	/**
+	 * @var int
+	 */
+	public $post_unlike;
 
 	/**
 	 * @var int
@@ -55,6 +59,11 @@ class My_Post_Model
 	 * @var int
 	 */
 	public $post_shares;
+
+	/**
+	 * @var int
+	 */
+	public $post_fail_times;
 
 	/**
 	 * @var string
@@ -114,9 +123,11 @@ class My_Post_Model
 
 		$this->post_views = get_post_views($post->ID);
 		$this->post_likes     = get_post_like($post->ID);
+		$this->post_unlike     = get_post_unlike($post->ID);
 		$this->post_comments  = get_post_comments($post->ID);
 		$this->post_favorites = get_post_favorites($post->ID);
 		$this->post_shares    = get_post_shares($post->ID);
+		$this->post_fail_times = get_post_fail_times($post->ID);
 
 		$this->post_status = $post->post_status;
 
@@ -129,8 +140,5 @@ class My_Post_Model
 
 		$this->post_date = get_the_date(Config::DATE_FORMAT_SHORT, $post);
 		$this->post_modified_date = get_the_modified_date(Config::DATE_FORMAT_SHORT, $post);
-
-		
 	}
 }
-

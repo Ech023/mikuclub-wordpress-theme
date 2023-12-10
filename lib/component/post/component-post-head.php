@@ -186,6 +186,7 @@ function print_post_head_manage_buttons($post_id, $author_id)
     //如果是
     if ($current_user_id === $author_id || User_Capability::is_admin())
     {
+        $post_status = get_post_status($post_id);
         $edit_post_link = get_edit_post_link($post_id);
 
         $edit_post_button = <<<HTML
@@ -198,7 +199,7 @@ HTML;
 
         //如果文章已公布或者是待审
         $draft_post_button = '';
-        if (in_array(get_post_status($post_id), [Post_Status::PUBLISH, Post_Status::PENDING]))
+        if (in_array($post_status, [Post_Status::PUBLISH, Post_Status::PENDING]))
         {
             $draft_post_button = <<<HTML
             <div class="col-auto">
@@ -217,8 +218,9 @@ HTML;
             </div>
 HTML;
 
+        //如果文章已公布
         $reject_post_button = '';
-        if (User_Capability::is_admin())
+        if (User_Capability::is_admin() && $post_status === Post_Status::PUBLISH)
         {
             $reject_post_button = <<<HTML
             <div class="col-auto">
@@ -259,7 +261,7 @@ function print_post_head_author($author_id)
     $output = '';
 
     $author = get_custom_user($author_id);
-    $author_avatar = print_user_avatar($author->user_image, 100);
+    $author_avatar = print_user_avatar($author->user_image, 70);
     $user_badges = print_user_badges($author_id);
     $author_buttons_element = print_user_follow_and_message_button($author_id);
 

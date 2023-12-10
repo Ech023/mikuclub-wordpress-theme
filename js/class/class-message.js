@@ -71,7 +71,7 @@ class MyPrivateMessage {
 
                     </div>
                     
-                     <div class="collapse " id="sender-id-${this.sender_id}" data-sender="${this.sender_id}"  data-bs-parent="#accordion" >
+                     <div class="collapse" id="sender-id-${this.sender_id}" data-sender="${this.sender_id}"  data-bs-parent="#accordion" >
                             <div class="card-body border-top py-5 overflow-auto" style="max-height: 90vh;">
                             
                             </div>

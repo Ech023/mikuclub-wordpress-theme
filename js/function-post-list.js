@@ -155,6 +155,7 @@ function get_post_list(is_new_load = false, new_paged = 1) {
  */
 function update_post_list_component_data(new_data) {
 
+   
     const $post_list_container_component = $('.post-list-container');
     const data = $post_list_container_component.data('parameters');
     Object.assign(data, new_data);
@@ -178,7 +179,7 @@ function get_post_list_component_paged_and_max_num_pages() {
 
     return {
         paged: data.paged || 1,
-        max_num_pages
+        max_num_pages,
     }
 }
 

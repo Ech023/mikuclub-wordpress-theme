@@ -124,7 +124,7 @@ class Post_Status extends Constant
     //草稿
     const DRAFT = 'draft';
     //已删除
-    const TRASH = 'trash';
+    // const TRASH = 'trash';
 
     /**
      * 获取文章状态说明
@@ -147,9 +147,38 @@ class Post_Status extends Constant
             case static::DRAFT:
                 $result = '草稿';
                 break;
-            case static::TRASH:
-                $result = '已删除';
+                // case static::TRASH:
+                //     $result = '已删除';
+                //     break;
+        }
+
+        return $result;
+    }
+
+    /**
+     * 获取对应的颜色
+     *
+     * @param string $status
+     * @return string
+     */
+    public static function get_text_color_class($status)
+    {
+
+        $result = '';
+        switch ($status)
+        {
+            case static::PUBLISH:
+                $result = 'text-success';
                 break;
+            case static::PENDING:
+                $result = 'text-danger';
+                break;
+            case static::DRAFT:
+                $result = 'text-dark-2';
+                break;
+                // case static::TRASH:
+                //     $result = '已删除';
+                //     break;
         }
 
         return $result;

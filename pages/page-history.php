@@ -7,6 +7,7 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Post_Status;
 use mikuclub\constant\Post_Template;
 use mikuclub\User_Capability;
 
@@ -22,7 +23,7 @@ $breadcrumbs = print_breadcrumbs_component();
 $search_form = post_list_header_search_form();
 $post_list_header_category = print_post_list_header_category();
 $post_list_header_download_type = print_post_list_header_download_type();
-$post_list_header_post_status = print_post_list_header_post_status();
+$post_list_header_post_status = print_post_list_header_post_status(Post_Status::get_to_array());
 $custom_post_query = [
     Post_Query::CUSTOM_NO_CACHE => true,
 ];

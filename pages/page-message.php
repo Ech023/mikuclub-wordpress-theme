@@ -23,16 +23,19 @@ User_Capability::prevent_not_logged_user();
 
 get_header();
 
-//尝试从url参数中获取当前消息类型
-$current_type = filter_input(INPUT_GET, 'type');
+$user_id = get_current_user_id();
 
+//尝试从url参数中获取当前消息类型
+$active_message_type = $_GET['type'] ?? Message_Type::PRIVATE_MESSAGE;
 //如果当前类型为私信
-if ($current_type === Message_Type::PRIVATE_MESSAGE)
+if ($active_message_type === Message_Type::PRIVATE_MESSAGE)
 {
-	$user_id = get_current_user_id();
 	//更新所有私信为已读
 	set_user_private_message_as_read($user_id);
 }
+
+$breadcrumbs = print_breadcrumbs_component();
+
 
 $nav_items = [
 	[
@@ -42,6 +45,7 @@ $nav_items = [
 		'count'     => get_user_private_message_unread_count(),
 		'count_key' => Session_Cache::USER_PRIVATE_MESSAGE_UNREAD_COUNT,
 		'page_link' => get_page_link(),
+		'active' => 'btn-light-2',
 	],
 	[
 		'type_key' => 'type',
@@ -50,6 +54,7 @@ $nav_items = [
 		'count'     => get_user_comment_reply_unread_count(),
 		'count_key' => Session_Cache::USER_COMMENT_REPLY_UNREAD_COUNT,
 		'page_link' => get_page_link(),
+		'active' => 'btn-light-2',
 	],
 	[
 		'type_key' => 'show_notification',
@@ -58,66 +63,64 @@ $nav_items = [
 		'count'     => get_user_forum_notification_unread_count(),
 		'count_key' => Session_Cache::USER_FORUM_NOTIFICATION_UNREAD_COUNT,
 		'page_link' => get_home_url() . '/forums',
+		'active' => 'btn-light-2',
 	]
 
 ];
-//检测每个菜单选项 是否为当前页面
-foreach ($nav_items as $key => $item)
-{
-	if ($current_type == $item['type'])
-	{
-		$nav_items[$key]['active'] = 'active';
-		//清零对应的消息计数
-		$_SESSION[$item['count_key']] = 0;
-	}
-	else
-	{
-		$nav_items[$key]['active'] = '';
-	}
-}
+
+
 
 $nav_items_html = '';
 foreach ($nav_items as $nav_item)
 {
 
-	$nav_items_html .= '
-		<li class="nav-item">
-			<a class="nav-link ' . $nav_item['active'] . '" href="' . add_query_arg($nav_item['type_key'], $nav_item['type'], $nav_item['page_link']) . '">'
-		. $nav_item['name'] . ' <span class="badge text-bg-miku">' . $nav_item['count'] . '</span>
+	if ($active_message_type === $nav_item['type'])
+	{
+		$nav_item['active'] = 'btn-miku';
+		//清零对应的消息计数
+		Session_Cache::set($nav_item['count_key'], 0);
+	}
+
+	$href = add_query_arg($nav_item['type_key'], $nav_item['type'], $nav_item['page_link']);
+
+	$nav_items_html .= <<<HTML
+		<div class="col">
+			<a class="btn w-100 {$nav_item['active']}" href="{$href}">
+				{$nav_item['name']}
+				<span class="badge text-bg-miku">{$nav_item['count']}</span>
 			</a>
-		</li>';
+		</div>
+HTML;
 }
 
 
-$message_nav_component = '
-	<nav>
-		<ul class="nav nav-tabs justify-content-center  nav-fill">
-			' . $nav_items_html . '
-		</ul>
-	</nav>';
+$message_nav_component = <<<HTML
+	<div class="row row-cols-3 g-2 my-2">
+		{$nav_items_html}
+	</div>
+HTML;
 
 
-?>
+$output = <<<HTML
 
-<div class="content page-message <?php echo $current_type; ?> mh-90vh">
+	<div class="page-message">
 
-	<div class="page-header ">
-		
-			<?php echo print_breadcrumbs_component(); ?>
-		
-		<?php echo $message_nav_component; ?>
+		<div class="page-header ">
+
+			{$breadcrumbs}
+
+			{$message_nav_component}
+		</div>
+
+		<div class="page-content my-2" >
+			<div class="message-list accordion" id="accordion" data-message-type="{$active_message_type}"></div>
+			<div class="message-list-end"></div>
+		</div>
+
 	</div>
 
+HTML;
 
-	<div class="page-content message-list accordion my-4" id="accordion">
+echo $output;
 
-
-	</div>
-
-
-
-
-</div>
-
-
-<?php get_footer(); ?>
+get_footer();

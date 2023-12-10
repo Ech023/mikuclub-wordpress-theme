@@ -1,79 +1,109 @@
+/// <reference path="common/base.js" />
+/// <reference path="common/constant.js" />
+/// <reference path="function.js" />
+
+
+let $page_tougao_element;
+
+
 $(function () {
 
     //如果发现了相关元素 触发动作
-    let $pageTougaoElement = $('body.page .page-tougao');
-    if ($pageTougaoElement.length) {
+    $page_tougao_element = $('body.page .page-tougao');
+    if ($page_tougao_element.length) {
 
-        addStyleClassToForm();
+        update_default_form_style();
 
 
-
-        /* WPUF 3.5.14版本 及之前 */
-        //showChildCategories();
         /* WPUF 3.5.14版本 之后 */
-        fixCategories();
-
-        $pageTougaoElement.find('form').on('submit', '', '', changeSubmitButtonText);
-
-        
-        $pageTougaoElement.on('click', 'button.set-sticky-post', '', setStickyPost);
-        $pageTougaoElement.on('click', 'button.delete-sticky-post', '', deleteStickyPost);
+        fix_category_select();
 
 
-      
+        $page_tougao_element.find('form').on('submit', '', '', update_submit_button_status);
+
+        $page_tougao_element.on('click', 'button.set-sticky-post', '', function () {
+            set_sticky_post($(this));
+        });
+        $page_tougao_element.on('click', 'button.delete-sticky-post', '', function () {
+            delete_sticky_post($(this));
+        });
 
 
-        $pageTougaoElement.on('click', 'button.update-post-date', '', updatePostDate);
+
+        // $page_tougao_element.on('click', 'button.update-post-date', '', updatePostDate);
 
         //给插入本地图片按钮 移除gif文件支持
-        $pageTougaoElement.find('form #wpuf-insert-image-container').on('click', 'input[type="file"]', function (event) {
+        $page_tougao_element.find('form #wpuf-insert-image-container').on('click', 'input[type="file"]', function (event) {
             let accept = $(this).attr('accept').replace('image/gif,.gif,', '');
             $(this).attr('accept', accept);
         });
+
         //给表单上传图片按钮增加多选功能 和移除gif文件支持
-        $pageTougaoElement.find('form .previews').on('click', 'input[type="file"]', function (event) {
+        $page_tougao_element.find('form .previews').on('click', 'input[type="file"]', function (event) {
             $(this).attr('multiple', true);
             let accept = $(this).attr('accept').replace('image/gif,.gif,', '').replace('image/bmp,.bmp', '');
             $(this).attr('accept', accept);
         });
 
-        $pageTougaoElement.find('form input.textfield, form textarea.textareafield').on('change', '', '', inputTrim);
-
-        $pageTougaoElement.find('form input.textfield[name="post_title"]').on('change', '', '', actionOnInputTitle);
-
-        $pageTougaoElement.find('form input.textfield[name="tags"]').on('change', '', '', actionOnInputTags);
-
-        $pageTougaoElement.find('form input.textfield[name="source"]').on('change', '', '', actionOnInputSourceLink);
-
-        $pageTougaoElement.find('form input.textfield[name^="down"]').on('change', '', '', actionOnInputDownload);
-
-        $pageTougaoElement.find('form input.textfield[name^="down"]').on('change', '', '', function (event) {
-            checkInputDownloadBaiduValidity(event.target);
+        //移除多余的空格
+        $page_tougao_element.find('form input.textfield, form textarea.textareafield').on('change', '', '', function () {
+            const value = $(this).val().trim();
+            $(this).val(value);
         });
 
-        $pageTougaoElement.find('form input.textfield[name^="password"]').on('change', '', '', actionOnInputPassword);
 
-        $pageTougaoElement.find('form input.textfield[name="bilibili"]').on('change', '', '', actionOnInputBilibili);
+        $page_tougao_element.find('form input.textfield[name="post_title"]').on('change', '', '', function () {
+            on_change_input_post_title($(this));
+        });
 
-        $pageTougaoElement.find('form textarea.textareafield[name="video"]').on('change', '', '', actionOnInputVideo);
+        $page_tougao_element.find('form input.textfield[name="tags"]').on('change', '', '', function () {
+            on_change_input_tags($(this));
+        });
+
+        $page_tougao_element.find('form input.textfield[name="source"]').on('change', '', '', function () {
+            on_change_input_source_link($(this));
+        });
 
 
-        $pageTougaoElement.find('form textarea.textareafield[name="baidu_fast_link"]').on('change', '', '', actionOnBaiduFastLink);
+        $page_tougao_element.find('form input.textfield[name^="down"]').on('change', '', '', function () {
+            on_change_input_download($(this));
+        });
+
+
+        $page_tougao_element.find('form input.textfield[name^="password"]').on('change', '', '', function () {
+            on_change_input_password($(this));
+        });
+
+
+
+        $page_tougao_element.find('form input.textfield[name="bilibili"]').on('change', '', '', function () {
+            on_change_input_bilibli_video($(this));
+        });
+
+        $page_tougao_element.find('form textarea.textareafield[name="video"]').on('change', '', '', function () {
+            on_change_input_video($(this));
+        });
+
+
+
+        // $page_tougao_element.find('form textarea.textareafield[name="baidu_fast_link"]').on('change', '', '', actionOnBaiduFastLink);
 
 
         /**
          * 加载完毕后运行 百度链接检测
          */
-        $pageTougaoElement.find('form input.textfield[name^="down"]').each((index, element) => {
-            checkInputDownloadBaiduValidity(element);
+        $page_tougao_element.find('form input.textfield[name^="down"]').each((index, element) => {
+            check_input_download_link($(element));
         });
 
 
-        $pageTougaoElement.find('.fixed-submit-button-div button').on('click', '', '', actionOnFixedSubmitButton);
+        $page_tougao_element.find('.fixed-submit-button-div button.submit_post').on('click', '', '', function () {
+            on_submit_submit_button($(this));
+        });
 
 
         //滚动的时候 根据 底部提交审核按钮  的可见度 来显示悬浮提交按钮
-        $(document).on('scroll', showFixedSubmitButtonOnScroll);
+        $(document).on('scroll', show_fixed_buttons_on_scroll);
 
 
     }
@@ -83,21 +113,21 @@ $(function () {
 
 
 /**
- * 给表单添加bootstrap类名
+ * 修正默认表单样式
  */
-function addStyleClassToForm() {
+function update_default_form_style() {
 
-    let $pageTougaoElement = $('body.page .page-tougao');
 
-    $pageTougaoElement.find('form input, form textarea').addClass('form-control');
 
-    let $insertImageButton = $pageTougaoElement.find('#wpuf-insert-image-container a.wpuf-insert-image');
+    $page_tougao_element.find('form input, form textarea').addClass('form-control form-control-sm py-2');
+
+    const $insertImageButton = $page_tougao_element.find('#wpuf-insert-image-container a.wpuf-insert-image');
     let buttonText = $insertImageButton.html();
     buttonText = buttonText.replace('插入照片', '插入本地图片');
     $insertImageButton.html(buttonText);
 
     //修改删除图片按钮
-    $pageTougaoElement.find('.attachment-delete').html('删除');
+    $page_tougao_element.find('.attachment-delete').html('删除');
 
 
 }
@@ -105,7 +135,7 @@ function addStyleClassToForm() {
 /**
  * 提交后 更改按钮文字+显示通知弹窗
  */
-function changeSubmitButtonText() {
+function update_submit_button_status() {
 
     //只有查询到 提交按钮 处于注销状态的时候 才会执行
     let $submitButton = $('.wpuf-submit input.button-primary-disabled[type="submit"]');
@@ -133,171 +163,95 @@ function changeSubmitButtonText() {
 
 /**
  * 设置置顶文章
- * @param {Event} event
+ * @param {jQuery} $button
  */
-function setStickyPost(event) {
+function set_sticky_post($button) {
 
-    //获取按钮
-    const $button = $(this);
+    const post_id = $button.data('post-id');
+    const data = { post_id };
 
-    let previousValue = $button.html();
-    let post_id = $button.data('post-id');
-    let data = { post_id };
-
-    //切换按钮状态
-    $button.toggleDisabled();
-
-
-    //回调函数
-    let successCallback = function (response) {
-
-        MyToast.show_success('置顶成功');
-        $button.html('取消置顶');
-        $button.toggleClass('set-sticky-post').toggleClass('delete-sticky-post');
-    };
-
-    /**
-     * 请求结束后
-     */
-    let completeCallback = function () {
-        //恢复按钮状态
-        $button.toggleDisabled();
-    };
-
-    $.ajax({
-        url: URLS.stickyPosts,
+    send_post(
+        URLS.stickyPosts,
         data,
-        type: HTTP_METHOD.post,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
+        () => {
+            show_loading_modal();
+        },
+        (response) => {
+
+            MyToast.show_success('置顶成功');
+
+            $button.html('取消置顶');
+            $button.toggleClass('set-sticky-post').toggleClass('delete-sticky-post');
+        },
+        defaultFailCallback,
+        () => {
+            hide_loading_modal();
+        }
+
+    );
 
 }
 
 /**
  * 取消置顶文章
- * @param {Event} event
+ * @param {jQuery} $button
  */
-function deleteStickyPost(event) {
+function delete_sticky_post($button) {
 
-    //获取按钮
-    const $button = $(this);
+    const post_id = $button.data('post-id');
+    const data = { post_id };
 
-    let previousValue = $button.html();
-    let post_id = $button.data('post-id');
-    let data = { post_id };
-
-    //切换按钮状态
-    $button.toggleDisabled();
-
-
-    //回调函数
-    let successCallback = function (response) {
-
-        MyToast.show_success('取消置顶成功');
-        $button.html('置顶投稿');
-        $button.toggleClass('set-sticky-post').toggleClass('delete-sticky-post');
-
-    };
-
-    /**
-     * 请求结束后
-     */
-    let completeCallback = function () {
-        //恢复按钮状态
-        $button.toggleDisabled();
-    };
-
-    $.ajax({
-        url: URLS.stickyPosts,
+    send_delete(
+        URLS.stickyPosts,
         data,
-        type: HTTP_METHOD.delete,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
+        () => {
+            show_loading_modal();
+        },
+        (response) => {
 
-}
+            MyToast.show_success('取消置顶成功');
+
+            $button.html('置顶投稿');
+            $button.toggleClass('set-sticky-post').toggleClass('delete-sticky-post');
+        },
+        defaultFailCallback,
+        () => {
+            hide_loading_modal();
+        }
+
+    );
 
 
 
-
-
-
-/**
- * 更新文章创建时间
- * @param {Event} event
- */
-function updatePostDate(event) {
-
-    //获取按钮
-    const $button = $(this);
-
-    let post_id = $button.data('post-id');
-
-    let data = { post_id };
-
-    //切换按钮状态
-    $button.toggleDisabled();
-
-    //回调函数
-    let successCallback = function (response) {
-
-        MyToast.show_success('更新成功');
-        $button.html('更新成功');
-        $button.toggleDisabled();
-
-    };
-
-    /**
-     * 请求结束后
-     */
-    let completeCallback = function () {
-        //恢复按钮状态
-        $button.toggleDisabled();
-    };
-
-    $.ajax({
-        url: URLS.updatePostDate,
-        data,
-        type: HTTP_METHOD.post,
-        headers: createAjaxHeader()
-    }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
 
 }
 
 
 /**
- * 移除表单前后空格
- * @param {Event} event
+ * 标题栏 变更事件 修正字符和括号
+ * @param {jQuery} $input
  */
-function inputTrim(event) {
-    const $input = $(this);
-    let value = $input.val().trim();
-    $input.val(value);
-}
+function on_change_input_post_title($input) {
 
-/**
- * 标题栏 动作
- * @param {Event} event
- */
-function actionOnInputTitle(event) {
-    const $input = $(this);
     //把全角字符转换成半角
     let value = fullCharToHalfChar($input.val());
     //替换标题的方括号
-    value = value.replace(/\[/g, "【").replace(/]/g, "】").replace(/\(/g, "【").replace(/\)/g, "】");
+    value = value.replace(/\[/g, "【").replace(/]/g, "】").replace(/\(/g, "【").replace(/\)/g, "】").replace(/\{/g, "【").replace(/\}/g, "】");
 
     $input.val(value);
 }
 
 /**
- * 标签栏 动作
- * @param {Event} event
+ * 标题栏 变更事件 修正字符
+ * @param {jQuery} $input
  */
-function actionOnInputTags(event) {
-    const $input = $(this);
+function on_change_input_tags($input) {
+
     //把全角字符转换成半角
     let value = fullCharToHalfChar($input.val());
     //移除分隔符周围的空格
-    value = value.replace(', ', ',').replace(' ,', ',').toUpperCase();
+    // value = value.replace(', ', ',').replace(' ,', ',').replace('#', ',').replace('.', ',').toUpperCase();
+    value = value.replace(/, | ,|#|\./g, ',').toUpperCase();
 
     $input.val(value);
 
@@ -306,11 +260,11 @@ function actionOnInputTags(event) {
 
 /**
  * 来源地址栏 动作
- * @param {Event} event
+ * @param {jQuery} $input
  */
-function actionOnInputSourceLink(event) {
-    const $input = $(this);
-    let value = $input.val();
+function on_change_input_source_link($input) {
+
+    const value = $input.val();
 
     //如果链接无效
     if (!validateURL(value)) {
@@ -322,16 +276,25 @@ function actionOnInputSourceLink(event) {
 
 /**
  * 下载地址栏 动作
- * @param {Event} event
+ * @param {jQuery} $input
  */
-function actionOnInputDownload(event) {
+function on_change_input_download($input) {
 
-    let $pageTougaoElement = $('body.page .page-tougao');
-    const $input = $(this);
     let value = $input.val();
 
     if (value.length === 0) {
         return;
+    }
+
+    let $access_password_element;
+    if ($input.attr('name').includes('down3')) {
+        $access_password_element = $page_tougao_element.find('form input.textfield[name="password3"]');
+    }
+    else if ($input.attr('name').includes('down2')) {
+        $access_password_element = $page_tougao_element.find('form input.textfield[name="password2"]');
+    }
+    else if ($input.attr('name').includes('down')) {
+        $access_password_element = $page_tougao_element.find('form input.textfield[name="password"]');
     }
 
     value = fullCharToHalfChar($input.val());
@@ -364,15 +327,9 @@ function actionOnInputDownload(event) {
             //移除后续 "--来自百度网盘超级会员的分享"
             password = password.split('--')[0];
 
-            //判断是下载点1还是下载点2
-            //如果是下载点2 就复制到密码2
-            if ($input.attr('name').includes('down2')) {
-                $pageTougaoElement.find('form input.textfield[name="password2"]').val(password);
-            }
-            //如果是下载点1 就复制到密码1
-            else {
-                $pageTougaoElement.find('form input.textfield[name="password"]').val(password);
-            }
+            //更新访问密码
+            $access_password_element.val(password);
+
 
             //移除访问密码后续部分
             value = value.substring(0, index);
@@ -392,6 +349,15 @@ function actionOnInputDownload(event) {
     if (value.indexOf(linkText) >= 0) {
         value = value.split(linkText)[1];
     }
+    //如果是百度盘 并且访问密码还是空的, 从链接里提取访问码
+    if (value.includes('pan.baidu.com') && !$access_password_element.val()) {
+        //如果链接包含pwd参数
+        const match = value.match(/[?&]pwd=(\w+)/);
+        // 如果匹配到，则返回匹配到的部分的前4个字符
+        if (match && match[1]) {
+            $access_password_element.val(match[1].slice(0, 4));
+        }
+    }
 
     if (!validateURL(value) && !value.includes('magnet')) {
         MyToast.show_error('链接格式错误, 必须包含http或https');
@@ -403,15 +369,17 @@ function actionOnInputDownload(event) {
     //更新地址
     $input.val(value);
 
+    //检测百度/阿里链接有效性
+    check_input_download_link($input);
+
 }
 
 /**
  * 下载地址栏  检测百度链接有效性
- * @param {HTMLInputElement} inputElement
+ * @param {jQuery} $input
  */
-function checkInputDownloadBaiduValidity(inputElement) {
+function check_input_download_link($input) {
 
-    let $input = $(inputElement);
     let value = $input.val();
 
     //获取输入栏的父元素
@@ -465,12 +433,11 @@ function checkInputDownloadBaiduValidity(inputElement) {
 
 
 /**
- *  密码栏  动作
- * @param {Event} event
+ *  密码栏  动作 移除不需要的内容
+ * @param {jQuery} $input
  */
-function actionOnInputPassword(event) {
+function on_change_input_password($input) {
 
-    const $input = $(this);
     let value = $input.val();
     //去除 @密码, 去除 @提取码 去除 @复制这段内容后打开百度网盘手机App，操作更方便哦,   去除 左右空格
     value = value.replace(/\u5bc6\u7801\uff1a/g, "").replace(/\u5bc6\u7801\u003a/g, "").replace(/\u63d0\u53d6\u7801\uff1a/g, "").replace(/\u63d0\u53d6\u7801\u003a/g, "").replace(/\u590d\u5236\u8fd9\u6bb5\u5185\u5bb9\u540e\u6253\u5f00\u767e\u5ea6\u7f51\u76d8\u624b\u673a\u0041\u0070\u0070\uff0c\u64cd\u4f5c\u66f4\u65b9\u4fbf\u54e6/g, '');
@@ -483,11 +450,11 @@ function actionOnInputPassword(event) {
 }
 
 /**
- *  BILIBILI栏  动作
- * @param {Event} event
+ *  BILIBILI栏  动作 修正哔哩哔哩视频地址
+ * @param {jQuery} $input
  */
-function actionOnInputBilibili(event) {
-    const $input = $(this);
+function on_change_input_bilibli_video($input) {
+
     let value = $input.val();
 
     if (!value.includes('av') && !value.includes('BV')) {
@@ -524,11 +491,10 @@ function actionOnInputBilibili(event) {
 
 /**
  *  在线播放 动作
- * @param {Event} event
+ * @param {jQuery} $input
  */
-function actionOnInputVideo(event) {
+function on_change_input_video($input) {
 
-    const $input = $(this);
     let value = $input.val().trim();
 
     //把小于和大于的符号 替换成 方括号
@@ -573,10 +539,10 @@ function fullCharToHalfChar(str) {
  * @since WPUF 3.5.14版本之后
  * 
  */
-function fixCategories() {
+function fix_category_select() {
 
     //获取主分类列表
-    let $mainCategoryList = $('.category div[level="0"]');
+    const $mainCategoryList = $('.category div[level="0"]');
 
     //添加缺少的分类明
     $mainCategoryList.addClass('hasChild');
@@ -591,7 +557,7 @@ function fixCategories() {
 
 
     //获取子分类列表
-    let childCategoryList = $mainCategoryList.nextAll('select');
+    const childCategoryList = $mainCategoryList.nextAll('select');
     //把子分类移动到新建的容器里面
     $childCategoryContainer.append(childCategoryList);
 
@@ -599,71 +565,16 @@ function fixCategories() {
 
 }
 
-/**
- * 创建转运子分类列表选项
- * @since WPUF 3.5.14版本之后不适用
- * @deprecated
- */
-function showChildCategories() {
-
-    //主分类列表
-    let $mainCategoryList = $('.category div[level="0"]');
-
-
-
-    //如果当前是二级子分类被选中
-    let $childCategoryElement = $mainCategoryList.find('select option.level-1:selected');
-
-    if ($childCategoryElement.length) {
-
-
-
-        //添加缺少的分类明
-        $mainCategoryList.addClass('hasChild');
-
-        //克隆分类列表 创建子分类列表
-        //修改属性
-        let $childCategoryList = $mainCategoryList.clone().attr('level', '1').removeClass('hasChild').prop('id', 'wpuf-category-dropdown-lvl-1');
-
-        //选中 主分类列表中 对应的父分类
-        $childCategoryElement.prevAll('.level-0').first().prop('selected', true);
-        //获取子分类中 对应的应该被选中的子分类
-        let $newChildCategoryElement = $childCategoryList.find('option[value="' + $childCategoryElement.val() + '"');
-        //选中子分类  + 添加标识类名
-        $newChildCategoryElement.prop('selected', true).addClass('child-level');
-        //给属于同个父分类的  其余兄弟子分类 添加 标识类名 用来保留
-        $newChildCategoryElement.prevUntil('option.level-0').addClass('child-level');
-        $newChildCategoryElement.nextUntil('option.level-0').addClass('child-level');
-
-        //移除主分类候选框里的所有没有 标识类名 的选项
-        $childCategoryList.find('option:not(.child-level)').remove();
-        $childCategoryList.find('option.child-level').each((index, element) => {
-            //移除选项文本中的空格字符
-            let displayText = $(element).html().replace(/&nbsp;/g, '');
-            $(element).html(displayText);
-        });
-
-        //获取所有分类列表的父元素
-        let $categoryContainer = $mainCategoryList.parent();
-        //插入子分类到页面里
-        $categoryContainer.append($childCategoryList);
-
-
-    }
-
-    //最后移除主分类列表里的所有子分类
-    $mainCategoryList.find('select option.level-1').remove();
-}
 
 /**
  * 根据 提交按钮的可见度 显示悬浮 提交按钮区
  */
-function showFixedSubmitButtonOnScroll() {
+function show_fixed_buttons_on_scroll() {
 
     //悬浮按钮区
-    let $fixedSubmitButtonDiv = $('.fixed-submit-button-div');
+    const $fixedSubmitButtonDiv = $('.fixed-submit-button-div');
     //默认提交按钮
-    let $submitButton = $('.wpuf-submit input.wpuf-submit-button');
+    const $submitButton = $('.wpuf-submit input.wpuf-submit-button');
 
     //如果提交按钮可见
     if (isVisibleOnScreen($submitButton)) {
@@ -680,8 +591,9 @@ function showFixedSubmitButtonOnScroll() {
 
 /**
  * 悬浮提交按钮点击事件
+ * @param {jQuery} $button
  */
-function actionOnFixedSubmitButton() {
+function on_submit_submit_button($button) {
 
     //触发提交按钮的点击事件 (只有在没触发的情况才会触发, 避免重复提交)
     let $submitButton = $('.wpuf-submit input.wpuf-submit-button:not(.button-primary-disabled)');
@@ -689,19 +601,20 @@ function actionOnFixedSubmitButton() {
         $submitButton.trigger('click');
     }
 
-    $fixedSubmitButton = $(this);
-
     //注销按钮
-    $fixedSubmitButton.toggleDisabled();
+    $button.toggleDisabled();
     //5秒后恢复
     setTimeout(function () {
-        $fixedSubmitButton.toggleDisabled();
+        $button.toggleDisabled();
     }, 5000);
 }
 
 
 /**
+ * 
+ * @deprecated
  * 百度秒传链接栏 触发变化事件
+ * 
  */
 function actionOnBaiduFastLink() {
 
@@ -726,3 +639,49 @@ function actionOnBaiduFastLink() {
 }
 
 
+
+
+
+
+/**
+ * @deprecated
+ * 更新文章创建时间
+ * @param {Event} event
+ */
+function updatePostDate(event) {
+
+    //获取按钮
+    const $button = $(this);
+
+    let post_id = $button.data('post-id');
+
+    let data = { post_id };
+
+    //切换按钮状态
+    $button.toggleDisabled();
+
+    //回调函数
+    let successCallback = function (response) {
+
+        MyToast.show_success('更新成功');
+        $button.html('更新成功');
+        $button.toggleDisabled();
+
+    };
+
+    /**
+     * 请求结束后
+     */
+    let completeCallback = function () {
+        //恢复按钮状态
+        $button.toggleDisabled();
+    };
+
+    $.ajax({
+        url: URLS.updatePostDate,
+        data,
+        type: HTTP_METHOD.post,
+        headers: createAjaxHeader()
+    }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
+
+}

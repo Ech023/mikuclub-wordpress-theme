@@ -138,9 +138,6 @@ function get_comment_list_when_visible() {
  */
 function get_comment_list() {
 
-    //存储自己
-    let self = this;
-
     //如果正在加载 或者 没有更多
     if (get_comment_list.is_loading || get_comment_list.is_end) {
         return;

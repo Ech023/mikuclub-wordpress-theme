@@ -35,7 +35,6 @@ function print_post_list_component($custom_post_query = [], $post_template = Pos
 	$json_parameters = htmlspecialchars(json_encode($parameters));
 
 
-
 	$output = <<<HTML
 		<div class="post-list-container" data-parameters='{$json_parameters}' data-post-template="{$post_template}">
 			

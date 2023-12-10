@@ -15,10 +15,12 @@ class MyPostSlim {
         this.post_image = post.post_image;
         this.post_views = post.post_views;
         this.post_likes = post.post_likes;
+        this.post_unlike = post.post_unlike;
         this.post_comments = post.post_comments;
 
         this.post_favorites = post.post_favorites;
         this.post_shares = post.post_shares;
+        this.post_fail_times = post.post_fail_times;
 
         this.post_status = post.post_status;
 
@@ -94,7 +96,7 @@ class MyPostSlim {
 
         output = `
 
-            <div class="col post-element">
+            <div class="col post_element">
                 <div class="card border-0 my-1 ${post_container_class}">
                     <div class="card-img-container position-relative">
                     
@@ -186,7 +188,7 @@ class MyFavoritePost extends MyPostSlim {
 
         output = `
 
-            <div class="col post-element">
+            <div class="col post_element">
                 <div class="card border-0 my-1 ${post_container_class}">
                     <div class="card-img-container position-relative">
 
@@ -241,7 +243,7 @@ class MyFavoritePost extends MyPostSlim {
                         </div>
                         <div class=""></div>
                         <div class="col-auto mt-2 fw-bold small">
-                            状态: ${POST_STATUS.get_description(this.post_status)}
+                            状态: <span class="fw-bold ${POST_STATUS.get_text_color_class(this.post_status)}">${POST_STATUS.get_description(this.post_status)}</span>
                         </div>
                         <div class="col-auto mt-2 ms-auto">
                             <button class="btn btn-sm btn-light-2 delete_favorite" data-post_id="${this.id}">
@@ -296,7 +298,7 @@ class MyHistoryPost extends MyPostSlim {
 
         output = `
 
-            <div class="col post-element">
+            <div class="col post_element">
                 <div class="card border-0 my-1 ${post_container_class}">
                     <div class="card-img-container position-relative">
 
@@ -351,7 +353,7 @@ class MyHistoryPost extends MyPostSlim {
                         </div>
                         <div class=""></div>
                         <div class="col-auto mt-2 fw-bold small">
-                            状态: ${POST_STATUS.get_description(this.post_status)}
+                            状态: <span class="fw-bold ${POST_STATUS.get_text_color_class(this.post_status)}">${POST_STATUS.get_description(this.post_status)}</span>
                         </div>
                       
         
@@ -375,74 +377,89 @@ class MyManagePost extends MyPostSlim {
 
     toHTML() {
 
-
-        let postStatusText = '';
-        let postStatusColor = '';
-        switch (this.post_status) {
-
-            case 'publish':
-                postStatusText = '已发布';
-                postStatusColor = 'text-success';
-                break;
-            case 'pending':
-                postStatusText = '等待审核';
-                postStatusColor = 'text-danger';
-                break;
-            case 'draft':
-                postStatusText = '草稿';
-                break;
-        }
-
+        //如果文章已经是草稿了, 就隐藏草稿按钮
+        const draft_button_class = this.post_status === POST_STATUS.draft ? 'd-none' : '';
 
         return `
 
-            <div class="col-12">
-                <div class="row">
+            <div class="col-12 my-2 post_element manage_post_element">
+                <div class="row pb-2 border-bottom">
                     
-                        <div class="col-12 col-md-2">
+                        <div class="col-12 col-lg-auto text-center text-lg-start">
                             <a href="${this.post_href}" target="_blank">
-                                <img class="img-fluid" src="${this.post_image}" alt="${this.post_title}" />
+                                <img class="img-fluid bg-light-2" src="${this.post_image}" alt="${this.post_title}" />
                             </a>
                         </div>
-                        <div class="col col-md-6 my-2 my-md-0">
-                            <div >
-                                <a class="" title="${this.post_title}" href="${this.post_href}" target="_blank">
-                                    ${this.post_title}
-                                </a>
+                        <div class="col my-2 my-lg-0">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-12">
+                                    <a class="fw-bold" title="${this.post_title}" href="${this.post_href}" target="_blank">
+                                        ${this.post_title}
+                                    </a>
+                                </div>
+                                <div class="mt-2 border-bottom"></div>
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-layer-group me-2"></i>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="small">分类: <span class="fw-bold">${this.post_cat_name} </span></span>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="small">状态: <span class="fw-bold ${POST_STATUS.get_text_color_class(this.post_status)}">${POST_STATUS.get_description(this.post_status)}</span></span>
+                                </div>
+                                <div class="m-0"></div>
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-clock me-2"></i>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="small">发布时间: ${this.post_date}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="small">最后修改: ${this.post_modified_date}</span>
+                                </div>
+                                <div class="m-0"></div>
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-square-poll-vertical me-2"></i>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="small">${POST_FEEDBACK_RANK.get_rank(this.post_likes, this.post_unlike)}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="small">好评: ${this.post_likes}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="small">差评: ${this.post_unlike}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="small">点击: ${this.post_views}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="small">评论: ${this.post_comments}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="small">收藏: ${this.post_favorites}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="small">分享: ${this.post_shares}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="small">下载失效反馈: ${this.post_fail_times}</span>
+                                </div>
+                               
                             </div>
-                            <div class="mt-2">
-                                <span class="small">分类 <b>${this.post_cat_name}</b></span>
-                            </div>
-                            <div class="mt-2">
-                                <span class="small my-1 me-2">发布时间 ${this.post_date}</span>
-                                <span class="small my-1 me-2">最后修改 ${this.post_modified_date}</span>
-                            </div>
-                            <div>
-                                <span class="small my-1 me-2">点击 ${this.post_views}</span>
-                                <span class="small my-1 me-2">评论 ${this.post_comments}</span>
-                                <span class="small my-1 me-2">点赞 ${this.post_likes}</span>
-                                <span class="small my-1 me-2">收藏 ${this.post_favorites}</span>
-                                <span class="small my-1 me-2">分享 ${this.post_shares}</span>
-                            </div>
-                            
                         </div>
-                        <div class="col-auto col-md-2 text-center ${postStatusColor} large fw-bold my-2 my-md-0">
-                            ${postStatusText}
-                        </div>
-                        <div class="col-12 col-md-2 text-center">
-                            <a class="btn btn-secondary my-1 mx-2 px-5 px-md-4 " href="${MY_SITE.home}/edit?pid=${this.id}" target="_blank">编辑</a>
-                            <button class="btn btn-danger my-1 mx-2 px-5 px-md-4 delete_post" type="button" data-post-id="${this.id}">
-                                <span>删除</span>
-                                <span class="spinner-border spinner-border-sm" style="display: none"></span>
+                      
+                        <div class="col-12 col-lg-3 text-end">
+
+                            <a class="btn btn-sm btn-miku px-4" href="${MY_SITE.home}/edit?pid=${this.id}" target="_blank">编辑</a>
+                            <button class="btn btn-sm btn-light-2 px-4 draft_post ${draft_button_class}" type="button" data-post-id="${this.id}">
+                                转为草稿
+                            </button>
+                            <button class="btn btn-sm btn-danger px-4 delete_post" type="button" data-post-id="${this.id}">
+                                删除
                             </button>
                         </div>
                         
-                        <div class="col-12">
-                            <hr/>
-                        </div>
-                        
-                    
-
                     </div>
                 </div>
         

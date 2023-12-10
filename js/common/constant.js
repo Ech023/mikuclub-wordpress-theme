@@ -138,5 +138,29 @@ const POST_STATUS = {
         }
 
         return result;
+    },
+
+    /**
+     * @param {string} status 
+     * @returns {string}
+     */
+    get_text_color_class(status) {
+        let result = '';
+        switch (status) {
+            case this.publish:
+                result = 'text-success';
+                break;
+            case this.pending:
+                result = 'text-danger';
+                break;
+            case this.draft:
+                result = 'text-dark-2';
+                break;
+            case this.trash:
+                result = 'text-dark-2';
+                break;
+        }
+
+        return result;
     }
 }

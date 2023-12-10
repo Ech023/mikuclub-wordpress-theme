@@ -20,7 +20,7 @@ $(function () {
         const post_id = $(this).data('post-id');
         delete_post(post_id, () => {
             //跳转回投稿管理页面
-            // location.href = `${MY_SITE.home}/up_home_page`;
+            location.href = `${MY_SITE.home}/up_home_page`;
         });
     });
 
@@ -41,9 +41,9 @@ $(function () {
         const post_id = $(this).data('post-id');
         delete_post(post_id, () => {
 
-            const $grandparentElement = $(this).parent().parent();
+            const $post_element = $(this).closest('.post_element');
             //隐藏文章容器
-            $grandparentElement.fadeOut(300);
+            $post_element.fadeOut(300);
 
         });
 

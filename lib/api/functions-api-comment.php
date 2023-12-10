@@ -37,7 +37,7 @@ function api_get_comment_reply_list($data)
 	{
 		$paged = Input_Validator::get_array_value($data, 'paged', Input_Validator::TYPE_INT, false) ?: 1;
 		$number = Input_Validator::get_array_value($data, 'number', Input_Validator::TYPE_INT, false) ?: Config::NUMBER_COMMENT_REPLY_PER_PAGE;
-
+	
 		$result = get_comment_reply_list($paged, $number);
 
 		return $result;

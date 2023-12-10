@@ -195,8 +195,10 @@ function print_author_statistics($author_id, $col_class = '')
 		$output .= <<<HTML
 
 		<div class="col {$col_class}">
-			<div><i class="me-2 {$element['icon']}"></i>{$element['title']}</div>
-			<div>{$element['value']}</div>
+		<div class="fs-75 fs-sm-875">
+			<i class="me-2 {$element['icon']}"></i>{$element['title']}
+		</div>
+		<div class="fw-bold fs-75 fs-sm-875 mt-1">{$element['value']}</div>
 		</div>
 
 HTML;

@@ -25,7 +25,7 @@ $output = <<<HTML
 
         {$comment_adsense}
 
-        <div class="comment-list" data-post-id="{$post_id}" data-offset="0">
+        <div class="comment-list mt-2" data-post-id="{$post_id}" data-offset="0">
         </div>
 
         <div class="comment-list-end">

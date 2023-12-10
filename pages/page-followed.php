@@ -38,7 +38,8 @@ $post_list_header_download_type = print_post_list_header_download_type();
 
 
 $custom_post_query = [
-	Post_Query::AUTHOR__IN => $user_followed,
+	Post_Query::AUTHOR__IN => $user_followed ?: [2], //如果用户没有关注的用户, 使用一个不存在的ID用来过滤列表
+	// Post_Query::CUSTOM_NO_CACHE => true,
 ];
 $post_list_component = print_post_list_component($custom_post_query);
 

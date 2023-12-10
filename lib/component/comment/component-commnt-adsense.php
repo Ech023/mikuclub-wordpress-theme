@@ -24,13 +24,13 @@ function print_single_comment_adsense()
         $output = <<<HTML
     
         <!-- A酱的绅士玩具屋 评论区广告 -->
-        <div class="my-2">
+        <div class="mt-4">
     
             <div class="row comment-body border-bottom pb-2 border-bottom ">
     
                 <div class="col-12 col-sm-auto avatar-container text-center text-sm-start">
                     <a class="" href="{$pub_link}" title="查看用户主空间" target="_blank" rel="nofollow">
-                        <img class="avatar rounded-circle" src="https://{$cdn_domain}/img/A酱的绅士玩具屋/头像.jpg" width="50" height="50" alt="用户头像">
+                        <img class="avatar rounded-circle" src="https://{$cdn_domain}/img/A酱的绅士玩具屋/头像.jpg" style="width:40px;height:40px" alt="用户头像">
                     </a>
                 </div>
                 <div class="col">

@@ -37,13 +37,13 @@ else
         //电脑端 文章页 - 页面标题下
         if (get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC_ENABLE))
         {
-            $output .= '<div class="pop-banner d-none d-md-block text-center my-2">' . get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC) . '</div>';
+            $output .= '<div class="pop-banner d-none d-md-block text-center pb-2 border-bottom">' . get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC) . '</div>';
         }
 
         //手机端 文章页 - 页面标题下
         if (get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE_ENABLE))
         {
-            $output .= '<div class="pop-banner d-md-none text-center my-2">' . get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE) . '</div>';
+            $output .= '<div class="pop-banner d-md-none text-center pb-2 border-bottom">' . get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE) . '</div>';
         }
 
         // 文章内容
@@ -59,7 +59,7 @@ HTML;
         $related_posts_component = print_related_post_list_component();
 
         $output .= <<<HTML
-            <div class="article-footer border-top">
+            <div class="article-footer">
                 {$related_posts_component}
             </div>
 HTML;

@@ -201,6 +201,8 @@ class MyPrivateMessageModal extends MyModal {
             this.on_click_send_private_message();
         });
 
+
+
         // this.bind_enter_key(() => {
         //     this.on_click_send_private_message();
         // });
@@ -250,6 +252,15 @@ class MyPrivateMessageModal extends MyModal {
                 //创建通知弹窗
                 MyToast.show_success('消息已发送');
                 this.hide();
+
+                //如果是在私信页
+                const $message_page_element = $('body.page .page-message');
+                if ($message_page_element.length) {
+                    //发送成功后 关闭所有展开的私信窗口
+                    // $message_page_element.find('.message-item .collapse.show').collapse('hide');
+                    //触发打开折叠动作, 重新加载私信内容
+                    $message_page_element.find('.message-item .collapse.show').trigger('show.bs.collapse');
+                }
             },
             defaultFailCallback,
             () => {

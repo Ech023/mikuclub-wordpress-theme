@@ -919,8 +919,8 @@ function reject_post($post_id, $reject_cause = '')
             'ID' => $post_id,
             'post_title' => $reject_cause . ' ' . $post_title,
             'post_status' => 'draft',
-            'post_date' => $time,
-            'post_date_gmt' => get_gmt_from_date($time)
+            //'post_date' => $time,
+            //'post_date_gmt' => get_gmt_from_date($time)
         ]
     );
 
