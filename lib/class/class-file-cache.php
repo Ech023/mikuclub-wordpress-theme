@@ -116,7 +116,7 @@ class File_Cache
             //如果用户未登陆, 使用特殊备份
             if (!is_user_logged_in())
             {
-                $meta_key . '_no_login';
+                $meta_key .= '_no_login';
             }
 
             //创建完整文件路径
@@ -154,7 +154,7 @@ class File_Cache
             //如果用户未登陆, 使用特殊备份
             if (!is_user_logged_in())
             {
-                $meta_key . '_no_login';
+                $meta_key .= '_no_login';
             }
 
             //创建完整文件路径
@@ -208,7 +208,7 @@ class File_Cache
             //如果用户未登陆, 使用特殊备份
             if (!is_user_logged_in())
             {
-                $meta_key . '_no_login';
+                $meta_key .= '_no_login';
             }
 
             //创建完整文件路径
