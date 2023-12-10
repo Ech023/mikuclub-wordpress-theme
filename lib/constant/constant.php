@@ -35,9 +35,9 @@ class Config
     const DATE_FORMAT_MYSQL = 'Y-m-d H:i:s';
 
     //启动文件缓存系统
-    // const ENABLE_FILE_CACHE_SYSTEM = true;
+    const ENABLE_FILE_CACHE_SYSTEM = true;
     //关闭文件缓存
-    const ENABLE_FILE_CACHE_SYSTEM = false;
+    // const ENABLE_FILE_CACHE_SYSTEM = false;
 
     //主页 关注用户列表文章数量
     const HOME_MY_FOLLOWED_POST_LIST_LENGTH = 12;
