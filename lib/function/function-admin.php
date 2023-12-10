@@ -197,7 +197,7 @@ function add_theme_nav_menus()
     {
         register_nav_menus([
             Site_Menu::MAIN_MENU => __(Site_Menu::get_description(Site_Menu::MAIN_MENU)),
-            Site_Menu::MAIN_PHONE_MENU => __(Site_Menu::get_description(Site_Menu::MAIN_PHONE_MENU)),
+            Site_Menu::LEFT_SIDE_MENU => __(Site_Menu::get_description(Site_Menu::LEFT_SIDE_MENU)),
             // Site_Menu::PAGE_MENU => __(Site_Menu::get_description(Site_Menu::PAGE_MENU)),
             Site_Menu::TOP_LEFT_MENU => __(Site_Menu::get_description(Site_Menu::TOP_LEFT_MENU)),
             Site_Menu::BOTTOM_MENU => __(Site_Menu::get_description(Site_Menu::BOTTOM_MENU)),

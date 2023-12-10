@@ -299,7 +299,7 @@ class Site_Menu
 {
 
     const MAIN_MENU = 'nav';
-    const MAIN_PHONE_MENU = 'phone_menu';
+    const LEFT_SIDE_MENU = 'left_side_menu';
     // const PAGE_MENU = 'pagemenu';
     const TOP_LEFT_MENU = 'top_left_menu';
     const BOTTOM_MENU = 'bottom_menu';
@@ -318,8 +318,8 @@ class Site_Menu
             case static::MAIN_MENU:
                 $result = '网站导航';
                 break;
-            case static::MAIN_PHONE_MENU:
-                $result = '网站手机版导航';
+            case static::LEFT_SIDE_MENU:
+                $result = '网站侧边栏菜单';
                 break;
                 // case static::PAGE_MENU:
                 //     $result = '页面导航';

@@ -68,12 +68,12 @@ function get_main_menu()
  */
 function get_main_phone_menu()
 {
-    $meta_key = File_Cache::SITE_MENU . '_' . Site_Menu::MAIN_PHONE_MENU;
+    $meta_key = File_Cache::SITE_MENU . '_' . Site_Menu::LEFT_SIDE_MENU;
 
     $result = File_Cache::get_cache_meta_with_callback($meta_key, '', Expired::EXP_1_HOUR, function ()
     {
         $result = wp_nav_menu([
-            'theme_location' => Site_Menu::MAIN_PHONE_MENU,
+            'theme_location' => Site_Menu::LEFT_SIDE_MENU,
             'menu_class' => 'navbar-nav flex-fill flex-wrap',
             'depth' => 2,
             'container' => '',
