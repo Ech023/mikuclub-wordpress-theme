@@ -35,9 +35,13 @@ function set_post_list_query_vars($query_vars)
 
     //排除置顶文章
     $query_vars[Post_Query::IGNORE_STICKY_POSTS] = 1;
+    //限制文章类型
+    $query_vars[Post_Query::POST_TYPE] = Post_Type::POST;
 
     //禁止pagename参数
     unset($query_vars[Post_Query::PAGENAME]);
+
+
 
 
     /*设置默认的文章显示数量*/
@@ -116,7 +120,7 @@ function set_post_list_query_vars($query_vars)
     //如果页面参数是搜索页
     if ($page_type === Page_Type::SEARCH)
     {
-        $query_vars[Post_Query::POST_TYPE] = Post_Type::POST;
+        // $query_vars[Post_Query::POST_TYPE] = Post_Type::POST;
     }
 
     //如果页面参数是 主页
@@ -155,7 +159,6 @@ function set_post_list_query_vars($query_vars)
  */
 function disable_main_wp_query($wp_query)
 {
-   
 }
 
 /**
