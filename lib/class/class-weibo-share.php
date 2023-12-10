@@ -208,28 +208,28 @@ HTML;
 
         return <<<HTML
 
-            <div class="first-image-part my-4" id="first-image-part">
+            <div class="first-image-part my-2" id="first-image-part">
                     {$first_image_part}
             </div>
             <br/>
-            <div class="content-part my-4" style="min-height: 100px">
+            <div class="content-part my-2" style="min-height: 100px">
 				{$post_description_part}
 			</div>
             <br/>
-            <div class="preview-images-part my-4" id="preview-images-part">
+            <div class="preview-images-part my-2" id="preview-images-part">
                 {$preview_images_part}
             </div>
             <br/>
-            <div class="video-part my-4"">
+            <div class="video-part my-2"">
                 {$video_part}
             </div>
             <br/>
-            <div  class="download-part my-4">
+            <div  class="download-part my-2">
                 {$download_part}
             </div>
             <br/>
             <div>
-                <small>本帖内容来自于初音社网站的自动推送, 如果有资源的相关问题, 请打开链接向在网站投稿的UP用户反馈, 如果帖子涉及侵权或禁转, 麻烦请通知我, 邮箱地址 hexie2109@gmail.com</small>
+                <small>本帖内容来自于初音社网站的自动推送, 如果有资源的相关问题/下载失效/补档, 请打开下载链接向在网站内投稿的UP用户反馈, 如果帖子涉及侵权或禁转, 请联系管理员邮箱 hexie2109@gmail.com</small>
             </div>
 		
 HTML;
