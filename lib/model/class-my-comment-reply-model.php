@@ -38,6 +38,35 @@ class My_Comment_Reply_Model extends My_Comment_Model
 	 */
 	public $author;
 
+	//用来兼容 安卓 APP 的老参数
+	/**
+	 * @var int
+	 */
+	public $id;
+	/**
+	 * @var string
+	 */
+	public $content;
+	/**
+	 * @var string
+	 */
+	public $date;
+	/**
+	 * @var int
+	 */
+	public $parent;
+	/**
+	 * @var int
+	 */
+	public $post;
+	/**
+	 * @var string
+	 */
+	public $post_title;
+	/**
+	 * @var int
+	 */
+	public $status;
 
 	/**
 	 * @param WP_Comment|null $comment
@@ -52,5 +81,14 @@ class My_Comment_Reply_Model extends My_Comment_Model
 
 		//替换原版author
 		$this->author = get_custom_user(intval($comment->user_id));
+
+		//用来兼容 安卓 APP
+		$this->id         = $this->comment_id;
+		$this->content    = $this->comment_content;
+		$this->date       = $this->comment_date;
+		$this->parent     = $this->comment_parent;
+		$this->post       = $this->comment_post_id;
+		$this->post_title = $this->comment_post_title;
+		$this->status     = $this->comment_parent_user_read;
 	}
 }
