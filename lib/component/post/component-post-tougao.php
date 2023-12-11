@@ -103,13 +103,13 @@ function print_tougao_post_manage_buttons_component($post_id)
 
                     <!--  查看投稿链接 -->
                     <div class="col-auto">
-                        <a class="btn btn-light-2 fs-875 fs-md-100" href="{$post_href}" target='_blank'>
+                        <a class="btn btn-light-2 fs-875 fs-md-100" href="{$post_href}">
                             查看投稿
                         </a>
                     </div>
                     <!--  投稿管理链接 -->
                     <div class="col-auto d-none d-sm-block">
-                        <a class="btn btn-light-2 fs-875 fs-md-100" href="{$manage_page_href}" target="_blank">
+                        <a class="btn btn-light-2 fs-875 fs-md-100" href="{$manage_page_href}">
                             稿件管理列表
                         </a>
                     </div>
