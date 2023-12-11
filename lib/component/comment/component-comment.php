@@ -43,7 +43,7 @@ function print_comment_input_box($post_id)
                         <textarea placeholder="{$placeholder}" class="form-control my-2" name="comment_content" rows="3" {$textarea_attribute}></textarea>
                         <div class="row align-items-center {$class_button_row}">
                             <div class="col-auto order-0 me-auto me-sm-0">
-                                <button class="open_emoji_popover btn btn-sm btn-light-2" data-bs-toggle="popover" title="表情代码" type="button">
+                                <button class="open_emoji_popover btn btn-sm btn-light-2" data-bs-toggle="popover" title="表情代码" type="button" data-target_comment_parent="0">
                                     <i class="fa-solid fa-grin-squint"></i> 表情
                                 </button>
                             </div>

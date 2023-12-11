@@ -19,8 +19,9 @@ $(function () {
         //弹出框的表情图片点击事件
         // 插入对应图片代码到评论框
         $('body').on('click', '.popover .emoji_container img', '', function () {
-            const emoji_value = $(this).attr('alt');
-            insert_emoji(emoji_value);
+            const emoji_value = $(this).attr('title');
+            const target_comment_parent = $(this).attr('alt');
+            insert_emoji(emoji_value, target_comment_parent);
         });
 
         //屏蔽默认按钮提交事件
@@ -84,10 +85,14 @@ function create_emoji_popover($emoji_button) {
 
         const emoji_path = MY_SITE.home + '/wp-content/themes/miku/img/smilies/';
 
+        //用来绑定对应的评论输入框
+        const target_comment_parent = $emoji_button.data('target_comment_parent');
+
+
         let content = '<div class="emoji_container">';
         for (const key in COMMENT_SMILES) {
             content += `
-                <img class="emoji m-1 p-1 cursor_pointer" src="${emoji_path}${COMMENT_SMILES[key]}" alt="${key}" skip_lazyload />`;
+                <img class="emoji p-1 cursor_pointer " src="${emoji_path}${COMMENT_SMILES[key]}"  alt="${target_comment_parent}" title="${key}" width="35" height="35" />`;
         }
         content += '</div>';
 
@@ -106,14 +111,21 @@ function create_emoji_popover($emoji_button) {
 /**
  * 插入表情代码到评论框内
  *
- * @param {String} emoji_value
+ * @param {String} emoji_code
+ * @param {String} target_comment_parent 用来判断目标FORM
  */
-function insert_emoji(emoji_value) {
+function insert_emoji(emoji_code, target_comment_parent) {
 
-    const $textarea = $single_page_comments_part.find('form.comment_form textarea');
-    const text = $textarea.val();
+    //找到拥有 同样data comment_parent 的评论表单, 然后更新对应的评论框
 
-    $textarea.val(`${text} ${emoji_value} `);
+    $single_page_comments_part.find('form.comment_form').each(function (index, form) {
+        if (parseInt($(form).data('comment_parent')) === parseInt(target_comment_parent)) {
+            const $textarea = $(form).find('textarea');
+            const text = $textarea.val();
+            $textarea.val(`${text} ${emoji_code} `);
+        }
+    });
+
 
 }
 
@@ -363,20 +375,24 @@ function create_response_form($button) {
     //获取评论框容器
     const $form_container = $single_page_comments_part.find('.comment-form-container.main-form-container');
     const $new_form_container = $form_container.clone();
+    const $new_form_textarea = $new_form_container.find('textarea');
+    const $emoji_button = $new_form_container.find('.open_emoji_popover');
 
     //设置内嵌边距
-    $new_form_container.addClass('child-form-container ms-sm-5').removeClass('main-form-container');
+    $new_form_container.addClass('ms-sm-5 child-form-container ').removeClass('main-form-container');
 
     //修改表单里的回复对象数据
     $new_form_container.find('form.comment_form').data('comment_parent', respond);
     //隐藏通知UP主的选项容器
     $new_form_container.find('.notify_author_check_container').hide();
 
-    //修改评论框的默认占位符
-    $new_form_container.find('textarea').attr('placeholder', `回复 ${respond_name} : `);
+    //修改评论框的默认占位符 , 清空原本的评论内容
+    $new_form_textarea.attr('placeholder', `回复 ${respond_name} : `).val('');
 
+    //设置表情按钮应该绑定的数据ID
     //给新的表情按钮创建弹出框
-    create_emoji_popover($new_form_container.find('.open_emoji_popover'));
+    $emoji_button.data('target_comment_parent', respond);
+    create_emoji_popover($emoji_button);
 
     //显示取消回复按钮
     $new_form_container.find('.reset_respond_container').addClass('d-sm-block').show();
