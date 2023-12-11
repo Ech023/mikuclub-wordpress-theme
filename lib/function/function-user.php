@@ -141,7 +141,7 @@ function get_my_user_avatar($user_id)
 		);
 
 		//修正域名
-		$user_avatar = fix_image_domain_with_file_5($user_avatar);
+		$user_avatar = fix_image_domain_with_file_1($user_avatar);
 	}
 
 	return $user_avatar;

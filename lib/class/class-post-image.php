@@ -122,7 +122,20 @@ class Post_Image
             $thumbnail_src = static::set_thumbnail_src($post_id);
         }
 
-        $thumbnail_src = fix_image_domain_with_file_5($thumbnail_src);
+        // $thumbnail_src = fix_image_domain_with_file_5($thumbnail_src); 
+        //随机选择一个cdn主机
+        switch ($post_id % 3)
+        {
+            case 0:
+                $thumbnail_src = fix_image_domain_with_file_5($thumbnail_src);
+                break;
+            case 1:
+                $thumbnail_src = fix_image_domain_with_file_5($thumbnail_src);
+                break;
+            case 2:
+                $thumbnail_src = fix_image_domain_with_file_1($thumbnail_src);
+                break;
+        }
 
         return $thumbnail_src;
     }
@@ -215,13 +228,16 @@ class Post_Image
 
 
         //随机选择一个cdn主机
-        switch ($post_id % 2)
+        switch ($post_id % 3)
         {
             case 0:
                 $array_image_large_src = fix_image_domain_with_file_2($array_image_large_src);
                 break;
             case 1:
                 $array_image_large_src = fix_image_domain_with_file_3($array_image_large_src);
+                break;
+            case 2:
+                $array_image_large_src = fix_image_domain_with_file_4($array_image_large_src);
                 break;
         }
 
@@ -263,9 +279,9 @@ class Post_Image
             case 2:
                 $array_image_full_src = fix_image_domain_with_file_4($array_image_full_src);
                 break;
-            // case 3:
-            //     $array_image_full_src = fix_image_domain_with_file_4($array_image_full_src);
-            //     break;
+                // case 3:
+                //     $array_image_full_src = fix_image_domain_with_file_4($array_image_full_src);
+                //     break;
         }
 
         return $array_image_full_src;
