@@ -27,10 +27,10 @@ $(function () {
             // 用个性化加载文章列表
             const array_history_post_id = get_array_history_post_id();
             update_post_list_component_data({
-                post__in : array_history_post_id,
+                post__in: array_history_post_id,
                 custom_orderby: 'post__in',
             })
-          
+
             get_post_list();
         }
         //其他页面
@@ -106,8 +106,18 @@ function get_post_list(is_new_load = false, new_paged = 1) {
                 $post_list_component.empty();
                 MyToast.show_success('当前页数' + data.paged + '/' + response.max_num_pages + '总页数');
             }
+
+            //限制文章列表的总长度
+            const $array_post_element = $post_list_component.children();
+            if ($array_post_element.length > MAX_POST_LIST_LENGTH) {
+                //移除最旧的那一页
+                $array_post_element.slice(0, POST_LIST_LENGTH).remove();
+            }
+
             //输出成html加入到页面里
             $post_list_component.append(newPostList.toHTML());
+
+
 
             //更新参数
             update_post_list_component_data(data);
@@ -155,7 +165,7 @@ function get_post_list(is_new_load = false, new_paged = 1) {
  */
 function update_post_list_component_data(new_data) {
 
-   
+
     const $post_list_container_component = $('.post-list-container');
     const data = $post_list_container_component.data('parameters');
     Object.assign(data, new_data);

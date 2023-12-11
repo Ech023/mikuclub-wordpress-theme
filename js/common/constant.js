@@ -2,6 +2,9 @@
 /// <reference path="../function.js" />
 /// <reference path="../function-ajax.js" />
 
+const POST_LIST_LENGTH = 48;
+const MAX_POST_LIST_LENGTH = POST_LIST_LENGTH * 2;
+
 const POST_FEEDBACK_RANK = {
 
     positive: '好评如潮',
