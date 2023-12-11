@@ -26,8 +26,9 @@ $(function () {
         });
 
         //绑定列表展开事件, 获取和特定收件人之间的消息列表
-        $message_page_element.on('show.bs.collapse', '.collapse', '', function () {
-            get_message_list_with_one_sender($(this));
+        $message_page_element.on('show.bs.collapse', '.message-item', '', function () {
+           
+           get_message_list_with_one_sender($(this));
         });
 
         //绑定删除私信按钮点击事件
@@ -152,13 +153,13 @@ function get_message_list() {
 function get_message_list_with_one_sender($message_element) {
     
 
-    let $message_element_body = $message_element.children('div.card-body');
+    let $message_element_accordion_body = $message_element.find('.accordion-body');
 
-    let sender_id = $message_element.data('sender');
-    let senderName = $message_element.prev().find('.display-name').html();
+    const sender_id = $message_element.data('sender-id');
+    const sender_name = $message_element.find('.display-name').html();
 
     //清空列表里的旧内容
-    $message_element_body.empty();
+    $message_element_accordion_body.empty();
 
     //创建请求数据
     const data = {
@@ -181,7 +182,7 @@ function get_message_list_with_one_sender($message_element) {
     <div class="row mt-5 justify-content-center">
         <div class="col-9 col-md-6">
 
-            <button class="btn btn-sm btn-miku w-100 open_private_message_modal" data-recipient_id="${sender_id}" data-recipient_name="${senderName}">
+            <button class="btn btn-sm btn-miku w-100 open_private_message_modal" data-recipient_id="${sender_id}" data-recipient_name="${sender_name}">
                 回复
             </button>
 
@@ -204,7 +205,7 @@ function get_message_list_with_one_sender($message_element) {
     `);
 
     //回调函数
-    let success_callback = function (response) {
+    const success_callback = function (response) {
 
         //结果不是空的
         if (isNotEmptyArray(response)) {
@@ -216,16 +217,16 @@ function get_message_list_with_one_sender($message_element) {
             let newMessageList = new MyMessageList(MESSAGE_TYPE.privateMessageWithOneSender);
             newMessageList.add(response);
             //插入列表内容到页面中
-            $message_element_body.append(newMessageList.toHTML());
+            $message_element_accordion_body.append(newMessageList.toHTML());
 
             //只有在发件人不是系统(0)的时候才提供回复按钮
             if (sender_id > 0) {
                 //插入回复按钮
-                $message_element_body.append(createMessageModalButton);
+                $message_element_accordion_body.append(createMessageModalButton);
             }
 
             //滚动列表到底部
-            $message_element_body.scrollTop($message_element_body.prop("scrollHeight"));
+            $message_element_accordion_body.scrollTop($message_element_accordion_body.prop("scrollHeight"));
 
 
 
