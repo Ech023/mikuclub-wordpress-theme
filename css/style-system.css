@@ -424,12 +424,15 @@ img {
     }
 
 
-
 }
 
 
 /*md*/
 @media (min-width: 768px) {
+
+    .w-md-auto {
+        width: auto !important;
+    }
 
     .w-md-50 {
         width: 50% !important;

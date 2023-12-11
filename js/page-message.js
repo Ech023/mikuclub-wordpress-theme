@@ -179,8 +179,8 @@ function get_message_list_with_one_sender($message_element) {
 
     const createMessageModalButton = $(`
 
-    <div class="row mt-5 justify-content-center">
-        <div class="col-9 col-md-6">
+    <div class="row mt-5 justify-content-center gx-2">
+        <div class="col">
 
             <button class="btn btn-sm btn-miku w-100 open_private_message_modal" data-recipient_id="${sender_id}" data-recipient_name="${sender_name}">
                 回复
@@ -189,9 +189,9 @@ function get_message_list_with_one_sender($message_element) {
         </div>
         <div class="col-auto">
             <div class="dropdown" >
-                <a class="btn btn-sm btn-light-2 px-4" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" title="更多操作">
+                <button class="btn btn-sm btn-light-2 px-4" data-bs-toggle="dropdown" title="更多操作">
                     <i class="fa-solid fa-ellipsis-vertical"></i>
-                </a>
+                </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item delete-message-by-user" href="javascript:void(0);" data-target-user-id="${sender_id}">删除私信</a></li>
                     <li><hr class="dropdown-divider"></li>

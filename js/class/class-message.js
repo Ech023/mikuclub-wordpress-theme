@@ -117,10 +117,10 @@ class MyPrivateMessageWithOneSender extends MyPrivateMessage {
 
             <div class="row ${itemDirection} my-2">
                     <div class="col-10 ${textDirection}">
-                        <div class="border mx-2 my-1 d-inline-block rounded p-3">
+                        <div class="d-inline-block bg-light-2 p-2 rounded-1">
                             ${this.content}
                         </div>
-                        <div class=" mx-2 my-1 ">
+                        <div class="small text-dark-2 mt-1">
                             ${this.date}
                         </div>
                     </div>

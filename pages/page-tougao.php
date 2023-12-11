@@ -37,8 +37,8 @@ while (have_posts())
         <div class="fixed-submit-button-div position-fixed bottom-0 start-0 end-0 bg-light-1 text-center p-2 border-top mb-5" style="z-index: 99">
             <div class="row justify-content-center g-2">
                 {$post_manage_buttons}
-                <div class="col-12 col-md-auto">
-                    <button class="btn btn-miku px-5 submit_post fs-875 fs-md-100">
+                <div class="col-12 col-md-3">
+                    <button class="btn btn-miku w-100 px-5 submit_post fs-875 fs-md-100">
                         {$float_submit_button_text}
                     </button>
                 </div>
