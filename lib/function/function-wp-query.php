@@ -105,19 +105,35 @@ function set_post_list_query_vars($query_vars)
     }
 
     //如果有收藏文章参数
-    $custom_only_post_favorite = $query_vars[Post_Query::CUSTOM_ONLY_POST_FAVORITE] ?? false;
-    if ($custom_only_post_favorite)
+    $custom_only_post_favorite = $query_vars[Post_Query::CUSTOM_ONLY_POST_FAVORITE] ?? 0;
+    if (intval($custom_only_post_favorite))
     {
         //只获取收藏的文章
         $query_vars[Post_Query::POST__IN] =  get_user_favorite() ?: [1]; //如果用户没有收藏, 使用一个不存在的ID用来过滤列表
     }
 
     //如果有限定关注的作者
-    $custom_only_user_followed = $query_vars[Post_Query::CUSTOM_ONLY_AUTHOR_FOLLOWED] ?? false;
-    if ($custom_only_user_followed)
+    $custom_only_user_followed = $query_vars[Post_Query::CUSTOM_ONLY_AUTHOR_FOLLOWED] ?? 0;
+    if (intval($custom_only_user_followed))
     {
         //只获取收藏的文章
         $query_vars[Post_Query::AUTHOR__IN] =  get_user_followed() ?: [2]; //如果用户没有关注的作者, 使用一个不存在的ID用来过滤列表
+    }
+
+    //如果要过滤黑名单作者
+    $custom_only_not_user_user_black_list = $query_vars[Post_Query::CUSTOM_ONLY_NOT_USER_BLACK_LIST] ?? 0;
+    if (intval($custom_only_not_user_user_black_list))
+    {
+      
+        //如果黑名单不是空的
+        $user_black_list = get_user_black_list(get_current_user_id());
+        if (count($user_black_list) > 0)
+        {
+            //排除黑名单用户
+            $query_vars[Post_Query::AUTHOR__NOT_IN] =  $user_black_list;
+            //禁用缓存
+            $query_vars[Post_Query::CUSTOM_NO_CACHE] = 1;
+        }
     }
 
     //如果页面参数是 作者页

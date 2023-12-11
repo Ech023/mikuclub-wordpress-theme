@@ -25,7 +25,7 @@ $post_list_header_category = print_post_list_header_category();
 $post_list_header_download_type = print_post_list_header_download_type();
 $post_list_header_post_status = print_post_list_header_post_status(Post_Status::get_to_array());
 $custom_post_query = [
-    Post_Query::CUSTOM_NO_CACHE => true,
+    Post_Query::CUSTOM_NO_CACHE => 1,
 ];
 $post_list_component = print_post_list_component($custom_post_query, Post_Template::HISTORY_POST);
 

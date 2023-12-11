@@ -157,7 +157,8 @@ function print_post_list_header_order($show_fail_time_order = false)
 		}
 
 		$json_parameters_group = '';
-		if(isset($orderby['parameters'])){
+		if (isset($orderby['parameters']))
+		{
 			$json_parameters_group = htmlspecialchars(json_encode($orderby['parameters']));
 		}
 
@@ -383,6 +384,58 @@ HTML;
 	$output = <<<HTML
 		<div>
 			<div class="row post_list_post_status align-items-center mb-2 g-2">
+				{$output}
+			</div>
+		</div>
+HTML;
+
+	return $output;
+}
+
+
+/**
+ * 输出和文章黑名单有关的列表过滤按钮
+ * 
+ * @return string
+ */
+function print_post_list_header_user_black_list()
+{
+
+	$active_post_status = get_query_var(Post_Query::CUSTOM_ONLY_NOT_USER_BLACK_LIST, 0);
+
+
+	$array_value = [
+		0,
+		1,
+	];
+
+	$output = array_reduce($array_value, function ($result, $value) use ($active_post_status)
+	{
+
+		$button_class =  $value === $active_post_status ? 'btn-dark-1 active' : 'btn-light-2';
+		$value_description = $value ?  '过滤黑名单用户' : '不过滤黑名单用户';
+
+
+		$parameters = [
+			Post_Query::CUSTOM_ONLY_NOT_USER_BLACK_LIST => $value,
+		];
+		$json_parameters = htmlspecialchars(json_encode($parameters));
+
+		$result .= <<<HTML
+			<div class="col-auto">
+				<button class="btn btn-sm px-md-4 only_not_user_black_list {$button_class}"  data-parameters='{$json_parameters}'>
+					{$value_description}
+				</button>
+			</div>
+
+HTML;
+
+		return $result;
+	}, '');
+
+	$output = <<<HTML
+		<div>
+			<div class="row post_list_only_not_user_black_list align-items-center mb-2 g-2">
 				{$output}
 			</div>
 		</div>

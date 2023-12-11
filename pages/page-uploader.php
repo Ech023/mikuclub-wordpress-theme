@@ -35,7 +35,7 @@ $custom_post_query = [
     Post_Query::AUTHOR => $user->ID,
     //显示所有状态的文章
     Post_Query::POST_STATUS => Post_Status::get_to_array(),
-    Post_Query::CUSTOM_NO_CACHE => true,
+    Post_Query::CUSTOM_NO_CACHE => 1,
 ];
 $post_list_component = print_post_list_component($custom_post_query, Post_Template::MANAGE_POST);
 

@@ -8,7 +8,7 @@ let $post_list_orderby_element;
 let $post_list_sub_orderby_element;
 let $post_list_download_type_element;
 let $post_list_post_status_element;
-
+let $post_list_only_not_user_black_list_element;
 
 
 $(function () {
@@ -20,6 +20,7 @@ $(function () {
     $post_list_sub_orderby_element = $('.post_list_sub_orderby');
     $post_list_download_type_element = $('.post_list_download_type');
     $post_list_post_status_element = $('.post_list_post_status');
+    $post_list_only_not_user_black_list_element = $('.post_list_only_not_user_black_list');
 
     //绑定 排序组按钮的点击事件
     $post_list_orderby_element.find('.btn.orderby_group').on('click', function () {
@@ -50,6 +51,11 @@ $(function () {
     $post_list_post_status_element.find('.btn.post_status').on('click', function () {
         on_click_button_post_status($(this));
     })
+
+    $post_list_only_not_user_black_list_element.find('.btn.only_not_user_black_list').on('click', function () {
+        on_click_button_only_not_user_black_list($(this));
+    })
+
 });
 
 /**
@@ -164,7 +170,7 @@ function on_click_button_category_group($button) {
 
 /**
  * 子分类按钮被点击时触发
- * @param {*} $button 
+ * @param {jQuery} $button 
  */
 function on_click_button_sub_category($button) {
 
@@ -187,7 +193,7 @@ function on_click_button_sub_category($button) {
 
 /**
  * 下载过滤按钮点击时触发
- * @param {*} $button 
+ * @param {jQuery} $button 
  */
 function on_click_button_download_type($button) {
 
@@ -210,7 +216,7 @@ function on_click_button_download_type($button) {
 
 /**
  * 文章状态过滤按钮点击时触发
- * @param {*} $button 
+ * @param {jQuery} $button 
  */
 function on_click_button_post_status($button) {
 
@@ -219,6 +225,29 @@ function on_click_button_post_status($button) {
 
     //切换所有排序组的按钮class类名, 移除选中状态
     $post_list_post_status_element.find('.btn.post_status').removeClass(active_class).addClass(no_active_class);
+    //只给触发点击事件的 排序组按钮 添加激活类名
+    $button.removeClass(no_active_class).addClass(active_class);
+
+    const local_data = $button.data('parameters');
+
+    //更新参数
+    update_post_list_component_data(local_data);
+    //重新请求列表
+    get_post_list(true);
+}
+
+
+/**
+ * 文章过滤黑名单用户按钮点击时触发
+ * @param {jQuery} $button 
+ */
+function on_click_button_only_not_user_black_list($button) {
+
+    const active_class = 'btn-dark-1 active';
+    const no_active_class = 'btn-light-2';
+
+    //切换所有排序组的按钮class类名, 移除选中状态
+    $post_list_only_not_user_black_list_element.find('.btn.only_not_user_black_list').removeClass(active_class).addClass(no_active_class);
     //只给触发点击事件的 排序组按钮 添加激活类名
     $button.removeClass(no_active_class).addClass(active_class);
 

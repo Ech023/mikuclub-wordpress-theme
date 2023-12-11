@@ -71,7 +71,7 @@ function get_post_list($query_vars)
     $result = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_POSTS . $group, Expired::EXP_15_MINUTE);
 
     //如果不存在 或者 有禁用缓存参数 或者
-    if (empty($result) || isset($query_vars[Post_Query::CUSTOM_NO_CACHE]))
+    if (empty($result) || (intval($query_vars[Post_Query::CUSTOM_NO_CACHE] ?? 0)) )
     {
 
         //根据场景 修正查询参数
@@ -94,7 +94,7 @@ function get_post_list($query_vars)
         // wp_reset_postdata();
 
         //只有在 没有禁用缓存参数 才会设置缓存
-        if (!isset($query_vars[Post_Query::CUSTOM_NO_CACHE]))
+        if (!intval($query_vars[Post_Query::CUSTOM_NO_CACHE] ?? 0))
         {
             File_Cache::set_cache_meta($cache_key,  File_Cache::DIR_POSTS . $group, $result);
         }
@@ -176,7 +176,7 @@ function get_sticky_post_list($cat_id)
 
             foreach ($array_additional_expired_day as $additional_expired_day)
             {
-               
+
                 $args = [
                     //避免添加重复文章
                     Post_Query::POST__NOT_IN => array_column($result, 'ID'),

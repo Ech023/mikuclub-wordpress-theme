@@ -33,6 +33,7 @@ class Post_Query
     //作者ID
     const AUTHOR = 'author';
     const AUTHOR__IN = 'author__in';
+    const AUTHOR__NOT_IN = 'author__not_in';
 
     //排序
     const ORDERBY = 'orderby';
@@ -68,6 +69,7 @@ class Post_Query
     //自定义子分类ID
     const CUSTOM_ONLY_POST_FAVORITE = 'custom_only_post_favorite';
     const CUSTOM_ONLY_AUTHOR_FOLLOWED = 'custom_only_author_followed';
+    const CUSTOM_ONLY_NOT_USER_BLACK_LIST = 'custom_only_not_user_black_list';
 
     /**
      * 添加 自定义query变量支持 到系统Wp_query里
@@ -84,6 +86,7 @@ class Post_Query
 
         $query_vars[] = Post_Query::CUSTOM_ONLY_POST_FAVORITE;
         $query_vars[] = Post_Query::CUSTOM_ONLY_AUTHOR_FOLLOWED;
+        $query_vars[] = Post_Query::CUSTOM_ONLY_NOT_USER_BLACK_LIST;
 
         return $query_vars;
     }

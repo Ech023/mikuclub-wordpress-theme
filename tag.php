@@ -23,6 +23,7 @@ if (get_theme_option(Admin_Meta::CATEGORY_TOP_ADSENSE_ENABLE))
 
 $post_list_header_order = print_post_list_header_order();
 $post_list_header_download_type = print_post_list_header_download_type();
+$post_list_header_user_black_list = print_post_list_header_user_black_list();
 $post_list_component = print_post_list_component();
 
 $output = <<<HTML
@@ -34,7 +35,7 @@ $output = <<<HTML
 	{$post_list_header_order}
 
 	{$post_list_header_download_type}
-
+	{$post_list_header_user_black_list}
 	{$post_list_component}
 	
 	

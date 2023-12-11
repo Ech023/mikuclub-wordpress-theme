@@ -32,11 +32,11 @@ $post_list_header_download_type = print_post_list_header_download_type();
 $post_list_header_post_status = print_post_list_header_post_status(Post_Status::get_to_array());
 $custom_post_query = [
     // Post_Query::POST__IN => $user_favorite ?: [1], //如果用户没有收藏, 使用一个不存在的ID用来过滤列表
-    Post_Query::CUSTOM_ONLY_POST_FAVORITE => true,
+    Post_Query::CUSTOM_ONLY_POST_FAVORITE => 1,
 
     //显示所有状态的文章
     Post_Query::POST_STATUS => Post_Status::get_to_array(),
-    Post_Query::CUSTOM_NO_CACHE => true,
+    Post_Query::CUSTOM_NO_CACHE => 1,
 ];
 $post_list_component = print_post_list_component($custom_post_query, Post_Template::FAVORITE_POST);
 
