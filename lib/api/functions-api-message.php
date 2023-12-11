@@ -51,6 +51,10 @@ function api_get_private_messages($data)
 		{
 			//进行普通分类查询 获取只包含所有发件人最后消息的私信列表
 			$result = get_user_private_message_list_grouped($paged, $number);
+
+			$user_id = get_current_user_id();
+			//更新所有私信为已读
+			set_user_private_message_as_read($user_id);
 		}
 
 		return $result;
@@ -226,5 +230,3 @@ function register_custom_private_message_api()
 		],
 	]);
 }
-
-

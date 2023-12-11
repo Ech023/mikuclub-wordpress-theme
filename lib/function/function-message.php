@@ -145,38 +145,112 @@ function get_user_private_message_list_grouped($paged = 1, $number_per_page = Co
         //计算数据表列 的偏移值 来达到分页效果
         $offset = ($paged - 1) * $number_per_page;
 
-        //首先需要获取用户收到的所有私信
-        $query1 = <<<SQL
+        //         //首先需要获取用户收到的所有私信
+        //         $query1 = <<<SQL
+        //             SELECT 
+        //                 * 
+        //             FROM 
+        //                 mm_message 
+        //             WHERE 
+        //                 recipient_id = {$user_id} 
+        //             ORDER BY 
+        //                 ID DESC
+        // SQL;
+        //         //根据 发件人ID 进行 分组, 然后根据私信ID大小进行倒序 , 以此;来 获取每个发件人最后发送的私信数据
+        //         $query2 = <<<SQL
+        //             SELECT 
+        //                 tmp.* 
+        //             FROM 
+        //                 ( {$query1} ) tmp 
+        //             GROUP BY 
+        //                 tmp.sender_id 
+        //             ORDER BY 
+        //                 tmp.ID DESC 
+        //             LIMIT 
+        //                 {$offset} , {$number_per_page}
+        // SQL;
+
+        $query = <<<SQL
             SELECT 
-                * 
+                mm_message.ID,
+                mm_message.sender_id,
+                mm_message.recipient_id,
+                mm_message.content,
+                mm_message.respond,
+                mm_message.status,
+                mm_message.date
             FROM 
-                mm_message 
-            WHERE 
-                recipient_id = {$user_id} 
+                mm_message
+            WHERE
+                mm_message.ID IN
+                (
+                    SELECT
+                        max(ID) as ID
+                    FROM
+                        mm_message
+                    WHERE
+                        recipient_id = {$user_id} 
+                    GROUP BY
+                        sender_id
+                )
+                OR
+                mm_message.ID IN
+                (
+                    /* 获取所有 我发出消息, 但是还未收到回复的 私信方*/
+                    SELECT
+                        max(ID) as ID
+                    FROM
+                        mm_message
+                    WHERE
+                        sender_id = {$user_id}
+                    AND
+                        recipient_id NOT IN (
+                            SELECT
+                                sender_id
+                            FROM
+                                mm_message
+                            WHERE
+                                recipient_id = {$user_id} 
+                            GROUP BY
+                                sender_id
+                        )
+                    GROUP BY
+                        recipient_id
+                )
             ORDER BY 
-                ID DESC
-SQL;
-        //根据 发件人ID 进行 分组, 然后根据私信ID大小进行倒序 , 以此;来 获取每个发件人最后发送的私信数据
-        $query2 = <<<SQL
-            SELECT 
-                tmp.* 
-            FROM 
-                ( {$query1} ) tmp 
-            GROUP BY 
-                tmp.sender_id 
-            ORDER BY 
-                tmp.ID DESC 
+                ID DESC 
             LIMIT 
                 {$offset} , {$number_per_page}
+
 SQL;
 
-        $query_results = $wpdb->get_results($query2);
+        $query_results = $wpdb->get_results($query);
 
         //转换成 My_Private_Message_Model
-        $result = array_map(function ($object)
+        $result = array_map(function ($object) use ($user_id)
         {
-            return new My_Private_Message_Model($object);
+            if (intval($object->sender_id) === $user_id)
+            {
+                //如果发件人是用户自己, 说明是未收到回复的私信, 
+                //需要互换收件人和发件人 避免错误
+                $object->sender_id = $object->recipient_id;
+                $object->recipient_id = $user_id;
+                //如果对方还未读消息, 设置一个特殊状态码来注明
+                if(intval($object->status) === 0){
+                    $object->status = 2;
+                }
+                else{
+                    $object->status = 3;
+                }
+
+            }
+
+            $model = new My_Private_Message_Model($object);
+
+            return $model;
         }, $query_results);
+
+        // var_dump($result);
     }
 
     return $result;

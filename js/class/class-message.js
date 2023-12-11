@@ -25,6 +25,7 @@ class MyPrivateMessage {
 
         let author_avatar = '';
         let unread = '';
+        let unread_text = '';
 
 
         //如果有作者信息
@@ -35,15 +36,21 @@ class MyPrivateMessage {
                     <img class="avatar rounded-circle" src="${this.author.user_image}" width="40" height="40" alt="用户头像">
                 </a>`;
         }
-        if (!this.status) {
 
-            unread = `
-                <span class="badge text-bg-miku">
-                    未读
-                </span>
-            `;
 
+        if (this.status === 0) {
+            unread_text = '未读';
         }
+        else if (this.status === 2) {
+            unread_text = '对方未读';
+        }
+        else if (this.status === 3) {
+            unread_text = '对方已读';
+        }
+
+        unread = `
+                <span class="badge text-bg-miku">${unread_text}</span>
+        `;
 
         //内容移除html标签
         this.content = this.content.replace(/(<([^>]+)>)/ig, '');

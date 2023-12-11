@@ -27,12 +27,7 @@ $user_id = get_current_user_id();
 
 //尝试从url参数中获取当前消息类型
 $active_message_type = $_GET['type'] ?? Message_Type::PRIVATE_MESSAGE;
-//如果当前类型为私信
-if ($active_message_type === Message_Type::PRIVATE_MESSAGE)
-{
-	//更新所有私信为已读
-	set_user_private_message_as_read($user_id);
-}
+
 
 $breadcrumbs = print_breadcrumbs_component();
 
