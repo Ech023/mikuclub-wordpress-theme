@@ -11,7 +11,6 @@ use WP_Error;
  */
 
 
-
 /**
  * 获取用户收到的未读私信数量
  * @return int 数量
@@ -110,9 +109,10 @@ function get_user_comment_reply_unread_count()
  */
 function get_user_total_unread_count()
 {
-
     return
-        get_user_private_message_unread_count() + get_user_comment_reply_unread_count() + get_user_forum_notification_unread_count();
+        get_user_private_message_unread_count() +
+        get_user_comment_reply_unread_count() +
+        get_user_forum_notification_unread_count();
 }
 
 

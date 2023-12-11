@@ -103,7 +103,7 @@ HTML;
 
     $main_menu_items = get_main_menu();
 
-    $message_count = get_user_total_unread_count() ?: '';
+    // $message_count = get_user_total_unread_count() ?: '';
 
     $main_menu_component = <<<HTML
 

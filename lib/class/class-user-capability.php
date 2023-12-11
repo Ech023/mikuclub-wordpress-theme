@@ -57,7 +57,7 @@ class User_Capability
         //如果有登陆
         if (is_user_logged_in())
         {
-
+            
             //获取缓存
             $is_blocked_user = Session_Cache::get(Session_Cache::IS_BLOCKED_USER);
             //如果缓存不存在
@@ -67,6 +67,7 @@ class User_Capability
                 $is_blocked_user = !static::is_regular_user();
                 //设置新缓存
                 Session_Cache::set(Session_Cache::IS_BLOCKED_USER, $is_blocked_user);
+                
             }
 
             //如果是黑名单

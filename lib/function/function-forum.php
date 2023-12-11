@@ -151,7 +151,7 @@ SQL;
 
 			$result = intval($wpdb->get_var($query));
 			//设置缓存
-			Session_Cache::set(Session_Cache::USER_COMMENT_REPLY_UNREAD_COUNT, $result);
+			Session_Cache::set(Session_Cache::USER_FORUM_NOTIFICATION_UNREAD_COUNT, $result);
 		}
 	}
 

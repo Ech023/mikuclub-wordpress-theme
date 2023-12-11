@@ -32,11 +32,14 @@ function print_float_bottom_menu_bar_component()
         $show_change_page_button = in_array($pagename, $array_page_with_post_list);
     }
 
+    //如果有未读消息, 高亮菜单
+    $menu_button_class = get_user_total_unread_count() ? 'text-miku' : '';
+
     $menu_items = <<<HTML
 
         <!-- 打开手机菜单 -->
         <div class="col col-md-auto px-0 px-md-auto">
-            <button class="btn w-100 px-auto px-md-4" data-bs-toggle="offcanvas" data-bs-target="#phone_sidebar_menu">
+            <button class="btn w-100 px-auto px-md-4 {$menu_button_class}" data-bs-toggle="offcanvas" data-bs-target="#phone_sidebar_menu">
                 <i class="fa-solid fa-bars me-md-2"></i>
                 <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">菜单</span>
             </button>
