@@ -96,6 +96,8 @@ $message_nav_component = <<<HTML
 HTML;
 
 
+$message_list_class = $active_message_type === Message_Type::PRIVATE_MESSAGE ? 'accordion' : '';
+
 $output = <<<HTML
 
 	<div class="page-message">
@@ -108,7 +110,7 @@ $output = <<<HTML
 		</div>
 
 		<div class="page-content my-2" >
-			<div class="message-list accordion" id="accordion" data-message-type="{$active_message_type}"></div>
+			<div class="message-list {$message_list_class}" id="private-message-accordion" data-message-type="{$active_message_type}"></div>
 			<div class="message-list-end"></div>
 		</div>
 

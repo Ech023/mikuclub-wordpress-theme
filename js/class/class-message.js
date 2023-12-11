@@ -78,7 +78,7 @@ class MyPrivateMessage {
 
                     </div>
                     
-                     <div class="collapse" id="sender-id-${this.sender_id}" data-sender="${this.sender_id}"  data-bs-parent="#accordion" >
+                     <div class="collapse" id="sender-id-${this.sender_id}" data-sender="${this.sender_id}"  data-bs-parent="#private-message-accordion" >
                             <div class="card-body border-top py-5 overflow-auto" style="max-height: 90vh;">
                             
                             </div>
@@ -180,26 +180,26 @@ class MyCommentReply {
 
         return `
 
-            <div class="card message-item border-bottom-0 rounded-0 ">
-                    <div class="card-header row bg-transparent  align-items-center border-0 py-3 cursor_pointer"  >
-                            <div class="col-6 col-md-2 ">
+            <div class="message-item border-bottom">
+                    <div class="row align-items-center py-2"  >
+                            <div class="col-12 col-md-2">
                                 ${author_avatar}
                                 <span class="mx-2 display-name small">${this.author.display_name}</span>
                             </div>
-                            <div class="col-6 col-md-2 small">
-                                <i class="fa-solid fa-clock"></i> ${this.comment_date}
-                            </div>
-                            <div class="col-9 col-md-6 text-truncate mt-2 mt-md-0">
+                            <div class="col mt-2 mt-md-0">
                                 <div class="">${this.comment_content}</div>
-                                <div class="small text-dark-2 mt-3">评论来源: ${this.comment_post_title}</div> 
+                                <div class="mt-3">
+                                    <a class="small text-dark-2" href="${this.comment_post_href}#comments-part" target="_blank" title="查看来源页面">
+                                    来源: ${this.comment_post_title}
+                                    </a>
+                                </div> 
+                                <div class="small text-dark-2">
+                                    时间: ${this.comment_date}
+                                </div>
                             </div>
                             <div class="col-1">
                                 ${unread}
                             </div>
-                            <div class="col-1">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </div>
-                           ${parentPostLink}
                     </div>
                     
             </div>
