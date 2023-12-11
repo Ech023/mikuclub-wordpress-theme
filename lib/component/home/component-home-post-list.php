@@ -56,7 +56,7 @@ HTML;
 			<div class="home-post-list my-2 pb-2 border-bottom">
 				<div class="row align-items-center my-2">
 					<div class="col-auto">
-						<h5 class="mb-0 fw-bold">
+						<h5 class="mb-0 fw-bold fs-75 fs-sm-875 fs-md-100">
 							<i class="{$icon_class}"></i> {$list_title}
 						</h5>
 					</div>
@@ -66,7 +66,7 @@ HTML;
 						</a>
 					</div>
 				</div>
-				<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-6 gy-2">
+				<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-6 g-2">
 					{$post_list_html}
 				</div>
 			</div>

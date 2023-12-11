@@ -102,7 +102,7 @@ function print_home_component_second_part()
 
         //获取全站点击文章列表
         $hot_post_list = get_hot_post_list(Category::NO_ADULT_CATEGORY, Post_Meta::POST_VIEWS, Config::HOME_POST_LIST_LENGTH);
-        $output .= print_home_post_list_component($hot_post_list, '全站点击',  'fa-solid fa-newspaper');
+        $output .= print_home_post_list_component($hot_post_list, '全站点击',  'fa-solid fa-newspaper', '/page/1');
 
 
         //分区id数组

@@ -57,7 +57,7 @@ HTML;
 					</a>
 				</div>
 			</div>
-			<div class="row row-cols-1 row-md-cols-2 row-cols-xl-3 gy-2">
+			<div class="row row-cols-1 row-md-cols-2 row-cols-xl-3 g-2">
 			
 					{$topic_list_html}
 			

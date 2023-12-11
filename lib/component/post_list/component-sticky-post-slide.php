@@ -60,7 +60,7 @@ function print_sticky_post_slide_component($cat_id)
     //最终输出内容
     $output = <<<HTML
         <div class="sticky_post_slide_component my-2">
-            <div class="row">
+            <div class="row gx-2">
                 <div class="col-12 col-lg-6 col-xl-4 ">
                     {$first_part}
                 </div>
@@ -199,7 +199,7 @@ HTML;
         //最终输出内容
         $output = <<< HTML
 
-            <div class="row row-cols-2 row-cols-lg-3 row-cols-xl-4  top-hot-post-list gy-2">
+            <div class="row row-cols-2 row-cols-lg-3 row-cols-xl-4  top-hot-post-list g-2">
                 {$post_list_html}
             </div>
 HTML;

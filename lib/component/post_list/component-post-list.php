@@ -38,7 +38,7 @@ function print_post_list_component($custom_post_query = [], $post_template = Pos
 	$output = <<<HTML
 		<div class="post-list-container" data-parameters='{$json_parameters}' data-post-template="{$post_template}">
 			
-			<div class="post-list row my-2 {$class_post_list}">
+			<div class="post-list row my-2 gx-2 {$class_post_list}">
 				$post_list_html
 			</div>
 			<!-- 自动加载列表的触发标记 -->
