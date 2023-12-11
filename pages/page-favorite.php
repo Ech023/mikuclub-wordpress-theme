@@ -19,7 +19,7 @@ User_Capability::prevent_not_logged_user();
 get_header();
 
 
-$user_favorite = get_user_favorite();
+// $user_favorite = get_user_favorite();
 
 $breadcrumbs = print_breadcrumbs_component();
 
@@ -29,9 +29,11 @@ $search_form = post_list_header_search_form();
 $post_list_header_category = print_post_list_header_category();
 $post_list_header_order = print_post_list_header_order();
 $post_list_header_download_type = print_post_list_header_download_type();
-$post_list_header_post_status = print_post_list_header_post_status(Post_Status::PUBLISH);
+$post_list_header_post_status = print_post_list_header_post_status(Post_Status::get_to_array());
 $custom_post_query = [
-    Post_Query::POST__IN => $user_favorite ?: [1], //如果用户没有收藏, 使用一个不存在的ID用来过滤列表
+    // Post_Query::POST__IN => $user_favorite ?: [1], //如果用户没有收藏, 使用一个不存在的ID用来过滤列表
+    Post_Query::CUSTOM_ONLY_POST_FAVORITE => true,
+
     //显示所有状态的文章
     Post_Query::POST_STATUS => Post_Status::get_to_array(),
     Post_Query::CUSTOM_NO_CACHE => true,

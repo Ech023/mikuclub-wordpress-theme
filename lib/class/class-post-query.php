@@ -65,13 +65,9 @@ class Post_Query
     const CUSTOM_NO_CACHE = 'no_cache';
 
 
-
-    //自定义搜索
-    const CUSTOM_SEARCH = 'custom_search';
-    //自定义分类ID
-    const CUSTOM_MAIN_CAT = 'main_cat';
     //自定义子分类ID
-    const CUSTOM_SUB_CAT = 'sub_cat';
+    const CUSTOM_ONLY_POST_FAVORITE = 'custom_only_post_favorite';
+    const CUSTOM_ONLY_AUTHOR_FOLLOWED = 'custom_only_author_followed';
 
     /**
      * 添加 自定义query变量支持 到系统Wp_query里
@@ -86,10 +82,8 @@ class Post_Query
         $query_vars[] = Post_Query::CUSTOM_DOWN_TYPE;
         $query_vars[] = Post_Query::CUSTOM_CAT;
 
-        // $query_vars[] = Post_Query::CUSTOM_SEARCH;
-        $query_vars[] = Post_Query::CUSTOM_MAIN_CAT;
-        $query_vars[] = Post_Query::CUSTOM_SUB_CAT;
-
+        $query_vars[] = Post_Query::CUSTOM_ONLY_POST_FAVORITE;
+        $query_vars[] = Post_Query::CUSTOM_ONLY_AUTHOR_FOLLOWED;
 
         return $query_vars;
     }

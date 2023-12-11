@@ -104,6 +104,21 @@ function set_post_list_query_vars($query_vars)
         ];
     }
 
+    //如果有收藏文章参数
+    $custom_only_post_favorite = $query_vars[Post_Query::CUSTOM_ONLY_POST_FAVORITE] ?? false;
+    if ($custom_only_post_favorite)
+    {
+        //只获取收藏的文章
+        $query_vars[Post_Query::POST__IN] =  get_user_favorite() ?: [1]; //如果用户没有收藏, 使用一个不存在的ID用来过滤列表
+    }
+
+    //如果有限定关注的作者
+    $custom_only_user_followed = $query_vars[Post_Query::CUSTOM_ONLY_AUTHOR_FOLLOWED] ?? false;
+    if ($custom_only_user_followed)
+    {
+        //只获取收藏的文章
+        $query_vars[Post_Query::AUTHOR__IN] =  get_user_followed() ?: [2]; //如果用户没有关注的作者, 使用一个不存在的ID用来过滤列表
+    }
 
     //如果页面参数是 作者页
     if ($page_type === Page_Type::AUTHOR)
@@ -181,19 +196,6 @@ function set_wp_query_custom_query_var($wp_query)
             set_query_var($key, $var);
         }
 
-        //如果存在自定义 分类变量
-        $main_cat =  get_query_var(Post_Query::CUSTOM_MAIN_CAT);
-        $sub_cat =  get_query_var(Post_Query::CUSTOM_SUB_CAT);
-        if ($main_cat)
-        {
-            //替换默认查询分类ID
-            set_query_var(Post_Query::CAT, $main_cat);
-        }
-        else if ($sub_cat)
-        {
-            //替换默认查询分类ID
-            set_query_var(Post_Query::CAT, $sub_cat);
-        }
 
 
 

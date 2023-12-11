@@ -142,21 +142,44 @@ function get_post_list(is_new_load = false, new_paged = 1) {
 
     };
 
-    send_get(
-        URLS.postList,
-        data,
-        () => {
-            show_loading_row($post_list_container_component);
-        },
-        success_callback,
-        defaultFailCallback,
-        () => {
-            hide_loading_row();
-            //关闭loading属性
-            get_post_list.is_loading = false;
-        }
+    const pre_callback = () => {
+        show_loading_row($post_list_container_component);
+    };
+    const always_callback = () => {
+        hide_loading_row();
+        //关闭loading属性
+        get_post_list.is_loading = false;
+    }
 
-    )
+    //如果请求参数包含超长数组, 改用POST请求, 否则默认用GET请求
+    const long_data_key = [
+        'post__in',
+    ];
+    const has_long_data = long_data_key.some(function (prop) {
+        return data.hasOwnProperty(prop);
+    });
+
+    if (has_long_data) {
+        send_post(
+            URLS.postList,
+            data,
+            pre_callback,
+            success_callback,
+            defaultFailCallback,
+            always_callback
+        );
+    }
+    else {
+        send_get(
+            URLS.postList,
+            data,
+            pre_callback,
+            success_callback,
+            defaultFailCallback,
+            always_callback
+        );
+    }
+
 }
 
 /**
