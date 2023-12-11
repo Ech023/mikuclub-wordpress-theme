@@ -178,7 +178,7 @@ $breadcrumbs = print_breadcrumbs_component();
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-auto">
-                                            <a class="btn btn-sm btn-light-2 delete-user-black-list" href="javascript:void(0);" data-target-user-id="{$black_user_id}">从黑名单里移除</a>
+                                            <a class="btn btn-sm btn-light-2 delete_user_black_list" href="javascript:void(0);" data-target-user-id="{$black_user_id}">从黑名单里移除</a>
                                         </div>
                                     </div>
                              

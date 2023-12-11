@@ -37,7 +37,7 @@ function api_get_comment_reply_list($data)
 	{
 		$paged = Input_Validator::get_array_value($data, 'paged', Input_Validator::TYPE_INT, false) ?: 1;
 		$number = Input_Validator::get_array_value($data, 'number', Input_Validator::TYPE_INT, false) ?: Config::NUMBER_COMMENT_REPLY_PER_PAGE;
-	
+
 		$result = get_comment_reply_list($paged, $number);
 
 		return $result;
@@ -46,6 +46,50 @@ function api_get_comment_reply_list($data)
 	return $result;
 }
 
+
+/**
+ * 置顶评论
+ *
+ * @param WP_REST_Request $data
+ *
+ * @return bool|WP_Error
+ */
+function api_add_sticky_comment($data)
+{
+	$result = execute_with_try_catch_wp_error(function () use ($data)
+	{
+		//获取 id 参数
+		$comment_id = Input_Validator::get_array_value($data, 'id', Input_Validator::TYPE_INT, true);
+
+		$result = add_sticky_comment($comment_id);
+
+		return $result;
+	});
+
+	return $result;
+}
+
+/**
+ * 取消置顶评论
+ *
+ * @param WP_REST_Request $data
+ *
+ * @return bool|WP_Error
+ */
+function api_delete_sticky_comment($data)
+{
+	$result = execute_with_try_catch_wp_error(function () use ($data)
+	{
+		//获取 id 参数
+		$comment_id = Input_Validator::get_array_value($data, 'id', Input_Validator::TYPE_INT, true);
+
+		$result = delete_sticky_comment($comment_id);
+
+		return $result;
+	});
+
+	return $result;
+}
 
 /**
  * 删除评论
@@ -58,55 +102,10 @@ function api_delete_comment($data)
 {
 	$result = execute_with_try_catch_wp_error(function () use ($data)
 	{
-				//获取 id 参数
+		//获取 id 参数
 		$comment_id = Input_Validator::get_array_value($data, 'id', Input_Validator::TYPE_INT, true);
 
-		//当前登陆用户ID
-		$user_id = get_current_user_id();
-
-		//获取评论主体
-		$comment =  get_comment($comment_id);
-		if (empty($comment))
-		{
-			throw new Empty_Exception('评论');
-		}
-
-		//获取文章作者ID
-		$post_id = intval($comment->comment_post_ID);
-		$post_author_id = intval(get_post_field('post_author', $post_id));
-
-		//评论人ID
-		$author_id  = intval($comment->user_id);
-
-		//检测时候是高级用户和当前文章的作者
-		$is_premium_user_and_post_author = User_Capability::is_premium_user() && $user_id === $post_author_id;
-
-		//检测权限, 只有管理员 和 评论作者自己 有权限删除评论
-		if (
-			//如果是管理员
-			User_Capability::is_admin()
-			||
-			//如果是高级用户和文章的作者ID
-			$is_premium_user_and_post_author
-			||
-			//如果是评论人本ID
-			$user_id === $author_id
-		)
-		{
-			//如果是文章作者就只把评论移到回收站, 其他情况 完全删除
-			$result = wp_delete_comment($comment_id, $is_premium_user_and_post_author ? false : true);
-			if ($result === false)
-			{
-				throw new Exception('删除失败');
-			}
-
-			//清空该文章的所有评论缓存
-			delete_comment_file_cache($comment_id, $post_id);
-		}
-		else
-		{
-			throw new Exception('无权操作');
-		}
+		$result = delete_comment($comment_id);
 
 		return $result;
 	});
@@ -303,6 +302,22 @@ function register_custom_comment_api()
 		],
 	]);
 
+	register_rest_route('utils/v2', '/add_sticky_comment', [
+		[
+			'methods'             => 'POST',
+			'callback'            => 'mikuclub\api_add_sticky_comment',
+			'permission_callback' => 'is_user_logged_in',
+		],
+	]);
+
+	register_rest_route('utils/v2', '/delete_sticky_comment', [
+		[
+			'methods'             => 'POST',
+			'callback'            => 'mikuclub\api_delete_sticky_comment',
+			'permission_callback' => 'is_user_logged_in',
+		],
+	]);
+
 	register_rest_route('utils/v2', '/comments/(?P<id>\d+)', [
 		[
 			'methods'             => 'DELETE',
@@ -336,5 +351,3 @@ function register_custom_comment_api()
 	//注册自定义meta数据
 	register_custom_comment_metadata();
 }
-
-

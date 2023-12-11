@@ -26,6 +26,8 @@ class MyComment {
         this.children = [];
 
         this.comment_likes = comment.comment_likes || 0;
+        //是否是置顶评论
+        this.comment_is_sticky = comment.comment_is_sticky || 0;
 
         //是否是嵌套子评论
         this.depth = depth;
@@ -96,7 +98,7 @@ class MyComment {
             authorBadges = this.author.user_badges.reduce((previousOutput, currentElement) => {
                 //如果有勋章信息
                 previousOutput += `<span class="${currentElement['class']} rounded-1 m-1">${currentElement['title']}</span>`;
-                
+
                 return previousOutput;
             }, '');
         }
@@ -166,8 +168,8 @@ class MyComment {
         let likeButtons = '';
 
 
-        let addCommentLikesButtonClass = 'add-comment-likes';
-        let deleteCommentLikesButtonClass = 'delete-comment-likes';
+        let addCommentLikesButtonClass = 'add_comment_likes';
+        let deleteCommentLikesButtonClass = 'delete_comment_likes';
 
         //点赞按钮图标
         let addCommentLikesButtonIcon = 'fa-solid fa-thumbs-up';
@@ -212,50 +214,68 @@ class MyComment {
         //如果有登陆, 并且不是作者自己 才输出回复按钮
         let respondButton = '';
         if (MY_SITE.user_id > 0 && !is_comment_author) {
-            respondButton = `<a class="respond-button btn btn-sm btn-light-2" href="javascript:void(0);" data-respond="${this.comment_id}" data-respond-name="${this.author.display_name}">回复</a>`;
+            respondButton = `<a class="respond_button btn btn-sm btn-light-2" href="javascript:void(0);" data-respond="${this.comment_id}" data-respond-name="${this.author.display_name}">回复</a>`;
         }
 
 
         let moreButton = '';
+        let stickyButton = '';
         let deleteButton = '';
         let blackListButton = '';
+
+        //如果是管理员 或者是 文章作者 输出置顶按钮
+        if (is_admin || is_post_author) {
+
+            //根据评论置顶状态输出
+            const sticky_button_class = this.comment_is_sticky ? 'delete_sticky_comment' : 'add_sticky_comment';
+            const sticky_button_text = this.comment_is_sticky ? '取消置顶' : '置顶';
+
+            stickyButton = `
+                <li>
+                    <button class="dropdown-item small ${sticky_button_class}" data-comment-id="${this.comment_id}">${sticky_button_text}</button>
+                </li>
+            `;
+        }
 
         //如果是管理员 或者是 高级的文章作者 或者是 评论人自己 输出删除按钮
         if (is_admin || is_premium_user_and_post_author || is_comment_author) {
 
             deleteButton = `
-                <li><a class="dropdown-item small delete-button" href="javascript:void(0);" data-comment-id="${this.comment_id}">删除</a></li>
-                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <button class="dropdown-item small delete_comment" data-comment-id="${this.comment_id}">删除</button>
+                </li>
+                
             `;
         }
 
         //如果有登陆, 并且不是作者自己 输出 黑名单按钮
         if (MY_SITE.user_id > 0 && !is_comment_author) {
 
-            let black_list_button_class = 'add-user-black-list';
+            let black_list_button_class = 'add_user_black_list';
             let black_list_button_text = '加入黑名单';
             //如果目标用户已经被拉黑
             if (MY_SITE.user_black_list.includes(parseInt(this.author.id))) {
 
-                black_list_button_class = 'delete-user-black-list';
+                black_list_button_class = 'delete_user_black_list';
                 black_list_button_text = '从黑名单里移除';
             }
 
             blackListButton = `
-             <li><a class="dropdown-item small ${black_list_button_class}" href="javascript:void(0);" data-target-user-id="${this.author.id}">${black_list_button_text}</a></li>
+             <li><button class="dropdown-item small ${black_list_button_class}"  data-target-user-id="${this.author.id}">${black_list_button_text}</button></li>
          `;
 
         }
 
         //如果要输出删除按钮 或者 拉黑按钮
-        if (deleteButton || blackListButton) {
+        if (stickyButton || deleteButton || blackListButton) {
             //显示更多菜单
             moreButton = `
                 <div class="dropdown" >
-                    <a class="btn btn-sm btn-light-2" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" title="更多操作">
+                    <button class="btn btn-sm btn-light-2" data-bs-toggle="dropdown" title="更多操作">
                         <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </a>
+                    </button>
                     <ul class="dropdown-menu">
+                        ${stickyButton}
                         ${deleteButton}
                         ${blackListButton}
                         
@@ -270,27 +290,33 @@ class MyComment {
         let statusTextClass = '';
         //如果触发了待审核关键词
         if (this.comment_approved === 'trash') {
-            styleClass = 'rounded border border-danger';
+            styleClass = 'rounded-1 border border-danger';
             statusTextClass = 'text-danger';
-            statusText = '该评论包含违禁词';
+            // statusText = '该评论包含违禁词'; //不要提示用户
         }
         //如果触发了违禁词
         else if (parseInt(this.comment_approved) === 0) {
-            styleClass = 'rounded border border-warning';
-            statusTextClass = 'text-warning';
+            styleClass = 'rounded-1 border border-danger ';
+            statusTextClass = 'text-danger';
             statusText = '等待管理员审核后才会显示';
         }
         else if (this.isNew) {
-            styleClass = 'rounded border border-success';
+            styleClass = 'rounded-1 border border-success';
+            statusTextClass = 'text-success';
             statusText = '已发表';
+        }
+        else if (this.comment_is_sticky) {
+            styleClass = 'rounded-1 border border-miku';
+            statusTextClass = 'text-miku';
+            statusText = '已置顶';
         }
 
 
         return `
 
-            <div class="comment-item comment-item-${this.comment_id}" data-comment_id="${this.comment_id}">
+            <div class="comment-item my-1 comment-item-${this.comment_id}" data-comment_id="${this.comment_id}">
             
-                    <div class="row comment-body pb-2 border-bottom ${this.depth ? 'ms-4 ms-md-5 ' : ''} ${styleClass}">
+                    <div class="row comment-body py-2 border-bottom ${this.depth ? 'ms-4 ms-md-5 ' : ''} ${styleClass}">
                     
                             <div class="col-12 col-sm-auto avatar-container text-center text-sm-start">
                                  ${authorAvatar}
@@ -329,13 +355,13 @@ class MyComment {
                                 </div>
                                 
                             </div>
-                            <div class="col-12 col-md-1 my-2 text-center ${statusTextClass}">
+                            <div class="col-12 col-md-1 my-2 text-center comment_status ${statusTextClass}">
                                 ${statusText}
                             </div>
 
                     </div>
                     
-                    <div class="children my-2 ">
+                    <div class="children">
                                 ${childComments}
                     </div>
                 

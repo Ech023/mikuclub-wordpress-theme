@@ -71,6 +71,12 @@ class My_Comment_Model
 	public $comment_likes;
 
 	/**
+	 * 是否是置顶评论
+	 * @var bool
+	 */
+	public $comment_is_sticky = false;
+
+	/**
 	 * @param WP_Comment|null $comment
 	 */
 	function __construct($comment = null)

@@ -37,7 +37,7 @@ $(function () {
 
         //回复按钮点击事件
         //移动评论框
-        $single_page_comments_part.on('click', '.respond-button', '', function () {
+        $single_page_comments_part.on('click', '.respond_button', '', function () {
             create_response_form($(this));
         });
 
@@ -47,19 +47,29 @@ $(function () {
             delete_response_form($(this));
         });
 
+        //置顶评论按钮点击事件
+        //置顶评论
+        $single_page_comments_part
+            .on('click', '.add_sticky_comment', '', function () {
+                add_sticky_comment($(this));
+            }).on('click', '.delete_sticky_comment', '', function () {
+                delete_sticky_comment($(this));
+            });
+
+
         //删除按钮点击事件
         //删除评论
-        $single_page_comments_part.on('click', '.delete-button', '', function () {
+        $single_page_comments_part.on('click', '.delete_comment', '', function () {
             delete_comment($(this));
         });
 
         //点赞评论
-        $single_page_comments_part.on('click', '.add-comment-likes', '', function () {
+        $single_page_comments_part.on('click', '.add_comment_likes', '', function () {
             add_comment_likes($(this));
         });
 
         //踩评论
-        $single_page_comments_part.on('click', '.delete-comment-likes', '', function () {
+        $single_page_comments_part.on('click', '.delete_comment_likes', '', function () {
             delete_comment_likes($(this));
         });
 
@@ -449,6 +459,87 @@ function reset_comment_form_position() {
 }
 
 
+/**
+ * 置顶评论
+ * @param {jQuery} $button
+ */
+function add_sticky_comment($button) {
+
+    //获取所属表单
+    const comment_id = $button.data('comment-id');
+
+    open_confirm_modal('确认要置顶该评论吗?', '每个投稿最多只能有1条置顶评论', () => {
+
+        send_post(
+            URLS.addStickyComment,
+            {
+                id: comment_id,
+            },
+            () => {
+                show_loading_modal();
+            },
+            (response) => {
+
+                MyToast.show_success('置顶评论成功');
+
+                //改变样式
+                const $comment_item_element = $button.closest(`.comment-item-${comment_id}`);
+                $comment_item_element.find('> .comment-body').addClass('rounded-1 border border-miku');
+                $comment_item_element.find('> .comment-body .comment_status').addClass('text-miku').html('已置顶');
+
+            },
+            () => {
+                MyToast.show_error('置顶评论失败');
+            },
+            () => {
+                hide_loading_modal();
+            },
+        )
+
+    });
+
+}
+
+/**
+ * 取消置顶评论
+ * @param {jQuery} $button
+ */
+function delete_sticky_comment($button) {
+
+    //获取所属表单
+    const comment_id = $button.data('comment-id');
+
+    open_confirm_modal('确认要取消置顶该评论吗?', '', () => {
+
+        send_post(
+            URLS.deleteStickyComment,
+            {
+                id: comment_id,
+            },
+            () => {
+                show_loading_modal();
+            },
+            (response) => {
+
+                MyToast.show_success('取消置顶评论成功');
+
+                //改变样式
+                const $comment_item_element = $button.closest(`.comment-item-${comment_id}`);
+                $comment_item_element.find('> .comment-body').removeClass('rounded-1 border border-miku');
+                $comment_item_element.find('> .comment-body .comment_status').removeClass('text-miku').html('');
+
+            },
+            () => {
+                MyToast.show_error('取消置顶评论失败');
+            },
+            () => {
+                hide_loading_modal();
+            },
+        )
+
+    });
+
+}
 
 
 /**
@@ -502,7 +593,7 @@ function add_comment_likes($button) {
     //获取评论ID
     const comment_id = $button.closest('.comment-item').data('comment_id');
     //注销按钮
-    $button.removeClass('add-comment-likes').addClass('text-miku disabled');
+    $button.removeClass('add_comment_likes').addClass('text-miku disabled');
     //存储评论ID到已点赞
     addArrayElementToLocalStorage(LOCAL_STORAGE_KEY.commentLikes, comment_id);
 
@@ -531,7 +622,7 @@ function delete_comment_likes($button) {
     //获取评论ID
     const comment_id = $button.closest('.comment-item').data('comment_id');
     //注销按钮
-    $button.removeClass('delete-comment-likes').addClass('text-miku disabled');
+    $button.removeClass('delete_comment_likes').addClass('text-miku disabled');
     //存储评论ID到已踩
     addArrayElementToLocalStorage(LOCAL_STORAGE_KEY.commentDislikes, comment_id);
 

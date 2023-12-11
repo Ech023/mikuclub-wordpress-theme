@@ -45,7 +45,7 @@ $(function () {
 
 
     //监听所有 添加黑名单按钮点击事件
-    $body.on('click', 'a.add-user-black-list', '', function () {
+    $body.on('click', '.add_user_black_list', '', function () {
         //添加黑名单
         const target_user_id = $(this).data('target-user-id');
         add_user_black_list(target_user_id);
@@ -53,7 +53,7 @@ $(function () {
     });
 
     //监听所有 移除黑名单按钮点击事件
-    $body.on('click', 'a.delete-user-black-list', '', function () {
+    $body.on('click', '.delete_user_black_list', '', function () {
         //移除黑名单
         const target_user_id = $(this).data('target-user-id');
         delete_user_black_list(target_user_id);

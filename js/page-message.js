@@ -167,12 +167,12 @@ function get_message_list_with_one_sender($message_element) {
         //number: 50
     };
 
-    let black_list_button_class = 'add-user-black-list';
+    let black_list_button_class = 'add_user_black_list';
     let black_list_button_text = '加入黑名单';
     //如果目标用户已经被拉黑
     if (MY_SITE.user_black_list.includes(parseInt(sender_id))) {
 
-        black_list_button_class = 'delete-user-black-list';
+        black_list_button_class = 'delete_user_black_list';
         black_list_button_text = '从黑名单里移除';
     }
 

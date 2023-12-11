@@ -91,6 +91,11 @@ class File_Cache
     //评论列表
     const COMMENT_LIST = 'comment_list';
 
+    //高赞评论列表
+    const TOP_LIKE_COMMENT_LIST = 'top_like_comment_list';
+    //置顶评论
+    const STICKY_COMMENT = 'sticky_comment';
+
     /*论坛相关缓存 键名*/
     //最新帖子列表
     const RECENT_FORUM_TOPIC_LIST = 'recent_forum_topic_list';

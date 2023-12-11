@@ -70,13 +70,13 @@ HTML;
 
 
 		$toggle_black_list_button = '';
-		$toggle_black_list_button_class = 'add-user-black-list';
+		$toggle_black_list_button_class = 'add_user_black_list';
 		$toggle_black_list_button_text = '加入黑名单';
 
 		//如果该作者已被用户加入黑名单
 		if (in_user_black_list($current_user_id, $author->id))
 		{
-			$toggle_black_list_button_class = 'delete-user-black-list';
+			$toggle_black_list_button_class = 'delete_user_black_list';
 			$toggle_black_list_button_text = '从黑名单里移除';
 		}
 

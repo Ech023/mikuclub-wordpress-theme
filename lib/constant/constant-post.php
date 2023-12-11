@@ -96,6 +96,9 @@ class Post_Meta
 
     //文章提交来源 (PC/APP)
     const POST_SUBMIT_SOURCE = 'submit_source';
+
+    //文章的置顶评论ID
+    const POST_STICKY_COMMENT_ID = 'post_sticky_comment_id';
 }
 
 

@@ -2,9 +2,11 @@
 
 namespace mikuclub;
 
+use Exception;
 use mikuclub\constant\Comment_Meta;
 use mikuclub\constant\Config;
 use mikuclub\constant\Expired;
+use mikuclub\constant\Post_Meta;
 use mikuclub\User_Capability;
 use WP_Comment;
 use WP_Comment_Query;
@@ -204,26 +206,31 @@ function get_comment_list($post_id, $offset, $number = Config::NUMBER_COMMENT_PE
     $result = File_Cache::get_cache_meta_with_callback(
         $cache_key,
         File_Cache::DIR_COMMENTS . DIRECTORY_SEPARATOR . $post_id,
-        Expired::EXP_2_HOURS,
+        Expired::EXP_1_DAY,
         function () use ($post_id, $offset, $number)
         {
+            $result = [];
+
+            //如果有置顶评论
+            $sticky_comment_list = get_sticky_comment_list($post_id);
             //高点赞评论列表
-            $array_top_like_comment_list = [];
+            $array_top_like_comment_list = get_top_like_comment_list($post_id);
+            //合并置顶+高点赞评论
+            $array_top_like_comment_list = array_merge($sticky_comment_list, $array_top_like_comment_list);
+
             //需要从主列表中排除的评论ID数组
-            $array_exclude_id = [];
-
-            //如果是第一页评论
-            //添加 高点赞的评论到列表头部
-            if (empty($offset))
+            $array_exclude_id = array_map(function (My_Comment_Model $comment)
             {
-                $array_top_like_comment_list = get_top_like_comment_list($post_id);
+                return $comment->comment_id;
+            }, $array_top_like_comment_list);
 
-                $array_exclude_id = array_map(function (My_Comment_Model $comment)
-                {
-                    return $comment->comment_id;
-                }, $array_top_like_comment_list);
-            }
 
+            // //如果是第一页评论
+            // if (empty($offset))
+            // {
+            //     //修正剩余要请求的评论数量
+            //     $number -= count($array_exclude_id);
+            // }
 
             $args_normal_comment = [
                 'comment__not_in' => $array_exclude_id,
@@ -249,8 +256,12 @@ function get_comment_list($post_id, $offset, $number = Config::NUMBER_COMMENT_PE
                 return new My_Comment_Model($comment);
             }, $comments);
 
-
-            $result = array_merge($array_top_like_comment_list, $array_comment_list);
+            //如果是第一页评论
+            //添加 高点赞的评论到列表头部
+            if (empty($offset))
+            {
+                $result = array_merge($array_top_like_comment_list, $array_comment_list);
+            }
 
             return $result;
         }
@@ -271,45 +282,67 @@ function get_comment_list($post_id, $offset, $number = Config::NUMBER_COMMENT_PE
 function get_top_like_comment_list($post_id, $number = Config::NUMBER_TOP_LIKE_COMMENT_PER_PAGE)
 {
 
-    $args_comment = [
-        'post_id' => $post_id,
-        'status' => 'approve',
-        'type' => 'comment',
-        'number' => $number,
-        'hierarchical' => 'threaded',
+    $cache_key = implode('_', [
+        File_Cache::TOP_LIKE_COMMENT_LIST,
+        $post_id,
+        $number
+    ]);
 
-        //根据点赞数进行排序
-        'meta_query' => [
-            'relation' => 'OR',
-            'comment_likes' =>
-            [
-                'key' => Comment_Meta::COMMENT_LIKES,
-                'value'   => 1,
-                'compare' => '>=',
-                'type' => 'NUMERIC',
-            ],
-            'comment_not_likes' =>
-            [
-                'key' => Comment_Meta::COMMENT_LIKES,
-                'compare' => 'NOT EXISTS',
-                'type' => 'NUMERIC',
-                'value' => ''
-            ],
-        ],
-        //根据点赞数排序, 没有点赞数 则用id排序
-        'orderby' => [
-            'comment_not_likes' => 'DESC', 'comment_ID' => 'DESC'
-        ],
+    $result = File_Cache::get_cache_meta_with_callback(
+        $cache_key,
+        File_Cache::DIR_COMMENTS . DIRECTORY_SEPARATOR . $post_id,
+        Expired::EXP_1_DAY,
+        function () use ($post_id, $number)
+        {
 
+            $args_comment = [
+                'post_id' => $post_id,
+                'status' => 'approve',
+                'type' => 'comment',
+                'number' => $number,
+                'hierarchical' => 'threaded',
 
-    ];
+                //根据点赞数进行排序
+                'meta_query' => [
+                    [
+                        'key' => Comment_Meta::COMMENT_LIKES,
+                        'value'   => 1,
+                        'compare' => '>=',
+                        'type'    => 'NUMERIC',
+                    ]
+                    // 'relation' => 'AND',
+                    // 'comment_likes' =>
+                    // [
+                    //     'key' => Comment_Meta::COMMENT_LIKES,
+                    //     'value'   => 1,
+                    //     'compare' => '>=',
+                    //     'type' => 'NUMERIC',
+                    // ],
+                    // 'comment_not_likes' =>
+                    // [
+                    //     'key' => Comment_Meta::COMMENT_LIKES,
+                    //     'compare' => 'NOT EXISTS',
+                    //     'type' => 'NUMERIC',
+                    //     'value' => ''
+                    // ],
+                ],
+                //根据点赞数排序, 没有点赞数 则用id排序
+                'orderby' => [
+                    // 'comment_not_likes' => 'DESC', 'comment_ID' => 'DESC'
+                    'comment_likes' => 'DESC', 'comment_ID' => 'DESC'
+                ],
+            ];
 
-    $comments = get_comments($args_comment);
+            $comments = get_comments($args_comment);
 
-    $result = array_map(function (WP_Comment $comment)
-    {
-        return new My_Comment_Model($comment);
-    }, $comments);
+            $result = array_map(function (WP_Comment $comment)
+            {
+                return new My_Comment_Model($comment);
+            }, $comments);
+
+            return $result;
+        }
+    );
 
     return $result;
 }
@@ -358,6 +391,206 @@ function get_comment_reply_list($paged = 1, $number_per_page = Config::NUMBER_CO
                 update_comment_parent_user_as_read($comment->comment_id);
             }
         }
+    }
+
+    return $result;
+}
+
+
+/**
+ * 获取文章的置顶评论列表, 如果存在的话
+ *
+ * @param int $post_id
+ * @return My_Comment_Model[]
+ */
+function get_sticky_comment_list($post_id)
+{
+
+    $cache_key = implode('_', [
+        File_Cache::STICKY_COMMENT,
+        $post_id
+    ]);
+
+    $result = File_Cache::get_cache_meta_with_callback(
+        $cache_key,
+        File_Cache::DIR_COMMENTS . DIRECTORY_SEPARATOR . $post_id,
+        Expired::EXP_1_DAY,
+        function () use ($post_id)
+        {
+            $result = [];
+
+            //如果有置顶评论
+            $sticky_comment_id = get_post_meta($post_id, Post_Meta::POST_STICKY_COMMENT_ID, true);
+
+            if ($sticky_comment_id)
+            {
+                $wp_comment_object = get_comment($sticky_comment_id);
+                if ($wp_comment_object)
+                {
+                    $comment = new My_Comment_Model($wp_comment_object);
+                    $comment->comment_is_sticky = true;
+                    $result[] = $comment;
+                }
+            }
+
+            return $result;
+        }
+    );
+
+    return $result;
+}
+
+
+/**
+ * 置顶评论
+ *
+ * @param int $comment_id
+ * @return bool
+ */
+function add_sticky_comment($comment_id)
+{
+
+    //当前登陆用户ID
+    $user_id = get_current_user_id();
+
+    //获取评论主体
+    $comment =  get_comment($comment_id);
+    if (empty($comment))
+    {
+        throw new Empty_Exception('评论');
+    }
+
+    //获取文章作者ID
+    $post_id = intval($comment->comment_post_ID);
+    $post_author_id = intval(get_post_field('post_author', $post_id));
+
+
+    //检测权限, 只有管理员 和 文章作者 有权限置顶评论
+    if (
+        //如果是管理员
+        User_Capability::is_admin()
+        ||
+        //如果是文章作者
+        $user_id === $post_author_id
+    )
+    {
+
+        //更新文章的置顶文章ID
+        update_post_meta($post_id, Post_Meta::POST_STICKY_COMMENT_ID, $comment_id);
+
+        //清空该文章的所有评论缓存
+        delete_comment_file_cache($comment_id, $post_id);
+    }
+    else
+    {
+        throw new Exception('无权操作');
+    }
+
+    return true;
+}
+
+/**
+ * 取消置顶评论
+ *
+ * @param int $comment_id
+ * @return bool
+ */
+function delete_sticky_comment($comment_id)
+{
+
+    //当前登陆用户ID
+    $user_id = get_current_user_id();
+
+    //获取评论主体
+    $comment =  get_comment($comment_id);
+    if (empty($comment))
+    {
+        throw new Empty_Exception('评论');
+    }
+
+    //获取文章作者ID
+    $post_id = intval($comment->comment_post_ID);
+    $post_author_id = intval(get_post_field('post_author', $post_id));
+
+    //检测权限, 只有管理员 和 文章作者 有权限置顶评论
+    if (
+        //如果是管理员
+        User_Capability::is_admin()
+        ||
+        //如果是文章作者
+        $user_id === $post_author_id
+    )
+    {
+
+        //更新文章的置顶文章ID
+        delete_post_meta($post_id, Post_Meta::POST_STICKY_COMMENT_ID);
+
+        //清空该文章的所有评论缓存
+        delete_comment_file_cache($comment_id, $post_id);
+    }
+    else
+    {
+        throw new Exception('无权操作');
+    }
+
+    return true;
+}
+
+/**
+ * 删除评论
+ *
+ * @param int $comment_id
+ * @return bool
+ * @throws Exception
+ */
+function delete_comment($comment_id)
+{
+
+    //当前登陆用户ID
+    $user_id = get_current_user_id();
+
+    //获取评论主体
+    $comment =  get_comment($comment_id);
+    if (empty($comment))
+    {
+        throw new Empty_Exception('评论');
+    }
+
+    //获取文章作者ID
+    $post_id = intval($comment->comment_post_ID);
+    $post_author_id = intval(get_post_field('post_author', $post_id));
+
+    //评论人ID
+    $author_id  = intval($comment->user_id);
+
+    //检测时候是高级用户和当前文章的作者
+    $is_premium_user_and_post_author = User_Capability::is_premium_user() && $user_id === $post_author_id;
+
+    //检测权限, 只有管理员 和 高级作者 和 评论作者自己 有权限删除评论
+    if (
+        //如果是管理员
+        User_Capability::is_admin()
+        ||
+        //如果是高级用户和文章的作者ID
+        $is_premium_user_and_post_author
+        ||
+        //如果是评论人本ID
+        $user_id === $author_id
+    )
+    {
+        //如果是文章作者就只把评论移到回收站, 其他情况 完全删除
+        $result = wp_delete_comment($comment_id, $is_premium_user_and_post_author ? false : true);
+        if ($result === false)
+        {
+            throw new Exception('删除失败');
+        }
+
+        //清空该文章的所有评论缓存
+        delete_comment_file_cache($comment_id, $post_id);
+    }
+    else
+    {
+        throw new Exception('无权操作');
     }
 
     return $result;

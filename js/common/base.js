@@ -88,6 +88,9 @@ const URLS = {
 
     userBlackList: MY_SITE.apiRoot + UTILS_PATH + 'user_black_list',
 
+    addStickyComment: MY_SITE.apiRoot + UTILS_PATH + 'add_sticky_comment',
+    deleteStickyComment: MY_SITE.apiRoot + UTILS_PATH + 'delete_sticky_comment',
+
 
 };
 
