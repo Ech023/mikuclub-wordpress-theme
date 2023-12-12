@@ -304,32 +304,35 @@ function get_top_like_comment_list($post_id, $number = Config::NUMBER_TOP_LIKE_C
 
                 //根据点赞数进行排序
                 'meta_query' => [
-                    [
-                        'key' => Comment_Meta::COMMENT_LIKES,
-                        'value'   => 1,
-                        'compare' => '>=',
-                        'type'    => 'NUMERIC',
-                    ]
-                    // 'relation' => 'AND',
-                    // 'comment_likes' =>
                     // [
                     //     'key' => Comment_Meta::COMMENT_LIKES,
                     //     'value'   => 1,
                     //     'compare' => '>=',
-                    //     'type' => 'NUMERIC',
-                    // ],
-                    // 'comment_not_likes' =>
-                    // [
-                    //     'key' => Comment_Meta::COMMENT_LIKES,
-                    //     'compare' => 'NOT EXISTS',
-                    //     'type' => 'NUMERIC',
-                    //     'value' => ''
-                    // ],
+                    //     'type'    => 'NUMERIC',
+                    // ]
+
+                    //用来兼容可能存在没有点赞的子评论
+                    'relation' => 'OR',
+                    'comment_likes' =>
+                    [
+                        'key' => Comment_Meta::COMMENT_LIKES,
+                        // 'value'   => 1,
+                        // 'compare' => '>=',
+                        'compare' => 'EXISTS',
+                        'type' => 'NUMERIC',
+                    ],
+                    'comment_not_have_likes' =>
+                    [
+                        'key' => Comment_Meta::COMMENT_LIKES,
+                        'compare' => 'NOT EXISTS',
+                        'type' => 'NUMERIC',
+                        'value' => ''
+                    ],
                 ],
                 //根据点赞数排序, 没有点赞数 则用id排序
                 'orderby' => [
-                    // 'comment_not_likes' => 'DESC', 'comment_ID' => 'DESC'
-                    'comment_likes' => 'DESC', 'comment_ID' => 'DESC'
+                    'comment_not_have_likes' => 'DESC', 'comment_ID' => 'DESC'
+                    // 'comment_likes' => 'DESC', 'comment_ID' => 'DESC'
                 ],
             ];
 
