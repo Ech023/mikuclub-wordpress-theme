@@ -91,17 +91,26 @@ function set_post_list_query_vars($query_vars)
         ];
     }
 
-    $custom_down_type = $query_vars[Post_Query::CUSTOM_DOWN_TYPE] ?? '';
-    //有设置下载过滤
-    if ($custom_down_type)
+    $custom_post_array_down_type = $query_vars[Post_Query::CUSTOM_POST_ARRAY_DOWN_TYPE] ?? [];
+    //有设置下载过滤数组
+    if (is_array($custom_post_array_down_type) && count($custom_post_array_down_type) > 0)
     {
-        //通过下载方式数组进行过滤
+        // 如果还不存在, 初始化 META_QUERY数组 
         $query_vars[Post_Query::META_QUERY] = $query_vars[Post_Query::META_QUERY] ?? [];
-        $query_vars[Post_Query::META_QUERY][] = [
-            'key' => Post_Meta::POST_ARRAY_DOWN_TYPE,
-            'value'   => $custom_down_type,
-            'compare' => 'LIKE',
+
+        $sub_meta_query = [
+            'relation' => 'OR',
         ];
+        foreach ($custom_post_array_down_type as $type)
+        {
+            $sub_meta_query[] =  [
+                'key' => Post_Meta::POST_ARRAY_DOWN_TYPE,
+                'value'   => $type,
+                'compare' => 'LIKE',
+            ];
+        }
+
+        $query_vars[Post_Query::META_QUERY][] = $sub_meta_query;
     }
 
     //如果有收藏文章参数
@@ -124,7 +133,7 @@ function set_post_list_query_vars($query_vars)
     $custom_only_not_user_user_black_list = $query_vars[Post_Query::CUSTOM_ONLY_NOT_USER_BLACK_LIST] ?? 0;
     if (intval($custom_only_not_user_user_black_list))
     {
-      
+
         //如果黑名单不是空的
         $user_black_list = get_user_black_list(get_current_user_id());
         if (count($user_black_list) > 0)

@@ -233,58 +233,64 @@ HTML;
  */
 function print_post_list_header_download_type()
 {
-	$active_custom_down_type = get_query_var(Post_Query::CUSTOM_DOWN_TYPE, '');
+	$active_custom_post_array_down_type = get_query_var(Post_Query::CUSTOM_POST_ARRAY_DOWN_TYPE, '');
 
 	$array_download_type = [
 		[
 			'title' => '全部方式',
 			'value' => '',
-			'parameters' => [
-				Post_Query::CUSTOM_DOWN_TYPE => ''
-			],
 		],
 		[
 			'title' => '百度盘',
 			'value' => Download_Link_Type::BAIDU_PAN,
-			'parameters' => [
-				Post_Query::CUSTOM_DOWN_TYPE => Download_Link_Type::BAIDU_PAN,
-			],
 		],
 		[
 			'title' => '夸克盘',
 			'value' => Download_Link_Type::QUARK,
-			'parameters' => [
-				Post_Query::CUSTOM_DOWN_TYPE => Download_Link_Type::QUARK,
-			],
-		],
-		[
-			'title' => 'UC盘',
-			'value' => Download_Link_Type::UC_DRIVE,
-			'parameters' => [
-				Post_Query::CUSTOM_DOWN_TYPE => Download_Link_Type::UC_DRIVE,
-			],
 		],
 		[
 			'title' => '阿里云盘',
 			'value' => Download_Link_Type::ALIYUN_DRIVE,
-			'parameters' => [
-				Post_Query::CUSTOM_DOWN_TYPE => Download_Link_Type::ALIYUN_DRIVE,
-			],
 		],
+		[
+			'title' => '迅雷云盘',
+			'value' => Download_Link_Type::XUNLEI,
+		],
+		[
+			'title' => 'UC盘',
+			'value' => Download_Link_Type::UC_DRIVE,
+		],
+		[
+			'title' => '蓝奏云',
+			'value' => Download_Link_Type::LANZOU,
+		],
+		[
+			'title' => '115盘',
+			'value' => Download_Link_Type::ONE_ONE_FIVE,
+		],
+		// [
+		// 	'title' => '腾讯微云',
+		// 	'value' => Download_Link_Type::TENCENT_WEIYUN,
+		// ],
+		// [
+		// 	'title' => 'One Drive',
+		// 	'value' => Download_Link_Type::ONE_DRIVE,
+		// ],
+		// [
+		// 	'title' => 'Mega盘',
+		// 	'value' => Download_Link_Type::MEGA,
+		// ],
 		[
 			'title' => '磁力链接',
 			'value' => Download_Link_Type::MAGNET,
-			'parameters' => [
-				Post_Query::CUSTOM_DOWN_TYPE => Download_Link_Type::MAGNET,
-			],
 		],
 	];
 
-	$output = array_reduce($array_download_type, function ($carry, $item) use ($active_custom_down_type)
+	$output = array_reduce($array_download_type, function ($carry, $item) use ($active_custom_post_array_down_type)
 	{
 
 		$button_class = '';
-		if ($item['value'] === $active_custom_down_type)
+		if ($item['value'] === $active_custom_post_array_down_type)
 		{
 			$button_class = 'btn-dark-1 active';
 		}
@@ -293,7 +299,13 @@ function print_post_list_header_download_type()
 			$button_class = 'btn-light-2';
 		}
 
-		$json_parameters = htmlspecialchars(json_encode($item['parameters']));
+		//如果是全部下载方式按钮 添加特殊识别类名
+		$button_class .= $item['value'] === '' ? ' all_download_type' : '';
+
+		$json_parameters = htmlspecialchars(json_encode([
+			Post_Query::CUSTOM_POST_ARRAY_DOWN_TYPE =>
+			$item['value'] ? [$item['value']] : [], //如果有内容 转换为1元素的数组, 否则用空数组
+		]));
 
 		$carry .= <<<HTML
 			<div class="col-auto">

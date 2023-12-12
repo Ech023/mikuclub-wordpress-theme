@@ -199,13 +199,36 @@ function on_click_button_download_type($button) {
 
     const active_class = 'btn-dark-1 active';
     const no_active_class = 'btn-light-2';
+    let local_data = $button.data('parameters');
+    //如果数据下载类型是空的 说明点击了全部方式
+    if (local_data.custom_post_array_down_type.length === 0) {
+        //移除所有下载类型按钮的激活class类名, 移除选中状态
+        $post_list_download_type_element.find('.btn.download_type').removeClass(active_class).addClass(no_active_class);
+        //只给触发点击事件的 排序组按钮 添加激活类名
+        $button.removeClass(no_active_class).addClass(active_class);
+    }
+    //否则 说明选中了一个特定的下载按钮 (支持多选)
+    else {
+        //只移除"全部下载"按钮的 激活类名
+        $post_list_download_type_element.find('.btn.all_download_type').removeClass(active_class).addClass(no_active_class);
+        //切换触发点击事件的 排序组按钮 的类名
+        $button.toggleClass(no_active_class).toggleClass(active_class);
 
-    //切换所有排序组的按钮class类名, 移除选中状态
-    $post_list_download_type_element.find('.btn.download_type').removeClass(active_class).addClass(no_active_class);
-    //只给触发点击事件的 排序组按钮 添加激活类名
-    $button.removeClass(no_active_class).addClass(active_class);
+        //创建一个空数组
+        let custom_post_array_down_type = [];
+        //合并所有激活的按钮的 下载类型数组数据
+        $post_list_download_type_element.find('.btn.download_type.active').each((index, element) => {
+            let element_array_down_type = $(element).data('parameters').custom_post_array_down_type;
+            custom_post_array_down_type = custom_post_array_down_type.concat(element_array_down_type);
+            Object.assign(local_data.custom_post_array_down_type,);
+        });
+        //设置新的数据对象
+        local_data = {
+            custom_post_array_down_type,
+        };
 
-    const local_data = $button.data('parameters');
+    }
+
 
     //更新参数
     update_post_list_component_data(local_data);

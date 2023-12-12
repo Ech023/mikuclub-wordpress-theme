@@ -236,7 +236,10 @@ function on_change_input_post_title($input) {
     //把全角字符转换成半角
     let value = fullCharToHalfChar($input.val());
     //替换标题的方括号
-    value = value.replace(/\[/g, "【").replace(/]/g, "】").replace(/\(/g, "【").replace(/\)/g, "】").replace(/\{/g, "【").replace(/\}/g, "】");
+    // value = value.replace(/\[/g, "【").replace(/]/g, "】").replace(/\(/g, "【").replace(/\)/g, "】").replace(/\{/g, "【").replace(/\}/g, "】").replace(/\「/g, "【").replace(/\」/g, "】");
+
+    value = value.replace(/[\[{(「『]/g, "【");
+    value = value.replace(/[\]})」』]/g, "】");
 
     $input.val(value);
 }
@@ -251,7 +254,7 @@ function on_change_input_tags($input) {
     let value = fullCharToHalfChar($input.val());
     //移除分隔符周围的空格
     // value = value.replace(', ', ',').replace(' ,', ',').replace('#', ',').replace('.', ',').toUpperCase();
-    value = value.replace(/, | ,|#|\./g, ',').toUpperCase();
+    value = value.replace(/, | ,|#|、|\./g, ',').toUpperCase();
 
     $input.val(value);
 

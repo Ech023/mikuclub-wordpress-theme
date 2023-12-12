@@ -16,35 +16,6 @@ use WP_Post;
 use WP_Query;
 use WP_Term;
 
-/**
- *	@deprecated version
- * 
- * 从wp query里获取默认的文章列表
- * 转换成自定义文章格式
- * @return My_Post_Model[]
- * 
- * @global $wp_query
- */
-function get_wp_query_post_list()
-{
-
-    global $wp_query;
-
-    $result = [];
-
-    //如果存在文章数组
-    if (is_array($wp_query->posts) && count($wp_query->posts) > 0)
-    {
-        //把查询到的文章数组转换成自定义文章类
-        $result = array_map(function (WP_Post $post)
-        {
-            return new My_Post_Model($post);
-        }, $wp_query->posts);
-    }
-
-    return $result;
-}
-
 
 
 /**
@@ -71,7 +42,7 @@ function get_post_list($query_vars)
     $result = File_Cache::get_cache_meta($cache_key, File_Cache::DIR_POSTS . $group, Expired::EXP_15_MINUTE);
 
     //如果不存在 或者 有禁用缓存参数 或者
-    if (empty($result) || (intval($query_vars[Post_Query::CUSTOM_NO_CACHE] ?? 0)) )
+    if (empty($result) || (intval($query_vars[Post_Query::CUSTOM_NO_CACHE] ?? 0)))
     {
 
         //根据场景 修正查询参数
@@ -412,8 +383,8 @@ function get_fail_down_post_list($author, $cat, $paged, $number = 20)
     $args = [
         Post_Query::IGNORE_STICKY_POSTS => 1,
         Post_Query::ORDERBY => 'meta_value_num',
-        'meta_key'            => Post_Meta::POST_FAIL_TIME,
-        'order'               => 'DESC',
+        Post_Query::META_KEY => Post_Meta::POST_FAIL_TIME,
+        Post_Query::ORDER => 'DESC',
         Post_Query::POSTS_PER_PAGE => $number,
         Post_Query::POST_STATUS => Post_Status::PUBLISH,
         Post_Query::POST_TYPE => Post_Type::POST,
@@ -445,7 +416,7 @@ function get_fail_down_post_list($author, $cat, $paged, $number = 20)
 }
 
 /**
- * 获取用户收藏夹文章列表
+ * 获取用户收藏夹文章列表 APP专用
  *
  * @param int|null $cat 
  * @param string|null $search search value
@@ -466,7 +437,7 @@ function get_my_favorite_post_list($cat, $search, $paged)
             Post_Query::POST__IN => get_user_favorite(),
             Post_Query::ORDERBY => 'post__in',
             Post_Query::POSTS_PER_PAGE => Config::POST_LIST_LENGTH,
-
+            Post_Query::POST_STATUS => Post_Status::get_to_array(),
         ];
 
         if ($cat)
@@ -534,4 +505,33 @@ function get_my_followed_post_list($number)
     }
 
     return $output;
+}
+
+/**
+ *	@deprecated version
+ * 
+ * 从wp query里获取默认的文章列表
+ * 转换成自定义文章格式
+ * @return My_Post_Model[]
+ * 
+ * @global $wp_query
+ */
+function get_wp_query_post_list()
+{
+
+    global $wp_query;
+
+    $result = [];
+
+    //如果存在文章数组
+    if (is_array($wp_query->posts) && count($wp_query->posts) > 0)
+    {
+        //把查询到的文章数组转换成自定义文章类
+        $result = array_map(function (WP_Post $post)
+        {
+            return new My_Post_Model($post);
+        }, $wp_query->posts);
+    }
+
+    return $result;
 }

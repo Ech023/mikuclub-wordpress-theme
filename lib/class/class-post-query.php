@@ -56,7 +56,7 @@ class Post_Query
     //自定义日期范围
     const CUSTOM_ORDER_DATA_RANGE = 'custom_order_data_range';
     //自定义下载类型
-    const CUSTOM_DOWN_TYPE = 'custom_down_type';
+    const CUSTOM_POST_ARRAY_DOWN_TYPE = 'custom_post_array_down_type';
     //自定义分类ID
     const CUSTOM_CAT = 'custom_cat';
 
@@ -81,7 +81,7 @@ class Post_Query
     {
         $query_vars[] = Post_Query::CUSTOM_ORDERBY;
         $query_vars[] = Post_Query::CUSTOM_ORDER_DATA_RANGE;
-        $query_vars[] = Post_Query::CUSTOM_DOWN_TYPE;
+        $query_vars[] = Post_Query::CUSTOM_POST_ARRAY_DOWN_TYPE;
         $query_vars[] = Post_Query::CUSTOM_CAT;
 
         $query_vars[] = Post_Query::CUSTOM_ONLY_POST_FAVORITE;

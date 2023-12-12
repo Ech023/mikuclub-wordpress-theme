@@ -11,7 +11,8 @@ use mikuclub\constant\Category;
  */
 function print_home_hot_post_page_component()
 {
-
+	$active_paged = get_query_var(Post_Query::PAGED, 0);
+	$active_paged = $active_paged > 1 ? $active_paged : 0; //因为是首页最新发布, 初始PAGED会是1, 所以需要重置低于等于1为0
 
 	$breadcrumbs = print_breadcrumbs_component();
 
@@ -20,7 +21,7 @@ function print_home_hot_post_page_component()
 	$post_list_header_user_black_list = print_post_list_header_user_black_list();
 	//获取当前页面的文章列表
 	$post_list_component = print_post_list_component([
-		'paged' => 0, //重置初始页数
+		'paged' => $active_paged,
 	]);
 
 	$ad_banner = '';

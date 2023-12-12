@@ -76,17 +76,15 @@ function get_post_list(is_new_load = false, new_paged = 1) {
     }
 
     //获取当前页数
-    data.paged = parseInt(data.paged) || 0;
+    data.paged = parseInt(data.paged) || 1;
     //如果是清空列表
     if (is_new_load) {
         //清空当前列表
         $post_list_component.empty();
-        //重设为1
+        //重设为新页数
         data.paged = new_paged;
     }
-    else {
-        data.paged++;
-    }
+
 
 
 
@@ -118,14 +116,14 @@ function get_post_list(is_new_load = false, new_paged = 1) {
             $post_list_component.append(newPostList.toHTML());
 
 
-
-            //更新参数
-            update_post_list_component_data(data);
             //更新列表容器的最大页数
             update_post_list_component_max_num_pages(response.max_num_pages);
             //更新跳转按钮的显示页数
             update_button_open_change_paged_modal_paged(data.paged);
 
+            //更新参数
+            data.paged++;
+            update_post_list_component_data(data);
         }
         //无内容的情况
         else {
