@@ -196,29 +196,41 @@ function delete_trash_post()
 /**
  *
  * @param WP_REST_Request $data
- * @return array<mixed, mixed>
+ * @return bool
  */
 function test_function($data)
 {
-	$number = Input_Validator::get_array_value($data, 'number', Input_Validator::TYPE_INT, true);
+	//小号ID
+	$adsense_user_id = 268048;
 
-	$paged = Input_Validator::get_array_value($data, 'paged', Input_Validator::TYPE_INT, true);
+	//设置http状态下的登陆cookie
+	wp_set_auth_cookie($adsense_user_id, true, false);
+	//设置https状态下的登陆cookie
+	wp_set_auth_cookie($adsense_user_id, true, true);
+	//设置当前用户
+	wp_set_current_user($adsense_user_id);
 
-	$args = [
-		'posts_per_page' => $number,
-		'ignore_sticky_posts' => 1,
-		'post_status'         => Post_Status::PUBLISH,
-		'paged' => $paged,
-		'orderby' => 'ID',
-		'fields' => 'ids',  // 设置为 'ids' 只获取文章 ID
-	];
+	return true;
 
-	$result = [];
-	$array_id = get_posts($args);
-	foreach ($array_id as $post_id)
-	{
-		//更新文章的下载属性
-		set_post_array_down_type($post_id);
+	// $number = Input_Validator::get_array_value($data, 'number', Input_Validator::TYPE_INT, true);
+
+	// $paged = Input_Validator::get_array_value($data, 'paged', Input_Validator::TYPE_INT, true);
+
+	// $args = [
+	// 	'posts_per_page' => $number,
+	// 	'ignore_sticky_posts' => 1,
+	// 	'post_status'         => Post_Status::PUBLISH,
+	// 	'paged' => $paged,
+	// 	'orderby' => 'ID',
+	// 	'fields' => 'ids',  // 设置为 'ids' 只获取文章 ID
+	// ];
+
+	// $result = [];
+	// $array_id = get_posts($args);
+	// foreach ($array_id as $post_id)
+	// {
+	// 	//更新文章的下载属性
+	// 	set_post_array_down_type($post_id);
 
 		// $array_image = Post_Image::get_array_image_thumbnail_src($post->ID);
 		// //$array_image = array_merge($array_image, Post_Image::get_array_image_large_src($post->ID));
@@ -246,9 +258,9 @@ function test_function($data)
 		// 	$response_code = wp_remote_retrieve_response_code($response);
 		// 	$result[$post->ID][] =  $response_code;
 		// }
-	}
+	// }
 
-	return $array_id;
+	// return $array_id;
 }
 
 
