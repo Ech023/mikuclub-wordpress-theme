@@ -641,7 +641,7 @@ function add_custom_post_meta_on_rest_post($post, $request)
             Post_Meta::POST_PASSWORD2,
             Post_Meta::POST_UNZIP_PASSWORD,
             Post_Meta::POST_UNZIP_PASSWORD2,
-            Post_Meta::POST_BAIDU_FAST_LINK,
+            // Post_Meta::POST_BAIDU_FAST_LINK, //已失效
             Post_Meta::POST_BILIBILI,
             //Post_Meta::POST_VIDEO, 未使用
 

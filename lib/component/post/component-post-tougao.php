@@ -3,6 +3,7 @@
 namespace mikuclub;
 
 use mikuclub\constant\Config;
+use mikuclub\constant\Post_Meta;
 use mikuclub\constant\Post_Status;
 
 /*
@@ -33,13 +34,15 @@ function print_tougao_post_meta_component($post_id)
 
         $post_date = get_the_date(Config::DATE_FORMAT, $post_id);
         $post_modified_date = get_the_modified_date(Config::DATE_FORMAT, $post_id);
+        $post_submit_source = get_post_meta($post_id, Post_Meta::POST_SUBMIT_SOURCE, true);
+        $post_submit_source_field_class = $post_submit_source ? '' : 'd-none';
 
         //只对管理员可见
         $author_meta_class = User_Capability::is_admin() ? '' : 'd-none';
 
         $output = <<<HTML
 
-            <div class="row small">
+            <div class="row fs-75 gx-2">
 
                 <div class="col-auto">
                     稿件状态: <span class="{$text_color_class}">{$post_status_text}</span>
@@ -48,7 +51,10 @@ function print_tougao_post_meta_component($post_id)
                     创建时间: <span class="text-primary">{$post_date}</span>
                 </div>
                 <div class="col-auto">
-                    最后修改: <span class="text-info">{$post_modified_date}</span>
+                    最后修改: <span class="text-primary">{$post_modified_date}</span>
+                </div>
+                <div class="col-auto {$post_submit_source_field_class}">
+                    投稿来源: <span class="text-primary">{$post_submit_source}</span>
                 </div>
                 <div class="col-auto {$author_meta_class}">
                     作者: <a href="{$author_href}" target="_blank">{$author_name}</a>
