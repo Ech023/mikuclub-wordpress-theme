@@ -9,6 +9,8 @@ use mikuclub\constant\Expired;
 use mikuclub\constant\Option_Meta;
 use mikuclub\constant\Page_Type;
 use mikuclub\constant\Post_Meta;
+use mikuclub\constant\Post_Order;
+use mikuclub\constant\Post_Orderby;
 use mikuclub\Post_Query;
 use mikuclub\constant\Post_Status;
 use mikuclub\constant\Post_Type;
@@ -118,7 +120,7 @@ function get_sticky_post_list($cat_id)
             Post_Query::POST_TYPE => Post_Type::POST,
             Post_Query::POSTS_PER_PAGE => Config::STICKY_POST_FIRST_LIST_LENGTH,
             Post_Query::IGNORE_STICKY_POSTS => 1,
-            Post_Query::ORDERBY => 'post__in',
+            Post_Query::ORDERBY => Post_Orderby::POST__IN,
         ];
 
         //查询文章数据
@@ -163,8 +165,8 @@ function get_sticky_post_list($cat_id)
                     Post_Query::POST_TYPE => Post_Type::POST,
                     Post_Query::IGNORE_STICKY_POSTS => 1,
                     Post_Query::POSTS_PER_PAGE => $missing_length,
-                    Post_Query::ORDERBY => 'meta_value_num',
-                    Post_Query::ORDER => 'DESC',
+                    Post_Query::ORDERBY => Post_Orderby::META_VALUE_NUM,
+                    Post_Query::ORDER => Post_Order::DESC,
                 ];
 
                 $result = array_merge($result,  get_posts($args));
@@ -247,8 +249,8 @@ function get_hot_post_list($term_id, $meta_key, $number = Config::HOT_POST_LIST_
                 Post_Query::POST_STATUS => Post_Status::PUBLISH,
                 Post_Query::POST_TYPE => Post_Type::POST,
                 Post_Query::IGNORE_STICKY_POSTS => 1,
-                Post_Query::ORDERBY => 'meta_value_num',
-                Post_Query::ORDER => 'DESC',
+                Post_Query::ORDERBY => Post_Orderby::META_VALUE_NUM,
+                Post_Query::ORDER => Post_Order::DESC,
             ];
 
             //如果是标签页
@@ -312,7 +314,7 @@ function get_related_post_list($post_id, $number = Config::RELATED_POST_LIST_LEN
             Post_Query::POST_TYPE => Post_Type::POST,
             Post_Query::IGNORE_STICKY_POSTS => 1,
             Post_Query::POST_STATUS => Post_Status::PUBLISH,
-            Post_Query::ORDERBY => 'rand',
+            Post_Query::ORDERBY => Post_Orderby::RAND,
         ];
 
         //设置分类
@@ -382,9 +384,9 @@ function get_fail_down_post_list($author, $cat, $paged, $number = 20)
 
     $args = [
         Post_Query::IGNORE_STICKY_POSTS => 1,
-        Post_Query::ORDERBY => 'meta_value_num',
+        Post_Query::ORDERBY => Post_Orderby::META_VALUE_NUM,
         Post_Query::META_KEY => Post_Meta::POST_FAIL_TIME,
-        Post_Query::ORDER => 'DESC',
+        Post_Query::ORDER => Post_Order::DESC,
         Post_Query::POSTS_PER_PAGE => $number,
         Post_Query::POST_STATUS => Post_Status::PUBLISH,
         Post_Query::POST_TYPE => Post_Type::POST,
@@ -435,7 +437,7 @@ function get_my_favorite_post_list($cat, $search, $paged)
         $args = [
             Post_Query::IGNORE_STICKY_POSTS => 1,
             Post_Query::POST__IN => get_user_favorite(),
-            Post_Query::ORDERBY => 'post__in',
+            Post_Query::ORDERBY => Post_Orderby::POST__IN,
             Post_Query::POSTS_PER_PAGE => Config::POST_LIST_LENGTH,
             Post_Query::POST_STATUS => Post_Status::get_to_array(),
         ];
@@ -492,7 +494,7 @@ function get_my_followed_post_list($number)
             Post_Query::POST_TYPE => Post_Type::POST,
             Post_Query::POSTS_PER_PAGE => $number,
             Post_Query::IGNORE_STICKY_POSTS => 1,
-            Post_Query::ORDERBY => 'modified',
+            Post_Query::ORDERBY => Post_Orderby::MODIFIED,
         ];
 
         $result = get_posts($args);

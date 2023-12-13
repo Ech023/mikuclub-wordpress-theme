@@ -198,6 +198,28 @@ class Post_Submit_Source
 }
 
 /**
+ * 文章排序
+ */
+class Post_Orderby
+{
+
+    const DATE = 'date';
+    const MODIFIED = 'modified';
+    const RAND = 'rand';
+    const META_VALUE_NUM = 'meta_value_num';
+    const POST__IN = 'post__in';
+}
+
+/**
+ * 文章排序正序和倒序, 默认为倒序
+ */
+class Post_Order
+{
+    const ASC = 'ASC';
+    const DESC = 'DESC';
+}
+
+/**
  * 文章评价等级
  */
 class Post_Feedback_Rank extends Constant

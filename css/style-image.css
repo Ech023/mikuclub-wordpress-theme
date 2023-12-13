@@ -11,7 +11,7 @@
     height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-padding) / 2));
 }
 
-/*md*/
+/*lg*/
 @media (min-width: 992px) {
     .carousel.top-slide .carousel-item img {
         height: calc((min(100vw, var(--container-max-width)) * var(--image-scale) - var(--container-padding)) / 12 * 6);

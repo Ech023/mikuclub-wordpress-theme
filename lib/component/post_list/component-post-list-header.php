@@ -5,15 +5,18 @@ namespace mikuclub;
 use mikuclub\constant\Download_Link_Type;
 use mikuclub\constant\Expired;
 use mikuclub\constant\Post_Meta;
+use mikuclub\constant\Post_Orderby;
 use mikuclub\constant\Post_Status;
 use mikuclub\Post_Query;
 
 /**
  * 文章列表自定义排序组件
  * @param bool $show_fail_time_order 是否显示最多失效反馈
+ * @param bool $show_post__in_order 是否根据文章数组ID来排序 (收藏夹页面专用)
+ * @param string $default_custom_orderby 默认初始排序 默认: 根据修改时间
  * @return string
  */
-function print_post_list_header_order($show_fail_time_order = false)
+function print_post_list_header_order($show_fail_time_order = false, $show_post__in_order = false, $default_custom_orderby = Post_Orderby::MODIFIED)
 {
 
 	$array_orderby = [
@@ -24,17 +27,17 @@ function print_post_list_header_order($show_fail_time_order = false)
 			'sub_orderby' => [
 				[
 					'title' => '最新更新',
-					'value' => 'modified',
+					'value' => Post_Orderby::MODIFIED,
 					'parameters' => [
-						Post_Query::CUSTOM_ORDERBY => 'modified',
+						Post_Query::CUSTOM_ORDERBY => Post_Orderby::MODIFIED,
 						Post_Query::CUSTOM_ORDER_DATA_RANGE => '',
 					],
 				],
 				[
 					'title' => '最新发布',
-					'value' => 'date',
+					'value' => Post_Orderby::DATE,
 					'parameters' => [
-						Post_Query::CUSTOM_ORDERBY => 'date',
+						Post_Query::CUSTOM_ORDERBY => Post_Orderby::DATE,
 						Post_Query::CUSTOM_ORDER_DATA_RANGE => '',
 					],
 				],
@@ -120,23 +123,35 @@ function print_post_list_header_order($show_fail_time_order = false)
 		];
 	}
 
+	if($show_post__in_order){
+		$array_orderby[] = [
+			'group' => Post_Orderby::POST__IN,
+			'title' => '根据收藏时间排序',
+			'icon' => 'fa-solid fa-heart',
+			'sub_orderby' => [],
+			'parameters' => [
+				Post_Query::CUSTOM_ORDERBY => Post_Orderby::POST__IN,
+				Post_Query::CUSTOM_ORDER_DATA_RANGE => '',
+			],
+		];
+	}
 
 
 	//如果当前存在 自定义排序参数请求
-	$active_custom_orderby = get_query_var(Post_Query::CUSTOM_ORDERBY, 'modified');
+	$active_custom_orderby = get_query_var(Post_Query::CUSTOM_ORDERBY, $default_custom_orderby);
 	$active_custom_order_data_range  = intval(get_query_var(Post_Query::CUSTOM_ORDER_DATA_RANGE, 30));
 
 
 	//兼容默认时间排序
-	if ($active_custom_orderby === 'modified')
+	if ($active_custom_orderby === Post_Orderby::MODIFIED)
 	{
 		$active_custom_orderby = 'post_date';
-		$active_custom_order_data_range = 'modified';
+		$active_custom_order_data_range = Post_Orderby::MODIFIED;
 	}
-	else if ($active_custom_orderby === 'date')
+	else if ($active_custom_orderby === Post_Orderby::DATE)
 	{
 		$active_custom_orderby = 'post_date';
-		$active_custom_order_data_range = 'date';
+		$active_custom_order_data_range = Post_Orderby::DATE;
 	}
 
 

@@ -127,7 +127,7 @@ function update_default_form_style() {
     $insertImageButton.html(buttonText);
 
     //修改删除图片按钮
-    $page_tougao_element.find('.attachment-delete').html('删除');
+    $page_tougao_element.find('.attachment-delete').addClass('btn btn-sm btn-light-2 px-5  lh-1 text-dark-1').html('删除图片');
 
 
 }
@@ -340,26 +340,37 @@ function on_change_input_download($input) {
         }
 
     }
-    //如果是115盘
-    else if (value.includes('115.com')) {
-
+    //如果是115盘 或者 迅雷盘
+    else if (value.includes('115.com') || value.includes('pan.xunlei.com')) {
         //移除#符号后面的文件名称
         value = value.split('#')[0];
-
     }
 
     //如果"链接:" 不在第一位, 移除所有之前的东西
     if (value.indexOf(linkText) >= 0) {
         value = value.split(linkText)[1];
     }
-    //如果是百度盘 并且访问密码还是空的, 从链接里提取访问码
-    if (value.includes('pan.baidu.com') && !$access_password_element.val()) {
-        //如果链接包含pwd参数
-        const match = value.match(/[?&]pwd=(\w+)/);
-        // 如果匹配到，则返回匹配到的部分的前4个字符
-        if (match && match[1]) {
-            $access_password_element.val(match[1].slice(0, 4));
+    //如果访问密码还是空的, 尝试从链接里提取访问码
+    if (!$access_password_element.val()) {
+        //如果是百度盘/迅雷盘
+        if (value.includes('pan.baidu.com') || value.includes('pan.xunlei.com')) {
+            //如果链接包含pwd参数
+            const match = value.match(/[?&]pwd=(\w+)/);
+            // 如果匹配到，则返回匹配到的部分的前4个字符
+            if (match && match[1]) {
+                $access_password_element.val(match[1].slice(0, 4));
+            }
         }
+        //如果是115盘
+        if (value.includes('115.com')) {
+            //如果链接包含pwd参数
+            const match = value.match(/[?&]password=(\w+)/);
+            // 如果匹配到，则返回匹配到的部分的前4个字符
+            if (match && match[1]) {
+                $access_password_element.val(match[1].slice(0, 4));
+            }
+        }
+
     }
 
     if (!validateURL(value) && !value.includes('magnet')) {

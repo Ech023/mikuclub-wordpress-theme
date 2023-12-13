@@ -7,6 +7,7 @@ namespace mikuclub;
 
 //如果未登陆 重定向回首页
 
+use mikuclub\constant\Post_Orderby;
 use mikuclub\constant\Post_Status;
 use mikuclub\constant\Post_Template;
 use mikuclub\User_Capability;
@@ -27,7 +28,7 @@ $breadcrumbs = print_breadcrumbs_component();
 
 $search_form = post_list_header_search_form();
 $post_list_header_category = print_post_list_header_category();
-$post_list_header_order = print_post_list_header_order();
+$post_list_header_order = print_post_list_header_order(false, true, Post_Orderby::POST__IN);
 $post_list_header_download_type = print_post_list_header_download_type();
 $post_list_header_post_status = print_post_list_header_post_status(Post_Status::get_to_array());
 $custom_post_query = [

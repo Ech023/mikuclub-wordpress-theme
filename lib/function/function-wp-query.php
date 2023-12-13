@@ -9,6 +9,7 @@ use mikuclub\constant\Expired;
 use mikuclub\constant\Option_Meta;
 use mikuclub\constant\Page_Type;
 use mikuclub\constant\Post_Meta;
+use mikuclub\constant\Post_Orderby;
 use mikuclub\Post_Query;
 use mikuclub\constant\Post_Status;
 use mikuclub\constant\Post_Type;
@@ -46,7 +47,7 @@ function set_post_list_query_vars($query_vars)
 
     /*设置默认的文章显示数量*/
     $query_vars[Post_Query::POSTS_PER_PAGE] = Config::POST_LIST_LENGTH;
-    //$query_vars['orderby']        = 'modified'; //使用最后修改时间作为默认排序
+
 
     //如果存在自定义 分类变量
     $custom_cat = $query_vars[Post_Query::CUSTOM_CAT] ?? 0;
@@ -56,12 +57,12 @@ function set_post_list_query_vars($query_vars)
         $query_vars[Post_Query::CAT] = $custom_cat;
     }
 
-    //如果有设置自定义排序
-    $custom_orderby = $query_vars[Post_Query::CUSTOM_ORDERBY] ?? 'modified';
+    //如果有设置自定义排序 默认为 最后修改时间
+    $custom_orderby = $query_vars[Post_Query::CUSTOM_ORDERBY] ?? Post_Orderby::MODIFIED;
     if ($custom_orderby)
     {
         //如果是默认的可选排序
-        if (in_array($custom_orderby, ['modified', 'date', 'post__in']))
+        if (in_array($custom_orderby, [Post_Orderby::MODIFIED, Post_Orderby::DATE, Post_Orderby::POST__IN]))
         {
             $query_vars[Post_Query::ORDERBY] = $custom_orderby;
         }
