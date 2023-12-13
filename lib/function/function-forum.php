@@ -517,3 +517,19 @@ function add_filter_on_wpforo_get_option($value, $option, $default, $cache)
 	return $result;
 }
 //add_filter('wpforo_get_option', 'mikuclub\add_filter_on_wpforo_get_option', 10, 4);
+
+
+/**
+ * 修正论坛消息通知里的链接域名
+ * @param array<int, string> $array_notification
+ * @return array<int, string>
+ */
+function fix_wpforo_notification_list_link($array_notification)
+{
+	$array_notification = array_map(function ($notification_content)
+	{
+		return fix_site_domain_with_current_domain($notification_content);
+	}, $array_notification);
+
+	return $array_notification;
+}

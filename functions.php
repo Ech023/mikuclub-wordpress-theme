@@ -213,14 +213,14 @@ function setup_front_end_script()
             'path' => '/js/function-float-menu-bar.js',
             'in_footer' => false, //必须在顶部, 不然会有视觉延时
         ],
-        
+
         //通用JS AJAX的函数
         [
             'name' => 'js-function-ajax',
             'path' => '/js/function-ajax.js',
             'in_footer' => true,
         ],
-        
+
         //JS 监听
         [
             'name' => 'js-listener',
@@ -269,7 +269,7 @@ function setup_front_end_script()
             'path' => '/js/page-fail-down-list.js',
             'in_footer' => false,
         ],
-       
+
         //JS 收藏页面
         [
             'name' => 'js-favorite',
@@ -580,6 +580,24 @@ function fix_site_domain_with_domain_main($link)
     return $result;
 }
 
+/**
+ * 修正域名地址为当前用户访问的主域名
+ *
+ * @param string $link
+ * @return string
+ */
+function fix_site_domain_with_current_domain($link)
+{
+    $array_search = Web_Domain::get_array_site_domain();
+
+    //获取当前在访问的主域名
+    $new_domain  = get_site_url();
+    $new_domain = preg_replace("(^https?://)", "", $new_domain);
+
+    $result = str_replace($array_search, $new_domain, $link);
+
+    return $result;
+}
 
 /**
  * 格式化DEBUG输出

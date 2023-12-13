@@ -14,6 +14,7 @@ $body_class = esc_attr(implode(' ', get_body_class()));
 $body_header_output = print_body_header_component();
 
 
+
 echo <<<HTML
 
     {$head_output}
