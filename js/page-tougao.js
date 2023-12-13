@@ -238,8 +238,8 @@ function on_change_input_post_title($input) {
     //替换标题的方括号
     // value = value.replace(/\[/g, "【").replace(/]/g, "】").replace(/\(/g, "【").replace(/\)/g, "】").replace(/\{/g, "【").replace(/\}/g, "】").replace(/\「/g, "【").replace(/\」/g, "】");
 
-    value = value.replace(/[\[{(「『]/g, "【");
-    value = value.replace(/[\]})」』]/g, "】");
+    value = value.replace(/[\[{(「『]/g, "【").replaceAll("《", "【");;
+    value = value.replace(/[\]})」』]/g, "】").replaceAll("》", "】");;
 
     $input.val(value);
 }
