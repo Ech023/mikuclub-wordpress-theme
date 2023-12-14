@@ -433,8 +433,8 @@ class Post_Template
     const FAVORITE_POST = 'favorite_post';
     //访问历史文章
     const HISTORY_POST = 'history_post';
-     //投稿管理文章
-     const MANAGE_POST = 'manage_post';
+    //投稿管理文章
+    const MANAGE_POST = 'manage_post';
     //下载失效里的文章
     const FAIL_DOWNLOAD_POST = 'fail_download_post';
 }
@@ -485,6 +485,8 @@ class Download_Link_Type
     //MEGA 盘
     const MEGA = 'mega_drive';
 
+    const PIKPAK = 'pikpak';
+
     /**
      * 解析下载链接来获取对应的下载类型
      *
@@ -513,6 +515,7 @@ class Download_Link_Type
                 'magnet' => static::MAGNET,
                 'sharepoint' => static::ONE_DRIVE,
                 'mega' => static::MEGA,
+                'pikpak' => static::PIKPAK,
             ];
 
             // 识别下载地址对应的网盘名称 一旦找到匹配的关键字，就可以结束循环
@@ -582,14 +585,16 @@ class Download_Link_Type
                 $result = '磁力链接';
                 break;
             case static::ONE_DRIVE:
-                $result = 'OneDrive';
+                $result = 'OneDrive (要梯子)';
                 break;
             case static::MEGA:
-                $result = 'MEGA盘';
+                $result = 'MEGA盘 (要梯子)';
+                break;
+            case static::PIKPAK:
+                $result = 'PikPak盘 (要梯子)';
                 break;
         }
 
         return $result;
     }
-
 }

@@ -566,8 +566,8 @@ function fix_image_domain_with_static($image_src)
 /**
  * 修正域名地址为主域名
  *
- * @param string $link
- * @return string
+ * @param string|string[] $link
+ * @return string|string[]
  */
 function fix_site_domain_with_domain_main($link)
 {
@@ -583,8 +583,8 @@ function fix_site_domain_with_domain_main($link)
 /**
  * 修正域名地址为当前用户访问的主域名
  *
- * @param string $link
- * @return string
+ * @param string|string[] $link
+ * @return string|string[]
  */
 function fix_site_domain_with_current_domain($link)
 {
@@ -595,6 +595,26 @@ function fix_site_domain_with_current_domain($link)
     $new_domain = preg_replace("(^https?://)", "", $new_domain);
 
     $result = str_replace($array_search, $new_domain, $link);
+
+    return $result;
+}
+
+/**
+ * 修复链接的HTTPS前缀
+ *
+ * @param string[] $array_link
+ * @return string[]
+ */
+function fix_https_prefix($array_link)
+{
+    $old_prefix = '//';
+    $new_prefix = 'https:';
+
+    $result = array_map(function ($element) use ($old_prefix, $new_prefix)
+    {
+        // 检查字符串是否以'//'开头，如果就加上https协议
+        return (substr($element, 0, 2) === $old_prefix) ? $new_prefix . $element : $element;
+    }, $array_link);
 
     return $result;
 }

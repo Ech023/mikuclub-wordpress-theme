@@ -101,7 +101,7 @@ body.darkmode .list-group-item
  投稿页面 降低 内容编辑器的亮度
 */
 :root[data-bs-theme="dark"] .page-tougao ul.wpuf-form li .wp-editor-wrap {
-    filter: brightness(80%);
+    filter: brightness(70%);
 }
 
 /**

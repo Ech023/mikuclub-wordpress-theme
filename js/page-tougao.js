@@ -14,6 +14,8 @@ $(function () {
 
         update_default_form_style();
 
+        // setTimeout(update_post_content_editor_style, 300);
+
 
         /* WPUF 3.5.14版本 之后 */
         fix_category_select();
@@ -652,7 +654,21 @@ function actionOnBaiduFastLink() {
 
 }
 
+// function update_post_content_editor_style() {
 
+//     // 获取iframe中的文档对象
+//     const post_content_editor_iframe_Document = $('.page-tougao ul.wpuf-form li .wp-editor-wrap iframe').contents();
+
+//     console.log(post_content_editor_iframe_Document);
+
+//     // 创建style元素
+//     const style_element = $('<style>body { background-color: #2e3135; color: white; }</style>');
+
+//     // 将style元素添加到iframe中的head中
+//     post_content_editor_iframe_Document.find('head').append(style_element);
+//     console.log(post_content_editor_iframe_Document.find('head'));
+
+// }
 
 
 
@@ -699,3 +715,4 @@ function updatePostDate(event) {
     }).done(successCallback).fail(defaultFailCallback).always(completeCallback);
 
 }
+

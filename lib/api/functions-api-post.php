@@ -352,7 +352,7 @@ function api_custom_post_metadata($data)
 	//因为默认批量获取 没有对数组进行反反序列化
 	$metadata[Post_Meta::POST_IMAGES_THUMBNAIL_SRC] = Post_Image::get_array_image_thumbnail_src($post_id);
 	$metadata[Post_Meta::POST_IMAGES_SRC]           = Post_Image::get_array_image_large_src($post_id);
-	$metadata[Post_Meta::POST_IMAGES_FULL_SRC]      = Post_Image::get_array_image_full_src($post_id);
+	$metadata[Post_Meta::POST_IMAGES_FULL_SRC]      = fix_https_prefix(Post_Image::get_array_image_full_src($post_id));
 
 
 	/*
