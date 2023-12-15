@@ -208,6 +208,7 @@ class Post_Orderby
     const RAND = 'rand';
     const META_VALUE_NUM = 'meta_value_num';
     const POST__IN = 'post__in';
+    const RELEVANCE = 'relevance';
 }
 
 /**

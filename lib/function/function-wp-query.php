@@ -9,6 +9,7 @@ use mikuclub\constant\Expired;
 use mikuclub\constant\Option_Meta;
 use mikuclub\constant\Page_Type;
 use mikuclub\constant\Post_Meta;
+use mikuclub\constant\Post_Order;
 use mikuclub\constant\Post_Orderby;
 use mikuclub\Post_Query;
 use mikuclub\constant\Post_Status;
@@ -64,7 +65,9 @@ function set_post_list_query_vars($query_vars)
         //如果是默认的可选排序
         if (in_array($custom_orderby, [Post_Orderby::MODIFIED, Post_Orderby::DATE, Post_Orderby::POST__IN]))
         {
-            $query_vars[Post_Query::ORDERBY] = $custom_orderby;
+            $query_vars[Post_Query::ORDERBY] = [
+                $custom_orderby => 'DESC'
+            ];
         }
         else
         {
@@ -75,7 +78,9 @@ function set_post_list_query_vars($query_vars)
                 'compare' => 'EXISTS',
                 'type'    => 'NUMERIC',
             ];
-            $query_vars[Post_Query::ORDERBY]  = [$custom_orderby => 'DESC'];
+            $query_vars[Post_Query::ORDERBY]  = [
+                $custom_orderby => Post_Order::DESC
+            ];
         }
     }
 
@@ -189,6 +194,21 @@ function set_post_list_query_vars($query_vars)
         $query_vars[Post_Query::CAT] = $cat;
     }
 
+    //如果有搜索内容
+    $search = $query_vars[Post_Query::SEARCH] ?? '';
+    if ($search)
+    {
+        //储存现有的排序
+        $current_order_by = $query_vars[Post_Query::ORDERBY] ?? [];
+        //需要添加的新排序
+        $new_relevance_order = [
+            Post_Orderby::RELEVANCE => Post_Order::DESC,
+        ];
+        //合并新旧排序, 并且让新排序排列在前面
+        $query_vars[Post_Query::ORDERBY] = $new_relevance_order + $current_order_by;
+        // $query_vars[Post_Query::ORDERBY] = $new_relevance_order;
+    }
+  
     return $query_vars;
 }
 

@@ -123,7 +123,8 @@ function print_post_list_header_order($show_fail_time_order = false, $show_post_
 		];
 	}
 
-	if($show_post__in_order){
+	if ($show_post__in_order)
+	{
 		$array_orderby[] = [
 			'group' => Post_Orderby::POST__IN,
 			'title' => '根据收藏时间排序',
