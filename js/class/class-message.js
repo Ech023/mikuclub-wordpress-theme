@@ -251,7 +251,7 @@ class MyForumReply {
                                     ${this.body} 
                                 </div>
                                 <div class="mt-2">
-                                    <a class="small text-dark-2 btn btn-sm btn-light-2" href="${this.post_href}#post-${this.postid}" target="_blank" title="查看来源页面">
+                                    <a class="small text-dark-2 btn btn-sm btn-light-2" href="${this.post_href}" target="_blank" title="查看来源页面">
                                     来源链接: ${this.title}
                                     </a>
                                 </div> 
@@ -260,7 +260,7 @@ class MyForumReply {
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <a class="btn btn-sm btn-light-2" href="${this.post_href}#post-${this.postid}" target="_blank" title="查看来源页面">
+                                <a class="btn btn-sm btn-light-2" href="${this.post_href}" target="_blank" title="查看来源页面">
                                     <i class="fa-solid fa-chevron-right"></i>
                                 </a>
                             </div>
