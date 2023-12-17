@@ -37,6 +37,24 @@ add_action(
 );
 
 /**
+ * 用户更新信息后触发
+ * 
+ * @param int   $user_id      The ID of the user that was just updated.
+ * @param array $userdata     The array of user data that was updated.
+ * @param array $userdata_raw The unedited array of user data that was updated.
+ */
+add_action(
+    'wp_update_user',
+    function ($user_id, $userdata, $userdata_raw)
+    {
+        //清空该用户的缓存
+        File_Cache::delete_user_cache_meta_by_user_id($user_id);
+    },
+    10,
+    3
+);
+
+/**
  * 更改默认登陆cookie的有效时间
  * @param int $expiration
  * @param int $user_id

@@ -41,6 +41,8 @@ class File_Cache
     const HOME_PART_2 = 'home_part_2';
 
     /*用户相关缓存 键名*/
+    //用户的数据
+    const USER_DATA = 'user_data';
     //用户文章数
     const USER_POST_COUNT = 'user_post_count';
     //用户文章查看数
@@ -258,6 +260,19 @@ class File_Cache
         if ($post_id)
         {
             static::delete_directory(File_Cache::DIR_COMMENTS . DIRECTORY_SEPARATOR . $post_id);
+        }
+    }
+
+    /**
+     * 清空单个用户的所有缓存
+     * @param int $user_id
+     * @return void
+     */
+    public static function delete_user_cache_meta_by_user_id($user_id)
+    {
+        if ($user_id)
+        {
+            static::delete_directory(File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id);
         }
     }
 

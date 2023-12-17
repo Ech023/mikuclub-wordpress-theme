@@ -21,26 +21,36 @@ use mikuclub\constant\User_Meta;
 function get_custom_user($user_id)
 {
 
+	$author = File_Cache::get_cache_meta_with_callback(
+		File_Cache::USER_DATA,
+		File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id,
+		Expired::EXP_1_DAY,
+		function () use ($user_id)
+		{
 
-	//如果是0, 创建系统用户实例
-	if ($user_id == 0)
-	{
-		$author = My_User_Model::create_system_user();
-	}
-	else
-	{
-		$user = get_userdata($user_id);
-		if ($user)
-		{
-			//创建自定义用户类
-			$author = new My_User_Model($user);
+			//如果是0, 创建系统用户实例
+			if ($user_id == 0)
+			{
+				$author = My_User_Model::create_system_user();
+			}
+			else
+			{
+				$user = get_userdata($user_id);
+				if ($user)
+				{
+					//创建自定义用户类
+					$author = new My_User_Model($user);
+				}
+				//如果用户不存在, 创建已删除用户模板
+				else
+				{
+					$author = My_User_Model::create_deleted_user();
+				}
+			}
+
+			return $author;
 		}
-		//如果用户不存在, 创建已删除用户模板
-		else
-		{
-			$author = My_User_Model::create_deleted_user();
-		}
-	}
+	);
 
 	return $author;
 }
@@ -75,8 +85,8 @@ function update_user_custom_avatar($user_id, $attachment_id)
 		//保存新头像
 		update_user_meta($user_id, User_Meta::USER_AVATAR, $attachment_id);
 
-		//清空旧头像文件缓存
-		File_Cache::delete_cache_meta(User_Meta::USER_AVATAR, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id);
+		//清空该用户的缓存
+		File_Cache::delete_user_cache_meta_by_user_id($user_id);
 	}
 }
 
