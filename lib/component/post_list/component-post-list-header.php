@@ -85,12 +85,11 @@ function print_post_list_header_order($show_fail_time_order = false, $show_post_
 			'title' =>  '最近12个月内',
 			'value' => 365,
 		],
+		[
+			'title' =>  '无时间限制',
+			'value' => '',
+		],
 	];
-
-
-
-
-
 
 	$array_orderby = array_merge($array_orderby, array_map(function ($orderby_post_meta) use ($array_custom_order_data_range)
 	{
