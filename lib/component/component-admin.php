@@ -90,6 +90,14 @@ function print_theme_config_page()
                 'name' => $clean_cache_key . File_Cache::DIR_FORUM,
                 'text' => '删除论坛缓存',
             ],
+            [
+                'name' => $clean_cache_key . File_Cache::DIR_WP_REST_POSTS,
+                'text' => '删除官方API文章列表缓存',
+            ],
+            [
+                'name' => $clean_cache_key . File_Cache::DIR_WP_REST_COMMENTS,
+                'text' => '删除官方API评论列表缓存',
+            ],
         ]
     );
 

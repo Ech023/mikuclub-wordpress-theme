@@ -21,6 +21,8 @@ class File_Cache
     const DIR_CATEGORY = 'category';
     const DIR_COMPONENTS = 'components';
     const DIR_FORUM = 'forum';
+    const DIR_WP_REST_POSTS = 'wp_rest_posts';
+    const DIR_WP_REST_COMMENTS = 'wp_rest_comments';
 
     /*全站相关缓存 键名*/
     const SITE_POST_COUNT = 'count_total_post';
@@ -110,6 +112,9 @@ class File_Cache
     const RECENT_FORUM_TOPIC_LIST = 'recent_forum_topic_list';
 
 
+    /*官方REST API 接口 */
+    const WP_REST_POSTS = 'wp_rest_posts';
+    const WP_REST_COMMENTS = 'wp_rest_comments';
 
     /**
      * 读取缓存
@@ -260,6 +265,7 @@ class File_Cache
         if ($post_id)
         {
             static::delete_directory(File_Cache::DIR_COMMENTS . DIRECTORY_SEPARATOR . $post_id);
+            static::delete_directory(File_Cache::DIR_WP_REST_COMMENTS . DIRECTORY_SEPARATOR . $post_id);
         }
     }
 

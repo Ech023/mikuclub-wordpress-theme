@@ -116,6 +116,8 @@ function delete_theme_cache()
         File_Cache::DIR_COMMENTS,
         File_Cache::DIR_CATEGORY,
         File_Cache::DIR_FORUM,
+        File_Cache::DIR_WP_REST_POSTS,
+        File_Cache::DIR_WP_REST_COMMENTS,
     ];
     //遍历每个缓存类型
     foreach ($array_type_cache as $type)

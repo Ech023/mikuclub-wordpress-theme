@@ -320,7 +320,7 @@ function show_wpforo_notification_alert() {
  */
 function open_search_page($form) {
 
-    const search_value = $form.find('input[name="search"]').val();
+    let search_value = $form.find('input[name="search"]').val();
 
     //如果搜索内容为空
     if (!search_value) {
@@ -328,6 +328,7 @@ function open_search_page($form) {
         return;
     }
 
+    search_value = search_value.substring(0, 100);
     const path = encodeURIComponent(search_value);
     location.href = `${MY_SITE.home}/search/${path}`;
 
@@ -339,7 +340,8 @@ function open_search_page($form) {
  */
 function on_submit_search_form($form) {
 
-    const search_value = $form.find('input[name="search"]').val();
+    let search_value = $form.find('input[name="search"]').val();
+    search_value = search_value.substring(0, 100);
 
     //如果搜索内容为空
     // if (!search_value) {
