@@ -60,6 +60,13 @@ class File_Cache
     //用户徽章
     const USER_BADGE = 'user_badge';
 
+    //用户收到的私信列表
+    const USER_PRIVATE_MESSAGE_LIST = 'user_private_message_list';
+    //用户收到的评论回复列表
+    const USER_COMMENT_RELY_LIST = 'user_comment_reply_list';
+    //用户收到的论坛回复列表
+    const USER_FORUM_RELY_LIST = 'user_forum_reply_list';
+
 
     /*文章列表相关缓存 键名*/
 

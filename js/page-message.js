@@ -27,8 +27,8 @@ $(function () {
 
         //绑定列表展开事件, 获取和特定收件人之间的消息列表
         $message_page_element.on('show.bs.collapse', '.message-item', '', function () {
-           
-           get_message_list_with_one_sender($(this));
+
+            get_message_list_with_one_sender($(this));
         });
 
         //绑定删除私信按钮点击事件
@@ -82,10 +82,9 @@ function get_message_list() {
         case MESSAGE_TYPE.commentReply:
             url = URLS.comments;
             break;
-        /*
-    case MESSAGE_TYPE.forumReply:
-        url = URLS.bbpressReply;
-        break;*/
+        case MESSAGE_TYPE.forumReply:
+            url = URLS.forumReplyList;
+            break;
     }
 
     //创建请求数据
@@ -151,7 +150,7 @@ function get_message_list() {
  * @param {jQuery} $message_element
  */
 function get_message_list_with_one_sender($message_element) {
-    
+
 
     let $message_element_accordion_body = $message_element.find('.accordion-body');
 
@@ -245,7 +244,7 @@ function get_message_list_with_one_sender($message_element) {
         defaultFailCallback,
         () => {
             // hide_loading_modal(); //点击头像的时候会触发 无法隐藏的BUG
-            
+
         }
     );
 

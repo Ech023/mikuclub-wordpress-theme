@@ -12,8 +12,14 @@ use function mikuclub\print_adult_404_content_for_no_logging_user;
 get_header();
 
 //如果用户有登陆 清空论坛消息通知计数
-if (is_user_logged_in())
+if (is_user_logged_in() && get_wpforo_notification_unread_count() > 0)
 {
+	// //清空所有论坛通知
+	// if (function_exists('WPF'))
+	// {
+	// 	WPF()->activity->clear_notifications();
+	// }
+
 	Session_Cache::set(Session_Cache::USER_FORUM_NOTIFICATION_UNREAD_COUNT, 0);
 }
 

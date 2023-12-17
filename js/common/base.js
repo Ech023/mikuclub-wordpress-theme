@@ -16,7 +16,7 @@ const MESSAGE_TYPE = {
     privateMessage: 'private_message',
     privateMessageWithOneSender: 'private_message_with_one_sender',
     commentReply: 'comment_reply',
-    //forumReply: 'bbpress_reply',
+    forumReply: 'forum_reply',
 };
 
 //文章类型
@@ -91,7 +91,7 @@ const URLS = {
     addStickyComment: MY_SITE.apiRoot + UTILS_PATH + 'add_sticky_comment',
     deleteStickyComment: MY_SITE.apiRoot + UTILS_PATH + 'delete_sticky_comment',
 
-
+    forumReplyList: MY_SITE.apiRoot + UTILS_PATH + 'forum_reply_list',
 };
 
 const HTTP_METHOD = {

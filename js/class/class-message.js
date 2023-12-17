@@ -154,7 +154,7 @@ class MyCommentReply {
     toHTML() {
 
 
-        let author_avatar = `
+        const author_avatar = `
 
                 <a class="" href="${this.author.user_href} " title="查看用户主空间" target="_blank">
                     <img class="avatar rounded-circle" src="${this.author.user_image}" width="40" height="40" alt="用户头像">
@@ -170,13 +170,6 @@ class MyCommentReply {
             `;
         }
 
-        let parentPostLink = '';
-        if (this.comment_post_href) {
-            parentPostLink = `
-                        <a class="stretched-link " href="${this.comment_post_href}#comments-part" target="_blank" title="查看来源页面"></a>
-            `;
-
-        }
 
         return `
 
@@ -214,21 +207,23 @@ class MyCommentReply {
 
 
 }
-/*
+
 class MyForumReply {
 
-    constructor(forumReply) {
+    constructor(forum_reply) {
 
-        this.id = forumReply.id;
-        this.post_content = forumReply.post_content;
-        this.post_date = forumReply.post_date;
-        this.parent_post_title = forumReply.parent_post_title;
-        this.parent_post_href = forumReply.parent_post_href;
+        this.postid = forum_reply.postid;
+        this.parentid = forum_reply.parentid;
+        this.forumid = forum_reply.forumid;
+        this.topicid = forum_reply.topicid;
+        this.userid = forum_reply.userid;
+        this.title = forum_reply.title;
+        this.body = forum_reply.body;
+        this.created = forum_reply.created;
+        this.modified = forum_reply.modified;
+        this.post_href = forum_reply.post_href;
 
-        this.post_author = new MyAuthor(forumReply.post_author);
-
-        this.parent_user_read = forumReply.parent_user_read;
-
+        this.author = new MyAuthor(forum_reply.author);
 
     }
 
@@ -236,64 +231,47 @@ class MyForumReply {
     toHTML() {
 
 
-        let author_avatar = `
+        const author_avatar = `
 
-                <a href="${this.post_author.user_href}" title="查看用户空间" target="_blank">
-                    <img class="avatar rounded-circle" src="${this.post_author.user_image}" width="40" height="40" alt="用户头像">
-                </a>`;
-
-        let unread = '';
-        //如果是未读
-        if (this.parent_user_read !== '') {
-            unread = `
-                <span class="badge text-bg-miku">
-                    未读
-                </span>
-            `;
-        }
-
-        let parentPostLink = '';
-        if (this.parent_post_href) {
-            parentPostLink = `
-                 <a class="stretched-link " href="${this.parent_post_href}" target="_blank" title="查看来源页面"></a>
-            `;
-        }
-
-        //内容移除html标签
-        this.post_content = this.post_content.replace(/(<([^>]+)>)/ig, '');
+        <a class="" href="${this.author.user_href} " title="查看用户主空间" target="_blank">
+            <img class="avatar rounded-circle" src="${this.author.user_image}" width="40" height="40" alt="用户头像">
+        </a>`;
 
 
         return `
 
-            <div class="card message-item border-bottom-0 rounded-0 " >
-                    <div class="card-header row bg-transparent  align-items-center border-0 py-3 cursor_pointer"  >
-                             <div class="col-6 col-md-2 ">
+            <div class="message-item border-bottom">
+                    <div class="row align-items-center p-2 gx-2"  >
+                            <div class="col-12 col-md-2">
                                 ${author_avatar}
-                                <span class="mx-2 display-name">${this.post_author.display_name}</span>
+                                <span class="mx-2 display-name small">${this.author.display_name}</span>
                             </div>
-                           <div class="col-6 col-md-2">
-                                <i class="fa-solid fa-clock"></i> ${this.post_date}
+                            <div class="col mt-2 mt-md-0">
+                                <div>
+                                    ${this.body} 
+                                </div>
+                                <div class="mt-2">
+                                    <a class="small text-dark-2 btn btn-sm btn-light-2" href="${this.post_href}#post-${this.postid}" target="_blank" title="查看来源页面">
+                                    来源链接: ${this.title}
+                                    </a>
+                                </div> 
+                                <div class="small text-dark-2 mt-2">
+                                    时间: ${this.created}
+                                </div>
                             </div>
-                             <div class="col-9 col-md-6 text-truncate mt-2 mt-md-0">
-                                <div class="">${this.post_content}</div>
-                                <div class="small mt-3">帖子来源: ${this.parent_post_title}</div> 
+                            <div class="col-auto">
+                                <a class="btn btn-sm btn-light-2" href="${this.post_href}#post-${this.postid}" target="_blank" title="查看来源页面">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </a>
                             </div>
-                            <div class="col-1">
-                                ${unread}
-                            </div>
-                            <div class="col-1">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </div>
-                            ${parentPostLink}
-
                     </div>
                     
             </div>
-        
+
         `;
 
     }
-}*/
+}
 
 
 /**
@@ -329,10 +307,9 @@ class MyMessageList extends Array {
                     case MESSAGE_TYPE.commentReply:
                         myPrivateMessage = new MyCommentReply(message);
                         break;
-                    /*
                     case MESSAGE_TYPE.forumReply:
                         myPrivateMessage = new MyForumReply(message);
-                        break;*/
+                        break;
                 }
 
                 this.push(myPrivateMessage);

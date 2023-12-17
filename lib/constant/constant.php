@@ -27,7 +27,7 @@ class Config
 {
 
     //CSS和JS版本号
-    const CSS_JS_VERSION = '1.11';
+    const CSS_JS_VERSION = '1.12';
 
     //默认时间格式
     const DATE_FORMAT_SHORT = 'Y-m-d';
@@ -78,6 +78,8 @@ class Config
 
     //单页的回复评论数量
     const NUMBER_COMMENT_REPLY_PER_PAGE = 20;
+    //单页的论坛回复数量
+    const NUMBER_FORUM_REPLY_PER_PAGE = 20;
 
     //单页的私信人数量
     const NUMBER_PRIVATE_MESSAGE_LIST_PER_PAGE = 20;
@@ -446,6 +448,8 @@ class Message_Type
 {
     const PRIVATE_MESSAGE = 'private_message';
     const COMMENT_REPLY = 'comment_reply';
+    const FORUM_REPLY = 'forum_reply';
+
 }
 
 /**

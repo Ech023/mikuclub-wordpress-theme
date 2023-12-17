@@ -59,8 +59,11 @@ class My_Wpforo_Topic_Model
         $this->id           = intval($result_object->topicid);
         $this->post_date    = $result_object->modified;
         $this->post_title = $result_object->title;
-        $this->post_href  = wpforo_topic($this->id, 'url');
-        
+
+        if (function_exists('wpforo_topic'))
+        {
+            $this->post_href  = wpforo_topic($this->id, 'url');
+        }
 
         $this->post_author_id = intval($result_object->userid);
         $this->post_author = get_custom_user($this->post_author_id);

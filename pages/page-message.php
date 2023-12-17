@@ -13,11 +13,10 @@ use mikuclub\User_Capability;
 
 use function mikuclub\print_breadcrumbs_component;
 use function mikuclub\get_user_comment_reply_unread_count;
-use function mikuclub\get_user_forum_notification_unread_count;
+use function mikuclub\get_wpforo_notification_unread_count;
 use function mikuclub\get_user_private_message_unread_count;
 
 
-use function mikuclub\set_user_private_message_as_read;
 
 User_Capability::prevent_not_logged_user();
 
@@ -28,9 +27,19 @@ $user_id = get_current_user_id();
 //尝试从url参数中获取当前消息类型
 $active_message_type = $_GET['type'] ?? Message_Type::PRIVATE_MESSAGE;
 
+//如果消息类型是论坛回复 并且未读通知数量大于0
+if ($active_message_type === Message_Type::FORUM_REPLY && get_wpforo_notification_unread_count() > 0)
+{
+	//清空所有论坛通知
+	if (function_exists('WPF'))
+	{
+		WPF()->activity->clear_notifications();
+	}
+}
 
 $breadcrumbs = print_breadcrumbs_component();
 
+$page_link = get_page_link();
 
 $nav_items = [
 	[
@@ -39,7 +48,7 @@ $nav_items = [
 		'name'      => '我的私信',
 		'count'     => get_user_private_message_unread_count(),
 		'count_key' => Session_Cache::USER_PRIVATE_MESSAGE_UNREAD_COUNT,
-		'page_link' => get_page_link(),
+		'page_link' => $page_link,
 		'active' => 'btn-light-2',
 	],
 	[
@@ -48,16 +57,19 @@ $nav_items = [
 		'name'      => '评论回复',
 		'count'     => get_user_comment_reply_unread_count(),
 		'count_key' => Session_Cache::USER_COMMENT_REPLY_UNREAD_COUNT,
-		'page_link' => get_page_link(),
+		'page_link' => $page_link,
 		'active' => 'btn-light-2',
 	],
 	[
-		'type_key' => 'show_notification',
-		'type'      => 1,
+		// 'type_key' => 'show_notification',
+		// 'type'      => 1,
+		'type_key' => 'type',
+		'type'      => Message_Type::FORUM_REPLY,
 		'name'      => '论坛回复',
-		'count'     => get_user_forum_notification_unread_count(),
+		'count'     => get_wpforo_notification_unread_count(),
 		'count_key' => Session_Cache::USER_FORUM_NOTIFICATION_UNREAD_COUNT,
-		'page_link' => get_home_url() . '/forums',
+		// 'page_link' => get_home_url() . '/forums',
+		'page_link' => $page_link,
 		'active' => 'btn-light-2',
 	]
 

@@ -368,32 +368,37 @@ function get_comment_reply_list($paged = 1, $number_per_page = Config::NUMBER_CO
 
     if ($user_id)
     {
-
-        $args = [
-            'paged' => $paged,
-            'meta_key' => Comment_Meta::COMMENT_PARENT_USER_ID,
-            'meta_value' => $user_id,
-            'status' => 'approve',
-            'number' => $number_per_page,
-        ];
-
-        $query_result = get_comments($args);
-
-        $result = array_map(function (WP_Comment $wp_comment)
+        $result = File_Cache::get_cache_meta_with_callback(File_Cache::USER_COMMENT_RELY_LIST, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id, Expired::EXP_10_MINUTE, function () use ($paged, $number_per_page, $user_id)
         {
-            return new My_Comment_Reply_Model($wp_comment);
-        }, $query_result);
 
-        //遍历结果
-        foreach ($result as $comment)
-        {
-            //如果评论回复还是未读
-            if (!$comment->comment_parent_user_read)
+            $args = [
+                'paged' => $paged,
+                'meta_key' => Comment_Meta::COMMENT_PARENT_USER_ID,
+                'meta_value' => $user_id,
+                'status' => 'approve',
+                'number' => $number_per_page,
+            ];
+
+            $query_result = get_comments($args);
+
+            $result = array_map(function (WP_Comment $wp_comment)
             {
-                //把所有请求过的评论更新为已读
-                update_comment_parent_user_as_read($comment->comment_id);
+                return new My_Comment_Reply_Model($wp_comment);
+            }, $query_result);
+
+            //遍历结果
+            foreach ($result as $comment)
+            {
+                //如果评论回复还是未读
+                if (!$comment->comment_parent_user_read)
+                {
+                    //把所有请求过的评论更新为已读
+                    update_comment_parent_user_as_read($comment->comment_id);
+                }
             }
-        }
+
+            return $result;
+        });
     }
 
     return $result;

@@ -4,6 +4,7 @@ namespace mikuclub;
 
 use mikuclub\constant\Comment_Meta;
 use mikuclub\constant\Config;
+use mikuclub\constant\Expired;
 use WP_Error;
 
 /**
@@ -112,7 +113,7 @@ function get_user_total_unread_count()
     return
         get_user_private_message_unread_count() +
         get_user_comment_reply_unread_count() +
-        get_user_forum_notification_unread_count();
+        get_wpforo_notification_unread_count();
 }
 
 
@@ -133,8 +134,6 @@ function get_user_total_unread_count()
 function get_user_private_message_list_grouped($paged = 1, $number_per_page = Config::NUMBER_PRIVATE_MESSAGE_LIST_PER_PAGE)
 {
 
-    global $wpdb;
-
     $result = [];
 
     $user_id = get_current_user_id();
@@ -142,35 +141,40 @@ function get_user_private_message_list_grouped($paged = 1, $number_per_page = Co
     //必须拥有当前用户id
     if ($user_id)
     {
-        //计算数据表列 的偏移值 来达到分页效果
-        $offset = ($paged - 1) * $number_per_page;
 
-        //         //首先需要获取用户收到的所有私信
-        //         $query1 = <<<SQL
-        //             SELECT 
-        //                 * 
-        //             FROM 
-        //                 mm_message 
-        //             WHERE 
-        //                 recipient_id = {$user_id} 
-        //             ORDER BY 
-        //                 ID DESC
-        // SQL;
-        //         //根据 发件人ID 进行 分组, 然后根据私信ID大小进行倒序 , 以此;来 获取每个发件人最后发送的私信数据
-        //         $query2 = <<<SQL
-        //             SELECT 
-        //                 tmp.* 
-        //             FROM 
-        //                 ( {$query1} ) tmp 
-        //             GROUP BY 
-        //                 tmp.sender_id 
-        //             ORDER BY 
-        //                 tmp.ID DESC 
-        //             LIMIT 
-        //                 {$offset} , {$number_per_page}
-        // SQL;
+        $result = File_Cache::get_cache_meta_with_callback(File_Cache::USER_PRIVATE_MESSAGE_LIST, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id, Expired::EXP_1_HOUR, function () use ($paged, $number_per_page, $user_id)
+        {
+            global $wpdb;
 
-        $query = <<<SQL
+            //计算数据表列 的偏移值 来达到分页效果
+            $offset = ($paged - 1) * $number_per_page;
+
+            //         //首先需要获取用户收到的所有私信
+            //         $query1 = <<<SQL
+            //             SELECT 
+            //                 * 
+            //             FROM 
+            //                 mm_message 
+            //             WHERE 
+            //                 recipient_id = {$user_id} 
+            //             ORDER BY 
+            //                 ID DESC
+            // SQL;
+            //         //根据 发件人ID 进行 分组, 然后根据私信ID大小进行倒序 , 以此;来 获取每个发件人最后发送的私信数据
+            //         $query2 = <<<SQL
+            //             SELECT 
+            //                 tmp.* 
+            //             FROM 
+            //                 ( {$query1} ) tmp 
+            //             GROUP BY 
+            //                 tmp.sender_id 
+            //             ORDER BY 
+            //                 tmp.ID DESC 
+            //             LIMIT 
+            //                 {$offset} , {$number_per_page}
+            // SQL;
+
+            $query = <<<SQL
             SELECT 
                 mm_message.ID,
                 mm_message.sender_id,
@@ -224,33 +228,37 @@ function get_user_private_message_list_grouped($paged = 1, $number_per_page = Co
 
 SQL;
 
-        $query_results = $wpdb->get_results($query);
+            $query_results = $wpdb->get_results($query);
 
-        //转换成 My_Private_Message_Model
-        $result = array_map(function ($object) use ($user_id)
-        {
-            if (intval($object->sender_id) === $user_id)
+            //转换成 My_Private_Message_Model
+            $result = array_map(function ($object) use ($user_id)
             {
-                //如果发件人是用户自己, 说明是未收到回复的私信, 
-                //需要互换收件人和发件人 避免错误
-                $object->sender_id = $object->recipient_id;
-                $object->recipient_id = $user_id;
-                //如果对方还未读消息, 设置一个特殊状态码来注明
-                if(intval($object->status) === 0){
-                    $object->status = 2;
+                if (intval($object->sender_id) === $user_id)
+                {
+                    //如果发件人是用户自己, 说明是未收到回复的私信, 
+                    //需要互换收件人和发件人 避免错误
+                    $object->sender_id = $object->recipient_id;
+                    $object->recipient_id = $user_id;
+                    //如果对方还未读消息, 设置一个特殊状态码来注明
+                    if (intval($object->status) === 0)
+                    {
+                        $object->status = 2;
+                    }
+                    else
+                    {
+                        $object->status = 3;
+                    }
                 }
-                else{
-                    $object->status = 3;
-                }
 
-            }
+                $model = new My_Private_Message_Model($object);
 
-            $model = new My_Private_Message_Model($object);
+                return $model;
+            }, $query_results);
 
-            return $model;
-        }, $query_results);
+            // var_dump($result);
 
-        // var_dump($result);
+            return $result;
+        });
     }
 
     return $result;
@@ -379,6 +387,10 @@ function send_private_message($recipient_id, $message_content, $respond = 0, $is
     {
         return new WP_Error('500', __FUNCTION__ . ' : ' . $wpdb->last_error);
     }
+
+    //清空私信缓存
+    File_Cache::delete_cache_meta(File_Cache::USER_PRIVATE_MESSAGE_LIST, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $sender_id);
+    File_Cache::delete_cache_meta(File_Cache::USER_PRIVATE_MESSAGE_LIST, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $recipient_id);
 
 
     $model =  new My_Private_Message_Model();

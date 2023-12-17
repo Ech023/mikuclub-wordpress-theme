@@ -151,11 +151,12 @@ HTML;
 
         $private_message_page_link = add_query_arg('type', Message_Type::PRIVATE_MESSAGE, $home . '/message');
         $replay_comment_page_link = add_query_arg('type', Message_Type::COMMENT_REPLY, $home . '/message');
-        $forum_page_link = add_query_arg('show_notification', 1, $home . '/forums');
+        // $forum_page_link = add_query_arg('show_notification', 1, $home . '/forums');
+        $forum_page_link = add_query_arg('type', Message_Type::FORUM_REPLY, $home . '/message');
 
         $user_private_message_unread_count = get_user_private_message_unread_count() ?: '';
         $user_comment_reply_unread_count =  get_user_comment_reply_unread_count() ?: '';
-        $user_forum_notification_unread_count = get_user_forum_notification_unread_count() ?: '';
+        $user_forum_notification_unread_count = get_wpforo_notification_unread_count() ?: '';
 
         $menu_items .= <<<HTML
 

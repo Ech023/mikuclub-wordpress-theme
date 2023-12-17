@@ -114,7 +114,7 @@ HTML;
  * @return int
  * @global $wpdb
  */
-function get_user_forum_notification_unread_count()
+function get_wpforo_notification_unread_count()
 {
 	global $wpdb;
 
@@ -131,9 +131,9 @@ function get_user_forum_notification_unread_count()
 		{
 
 			//消息类型
+			$type = 'new_reply';
 			$itemtype = 'alert';
-			//统计数量
-			$row_count = 100;
+
 
 			$query = <<<SQL
                 SELECT 
@@ -141,12 +141,12 @@ function get_user_forum_notification_unread_count()
                 FROM  
                     mm_wpforo_activity 
                 WHERE 
+					type = '{$type}'
+				AND
                     itemtype = '{$itemtype}' 
                 AND 
                     userid = {$user_id} 
-                ORDER BY 
-                    id DESC 
-				LIMIT 0 , {$row_count}
+
 SQL;
 
 			$result = intval($wpdb->get_var($query));
@@ -532,4 +532,148 @@ function fix_wpforo_notification_list_link($array_notification)
 	}, $array_notification);
 
 	return $array_notification;
+}
+
+/**
+ * 获取用户收到的论坛回复列表
+ *
+ * @param int $paged 当前页码
+ * @param int $number_per_page 每页显示数量
+ *
+ * @return My_Wpforo_Reply_Model[] 私信列表
+ * 
+ * @global $wpdb
+ */
+function get_wpforo_reply_list($paged = 1, $number_per_page = Config::NUMBER_FORUM_REPLY_PER_PAGE)
+{
+
+	$result = [];
+
+	$user_id = get_current_user_id();
+
+	//必须拥有当前用户id
+	if ($user_id)
+	{
+		$result = File_Cache::get_cache_meta_with_callback(File_Cache::USER_FORUM_RELY_LIST, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id, Expired::EXP_10_MINUTE, function () use ($paged, $number_per_page, $user_id)
+		{
+			global $wpdb;
+
+			//计算数据表列 的偏移值 来达到分页效果
+			$offset = ($paged - 1) * $number_per_page;
+
+			$query = <<<SQL
+				(
+					/* 直接回复用户创建的主题的 */
+					SELECT 
+						mm_wpforo_posts.postid,
+						mm_wpforo_posts.parentid,
+						mm_wpforo_posts.forumid,
+						mm_wpforo_posts.topicid,
+						mm_wpforo_posts.userid,
+						mm_wpforo_posts.title,
+						mm_wpforo_posts.body,
+						mm_wpforo_posts.created,
+						mm_wpforo_posts.modified,
+						mm_wpforo_posts.likes,
+						mm_wpforo_posts.votes,
+						mm_wpforo_posts.is_answer,
+						mm_wpforo_posts.is_first_post,
+						mm_wpforo_posts.status,
+						mm_wpforo_posts.name,
+						mm_wpforo_posts.email,
+						mm_wpforo_posts.private,
+						mm_wpforo_posts.root
+					FROM 
+						mm_wpforo_posts
+					WHERE
+		
+						topicid IN
+						(
+							/* 获取用户自己发的主题ID */
+							SELECT 
+								topicid
+							FROM 
+								mm_wpforo_topics 
+							WHERE
+								status = 0
+							AND
+								userid = {$user_id}
+						)
+					AND
+						parentid = 0
+					AND
+						status = 0
+					AND
+						private = 0
+					AND
+						userid <> {$user_id}
+				)
+				UNION
+				(
+					/* 回复了用户发表的回复的 */
+					SELECT 
+						mm_wpforo_posts.postid,
+						mm_wpforo_posts.parentid,
+						mm_wpforo_posts.forumid,
+						mm_wpforo_posts.topicid,
+						mm_wpforo_posts.userid,
+						mm_wpforo_posts.title,
+						mm_wpforo_posts.body,
+						mm_wpforo_posts.created,
+						mm_wpforo_posts.modified,
+						mm_wpforo_posts.likes,
+						mm_wpforo_posts.votes,
+						mm_wpforo_posts.is_answer,
+						mm_wpforo_posts.is_first_post,
+						mm_wpforo_posts.status,
+						mm_wpforo_posts.name,
+						mm_wpforo_posts.email,
+						mm_wpforo_posts.private,
+						mm_wpforo_posts.root
+					FROM 
+						mm_wpforo_posts
+					WHERE
+						parentid IN
+						(
+							/* 获取用户自己的回复帖子ID */
+							SELECT
+								postid 
+							FROM
+								mm_wpforo_posts 
+							WHERE
+								status = 0
+							AND
+								userid = 1
+						)
+					AND
+						status = 0
+					AND
+						private = 0
+					AND
+						userid <> {$user_id}
+				)
+				ORDER BY 
+					created DESC 
+				LIMIT 
+					{$offset} , {$number_per_page}
+	
+SQL;
+
+			$query_results = $wpdb->get_results($query);
+
+			//转换成 My_Private_Message_Model
+			$result = array_map(function ($object)
+			{
+				$model = new My_Wpforo_Reply_Model($object);
+
+				return $model;
+			}, $query_results);
+
+			// var_dump($result);
+
+			return $result;
+		});
+	}
+
+	return $result;
 }

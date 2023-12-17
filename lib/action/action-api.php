@@ -27,3 +27,6 @@ add_action('rest_api_init', 'mikuclub\register_custom_user_metadata');
 
 /* util接口 */
 add_action('rest_api_init', 'mikuclub\register_custom_api');
+
+/* 论坛接口 */
+add_action('rest_api_init', 'mikuclub\register_custom_forum_api');
