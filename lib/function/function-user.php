@@ -21,19 +21,18 @@ use mikuclub\constant\User_Meta;
 function get_custom_user($user_id)
 {
 
-	$author = File_Cache::get_cache_meta_with_callback(
-		File_Cache::USER_DATA,
-		File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id,
-		Expired::EXP_1_DAY,
-		function () use ($user_id)
-		{
-
-			//如果是0, 创建系统用户实例
-			if ($user_id == 0)
-			{
-				$author = My_User_Model::create_system_user();
-			}
-			else
+	//如果是0, 创建系统用户实例
+	if ($user_id == 0)
+	{
+		$author = My_User_Model::create_system_user();
+	}
+	else
+	{
+		$author = File_Cache::get_cache_meta_with_callback(
+			File_Cache::USER_DATA . '_' . $user_id,
+			File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id,
+			Expired::EXP_1_DAY,
+			function () use ($user_id)
 			{
 				$user = get_userdata($user_id);
 				if ($user)
@@ -46,11 +45,11 @@ function get_custom_user($user_id)
 				{
 					$author = My_User_Model::create_deleted_user();
 				}
+				return $author;
 			}
+		);
+	}
 
-			return $author;
-		}
-	);
 
 	return $author;
 }

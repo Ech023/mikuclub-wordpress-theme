@@ -142,7 +142,12 @@ function get_user_private_message_list_grouped($paged = 1, $number_per_page = Co
     if ($user_id)
     {
 
-        $result = File_Cache::get_cache_meta_with_callback(File_Cache::USER_PRIVATE_MESSAGE_LIST, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id, Expired::EXP_1_HOUR, function () use ($paged, $number_per_page, $user_id)
+        $cache_key = implode('_', [
+            File_Cache::USER_PRIVATE_MESSAGE_LIST,
+            $paged,
+            $number_per_page
+        ]);
+        $result = File_Cache::get_cache_meta_with_callback($cache_key, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id, Expired::EXP_1_HOUR, function () use ($paged, $number_per_page, $user_id)
         {
             global $wpdb;
 
