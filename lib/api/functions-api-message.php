@@ -42,7 +42,7 @@ function api_get_private_messages($data)
 		$sender_id = Input_Validator::get_array_value($data, 'sender_id', Input_Validator::TYPE_INT, false);
 
 		//如果有指定特定 发件人,
-		if ($sender_id)
+		if (!is_null($sender_id))
 		{
 			//获取和特定发件人之间的私信列表
 			$result = get_user_private_message_list_with_one_sender($sender_id, $paged);
