@@ -554,7 +554,12 @@ function get_wpforo_reply_list($paged = 1, $number_per_page = Config::NUMBER_FOR
 	//必须拥有当前用户id
 	if ($user_id)
 	{
-		$result = File_Cache::get_cache_meta_with_callback(File_Cache::USER_FORUM_RELY_LIST, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id, Expired::EXP_10_MINUTE, function () use ($paged, $number_per_page, $user_id)
+		$cache_key = implode('_', [
+			File_Cache::USER_FORUM_RELY_LIST,
+			$paged,
+			$number_per_page
+		]);
+		$result = File_Cache::get_cache_meta_with_callback($cache_key, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id, Expired::EXP_15_MINUTE, function () use ($paged, $number_per_page, $user_id)
 		{
 			global $wpdb;
 
