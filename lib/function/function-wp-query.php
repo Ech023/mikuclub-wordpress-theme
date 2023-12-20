@@ -200,15 +200,17 @@ function set_post_list_query_vars($query_vars)
     {
         //储存现有的排序
         $current_order_by = $query_vars[Post_Query::ORDERBY] ?? [];
-        //需要添加的新排序
-        $new_relevance_order = [
-            Post_Orderby::RELEVANCE => Post_Order::DESC,
-        ];
-        //合并新旧排序, 并且让新排序排列在前面
-        $query_vars[Post_Query::ORDERBY] = $new_relevance_order + $current_order_by;
-        // $query_vars[Post_Query::ORDERBY] = $new_relevance_order;
+        // //需要添加的新排序
+        // $new_relevance_order = [
+        //     Post_Orderby::RELEVANCE => Post_Order::DESC,
+        // ];
+        // //合并新旧排序, 并且让新排序排列在前面
+        // $query_vars[Post_Query::ORDERBY] = $new_relevance_order + $current_order_by;
+
+        //有搜索的话 就直接取消排序
+        unset($query_vars[Post_Query::ORDERBY]);
     }
-  
+
     return $query_vars;
 }
 

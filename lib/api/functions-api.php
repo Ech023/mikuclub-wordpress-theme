@@ -200,17 +200,17 @@ function delete_trash_post()
  */
 function test_function($data)
 {
-	// //小号ID
-	// $adsense_user_id = 268048;
+	//小号ID
+	$adsense_user_id = 309794;
 
-	// //设置http状态下的登陆cookie
-	// wp_set_auth_cookie($adsense_user_id, true, false);
-	// //设置https状态下的登陆cookie
-	// wp_set_auth_cookie($adsense_user_id, true, true);
-	// //设置当前用户
-	// wp_set_current_user($adsense_user_id);
+	//设置http状态下的登陆cookie
+	wp_set_auth_cookie($adsense_user_id, true, false);
+	//设置https状态下的登陆cookie
+	wp_set_auth_cookie($adsense_user_id, true, true);
+	//设置当前用户
+	wp_set_current_user($adsense_user_id);
 
-	// return true;
+	return true;
 
 	// $number = Input_Validator::get_array_value($data, 'number', Input_Validator::TYPE_INT, true);
 

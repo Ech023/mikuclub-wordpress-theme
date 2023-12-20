@@ -38,9 +38,11 @@ foreach ($post_list as $my_post)
     //获取下载地址
     $down1 = get_post_meta($my_post->id, Post_Meta::POST_DOWN, true);
     $down2 = get_post_meta($my_post->id, Post_Meta::POST_DOWN2, true);
+    $down3 = get_post_meta($my_post->id, Post_Meta::POST_DOWN3, true);
     //获取密码
     $password  = get_post_meta($my_post->id, Post_Meta::POST_PASSWORD, true);
     $password2 = get_post_meta($my_post->id, Post_Meta::POST_PASSWORD2, true);
+    $password3 = get_post_meta($my_post->id, Post_Meta::POST_PASSWORD3, true);
 
     //如果链接不存在, 尝试从文章内容中解析
     if (empty($down1) && empty($down2))
@@ -68,6 +70,7 @@ foreach ($post_list as $my_post)
     //修正链接头部
     $down1          = convert_link_to_https($down1);
     $down2          = convert_link_to_https($down2);
+    $down3          = convert_link_to_https($down3);
     $post_fail_time = get_post_fail_times($my_post->id);
     $post_edit_link = get_edit_post_link($my_post->id);
     $baidu_fast_link = get_post_meta($my_post->id, 'baidu_fast_link', true);
@@ -85,6 +88,13 @@ foreach ($post_list as $my_post)
         $down2_html = '<hr/><a class="down" href="' . $down2 . '" target="_blank">
                        ' . $down2 . '
                     </a>';
+    }
+    $down3_html = '';
+    if ($down3)
+    {
+        $down3_html = '<hr/><a class="down" href="' . $down3 . '" target="_blank">
+                       ' . $down3 . '
+                        </a>';
     }
 
     $baidu_fast_link_html = '';
@@ -132,6 +142,13 @@ foreach ($post_list as $my_post)
                 <div class="passowrd2 mt-2">
                     {$password2}
                 </div>
+                <div class="mt-2">
+                        {$down3_html}
+                </div>
+                <div class="passowrd3 mt-2">
+                    {$password3}
+                </div>
+                
                 
                 <div class="mt-2">
                         {$baidu_fast_link_html}

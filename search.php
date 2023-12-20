@@ -10,7 +10,8 @@ $search_form = post_list_header_search_form();
 
 $breadcrumbs = print_breadcrumbs_component();
 $post_list_header_category = print_post_list_header_category();
-$post_list_header_order =  print_post_list_header_order();
+// $post_list_header_order =  print_post_list_header_order();
+$post_list_header_order = '';
 $post_list_header_download_type = print_post_list_header_download_type();
 $post_list_header_user_black_list = print_post_list_header_user_black_list();
 

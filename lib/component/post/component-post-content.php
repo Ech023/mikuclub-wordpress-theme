@@ -327,7 +327,7 @@ HTML : '';
 
 			<div class="col-auto">
 				<div class="input-group">
-					<div class="input-group-text bg-light-2">解压密码</div>
+					<div class="input-group-text bg-light-2">解压码</div>
 					<input class="unzip_password form-control form-control-sm bg-light-2 disabled" type="text" value="{$unzip_password}" readonly />
 				</div>
 			</div>
@@ -337,7 +337,7 @@ HTML : '';
 
 			<div class="col-auto">
 				<div class="input-group">
-					<div class="input-group-text bg-light-2">解压密码2</div>
+					<div class="input-group-text bg-light-2">解压码2</div>
 					<input class="unzip_sub_password form-control form-control-sm bg-light-2 disabled" type="text" value="{$unzip_sub_password}" readonly />
 				</div>
 			</div>
