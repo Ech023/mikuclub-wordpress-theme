@@ -63,10 +63,17 @@ function set_post_list_query_vars($query_vars)
     if ($custom_orderby)
     {
         //如果是默认的可选排序
-        if (in_array($custom_orderby, [Post_Orderby::MODIFIED, Post_Orderby::DATE, Post_Orderby::POST__IN]))
+        if (in_array($custom_orderby, [Post_Orderby::MODIFIED, Post_Orderby::DATE]))
         {
             $query_vars[Post_Query::ORDERBY] = [
-                $custom_orderby => 'DESC'
+                $custom_orderby => Post_Order::DESC
+            ];
+        }
+        else if (in_array($custom_orderby, [Post_Orderby::POST__IN]))
+        {
+            //POST IN 排序比较特立独行, 需要使用ASC才能按照 post in排序获取到文章
+            $query_vars[Post_Query::ORDERBY] = [
+                $custom_orderby => Post_Order::ASC
             ];
         }
         else
@@ -210,6 +217,7 @@ function set_post_list_query_vars($query_vars)
         //有搜索的话 就直接取消排序
         unset($query_vars[Post_Query::ORDERBY]);
     }
+
 
     return $query_vars;
 }

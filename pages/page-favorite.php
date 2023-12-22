@@ -38,6 +38,7 @@ $custom_post_query = [
     //显示所有状态的文章
     Post_Query::POST_STATUS => Post_Status::get_to_array(),
     Post_Query::CUSTOM_NO_CACHE => 1,
+    Post_Query::CUSTOM_ORDERBY =>  Post_Orderby::POST__IN,
 ];
 $post_list_component = print_post_list_component($custom_post_query, Post_Template::FAVORITE_POST);
 
