@@ -3,7 +3,7 @@
 namespace mikuclub;
 
 use mikuclub\constant\Admin_Meta;
-
+use mikuclub\constant\Web_Domain;
 
 use function mikuclub\print_adult_404_content_for_no_logging_user;
 use function mikuclub\get_theme_option;
@@ -35,13 +35,13 @@ else
 
 
         //电脑端 文章页 - 页面标题下
-        if (get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC_ENABLE))
+        if (get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC_ENABLE) && !Web_Domain::is_mikuclub_uk())
         {
             $output .= '<div class="pop-banner d-none d-md-block text-center pb-2 border-bottom">' . get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC) . '</div>';
         }
 
         //手机端 文章页 - 页面标题下
-        if (get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE_ENABLE))
+        if (get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE_ENABLE) && !Web_Domain::is_mikuclub_uk())
         {
             $output .= '<div class="pop-banner d-md-none text-center pb-2 border-bottom">' . get_theme_option(Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE) . '</div>';
         }

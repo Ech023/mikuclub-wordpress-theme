@@ -4,6 +4,7 @@ namespace mikuclub;
 
 use mikuclub\constant\Admin_Meta;
 use mikuclub\constant\Config;
+use mikuclub\constant\Web_Domain;
 
 /**
  * 幻灯片 组件
@@ -20,7 +21,7 @@ function print_sticky_post_slide_component($cat_id)
     if (is_home() && !get_query_var(Post_Query::PAGED))
     {
         //如果存在第一单元广告
-        if (get_theme_option(Admin_Meta::HOME_SLIDE_TOP_LIST_FIRST_ENABLE))
+        if (get_theme_option(Admin_Meta::HOME_SLIDE_TOP_LIST_FIRST_ENABLE) && !Web_Domain::is_mikuclub_uk())
         {
             //抓取最后一个文章
             $last_post = array_pop($sticky_post_list);

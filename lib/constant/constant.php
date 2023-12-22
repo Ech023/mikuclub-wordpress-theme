@@ -145,6 +145,7 @@ class Web_Domain
         ];
     }
 
+
     /**
      * 获取FILE-CDN相关的域名数组
      * @return string[]
@@ -184,6 +185,21 @@ class Web_Domain
         $url = preg_replace("/^(https?:)?\/\//", "//", $url);
 
         return $url;
+    }
+
+    /**
+     * 判断当前域名是否是 mikuclub_uk
+     *
+     * @return boolean
+     */
+    public static function is_mikuclub_uk()
+    {
+        $result = false;
+        if (stripos(get_site_url(), static::MIKUCLUB_UK) !== false)
+        {
+            $result = true;
+        }
+        return $result;
     }
 }
 
@@ -449,7 +465,6 @@ class Message_Type
     const PRIVATE_MESSAGE = 'private_message';
     const COMMENT_REPLY = 'comment_reply';
     const FORUM_REPLY = 'forum_reply';
-
 }
 
 /**

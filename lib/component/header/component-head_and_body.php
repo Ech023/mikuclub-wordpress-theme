@@ -190,11 +190,11 @@ HTML;
     //首页-主菜单下方广告位
     if (is_home() && !get_query_var(Post_Query::PAGED))
     {
-        if (get_theme_option(Admin_Meta::HOME_TOP_ADSENSE_PC_ENABLE))
+        if (get_theme_option(Admin_Meta::HOME_TOP_ADSENSE_PC_ENABLE) && !Web_Domain::is_mikuclub_uk())
         {
             $adsense_component .= '<div class="pop-banner d-none d-md-block text-center my-2">' . get_theme_option(Admin_Meta::HOME_TOP_ADSENSE_PC) . '</div>';
         }
-        if (get_theme_option(Admin_Meta::HOME_TOP_ADSENSE_PHONE_ENABLE))
+        if (get_theme_option(Admin_Meta::HOME_TOP_ADSENSE_PHONE_ENABLE) && !Web_Domain::is_mikuclub_uk())
         {
             $adsense_component .= '<div class="pop-banner d-block d-md-none text-center my-2">' . get_theme_option(Admin_Meta::HOME_TOP_ADSENSE_PHONE) . '</div>';
         }
