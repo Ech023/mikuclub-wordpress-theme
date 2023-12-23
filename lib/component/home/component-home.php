@@ -45,7 +45,7 @@ function print_home_component_first_part()
 
     //获取第一部分的缓存
     $output = File_Cache::get_cache_meta(File_Cache::HOME_PART_1, File_Cache::DIR_COMPONENTS, Expired::EXP_15_MINUTE);
-    if (empty($output) || Web_Domain::is_mikuclub_uk())
+    if (empty($output))
     {
         $output = '';
 
@@ -53,11 +53,11 @@ function print_home_component_first_part()
         $output = print_sticky_post_slide_component(Category::NO_ADULT_CATEGORY);
 
         //首页 幻灯片下方横幅
-        if (get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC_ENABLE) && !Web_Domain::is_mikuclub_uk())
+        if (get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC_ENABLE))
         {
             $output .= '<div class="pop-banner d-none d-md-block text-center my-2 pb-2 border-bottom">' . get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PC) . '</div>';
         }
-        if (get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE_ENABLE) && !Web_Domain::is_mikuclub_uk())
+        if (get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE_ENABLE))
         {
             $output .= '<div class="pop-banner d-block d-md-none text-center my-2 pb-2 border-bottom">' . get_theme_option(Admin_Meta::HOME_SLIDE_BOTTOM_ADSENSE_PHONE) . '</div>';
         }
@@ -66,11 +66,11 @@ function print_home_component_first_part()
         $output .= print_bbs_topic_list_component();
 
         // 首页 - 最新发布上方横幅 广告
-        if (get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PC_ENABLE) && !Web_Domain::is_mikuclub_uk())
+        if (get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PC_ENABLE))
         {
             $output .= '<div class="pop-banner d-none d-md-block text-center my-2 pb-2 border-bottom">' . get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PC) . '</div>';
         }
-        if (get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PHONE_ENABLE) && !Web_Domain::is_mikuclub_uk())
+        if (get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PHONE_ENABLE))
         {
             $output .= '<div class="pop-banner d-block d-md-none text-center my-2 pb-2 border-bottom">' . get_theme_option(Admin_Meta::HOME_RECENTLY_LIST_TOP_ADSENSE_PHONE) . '</div>';
         }
