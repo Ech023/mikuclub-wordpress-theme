@@ -3,7 +3,7 @@
 namespace mikuclub;
 
 /**
- * 用户权限 常量
+ * 用户权限管理
  */
 class User_Capability
 {

@@ -664,6 +664,8 @@ function add_custom_comment_meta($comment_id, $commentdata)
     add_user_comment_count($user_id);
     //更新文章评论数统计
     update_post_comments($post_id);
+    //增加用户的积分
+    User_Point::add_point($user_id, User_Point::POINT_FOR_NEW_COMMENT);
 
     //如果勾选了通知作者 并且是一级评论
     if ($notify_author && $comment_parent_id === 0)

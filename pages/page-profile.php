@@ -14,8 +14,7 @@ use mikuclub\User_Capability;
 use function mikuclub\print_breadcrumbs_component;
 use function mikuclub\get_my_user_avatar;
 use function mikuclub\get_user_black_list;
-use function mikuclub\get_user_level;
-use function mikuclub\get_user_points;
+
 use function mikuclub\print_user_avatar;
 
 
@@ -79,13 +78,13 @@ $breadcrumbs = print_breadcrumbs_component();
                     <div class="col">
                         <label class="form-label" for="password">积分</label>
                         <div>
-                            <?php echo get_user_points($user->ID); ?>
+                            <?php echo User_Point::get_point($user->ID); ?>
                         </div>
                     </div>
                     <div class="col">
                         <label class="form-label" for="password">等级</label>
                         <div>
-                            <?php echo get_user_level($user->ID); ?>
+                            <?php echo User_Point::get_point_level($user->ID); ?>
                         </div>
                     </div>
 

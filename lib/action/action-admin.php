@@ -39,7 +39,7 @@ add_filter('manage_users_sortable_columns', [
     'add_new_column_sortable'
 ]);
 
-add_filter('request', [
+add_action('pre_user_query', [
     'mikuclub\User_Extra_Data_Column',
     'add_new_column_orderby'
 ]);

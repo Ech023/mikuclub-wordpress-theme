@@ -1,6 +1,6 @@
 <?php
 /*
-	template name: 签到页面
+* template name: 签到页面
 */
 
 namespace mikuclub;

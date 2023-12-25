@@ -102,8 +102,8 @@ HTML;
         /* 个人中心 */
         $print_user_avatar = print_user_avatar(get_my_user_avatar($user_id), 30);
         $display_name = get_the_author_meta('display_name', $user_id);
-        $user_points = get_user_points($user_id);
-        $user_level = get_user_level($user_id);
+        $user_points = User_Point::get_point($user_id);
+        $user_level = User_Point::get_point_level($user_id);
         $author_page_href = get_author_posts_url($user_id);
 
         $logout_url = wp_logout_url();

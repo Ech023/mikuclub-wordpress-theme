@@ -121,7 +121,7 @@ function print_user_badges($user_id, $badge_class = '')
 	$user_badges = get_user_badges($user_id);
 
 	//获取积分等级信息
-	$user_level = get_user_level($user_id);
+	$user_level = User_Point::get_point_level($user_id);
 	//如果存在
 	if ($user_level)
 	{

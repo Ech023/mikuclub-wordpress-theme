@@ -59,7 +59,7 @@ class My_User_Model
             $this->user_image       = get_my_user_avatar($user->ID);
             $this->user_description = get_user_meta($user->ID, 'description', true);
 
-            $this->user_level  = get_user_level($user->ID);
+            $this->user_level  = User_Point::get_point_level($user->ID);
             $this->user_badges = get_user_badges($user->ID);
         }
     }

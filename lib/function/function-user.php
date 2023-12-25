@@ -168,66 +168,7 @@ function get_my_user_default_avatar()
 
 
 
-/**
- * 获取用户当前等级
- *
- * @param int $user_id
- * @return string 如果无等级 则返回空字符串
- */
-function get_user_level($user_id)
-{
 
-	$result = '';
-	if ($user_id && function_exists('mycred_get_users_rank'))
-	{
-		$result = File_Cache::get_cache_meta_with_callback(
-			File_Cache::USER_LEVEL,
-			File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id,
-			Expired::EXP_6_HOURS,
-			function () use ($user_id)
-			{
-				//重新获取等级信息
-				$user_rank = mycred_get_users_rank($user_id);
-				$result = $user_rank ? $user_rank->title : '';
-
-				return $result;
-			}
-		);
-	}
-
-	return $result;
-}
-
-
-/**
- * 获取用户当前积分
- *
- * @param int $user_id
- * @return string 积分数量
- */
-function get_user_points($user_id)
-{
-
-	$result = '';
-	if ($user_id && function_exists('mycred_get_users_balance'))
-	{
-		$result = File_Cache::get_cache_meta_with_callback(
-			File_Cache::USER_POINT,
-			File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $user_id,
-			Expired::EXP_6_HOURS,
-			function () use ($user_id)
-			{
-				//重新获取积分
-				$result = mycred_get_users_balance($user_id);
-				$result = $result ? number_format($result) : '0';
-
-				return $result;
-			}
-		);
-	}
-
-	return $result;
-}
 
 
 

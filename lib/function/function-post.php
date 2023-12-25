@@ -735,7 +735,8 @@ function post_submit_action($post_id)
     {
         //直接发布文章
         post_publish_action($post_id);
-    } //如果不是高级用户, 让文章变成待审核状态
+    }
+    //如果不是高级用户, 让文章变成待审核状态
     else
     {
         //更改文章状态
@@ -810,16 +811,7 @@ function post_publish_action($post_id)
 
 
         $post_author_id = intval(get_post_field('post_author', $post_id));
-        //添加 point奖励
-        mycred_add(
-            'publishing_content',
-            $post_author_id,
-            1000,
-            '发布投稿 %link_with_title%',
-            $post_id,
-            ['ref_type' => 'post'],
-            'mycred_default'
-        );
+        User_Point::add_point($post_author_id, User_Point::POINT_FOR_NEW_POST);
     }
 
     //发布文章

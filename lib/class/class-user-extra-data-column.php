@@ -2,7 +2,9 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\User_Meta;
 use WP_User;
+use WP_User_Query;
 
 /**
  * 后台用户列表额外数据列
@@ -11,8 +13,7 @@ class User_Extra_Data_Column
 {
 	//用户注册时间
 	const REGISTER_DATE = 'registerdate';
-	//最后登陆时间
-	const LAST_LOGIN_DATE = 'last_login';
+
 
 	/**
 	 * 注册新的数据列头部
@@ -23,7 +24,8 @@ class User_Extra_Data_Column
 	public static function add_new_column_head($columns)
 	{
 		$columns[static::REGISTER_DATE] = '注册时间';
-		$columns[static::LAST_LOGIN_DATE] = '上次登录';
+		$columns[User_Meta::USER_LAST_LOGIN] = '上次登录';
+		$columns[User_Meta::USER_POINT] = '积分';
 
 		return $columns;
 	}
@@ -40,21 +42,28 @@ class User_Extra_Data_Column
 	 */
 	public static function add_new_column_body($value, $column_name, $user_id)
 	{
-		//如果当前列是注册时间
-		if ($column_name === static::REGISTER_DATE || $column_name === static::LAST_LOGIN_DATE)
-		{
-			//获取对应的数据内容
-			$user         = get_userdata($user_id);
+		$value = '';
 
-			if ($column_name === static::REGISTER_DATE)
-			{
-				$value = $user->user_registered ? get_date_from_gmt($user->user_registered) : '';
-			}
-			else if ($column_name === static::LAST_LOGIN_DATE)
-			{
-				$value = $user->last_login ?? '';
-			}
+		switch ($column_name)
+		{
+
+			case static::REGISTER_DATE:
+
+				$user = get_userdata($user_id);
+				$value = ($user && $user->user_registered) ? get_date_from_gmt($user->user_registered) : '';
+
+				break;
+			case User_Meta::USER_LAST_LOGIN:
+				$value = get_user_meta($user_id, User_Meta::USER_LAST_LOGIN, true);
+				// $user = get_userdata($user_id);
+				// $value = ($user && $user->last_login) ? $user->last_login : '';
+				break;
+
+			case User_Meta::USER_POINT:
+				$value = get_user_meta($user_id, User_Meta::USER_POINT, true);
+				break;
 		}
+
 
 		return $value;
 	}
@@ -70,30 +79,48 @@ class User_Extra_Data_Column
 		$custom = [
 			// meta column id => sortby value used in query
 			static::REGISTER_DATE => 'registered',
+			User_Meta::USER_POINT => User_Meta::USER_POINT,
 		];
 
 		return wp_parse_args($custom, $columns);
 	}
 
 	/**
-	 * 在请求中 支持使用注册时间进行排序
+	 * 在请求中 支持自定义排序
 	 * 
-	 * @param array<string, mixed> $vars
-	 * @return array<string, mixed>
+	 * @param WP_User_Query $user_query
+	 * @return void
 	 */
-	public static function add_new_column_orderby($vars)
+	public static function add_new_column_orderby($user_query)
 	{
-		//如果请求参数里包含 注册时间排序
-		if (isset($vars['orderby']) && $vars['orderby'] === static::REGISTER_DATE)
-		{
-			//转换为对应的请求参数
-			$vars = array_merge($vars, [
-				'meta_key' => static::REGISTER_DATE,
-				'orderby'  => 'meta_value'
-			]);
-		}
+		global $wpdb;
 
-		return $vars;
+		$orderby = $user_query->query_vars['orderby'] ?? '';
+
+		switch ($orderby)
+		{
+			case User_Meta::USER_POINT:
+				//转换为对应的请求参数
+				$meta_key = User_Meta::USER_POINT;
+
+				$order = $user_query->query_vars['order'] ?? 'ASC';
+
+				$user_query->query_from .= <<<SQL
+					LEFT JOIN 
+						{$wpdb->usermeta} usermeta 
+					ON
+						{$wpdb->users}.ID = usermeta.user_id 
+					AND 
+						usermeta.meta_key = '{$meta_key}'
+				
+SQL;
+				$user_query->query_orderby = <<<SQL
+					ORDER BY 
+						usermeta.meta_value+0 {$order} 
+SQL;
+
+				break;
+		}
 	}
 
 
@@ -106,6 +133,6 @@ class User_Extra_Data_Column
 	 */
 	public static function update_user_last_login_time($user_login, $user)
 	{
-		update_user_meta($user->ID, static::LAST_LOGIN_DATE, current_time('mysql'));
+		update_user_meta($user->ID, User_Meta::USER_LAST_LOGIN, current_time('mysql'));
 	}
 }

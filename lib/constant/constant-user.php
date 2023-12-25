@@ -7,6 +7,11 @@ namespace mikuclub\constant;
  */
 class User_Meta
 {
+    //用户积分
+    const USER_POINT = 'mycred_default';
+    //用户最后的登陆时间
+    const USER_LAST_LOGIN = 'last_login';
+
     //用户头像ID
     const USER_AVATAR = 'mm_user_avatar';
     //用户发送的评论数
