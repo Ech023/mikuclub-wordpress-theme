@@ -17,8 +17,6 @@ use mikuclub\constant\Web_Domain;
 //导入加载器
 require_once 'lib/autoload.php';
 
-//启动REST API官方接口 的缓存
-Rest_Api_Cache::get_rest_api_request_cache();
 
 /**
  * 在前台加载 第三方脚本和CSS

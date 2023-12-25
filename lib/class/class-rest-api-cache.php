@@ -31,8 +31,7 @@ class Rest_Api_Cache
      */
     public static function get_rest_api_request_cache()
     {
-
-
+     
         //如果是无效/是不能缓存的REST API请求方式
         if (static::is_valid_rest_api_request_to_cache() === false)
         {
@@ -204,8 +203,9 @@ class Rest_Api_Cache
                 case static::POSTS:
 
                     //如果不存在 搜索参数 或者 author参数, 或者 参数ID 不是 当前用户ID
-                    if (!isset($_REQUEST['search'])  || !isset($_REQUEST['author']) ||  intval($_REQUEST['author']) !== get_current_user_id())
+                    if (!isset($_REQUEST['search'])  && (!isset($_REQUEST['author']) ||  intval($_REQUEST['author']) !== get_current_user_id()))
                     {
+    
                         $result = File_Cache::WP_REST_POSTS;
                         $result .= '_' . create_hash_string($_REQUEST);
                     }
