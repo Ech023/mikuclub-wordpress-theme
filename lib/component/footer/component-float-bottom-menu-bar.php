@@ -134,7 +134,7 @@ HTML;
         <div class="col col-md-auto px-0 px-md-auto">
             <button class="enable_dark_theme no_theme btn w-100 px-auto px-md-4" title="点击后开启白天模式">
                 <i class="fa-solid fa-cloud-sun me-md-2"></i>
-                <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">外观</span>
+                <span class="d-block d-md-inline fs-75 fs-md-100 text-truncate">颜色</span>
             </button>
             <button class="enable_dark_theme light_theme btn w-100 px-auto px-md-4" style="display: none;" title="点击后开启夜间模式">
                 <i class="fa-solid fa-sun me-md-2"></i>
