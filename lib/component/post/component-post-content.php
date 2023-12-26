@@ -135,7 +135,7 @@ function print_post_content_first_image($post_id)
 	{
 		$output = <<<HTML
 			<a href="{$first_image_full_src}" data-lightbox="images">
-				<img class="img-fluid" src="{$first_image_full_src}" alt="封面图" />
+				<img class="img-fluid preview" src="{$first_image_full_src}" alt="封面图" />
 			</a>
 HTML;
 	}
@@ -549,7 +549,7 @@ function print_post_content_previews_image($post_id)
 		$output .= <<<HTML
 			<div class="col-12 col-xxl-6">
 				<a href="{$image_href}" data-lightbox="images">
-					<img class="img-fluid" src="{$image_href}" alt="预览图 {$i}"  />
+					<img class="img-fluid preview" src="{$image_href}" alt="预览图 {$i}"  />
 				</a>
 			</div>
 HTML;
