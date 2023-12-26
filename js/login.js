@@ -1,6 +1,7 @@
 
 /*$(function () {
 */
+
 const LOGIN_SITE_DOMAIN = {
     www_mikuclub_online: 'www.mikuclub.online',
     www_mikuclub_cc: 'www.mikuclub.cc',
