@@ -117,10 +117,11 @@ img {
 /**
 设置菜单选项 在激活页面的颜色
 跳过第一个选项
+# 因为有缓存导致无法使用
  */
-.navbar .navbar-nav .nav-item.active:not(:first-child) .nav-link {
+/* .navbar .navbar-nav .nav-item.active:not(:first-child) .nav-link {
     color: var(--color-miku);
-}
+} */
 
 
 /** ===================*/
