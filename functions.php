@@ -600,7 +600,7 @@ function fix_site_domain_with_current_domain($link)
 
     //获取当前在访问的主域名
     $new_domain  = get_site_url();
-    $new_domain = preg_replace("(^https?://)", "", $new_domain);
+    // $new_domain = preg_replace("(^https?://)", "", $new_domain);
 
     $result = str_replace($array_search, $new_domain, $link);
 

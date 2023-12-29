@@ -202,6 +202,7 @@ class Post_Image
             $array_image_thumbnail_src = Post_Image::set_array_image_src($post_id, Post_Meta::POST_IMAGES_THUMBNAIL_SRC);
         }
 
+        // $array_image_thumbnail_src = fix_https_prefix($array_image_thumbnail_src);
 
         $array_image_thumbnail_src = fix_image_domain_with_file_5($array_image_thumbnail_src);
 
@@ -226,6 +227,7 @@ class Post_Image
             $array_image_large_src = Post_Image::set_array_image_src($post_id, Post_Meta::POST_IMAGES_SRC);
         }
 
+        // $array_image_large_src = fix_https_prefix($array_image_large_src);
 
         //随机选择一个cdn主机
         switch ($post_id % 3)
@@ -263,6 +265,8 @@ class Post_Image
             //重新获取
             $array_image_full_src = Post_Image::set_array_image_src($post_id, Post_Meta::POST_IMAGES_FULL_SRC);
         }
+
+        // $array_image_full_src = fix_https_prefix($array_image_full_src);
 
         //$array_image_full_src = fix_image_domain_with_file_4($array_image_full_src);
 

@@ -108,6 +108,7 @@ class Weibo_Share
             $array_images = Post_Image::get_array_image_full_src($post_id);
             $top_image = count($array_images) > 0 ? $array_images[0] : '';
 
+            $top_image = convert_link_to_https($top_image);
 
             $body = [
                 'title' => $title, //头条的标题
@@ -117,6 +118,8 @@ class Weibo_Share
                 'text' => $title . '   ' . $keywords . '    全文地址: ' . get_permalink($post_id), //简介的内容
                 'source' => static::WEIBO_APP_KEY
             ];
+
+
 
             // $headers = ['Authorization' => 'Basic ' . base64_encode("$username:$userpassword")];
 

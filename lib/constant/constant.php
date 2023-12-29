@@ -182,7 +182,7 @@ class Web_Domain
         $url = str_replace($array_search, $origin_domain, $url);
 
         // 移除HTTP或HTTPS协议部分，但保留双斜杠
-        $url = preg_replace("/^(https?:)?\/\//", "//", $url);
+        // $url = preg_replace("/^(https?:)?\/\//", "//", $url);
 
         return $url;
     }

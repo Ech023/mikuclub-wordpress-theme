@@ -135,7 +135,8 @@ function get_my_user_avatar($user_id)
 					//}
 
 					//去除地址前的http 和 https 前缀
-					$user_avatar = ltrim($user_avatar, "https:");
+					// $user_avatar = ltrim($user_avatar, "https:");
+					$user_avatar = convert_link_to_https($user_avatar);
 					//$user_avatar = substr($user_avatar, stripos($user_avatar, '//'));
 				}
 
