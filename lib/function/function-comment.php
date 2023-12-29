@@ -249,9 +249,7 @@ function get_comment_list($post_id, $offset, $number = Config::NUMBER_COMMENT_PE
             // $comment_query = new WP_Comment_Query($args_normal_comment);
             // $comments = $comment_query->get_comments();
 
-
-
-            $array_comment_list = array_map(function (WP_Comment $comment)
+            $result = array_map(function (WP_Comment $comment)
             {
                 return new My_Comment_Model($comment);
             }, $comments);
@@ -260,10 +258,10 @@ function get_comment_list($post_id, $offset, $number = Config::NUMBER_COMMENT_PE
             //添加 高点赞的评论到列表头部
             if (empty($offset))
             {
-                $result = array_merge($array_top_like_comment_list, $array_comment_list);
+                $result = array_merge($array_top_like_comment_list, $result);
             }
 
-            return $result;
+            return array_values($result);
         }
     );
 

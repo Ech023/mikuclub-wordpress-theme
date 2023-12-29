@@ -3,8 +3,10 @@
 namespace mikuclub;
 
 use Exception;
+use mikuclub\constant\Config;
 use mikuclub\constant\Post_Status;
 use mikuclub\constant\Web_Domain;
+use WP_Comment;
 use WP_Error;
 use WP_REST_Request;
 
@@ -268,7 +270,39 @@ function test_function($data)
 
 	return $array_id;
 }
+/**
+ *
+ * @param WP_REST_Request $data
+ * @return void
+ */
+function test_function2($data)
+{
+	// $post_id = Input_Validator::get_array_value($data, 'post_id', Input_Validator::TYPE_INT, true);
+	// $offset = Input_Validator::get_array_value($data, 'offset', Input_Validator::TYPE_INT, true);
+	// $number = Input_Validator::get_array_value($data, 'number', Input_Validator::TYPE_INT, false) ?: Config::NUMBER_COMMENT_PER_PAGE;
 
+	// $args_normal_comment = [
+		
+	// 	'post_id' => $post_id,
+	// 	'offset' => $offset,
+	// 	'status' => 'approve',
+	// 	'type' => 'comment',
+	// 	'number' => $number,
+	// 	'hierarchical' => 'threaded',
+	// 	'orderby' => [
+	// 		'comment_ID' => 'DESC'
+	// 	],
+	// ];
+
+	// $comments = get_comments($args_normal_comment);
+
+	// $array_comment_list = array_map(function (WP_Comment $comment)
+	// {
+	// 	return new My_Comment_Model($comment);
+	// }, $comments);
+
+	// return $array_comment_list;
+}
 
 
 /**
@@ -338,5 +372,9 @@ function register_custom_api()
 	register_rest_route('utils/v2', '/test', [
 		'methods'  => 'GET',
 		'callback' => 'mikuclub\test_function',
+	]);
+	register_rest_route('utils/v2', '/test2', [
+		'methods'  => 'GET',
+		'callback' => 'mikuclub\test_function2',
 	]);
 }
