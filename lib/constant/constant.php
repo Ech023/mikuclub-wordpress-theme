@@ -4,6 +4,8 @@ namespace mikuclub\constant;
 
 use ReflectionClass;
 
+use function mikuclub\convert_link_to_https;
+
 class Constant
 {
     /**
@@ -168,7 +170,7 @@ class Web_Domain
      * @param string $url
      * @return string 
      */
-    public static function reset_to_main_site_domain_and_remove_protocol($url)
+    public static function reset_to_main_site_domain($url)
     {
         $array_search = array_merge(
             static::get_array_site_domain(),
@@ -180,6 +182,9 @@ class Web_Domain
 
         //把链接修正回默认主站域名
         $url = str_replace($array_search, $origin_domain, $url);
+
+        //确保链接为https格式
+        $url = convert_link_to_https($url);
 
         // 移除HTTP或HTTPS协议部分，但保留双斜杠
         // $url = preg_replace("/^(https?:)?\/\//", "//", $url);

@@ -161,6 +161,8 @@ class Post_Image
             //获取第一张图片
             $thumbnail_src = $array_thumbnail_img_src[0];
 
+            $thumbnail_src = Web_Domain::reset_to_main_site_domain($thumbnail_src);
+
             //更新封面预览图地址
             update_post_meta($post_id, Post_Meta::POST_THUMBNAIL_SRC, $thumbnail_src);
 
@@ -350,7 +352,7 @@ class Post_Image
         //修正链接域名
         $array_image_src = array_map(function ($src)
         {
-            return Web_Domain::reset_to_main_site_domain_and_remove_protocol($src);
+            return Web_Domain::reset_to_main_site_domain($src);
         }, $array_image_src);
 
         //确保数组为索引数组

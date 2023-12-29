@@ -212,27 +212,33 @@ function test_function($data)
 
 	// return true;
 
-	// $number = Input_Validator::get_array_value($data, 'number', Input_Validator::TYPE_INT, true);
+	$number = Input_Validator::get_array_value($data, 'number', Input_Validator::TYPE_INT, true);
 
-	// $paged = Input_Validator::get_array_value($data, 'paged', Input_Validator::TYPE_INT, true);
+	$paged = Input_Validator::get_array_value($data, 'paged', Input_Validator::TYPE_INT, true);
 
-	// $args = [
-	// 	'posts_per_page' => $number,
-	// 	'ignore_sticky_posts' => 1,
-	// 	'post_status'         => Post_Status::PUBLISH,
-	// 	'paged' => $paged,
-	// 	'orderby' => 'ID',
-	// 	'fields' => 'ids',  // 设置为 'ids' 只获取文章 ID
-	// ];
+	$args = [
+		'posts_per_page' => $number,
+		'ignore_sticky_posts' => 1,
+		'post_status'         => Post_Status::PUBLISH,
+		'paged' => $paged,
+		'orderby' => 'ID',
+		'fields' => 'ids',  // 设置为 'ids' 只获取文章 ID
+	];
 
-	// $result = [];
-	// $array_id = get_posts($args);
-	// foreach ($array_id as $post_id)
-	// {
-	// 	//更新文章的下载属性
-	// 	set_post_array_down_type($post_id);
+	$result = [];
+	$array_id = get_posts($args);
+	foreach ($array_id as $post_id)
+	{
+		//更新所有大小版本的图片地址
+		Post_Image::update_all_array_image_src($post_id);
+		//更新缩微图图片地址
+		Post_Image::set_thumbnail_src($post_id);
 
-		// $array_image = Post_Image::get_array_image_thumbnail_src($post->ID);
+
+		// //更新文章的下载属性
+		// set_post_array_down_type($post_id);
+
+		// // $array_image = Post_Image::get_array_image_thumbnail_src($post->ID);
 		// //$array_image = array_merge($array_image, Post_Image::get_array_image_large_src($post->ID));
 		// //$array_image = array_merge($array_image, Post_Image::get_array_image_full_src($post->ID));
 
@@ -258,9 +264,9 @@ function test_function($data)
 		// 	$response_code = wp_remote_retrieve_response_code($response);
 		// 	$result[$post->ID][] =  $response_code;
 		// }
-	// }
+	}
 
-	// return $array_id;
+	return $array_id;
 }
 
 
