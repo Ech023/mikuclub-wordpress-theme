@@ -394,8 +394,8 @@ function send_private_message($recipient_id, $message_content, $respond = 0, $is
     }
 
     //清空私信缓存
-    File_Cache::delete_cache_meta(File_Cache::USER_PRIVATE_MESSAGE_LIST, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $sender_id);
-    File_Cache::delete_cache_meta(File_Cache::USER_PRIVATE_MESSAGE_LIST, File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $recipient_id);
+    File_Cache::delete_directory(File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $sender_id);
+    File_Cache::delete_directory(File_Cache::DIR_USER . DIRECTORY_SEPARATOR . $recipient_id);
 
 
     $model =  new My_Private_Message_Model();

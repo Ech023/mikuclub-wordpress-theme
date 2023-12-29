@@ -713,6 +713,8 @@ function add_custom_comment_meta($comment_id, $commentdata)
 
     //清空该文章的所有评论缓存
     delete_comment_file_cache($comment_id, $post_id);
+    
+    
 }
 
 /**
