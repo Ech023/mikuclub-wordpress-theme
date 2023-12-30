@@ -18,11 +18,12 @@ function api_check_app_update()
 {
 
 	$output = [
-		'versionCode' => 34,
-		'versionName' => 'v2.9.2版本 [23年12月29号发布]',
+		'versionCode' => 35,
+		'versionName' => 'v2.9.3版本 [23年12月30号发布]',
 		'forceUpdate' => true,
-		'downUrl' => 'https://cdn.mikuclub.fun/mikuclub_v2.9.2.apk',
+		'downUrl' => 'https://cdn.mikuclub.fun/app/mikuclub_v2.9.3.apk',
 		'description' => '' .
+			'- 2.9.3版本: 修复收藏夹无法加载的问题\n' .
 			'- 2.9.2版本: 修复安卓12以上首页闪退问题\n' .
 			'- 2.9.1版本: 修复安卓14无法查看大图的问题\n' .
 			//'- 修复 微博登陆问题\n'.
