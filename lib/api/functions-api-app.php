@@ -18,7 +18,7 @@ function api_check_app_update()
 {
 
 	$output = [
-		'versionCode' => 35,
+		'versionCode' => 34,
 		'versionName' => 'v2.9.3版本 [23年12月30号发布]',
 		'forceUpdate' => true,
 		'downUrl' => 'https://cdn.mikuclub.fun/app/mikuclub_v2.9.3.apk',
