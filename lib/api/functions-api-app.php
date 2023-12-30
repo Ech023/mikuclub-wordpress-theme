@@ -21,7 +21,7 @@ function api_check_app_update()
 		'versionCode' => 35,
 		'versionName' => 'v2.9.4版本 [23年12月30号发布]',
 		'forceUpdate' => true,
-		'downUrl' => 'https://cdn.mikuclub.fun/app/mikuclub_v2.9.3.apk',
+		'downUrl' => 'https://mikuclub.fun/app/mikuclub_v2.9.4.apk',
 		'description' => '' .
 			'- 2.9.4版本: 修复登陆失效导致无法查看收藏-评论-搜索-投稿等\n' .
 			'- 2.9.2版本: 修复安卓12以上首页闪退问题\n' .
