@@ -70,7 +70,7 @@ $(function () {
     $('body').on('click', 'button.open_change_paged_modal', '', function () {
 
         const data = get_post_list_component_paged_and_max_num_pages();
-        const paged = data.paged;
+        const paged = data.paged - 1; //需要-1 因为列表的数据指向的是下一页 不是当前页数
         const max_num_pages = data.max_num_pages;
 
         new ChangePagedModal(paged, max_num_pages).create().show();

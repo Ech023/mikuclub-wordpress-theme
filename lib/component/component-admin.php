@@ -152,6 +152,10 @@ function print_theme_config_page()
 
     $components .= $tag_hr;
 
+    $components .= create_code_component('文章页-顶部广告位', Admin_Meta::POST_TOP_ADSENSE_PC_ENABLE, Admin_Meta::POST_TOP_ADSENSE_PC);
+
+    $components .= $tag_hr;
+
     $components .= create_code_component('文章页-标题下方广告位', Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC_ENABLE, Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PC);
     $components .= create_code_component('手机版文章页-标题下方广告位', Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE_ENABLE, Admin_Meta::POST_TITLE_BOTTOM_ADSENSE_PHONE);
 

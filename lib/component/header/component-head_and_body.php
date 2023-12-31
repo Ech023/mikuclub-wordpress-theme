@@ -68,7 +68,7 @@ HTML;
 function print_body_header_component()
 {
     //网站主页地址
-    $home = get_home_url();
+    // $home = get_home_url();
     //网站名称
     $site_name = get_option('blogname');
 
@@ -100,6 +100,13 @@ function print_body_header_component()
         </div>
 
 HTML;
+
+    $post_top_adsense_component = '';
+    //如果是文章页 + 文章页顶部广告位 有开启
+    if (is_single() && get_theme_option(Admin_Meta::POST_TOP_ADSENSE_PC_ENABLE))
+    {
+        $post_top_adsense_component = '<div class="pop-banner text-center pb-2 border-bottom">' . get_theme_option(Admin_Meta::POST_TOP_ADSENSE_PC) . '</div>';
+    }
 
     $main_menu_items = get_main_menu();
 
@@ -208,6 +215,7 @@ HTML;
         <header id="header" class="header">  
             {$top_menu_bar_component}
             {$top_image_windows}
+            {$post_top_adsense_component}
             {$main_menu_component}
             {$site_announcement}
             {$adsense_component}

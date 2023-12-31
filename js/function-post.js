@@ -68,7 +68,10 @@ $(function () {
     $('body.single, body.page .page-tougao').on('click', 'button.reject_post', '', function () {
 
         const post_id = $(this).data('post-id');
-        reject_post(post_id);
+        reject_post(post_id, '', () => {
+            //刷新页面
+            location.reload();
+        });
 
     });
 

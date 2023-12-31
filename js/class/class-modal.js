@@ -203,9 +203,9 @@ class MyPrivateMessageModal extends MyModal {
 
 
 
-        // this.bind_enter_key(() => {
-        //     this.on_click_send_private_message();
-        // });
+        this.bind_enter_key(() => {
+            this.on_click_send_private_message();
+        });
 
 
         return model;
@@ -515,8 +515,8 @@ class MyPostReportModal extends MyModal {
         const reportTypeHTML = reportType.reduce((previousValue, currentValue, index) => {
             previousValue += `
                  <div class="form-check my-2">
-                              <input class="form-check-input" type="radio" id="report_type_${index}" name="report_type" value="${currentValue}">
-                              <label class="form-check-label" for="report_type_${index}">${currentValue}</label>
+                              <input class="form-check-input cursor_pointer" type="radio" id="report_type_${index}" name="report_type" value="${currentValue}">
+                              <label class="form-check-label cursor_pointer" for="report_type_${index}">${currentValue}</label>
                         </div>
             `;
             return previousValue;
@@ -577,9 +577,9 @@ class MyPostReportModal extends MyModal {
             this.send_post_report();
         });
 
-        // this.bind_enter_key(() => {
-        //     this.send_post_report();
-        // });
+        this.bind_enter_key(() => {
+            this.send_post_report();
+        });
 
         return model;
 
@@ -698,15 +698,21 @@ class ChangePagedModal extends MyModal {
     */
     create() {
 
-        const model = super.create();
+        const model = super.create(null, () => {
+       
+            //通过移除再添加内容的方式, 保证焦点处于末尾
+            const $input = this.$modal_element.find('input#change_paged_modal_input');
+            const value = $input.val();
+            $input.focus().val('').val(value);
+        });
 
         this.$modal_element.find('.change_paged').on('click', () => {
             this.on_click_change_paged();
         });
 
-        // this.bind_enter_key(() => {
-        //     this.on_click_change_paged();
-        // });
+        this.bind_enter_key(() => {
+            this.on_click_change_paged();
+        });
 
         return model;
 
@@ -800,9 +806,9 @@ class ConfirmModal extends MyModal {
             }
         };
 
-        // this.bind_enter_key(() => {
-        //     this.$modal_element.find('.confirm').trigger('click');
-        // });
+        this.bind_enter_key(() => {
+            this.$modal_element.find('.confirm').trigger('click');
+        });
 
 
         this.$modal_element.find('.confirm').on('click', confirm);
@@ -858,7 +864,13 @@ class PromptModal extends MyModal {
     */
     create(confirm_callback, cancel_callback) {
 
-        const model = super.create();
+        const model = super.create(null, () => {
+            //在窗口显示完成后 聚焦输入框
+            //通过移除再添加内容的方式, 保证焦点处于末尾
+            const $input_prompt = this.$modal_element.find('input.input_prompt');
+            const value = $input_prompt.val();
+            $input_prompt.focus().val('').val(value);
+        });
 
         const confirm = () => {
 
@@ -880,7 +892,7 @@ class PromptModal extends MyModal {
             }
         };
 
-        // this.bind_enter_key(confirm);
+        this.bind_enter_key(confirm);
 
 
         this.$modal_element.find('.confirm').on('click', confirm);

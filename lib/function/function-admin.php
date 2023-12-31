@@ -13,52 +13,7 @@ use mikuclub\User_Capability;
  * 主题设置页的 相关的函数
  */
 
-//待删除的元数据数组
-$options = [
 
-    //'d_ajaxpager_b',
-    //'d_related_count',
-    //'d_post_views_b',
-    //'d_post_author_b',
-    //'d_post_comment_b',
-    //'d_post_time_b',
-    //'d_post_like_b',
-    //'d_singleMenu_b',
-    //'d_sticky_count',
-    //'d_autosave_b',
-
-    //'Mobiled_home_footer',
-    //'Mobiled_home_footer_b',
-    //'d_spamComments_b',
-    //'d_cache_system',
-    //'d_cache_system_home_time',
-    //'d_transient_cache_system',
-
-    //'d_adcategory_01_b',
-    //'d_adcategory_01',
-
-    // 'd_adpost_04_b',
-    // 'd_adpost_04',
-    // 'd_adpost_05_b',
-    // 'd_adpost_05',
-
-    //'Mobiled_adindex_02_b',
-    //'Mobiled_adindex_02',
-
-    //'Mobiled_adcategory_01',
-    //'Mobiled_adcategory_01_b',
-
-    // 'Mobiled_adpost_00_b',
-    // 'Mobiled_adpost_00',
-
-    // 'Mobiled_adpost_04_b',
-    // 'Mobiled_adpost_04',
-    // 'Mobiled_adpost_05_b',
-    // 'Mobiled_adpost_05',
-
-
-
-];
 
 
 /**

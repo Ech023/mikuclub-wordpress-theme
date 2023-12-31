@@ -88,6 +88,10 @@ class Admin_Meta extends Constant
     const HOME_RECENTLY_LIST_TOP_ADSENSE_PHONE_ENABLE = 'Mobiled_adindex_03_b';
     const HOME_RECENTLY_LIST_TOP_ADSENSE_PHONE = 'Mobiled_adindex_03';
 
+    //文章页顶部广告位
+    const POST_TOP_ADSENSE_PC_ENABLE = 'd_adpost_00_b';
+    const POST_TOP_ADSENSE_PC = 'd_adpost_00';
+
     //文章页标题下方广告位
     const POST_TITLE_BOTTOM_ADSENSE_PC_ENABLE = 'd_adpost_01_b';
     const POST_TITLE_BOTTOM_ADSENSE_PC = 'd_adpost_01';

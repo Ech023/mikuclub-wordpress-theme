@@ -210,7 +210,7 @@ function get_post_list_component_paged_and_max_num_pages() {
 
     return {
         paged: data.paged || 1,
-        max_num_pages,
+        max_num_pages : max_num_pages || 0,
     }
 }
 
@@ -219,7 +219,6 @@ function get_post_list_component_paged_and_max_num_pages() {
  * @param {number} max_num_pages 
  */
 function update_post_list_component_max_num_pages(max_num_pages) {
-
     const $post_list_container_component = $('.post-list-container');
     $post_list_container_component.data('max_num_pages', parseInt(max_num_pages));
 }
