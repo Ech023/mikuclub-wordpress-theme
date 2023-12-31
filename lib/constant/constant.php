@@ -29,7 +29,7 @@ class Config
 {
 
     //CSS和JS版本号
-    const CSS_JS_VERSION = '1.14';
+    const CSS_JS_VERSION = '1.15';
 
     //默认时间格式
     const DATE_FORMAT_SHORT = 'Y-m-d';
