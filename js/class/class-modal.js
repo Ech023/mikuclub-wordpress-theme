@@ -133,7 +133,7 @@ class MyModal {
      */
     bind_enter_key(enter_callback) {
         this.$modal_element.on('keydown', (event) => {
-            event.preventDefault();
+            // event.preventDefault();
             const code = event.keyCode || event.which;
             //ENTER按键
             if (code === 13 && isFunction(enter_callback)) {
@@ -203,9 +203,9 @@ class MyPrivateMessageModal extends MyModal {
 
 
 
-        this.bind_enter_key(() => {
-            this.on_click_send_private_message();
-        });
+        // this.bind_enter_key(() => {
+        //     this.on_click_send_private_message();
+        // });
 
 
         return model;
