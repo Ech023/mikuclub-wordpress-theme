@@ -105,7 +105,7 @@ HTML;
     //如果是文章页 + 文章页顶部广告位 有开启
     if (is_single() && get_theme_option(Admin_Meta::POST_TOP_ADSENSE_PC_ENABLE))
     {
-        $post_top_adsense_component = '<div class="pop-banner text-center pb-2 border-bottom">' . get_theme_option(Admin_Meta::POST_TOP_ADSENSE_PC) . '</div>';
+        $post_top_adsense_component = '<div class="pop-banner text-center py-2 border-bottom">' . get_theme_option(Admin_Meta::POST_TOP_ADSENSE_PC) . '</div>';
     }
 
     $main_menu_items = get_main_menu();
