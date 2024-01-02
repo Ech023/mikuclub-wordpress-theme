@@ -5,6 +5,9 @@ namespace mikuclub;
 use mikuclub\constant\Expired;
 use mikuclub\constant\Post_Meta;
 use mikuclub\constant\User_Meta;
+use WP_Comment;
+use WP_Post;
+use WP_User;
 
 /**
  *  用户相关函数
@@ -167,10 +170,92 @@ function get_my_user_default_avatar()
 	return get_template_directory_uri() . "/img/default_avatar.webp";
 }
 
+/**
+ * 替换默认用户头像
+ *
+ * @param array<string,mixed> $args
+ * @param int|string|WP_User|WP_Post|WP_Comment $object
+ * @return array<string,mixed>
+ */
+function replace_default_avatar_data($args, $object)
+{
+	$user_id = null;
+	//如果参数是用户ID
+	if (is_numeric($object))
+	{
+		$user_id = intval($object);
+	}
+	//如果参数是邮箱地址
+	else if (is_string($object) && is_email($object))
+	{
+		//获取对应的用户
+		$user = get_user_by('email', $object);
+		if ($user)
+		{
+			$user_id = intval($user->ID);
+		}
+	}
+	//如果参数是一个对象
+	else if (is_object($object))
+	{
+		if ($object instanceof WP_User)
+		{
+			$user_id = intval($object->ID);
+		}
+		else if ($object instanceof WP_Comment)
+		{
+			$user_id = intval($object->user_id);
+
+			// $comment_ID = $object->comment_ID;
+			// if ($comment_ID)
+			// {
+			// 	$args['ip'] = esc_attr(get_comment_author_IP($comment_ID));
+			// }
+		}
+		else if ($object instanceof WP_Post)
+		{
+			$object = intval($object->post_author);
+		}
+	}
 
 
+	$args['url'] = get_my_user_avatar($user_id) ?: get_my_user_default_avatar();
 
+	return $args;
+}
 
+// /**
+//  * 替换默认头像img
+//  *
+//  * @param string $avatar
+//  * @param mixed $id_or_email
+//  * @param int $size
+//  * @param string $default
+//  * @param string $alt
+//  * @return string
+//  */
+// function replace_default_avatar($avatar, $id_or_email, $size = 80, $default = '', $alt = '')
+// {
+
+//     /*
+//     如果是gravatar头像, 直接返回
+//     if (!open_social_in($avatar, 'gravatar.com')) {
+//         return $avatar;
+//     }*/
+
+//     $data = replace_default_avatar_data(array(), $id_or_email);
+//     if (isset($data['url']))
+//     {
+//         $img = substr($data['url'], stripos($data['url'], '//'));
+//         $avatar = preg_replace(array('/src="([^\"]+)"/', '/src=\'([^\']+)\'/'), "src=\"$img\"", $avatar);
+//         $avatar = preg_replace(array('/srcset="([^\"]+)"/', '/srcset=\'([^\']+)\'/'), "", $avatar);
+//     }
+//     if (!empty($data['ip']) && current_user_can('manage_options'))
+//     {
+//         $avatar = str_replace(' src=', " data-ip=\"" . $data['ip'] . "\" src=", $avatar);
+//     }
+//     return $avatar;
+// }
 
 
 /**

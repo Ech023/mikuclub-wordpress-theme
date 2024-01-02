@@ -70,3 +70,23 @@ add_filter(
     10,
     3
 );
+
+
+
+
+
+//替换默认头像img
+// add_filter('get_avatar', 'mikuclub\replace_default_avatar', 99999, 5);
+
+//替换默认头像获取函数
+add_filter('get_avatar_data', 'mikuclub\replace_default_avatar_data', 99999, 2);
+
+
+// add_filter('pre_get_avatar_data', 'open_social_pre_get_avatar_data', 99999, 2);
+// function open_social_pre_get_avatar_data($args, $id_or_email)
+// {
+//     $avatar_option = apply_filters('pre_option_show_avatars', '', 100);
+//     if (!empty($avatar_option)) return $args;
+//     $args['default'] = get_option('avatar_default', 'mystery');
+//     return $args;
+// }
