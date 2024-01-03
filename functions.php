@@ -598,9 +598,9 @@ function fix_site_domain_with_current_domain($link)
 {
     $array_search = Web_Domain::get_array_site_domain();
 
-    //获取当前在访问的主域名
+    //获取当前在访问的主域名 不包含https前缀
     $new_domain  = get_site_url();
-    // $new_domain = preg_replace("(^https?://)", "", $new_domain);
+    $new_domain = preg_replace("(^https?://)", "", $new_domain);
 
     $result = str_replace($array_search, $new_domain, $link);
 
