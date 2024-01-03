@@ -2,6 +2,8 @@
 
 namespace mikuclub;
 
+use mikuclub\constant\Web_Domain;
+
 /**
  * wpforo论坛回复
  */
@@ -88,6 +90,7 @@ class My_Wpforo_Reply_Model
         if (function_exists('wpforo_post'))
         {
             $this->post_href  = wpforo_post($this->postid, 'url');
+            $this->post_href  = fix_site_domain_with_current_domain($this->post_href);
         }
         $this->author = get_custom_user($this->userid);
     }

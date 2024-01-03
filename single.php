@@ -18,6 +18,7 @@ $output = '';
 if (!is_user_logged_in() && is_adult_category())
 {
     $output = print_adult_404_content_for_no_logging_user();
+    echo $output;
 }
 else
 {
@@ -75,11 +76,13 @@ HTML;
         {
             $output .= '<div class="pop-banner text-center my-2 d-md-none">' . get_theme_option(Admin_Meta::POST_COMMENT_ADSENSE_PHONE) . '</div>';
         }
+
+        echo $output;
+        comments_template('', true);
     }
 }
 
-echo $output;
 
-comments_template('', true);
+
 
 get_footer();
