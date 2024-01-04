@@ -24,9 +24,7 @@ $array_file_path_to_require = array_merge(
     //导入HTML组件
     glob($theme_lib_directory . 'component' . DIRECTORY_SEPARATOR . '*.php'),
     //导入子目录里的HTML组件
-    glob($theme_lib_directory . 'component' . DIRECTORY_SEPARATOR . '*' . DIRECTORY_SEPARATOR . '*.php'),
- 
-
+    glob($theme_lib_directory . 'component' . DIRECTORY_SEPARATOR . '*' . DIRECTORY_SEPARATOR . '*.php')
 );
 
 foreach ($array_file_path_to_require as $file_path)
