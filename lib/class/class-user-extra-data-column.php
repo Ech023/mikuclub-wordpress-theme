@@ -12,8 +12,10 @@ use WP_User_Query;
 class User_Extra_Data_Column
 {
 	//用户注册时间
-	const REGISTER_DATE = 'registerdate';
+	const REGISTERED = 'registered';
 
+	const ID = 'id';
+	const NICKNAME = 'nickname';
 
 	/**
 	 * 注册新的数据列头部
@@ -23,7 +25,10 @@ class User_Extra_Data_Column
 	 */
 	public static function add_new_column_head($columns)
 	{
-		$columns[static::REGISTER_DATE] = '注册时间';
+		unset($columns['name']);
+		$columns['id'] = 'ID';
+		$columns['nickname'] = '昵称';
+		$columns[static::REGISTERED] = '注册时间';
 		$columns[User_Meta::USER_LAST_LOGIN] = '上次登录';
 		$columns[User_Meta::USER_POINT] = '积分';
 
@@ -46,9 +51,17 @@ class User_Extra_Data_Column
 
 		switch ($column_name)
 		{
+			case static::ID:
+				// $user = get_userdata($user_id);
+				$value = $user_id;
+				break;
 
-			case static::REGISTER_DATE:
+			case static::NICKNAME:
+				$user = get_userdata($user_id);
+				$value = $user ? $user->nickname : '';
+				break;
 
+			case static::REGISTERED:
 				$user = get_userdata($user_id);
 				$value = ($user && $user->user_registered) ? get_date_from_gmt($user->user_registered) : '';
 
@@ -78,7 +91,9 @@ class User_Extra_Data_Column
 	{
 		$custom = [
 			// meta column id => sortby value used in query
-			static::REGISTER_DATE => 'registered',
+			static::ID => static::ID,
+			static::NICKNAME => static::NICKNAME,
+			static::REGISTERED => static::REGISTERED,
 			User_Meta::USER_POINT => User_Meta::USER_POINT,
 		];
 
@@ -86,43 +101,26 @@ class User_Extra_Data_Column
 	}
 
 	/**
-	 * 在请求中 支持自定义排序
+	 * 在请求中 支持自定义排序 (解析参数前)
 	 * 
 	 * @param WP_User_Query $user_query
 	 * @return void
 	 */
-	public static function add_new_column_orderby($user_query)
+	public static function add_new_column_orderby_pre_get($user_query)
 	{
-		global $wpdb;
-
-		$orderby = $user_query->query_vars['orderby'] ?? '';
-
+		$orderby = $user_query->get('orderby') ?? '';
 		switch ($orderby)
 		{
+			case static::REGISTERED:
+				$user_query->set('orderby', 'user_registered');
+
+				break;
 			case User_Meta::USER_POINT:
-				//转换为对应的请求参数
-				$meta_key = User_Meta::USER_POINT;
-
-				$order = $user_query->query_vars['order'] ?? 'ASC';
-
-				$user_query->query_from .= <<<SQL
-					LEFT JOIN 
-						{$wpdb->usermeta} usermeta 
-					ON
-						{$wpdb->users}.ID = usermeta.user_id 
-					AND 
-						usermeta.meta_key = '{$meta_key}'
-				
-SQL;
-				$user_query->query_orderby = <<<SQL
-					ORDER BY 
-						usermeta.meta_value+0 {$order} 
-SQL;
-
+				$user_query->set('meta_key', $orderby);
+				$user_query->set('orderby', 'meta_value_num');
 				break;
 		}
 	}
-
 
 	/**
 	 * 更新用户最后一次登录等时间

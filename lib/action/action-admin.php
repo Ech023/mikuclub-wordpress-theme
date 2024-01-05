@@ -39,10 +39,14 @@ add_filter('manage_users_sortable_columns', [
     'add_new_column_sortable'
 ]);
 
-add_action('pre_user_query', [
+add_action('pre_get_users', [
     'mikuclub\User_Extra_Data_Column',
-    'add_new_column_orderby'
+    'add_new_column_orderby_pre_get'
 ]);
+
+
+
+
 //更新用户最后登陆时间
 add_action('wp_login', ['mikuclub\User_Extra_Data_Column', 'update_user_last_login_time'], 10, 2);
 
