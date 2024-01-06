@@ -18,6 +18,38 @@ use WP_REST_Request;
  */
 
 /**
+ * 获取评论真实的IP
+ *
+ * @param string $comment_author_ip
+ * @return string
+ */
+function get_comment_author_real_ip($comment_author_ip)
+{
+    $user_ip = '';
+    if (!empty($_SERVER['X_FORWARDED_FOR']))
+    {
+        $user_ip = sanitize_text_field($_SERVER['X_FORWARDED_FOR']);
+    }
+    else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+    {
+        $user_ip = sanitize_text_field($_SERVER['HTTP_X_FORWARDED_FOR']);
+    }
+    else if (!empty($_SERVER['REMOTE_ADDR']))
+    {
+        $user_ip = sanitize_text_field($_SERVER['REMOTE_ADDR']);
+    }
+
+    if ($user_ip)
+    {
+        $user_ip = preg_replace('/[^0-9a-f:\., ]/si', '', $user_ip);
+        $user_ip = trim($user_ip);
+    }
+
+    return $user_ip ?: $comment_author_ip;
+}
+
+
+/**
  * 获取评论子回复数量
  *
  * @param int $comment_id
@@ -711,8 +743,6 @@ function add_custom_comment_meta($comment_id, $commentdata)
 
     //清空该文章的所有评论缓存
     delete_comment_file_cache($comment_id, $post_id);
-    
-    
 }
 
 /**

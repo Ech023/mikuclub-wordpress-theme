@@ -21,6 +21,22 @@ function set_email_from_name($email)
     return get_option('blogname');
 }
 
+/**
+ * 
+ * 如果收件人的地址是无效的 停止发送邮件
+ *
+ * @param array<string,mixed> $args
+ * @return array<string,mixed>
+ */
+function block_to_send_fake_email($args)
+{
+    if (isset($args['to']) && stripos($args['to'], '@fake.com') !== false)
+    {
+        //no fake email
+        $args['to'] = '';
+    }
+    return $args;
+}
 
 
 /**
@@ -61,6 +77,8 @@ function set_email_reset_password_message($message, $key,  $user_login, $user_da
         </div>
 
 HTML;
+
+    // $mailcontent = str_replace(array('<', '>'), '', $mailcontent);
 
 
     $headers = 'MIME-Version: 1.0' . "\r\n";

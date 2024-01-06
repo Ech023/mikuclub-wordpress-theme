@@ -26,3 +26,6 @@ add_filter('wp_mail_from_name', 'mikuclub\set_email_from_name');
 
 //自定义忘记密码邮件通知
 add_filter('retrieve_password_message', 'mikuclub\set_email_reset_password_message', 10, 4);
+
+//避免向无效的邮箱地址发送邮件
+add_filter('wp_mail', 'mikuclub\block_to_send_fake_email');
