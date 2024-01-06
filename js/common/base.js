@@ -34,6 +34,7 @@ const VIDEO_TYPE = {
     video: 'video',
     music: 'music',
     bilibili: 'bilibili',
+    youtube: 'youtube',
 };
 
 //本地存储键名

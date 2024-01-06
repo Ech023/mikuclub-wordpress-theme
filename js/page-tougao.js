@@ -82,6 +82,10 @@ $(function () {
             on_change_input_bilibli_video($(this));
         });
 
+        $page_tougao_element.find('form input.textfield[name="youtube"]').on('change', '', '', function () {
+            on_change_input_youtube($(this));
+        });
+
         $page_tougao_element.find('form textarea.textareafield[name="video"]').on('change', '', '', function () {
             on_change_input_video($(this));
         });
@@ -502,6 +506,35 @@ function on_change_input_bilibli_video($input) {
 
     $input.val(value);
 
+
+}
+
+/**
+ *  YOUTUBE栏 变更时触发 提取YOUTUBE视频ID
+ * @param {jQuery} $input
+ */
+function on_change_input_youtube($input) {
+
+    let value = $input.val();
+
+    if (!value.includes('.youtube.com') && !value.includes('.youtu.be')) {
+        MyToast.show_error('不是合法的YOUTUBE视频地址');
+        return;
+    }
+
+    // 匹配标准链接格式
+    const match_standard_link = value.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+    // 匹配短链接格式
+    const match_short_link = value.match(/\.be\/([a-zA-Z0-9_-]{11})/);
+
+    if(match_standard_link){
+        value = match_standard_link[1];
+    }
+    else if(match_short_link){
+        value = match_short_link[1];
+    }
+
+    $input.val(value);
 
 }
 

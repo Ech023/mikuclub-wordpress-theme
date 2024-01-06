@@ -63,6 +63,8 @@ class Post_Meta
     const POST_BILIBILI_VIDEO_INFO = 'bilibili_info';
     //文章的在线播放地址
     const POST_VIDEO = 'video';
+    //YOUTUBE视频ID
+    const POST_YOUTUBE = 'youtube';
 
 
     //预览图ID数组

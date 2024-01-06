@@ -436,6 +436,9 @@ function print_post_content_video($post_id)
 	$bilibili_video_id = get_post_meta($post_id, Post_Meta::POST_BILIBILI, true) ?: '';
 	$bilibili_play_button = '';
 
+	$youtube_video_id = get_post_meta($post_id, Post_Meta::POST_YOUTUBE, true) ?: '';
+	$youtube_play_button = '';
+
 	$video = get_post_meta($post_id, Post_Meta::POST_VIDEO, true) ?: '';
 	$video_play_button = '';
 
@@ -452,6 +455,25 @@ function print_post_content_video($post_id)
 			<div class="col-auto">
 				<a class="btn btn-sm btn-light-2 px-4" href="https://www.bilibili.com/video/{$bilibili_video_id}" target="_blank" rel="external nofollow">
 					前往B站观看
+				</a>
+			</div>
+	
+HTML;
+	}
+
+	if ($youtube_video_id)
+	{
+
+		$youtube_play_button = <<<HTML
+
+			<div class="col-auto">
+				<button class="btn btn-sm btn-light-2 px-4 open_video_modal" value="{$youtube_video_id}" data-video-type="youtube" data-post-id="{$post_id}">
+					播放YOUTUBE视频
+				</button>
+			</div>
+			<div class="col-auto">
+				<a class="btn btn-sm btn-light-2 px-4" href="https://www.youtube.com/watch?v={$youtube_video_id}" target="_blank" rel="external nofollow">
+					前往YOUTUBE观看
 				</a>
 			</div>
 	
@@ -481,7 +503,7 @@ HTML;
 		$video_play_button = <<<HTML
 			<div class="col-auto">
 				<button class="btn btn-sm btn-light-2 px-4 open_video_modal" value="{$value}" data-video-type="{$type}">
-					播放Youtube视频
+					播放在线视频
 				</button>
 			</div>
 			
@@ -499,7 +521,7 @@ HTML;
 		// 		}
 	}
 
-	if ($bilibili_play_button || $video_play_button)
+	if ($bilibili_play_button || $youtube_play_button || $video_play_button)
 	{
 		$output = <<<HTML
 			<div class="video_container row align-items-center my-2">
@@ -512,6 +534,7 @@ HTML;
 				<div class="col">
 					<div class="download_container row align-items-center g-2">
 						{$bilibili_play_button}
+						{$youtube_play_button}
 						{$video_play_button}
 					</div>
 				</div>

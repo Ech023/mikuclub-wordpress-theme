@@ -131,21 +131,11 @@ function open_prompt_modal(text, default_value, confirm_callback, cancel_callbac
  */
 function open_video_modal(value, video_type, post_id = undefined) {
 
-    //如果不是BILIBILI视频, 直接打开模态窗
-    if (video_type !== VIDEO_TYPE.bilibili) {
+    //如果是BILIBILI视频, 需要先获取CID号
+    if (video_type === VIDEO_TYPE.bilibili) {
 
-        //解义url字符串
-        value = decodeURIComponent(value.replace(/\+/g, ' '));
-
-        //创建打开模态窗
-        new MyVideoModal(value).create().show();
-
-    }
-    //如果是b站视频, 需要先获取CID号
-    else {
-
-        //请求参数
-        const data = {
+          //请求参数
+          const data = {
             post_id,
         };
 
@@ -188,6 +178,26 @@ function open_video_modal(value, video_type, post_id = undefined) {
                 hide_loading_modal();
             }
         );
+
+    }
+   //如果是YOUTUBE视频
+    else if (video_type === VIDEO_TYPE.youtube) {
+        
+        const url = 'https://www.youtube.com/embed/' + value;
+        const iframe_code = '<iframe src="' + url + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+
+        new MyVideoModal(iframe_code).create().show();
+
+    }
+    //直接打开模态窗
+    else {
+
+        //解义url字符串
+        value = decodeURIComponent(value.replace(/\+/g, ' '));
+
+        //创建打开模态窗
+        new MyVideoModal(value).create().show();
+      
     }
 
 }
