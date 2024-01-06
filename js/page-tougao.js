@@ -419,7 +419,7 @@ function check_input_download_link($input) {
     $linkInfo.removeClass("link-error link-valid");
 
 
-    if (!value || (!value.includes('pan.baidu.com') && !value.includes('aliyun'))) {
+    if (!value || (!value.includes('pan.baidu.com') && !value.includes('aliyun') && !value.includes('alipan'))) {
         //删除新消息框
         $linkInfo.remove();
         return;

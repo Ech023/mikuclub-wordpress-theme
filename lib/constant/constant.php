@@ -118,7 +118,7 @@ class Web_Domain
 
     //第三方域名
     const PAN_BAIDU_COM = 'pan.baidu.com';
-    const ALIYUN_DRIVE_CHECK = 'https://api.aliyundrive.com/adrive/v3/share_link/get_share_by_anonymous';
+    const ALIYUN_DRIVE_CHECK = 'https://api.alipan.com/adrive/v3/share_link/get_share_by_anonymous';
 
     /**
      * 获取当前主域名
@@ -191,8 +191,6 @@ class Web_Domain
 
         return $url;
     }
-
-
 }
 
 
@@ -513,7 +511,8 @@ class Download_Link_Type
             $array_drive_path = [
                 'pan.baidu.com' => static::BAIDU_PAN,
                 'quark' => static::QUARK,
-                'aliyundrive' => static::ALIYUN_DRIVE,
+                'aliyundrive' => static::ALIYUN_DRIVE, //旧版
+                'alipan' => static::ALIYUN_DRIVE, //新版
                 'drive.uc' => static::UC_DRIVE,
                 'lanzou' => static::LANZOU,
                 'weiyun' => static::TENCENT_WEIYUN,

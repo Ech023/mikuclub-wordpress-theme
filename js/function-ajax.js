@@ -29,8 +29,8 @@ function checkBaiduPanValidity(link, isValidCallback, isInvalidCallback, errorCa
         url: link,
     };
 
-    //如果是阿里云
-    if (link.includes('aliyun')) {
+    //如果是阿里云 旧版地址 或者 新版地址
+    if (link.includes('aliyun') || link.includes('alipan')) {
 
         is_aliyun = true;
 

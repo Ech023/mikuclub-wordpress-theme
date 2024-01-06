@@ -63,7 +63,7 @@ function failDownListLinkCheck($linkElement) {
 
     let link = $linkElement.attr('href');
 
-    if (!link.includes('pan.baidu.com') && !link.includes('aliyun')) {
+    if (!link.includes('pan.baidu.com') && !link.includes('aliyun') && !value.includes('alipan')) {
         return;
     }
 
