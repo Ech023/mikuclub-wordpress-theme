@@ -34,7 +34,7 @@ $breadcrumbs = print_breadcrumbs_component();
     <div class="page-header">
         <?php echo print_breadcrumbs_component(); ?>
     </div>
-       
+
     <div class="page-content my-2 ">
 
         <form class="row user-profile">
@@ -113,7 +113,18 @@ $breadcrumbs = print_breadcrumbs_component();
 
                 <div class="mb-3">
                     <div class="mb-2">绑定社交账号</div>
-                    <?php echo open_social_bind_html(); ?>
+                    <?php
+
+                    if (function_exists('\mikuclub_open_social\open_social_bind_html'))
+                    {
+                        echo \mikuclub_open_social\open_social_bind_html();
+                    }
+                    else if (function_exists('open_social_bind_html'))
+                    {
+                        echo open_social_bind_html();
+                    }
+
+                    ?>
                     <small class="form-text text-muted my-2">点击图标可以进行绑定/解绑操作</small>
 
                 </div>

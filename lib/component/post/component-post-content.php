@@ -659,9 +659,21 @@ HTML;
 
 	//分享按钮
 	$sharing_button = '';
-	if (function_exists('open_social_share_html'))
+
+	$open_social_share_html = '';
+	if (function_exists('\mikuclub_open_social\open_social_share_html'))
+	{
+		$open_social_share_html = \mikuclub_open_social\open_social_share_html();
+	}
+	else if (function_exists('open_social_share_html'))
 	{
 		$open_social_share_html = open_social_share_html();
+	}
+	
+
+	if ($open_social_share_html)
+	{
+
 		$sharing_button = <<<HTML
 	 		<div class="dropdown post-share">
 				<button class="btn btn-sm btn-light-2 dropdown-toggle w-100 set-post-share" type="button" data-bs-toggle="dropdown" data-post-id="{$post_id}">
