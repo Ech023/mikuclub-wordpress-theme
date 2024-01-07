@@ -39,14 +39,14 @@ function setup_front_end_external_css_and_script()
     //wp_enqueue_script('vue-3', 'https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js', [], '3.3.4', false);
 
     //fontanwesome图标库
-    // wp_enqueue_style('fontawesome', 'https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css', [], '5.13');
-    // wp_enqueue_style('fontawesome-solid', 'https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css', [], '5.13');
-    // wp_enqueue_style('fontawesome-brand', 'https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css', [], '5.13');
+    wp_enqueue_style('fontawesome', 'https://cdn.staticfile.org/font-awesome/6.5.1/css/fontawesome.min.css', [], '6.5.1');
+    wp_enqueue_style('fontawesome-solid', 'https://cdn.staticfile.org/font-awesome/6.5.1/css/solid.min.css', [], '6.5.1');
+    wp_enqueue_style('fontawesome-brand', 'https://cdn.staticfile.org/font-awesome/6.5.1/css/brands.min.css', [], '6.5.1');
     //fontanwesome图标库 本地版本
-    $template_directory_uri = get_template_directory_uri();
-    wp_enqueue_style('fontawesome', $template_directory_uri . '/css/font-awesome/6.5.1/css/fontawesome.min.css', [], '6.5.1');
-    wp_enqueue_style('fontawesome-solid', $template_directory_uri . '/css/font-awesome/6.5.1/css/solid.min.css', [], '6.5.1');
-    wp_enqueue_style('fontawesome-brand', $template_directory_uri . '/css/font-awesome/6.5.1/css/brands.min.css', [], '6.5.1');
+    // $template_directory_uri = get_template_directory_uri();
+    // wp_enqueue_style('fontawesome', $template_directory_uri . '/css/font-awesome/6.5.1/css/fontawesome.min.css', [], '6.5.1');
+    // wp_enqueue_style('fontawesome-solid', $template_directory_uri . '/css/font-awesome/6.5.1/css/solid.min.css', [], '6.5.1');
+    // wp_enqueue_style('fontawesome-brand', $template_directory_uri . '/css/font-awesome/6.5.1/css/brands.min.css', [], '6.5.1');
 
 
     //bootstrap库
