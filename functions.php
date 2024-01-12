@@ -97,8 +97,8 @@ function setup_front_end_external_css_and_script()
     wp_enqueue_script('ua-parser', 'https://cdn.bootcdn.net/ajax/libs/UAParser.js/1.0.36/ua-parser.min.js', [], false, true);
 
     //图片裁剪 JS库
-    wp_enqueue_script('cropperjs-js', 'https:/cdn.bootcdn.net/ajax/libs/cropperjs/2.0.0-alpha.1/cropper.min.js', [], false, true);
-    wp_enqueue_style('cropperjs-css', 'https:/cdn.bootcdn.net/ajax/libs/cropperjs/2.0.0-alpha.1/cropper.min.css', [], false);
+    wp_enqueue_script('cropperjs-js', 'https://cdn.bootcdn.net/ajax/libs/cropperjs/2.0.0-alpha.1/cropper.min.js', [], false, true);
+    wp_enqueue_style('cropperjs-css', 'https://cdn.bootcdn.net/ajax/libs/cropperjs/2.0.0-alpha.1/cropper.min.css', [], false);
     wp_enqueue_script('jquery-cropper', 'https://cdn.bootcdn.net/ajax/libs/jquery-cropper/1.0.1/jquery-cropper.min.js', [], false, true);
 
 
