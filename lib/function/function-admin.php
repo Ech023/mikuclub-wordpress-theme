@@ -135,7 +135,8 @@ function admin_custom_style()
     if (isset($_REQUEST['page']) && $_REQUEST['page'] === Admin_Page::PAGE_PATH_NAME)
     {
         //添加bootstrap CSS
-        wp_enqueue_style('theme-bootstrap', 'https://cdn.staticfile.org/bootstrap/5.1.3/css/bootstrap.min.css');
+        // wp_enqueue_style('theme-bootstrap', 'https://cdn.staticfile.org/bootstrap/5.1.3/css/bootstrap.min.css');
+        wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.1/css/bootstrap.min.css', [], false);
     }
 }
 
