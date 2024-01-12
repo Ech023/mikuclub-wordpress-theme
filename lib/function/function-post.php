@@ -1240,9 +1240,35 @@ function set_post_array_down_type($post_id)
 
     //保存数组元数据
     update_post_meta($post_id, Post_Meta::POST_ARRAY_DOWN_TYPE, $result);
-    
+
     return $result;
 }
+
+// function fix_post_password_field()
+// {
+
+//     $down = get_post_meta($post_id, Post_Meta::POST_DOWN, true);
+//     $down2 = get_post_meta($post_id, Post_Meta::POST_DOWN2, true);
+//     $password = get_post_meta($post_id, Post_Meta::POST_PASSWORD, true);
+//     $password2 = get_post_meta($post_id, Post_Meta::POST_PASSWORD2, true);
+//     $unzip_password = get_post_meta($post_id, Post_Meta::POST_UNZIP_PASSWORD, true);
+//     $unzip_password2 = get_post_meta($post_id, Post_Meta::POST_UNZIP_PASSWORD2, true);
+//     $unzip_sub_password2 = get_post_meta($post_id, Post_Meta::POST_UNZIP_SUB_PASSWORD, true);
+//     $unzip_sub_password2 = get_post_meta($post_id, Post_Meta::POST_UNZIP_SUB_PASSWORD2, true);
+
+//     //如果下载1存在 下载2不存在
+//     if ($down && empty($down2))
+//     {
+//         // //如果访问码1不存在, 访问码2存在
+//         // if (empty($password) && $password2)
+//         // {
+//         // }
+//         //如果解压码1不存在, 访问码2存在
+//         if (empty($password) && $password2)
+//         {
+//         }
+//     }
+// }
 
 /**
  * 过滤 post content里可能存在的违规内容
@@ -1251,10 +1277,10 @@ function set_post_array_down_type($post_id)
  * @param string $post_content
  * @return string
  */
-function sanitize_post_content($post_content){
+function sanitize_post_content($post_content)
+{
 
     $post_content = preg_replace('/\s?data-json="[^"]*"/', '', $post_content);
 
     return $post_content;
 }
-
