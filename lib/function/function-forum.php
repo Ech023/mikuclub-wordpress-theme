@@ -535,6 +535,34 @@ function fix_wpforo_notification_list_link($array_notification)
 }
 
 /**
+ * 修正论坛帖子的域名
+ *
+ * @param array<string,mixed> $topic
+ * @param string $var
+ * @return array<string,mixed>
+ */
+function fix_wpforo_topic_link($topic, $var)
+{
+	if (is_array($topic))
+	{
+		if (isset($topic['url']))
+		{
+			$topic['url'] = fix_site_domain_with_current_domain($topic['url']);
+		}
+		if (isset($topic['full_url']))
+		{
+			$topic['full_url']  = fix_site_domain_with_current_domain($topic['full_url']);
+		}
+		if (isset($topic['short_url']))
+		{
+			$topic['short_url'] = fix_site_domain_with_current_domain($topic['short_url']);
+		}
+	}
+
+	return $topic;
+}
+
+/**
  * 获取用户收到的论坛回复列表
  *
  * @param int $paged 当前页码

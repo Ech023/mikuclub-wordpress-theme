@@ -16,6 +16,9 @@ add_filter('wpforo_editor_settings', 'mikuclub\wpforo_custom_editors', 2, 2);
 //修正 wpforo 论坛消息通知的链接域名
 add_filter('wpforo_notifications_list', 'mikuclub\fix_wpforo_notification_list_link', 10, 1);
 
+//修正 wpforo 帖子链接域名
+add_filter('wpforo_topic', 'mikuclub\fix_wpforo_topic_link', 10, 2);
+
 //在插入新主题帖子后 更新对应的附件图片元数据
 add_action(
     'wpforo_after_add_topic',
