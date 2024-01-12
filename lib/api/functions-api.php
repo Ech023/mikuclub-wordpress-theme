@@ -4,6 +4,7 @@ namespace mikuclub;
 
 use Exception;
 use mikuclub\constant\Config;
+use mikuclub\constant\Post_Order;
 use mikuclub\constant\Post_Status;
 use mikuclub\constant\Web_Domain;
 use WP_Comment;
@@ -224,18 +225,27 @@ function test_function($data)
 		'post_status'         => Post_Status::PUBLISH,
 		'paged' => $paged,
 		'orderby' => 'ID',
-		'fields' => 'ids',  // 设置为 'ids' 只获取文章 ID
+		Post_Query::ORDER => Post_Order::ASC,
+		// 'fields' => 'ids',  // 设置为 'ids' 只获取文章 ID
 	];
 
 	$result = [];
-	$array_id = get_posts($args);
-	foreach ($array_id as $post_id)
+	$posts = get_posts($args);
+	foreach ($posts as $post)
 	{
-		//更新所有大小版本的图片地址
-		Post_Image::update_all_array_image_src($post_id);
-		//更新缩微图图片地址
-		Post_Image::set_thumbnail_src($post_id);
+		$post_content = preg_replace('/\s?data-json="[^"]*"/', '', $post->post_content, -1, $count);
+		// 替换发生了
+		if ($count > 0)
+		{
+			// 使用 wp_update_post 函数更新文章的内容
+			$updated_post = wp_update_post(array(
+				'ID'           => $post->ID,
+				'post_content' => $post_content,
+			));
 
+		}
+
+		$result[$post->ID] =  $count;
 
 		// //更新文章的下载属性
 		// set_post_array_down_type($post_id);
@@ -268,7 +278,7 @@ function test_function($data)
 		// }
 	}
 
-	return $array_id;
+	return $result;
 }
 /**
  *
@@ -282,7 +292,7 @@ function test_function2($data)
 	// $number = Input_Validator::get_array_value($data, 'number', Input_Validator::TYPE_INT, false) ?: Config::NUMBER_COMMENT_PER_PAGE;
 
 	// $args_normal_comment = [
-		
+
 	// 	'post_id' => $post_id,
 	// 	'offset' => $offset,
 	// 	'status' => 'approve',

@@ -1240,6 +1240,21 @@ function set_post_array_down_type($post_id)
 
     //保存数组元数据
     update_post_meta($post_id, Post_Meta::POST_ARRAY_DOWN_TYPE, $result);
-
+    
     return $result;
 }
+
+/**
+ * 过滤 post content里可能存在的违规内容
+ * 当前过滤 html标签里存在的 data-json 属性 (网站用户从其他网站粘贴过来的)
+ *
+ * @param string $post_content
+ * @return string
+ */
+function sanitize_post_content($post_content){
+
+    $post_content = preg_replace('/\s?data-json="[^"]*"/', '', $post_content);
+
+    return $post_content;
+}
+
