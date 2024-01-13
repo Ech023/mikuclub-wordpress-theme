@@ -180,7 +180,7 @@ function print_post_list_header_order($show_fail_time_order = false, $show_post_
 
 		$orderby_items .= <<<HTML
 			<div class="col-auto">
-				<button class="btn btn-sm px-md-4 orderby_group {$button_class}" data-orderby-group="{$orderby['group']}" data-parameters='{$json_parameters_group}'>
+				<button class="btn btn-sm px-md-4 orderby_group {$button_class}" data-orderby-group="{$orderby['group']}" data-parameters='{$json_parameters_group}' disabled>
 					<i class="{$orderby['icon']} me-2"></i>
 					{$orderby['title']}
 				</button>
@@ -213,7 +213,7 @@ HTML;
 
 			$sub_orderby_items .= <<<HTML
 			<div class="col-auto sub_orderby_container {$orderby['group']}" style="{$style}">
-				<button class="btn btn-sm px-md-4 sub_orderby {$button_class}" data-parameters='{$json_parameters}'>
+				<button class="btn btn-sm px-md-4 sub_orderby {$button_class}" data-parameters='{$json_parameters}' disabled>
 					{$sub_orderby['title']}
 				</button>
 			</div>
@@ -324,7 +324,7 @@ function print_post_list_header_download_type()
 
 		$carry .= <<<HTML
 			<div class="col-auto">
-				<button class="btn btn-sm px-md-4 download_type {$button_class}"  data-parameters='{$json_parameters}'>
+				<button class="btn btn-sm px-md-4 download_type {$button_class}"  data-parameters='{$json_parameters}' disabled>
 					{$item['title']}
 				</button>
 			</div>
@@ -398,7 +398,7 @@ function print_post_list_header_post_status($default_status)
 
 		$result .= <<<HTML
 			<div class="col-auto">
-				<button class="btn btn-sm px-md-4 post_status {$button_class}"  data-parameters='{$json_parameters}'>
+				<button class="btn btn-sm px-md-4 post_status {$button_class}"  data-parameters='{$json_parameters}' disabled>
 					{$status_description}
 				</button>
 			</div>
@@ -450,7 +450,7 @@ function print_post_list_header_user_black_list()
 
 		$result .= <<<HTML
 			<div class="col-auto">
-				<button class="btn btn-sm px-md-4 only_not_user_black_list {$button_class}"  data-parameters='{$json_parameters}'>
+				<button class="btn btn-sm px-md-4 only_not_user_black_list {$button_class}"  data-parameters='{$json_parameters}' disabled>
 					{$value_description}
 				</button>
 			</div>
@@ -551,7 +551,7 @@ function print_post_list_header_category()
 
 			$category_items .= <<<HTML
 			<div class="col-auto">
-				<button class="btn btn-sm px-md-4 category_group {$button_class}" data-custom_cat="{$data_custom_cat}" data-category_group="{$data_category_group}">
+				<button class="btn btn-sm px-md-4 category_group {$button_class}" data-custom_cat="{$data_custom_cat}" data-category_group="{$data_category_group}" disabled>
 					{$category->name}
 				</button>
 			</div>
@@ -582,7 +582,7 @@ HTML;
 
 				$sub_category_items .= <<<HTML
 			<div class="col-auto sub_category_container {$data_category_group}" style="{$style}">
-				<button class="btn btn-sm px-md-4 sub_category {$button_class}" data-custom_cat="{$data_custom_cat}">
+				<button class="btn btn-sm px-md-4 sub_category {$button_class}" data-custom_cat="{$data_custom_cat}" disabled>
 					{$sub_category->name}
 				</button>
 			</div>
@@ -622,9 +622,9 @@ function post_list_header_search_form($placeholder = '')
 	$output = <<<HTML
 
 		<div class="my-2">
-			<form class="site-search-form input-group input-group-sm">
+			<form class="post_list_search_form input-group input-group-sm">
 				<input type="text" class="form-control" name="search" autocomplete="off" placeholder="{$placeholder}" value="{$search_value}"/>
-				<button type="submit" class="btn btn-sm btn-miku px-4">
+				<button type="submit" class="btn btn-sm btn-miku px-4" disabled>
 					<i class="fa-solid fa-search me-2"></i> 搜索
 				</button>
 			</form>

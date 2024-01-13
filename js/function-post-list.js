@@ -142,9 +142,13 @@ function get_post_list(is_new_load = false, new_paged = 1) {
 
     const pre_callback = () => {
         show_loading_row($post_list_container_component);
+        //禁用过滤/排序/搜索按钮
+        disable_filter_buttons();
     };
     const always_callback = () => {
         hide_loading_row();
+        //启用过滤/排序/搜索按钮
+        enable_filter_buttons();
         //关闭loading属性
         get_post_list.is_loading = false;
     }
@@ -210,7 +214,7 @@ function get_post_list_component_paged_and_max_num_pages() {
 
     return {
         paged: data.paged || 1,
-        max_num_pages : max_num_pages || 0,
+        max_num_pages: max_num_pages || 0,
     }
 }
 

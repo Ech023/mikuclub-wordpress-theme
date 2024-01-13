@@ -17,7 +17,7 @@ if (location.host === LOGIN_SITE_DOMAIN.www_mikuclub_online || location.host ===
     //重定向到win
     let url = location.href
         .replace(LOGIN_SITE_DOMAIN.www_mikuclub_online, LOGIN_SITE_DOMAIN.www_mikuclub_win)
-        .replace(LOGIN_SITE_DOMAIN.www_mikuclub_cc, LOGIN_SITE_DOMAIN.www_mikuclub_online);
+        .replace(LOGIN_SITE_DOMAIN.www_mikuclub_cc, LOGIN_SITE_DOMAIN.www_mikuclub_win);
     location.replace(url);
 }
 

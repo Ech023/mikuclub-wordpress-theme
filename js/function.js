@@ -334,26 +334,7 @@ function open_search_page($form) {
 
 }
 
-/**
- * 提交搜索时触发
- * @param {jQuery} $form 
- */
-function on_submit_search_form($form) {
 
-    let search_value = $form.find('input[name="search"]').val();
-    search_value = search_value.substring(0, 100);
-
-    //如果搜索内容为空
-    // if (!search_value) {
-    //     MyToast.show_error('搜索内容为空');
-    //     return;
-    // }
-
-    //更新参数
-    update_post_list_component_data({ s: search_value });
-    //重新请求列表
-    get_post_list(true);
-}
 
 
 /*

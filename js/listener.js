@@ -23,12 +23,7 @@ $(function () {
         open_search_page($(this));
     });
 
-    //监听搜索表单 的提交事件
-    $('form.site-search-form').on('submit', function (event) {
-        event.preventDefault();
-        on_submit_search_form($(this));
-    });
-
+   
 
 
 

@@ -9,6 +9,7 @@ let $post_list_sub_orderby_element;
 let $post_list_download_type_element;
 let $post_list_post_status_element;
 let $post_list_only_not_user_black_list_element;
+let $post_list_search_form_element;
 
 
 $(function () {
@@ -21,6 +22,7 @@ $(function () {
     $post_list_download_type_element = $('.post_list_download_type');
     $post_list_post_status_element = $('.post_list_post_status');
     $post_list_only_not_user_black_list_element = $('.post_list_only_not_user_black_list');
+    $post_list_search_form_element =  $('form.post_list_search_form');
 
     //绑定 排序组按钮的点击事件
     $post_list_orderby_element.find('.btn.orderby_group').on('click', function () {
@@ -52,9 +54,17 @@ $(function () {
         on_click_button_post_status($(this));
     })
 
+    //绑定 过滤黑名单按钮的点击事件
     $post_list_only_not_user_black_list_element.find('.btn.only_not_user_black_list').on('click', function () {
         on_click_button_only_not_user_black_list($(this));
     })
+
+     //监听搜索表单 的提交事件
+     $post_list_search_form_element.on('submit', function (event) {
+        event.preventDefault();
+        on_submit_search_form($(this));
+    });
+
 
 });
 
@@ -281,3 +291,73 @@ function on_click_button_only_not_user_black_list($button) {
     //重新请求列表
     get_post_list(true);
 }
+
+/**
+ * 提交搜索时触发
+ * @param {jQuery} $form 
+ */
+function on_submit_search_form($form) {
+
+    let search_value = $form.find('input[name="search"]').val();
+    search_value = search_value.substring(0, 100);
+
+    //如果搜索内容为空
+    // if (!search_value) {
+    //     MyToast.show_error('搜索内容为空');
+    //     return;
+    // }
+
+    //更新参数
+    update_post_list_component_data({ s: search_value });
+    //重新请求列表
+    get_post_list(true);
+}
+
+/**
+ * 禁用 所有过滤/排序按钮
+ */
+function disable_filter_buttons() {
+
+    const $array_element = [
+        $post_list_category_element,
+        $post_list_sub_category_element,
+        $post_list_orderby_element,
+        $post_list_sub_orderby_element,
+        $post_list_download_type_element,
+        $post_list_post_status_element,
+        $post_list_only_not_user_black_list_element,
+        $post_list_search_form_element,
+    ];
+
+    //遍历所有过滤组
+    for (const $element of $array_element) {
+        //禁用每个过滤组的按钮
+        $element.find('button.btn').prop("disabled", true);
+    }
+
+}
+
+/**
+ * 启用 所有过滤/排序按钮
+ */
+function enable_filter_buttons() {
+
+    const $array_element = [
+        $post_list_category_element,
+        $post_list_sub_category_element,
+        $post_list_orderby_element,
+        $post_list_sub_orderby_element,
+        $post_list_download_type_element,
+        $post_list_post_status_element,
+        $post_list_only_not_user_black_list_element,
+        $post_list_search_form_element,
+    ];
+
+    //遍历所有过滤组
+    for (const $element of $array_element) {
+        //禁用每个过滤组的按钮
+        $element.find('button.btn').prop("disabled", false);
+    }
+
+}
+
