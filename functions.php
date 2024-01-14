@@ -71,35 +71,72 @@ function setup_front_end_external_css_and_script()
 
 
 
+    // /*
+    // Boot CDN库
+    // ==========================================================================
+    // */
+
+    // //jquery库 BootCDN版本
+    // wp_enqueue_script('jquery', 'https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js', [], false, false);
+
+    // //fontanwesome图标库 BootCDN版本
+    // wp_enqueue_style('fontawesome', 'https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css', [], false);
+    // wp_enqueue_style('fontawesome-solid', 'https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/solid.min.css', [], false);
+    // wp_enqueue_style('fontawesome-brand', 'https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/brands.min.css', [], false);
+
+    // //bootstrap库
+    // wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.1/css/bootstrap.min.css', [], false);
+    // wp_enqueue_script('twitter-bootstrap-js', 'https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.1/js/bootstrap.bundle.min.js', [], false, true);
+
+
+    // //图片灯箱 lightbox2库
+    // wp_enqueue_style('lightbox2-css', 'https://cdn.bootcdn.net/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css', [], false);
+    // wp_enqueue_script('lightbox2-js', 'https://cdn.bootcdn.net/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js', [], false, true);
+
+    // //UA解析 UAParser JS库
+    // wp_enqueue_script('ua-parser', 'https://cdn.bootcdn.net/ajax/libs/UAParser.js/1.0.36/ua-parser.min.js', [], false, true);
+
+    // //图片裁剪 JS库
+    // wp_enqueue_script('cropperjs-js', 'https://cdn.bootcdn.net/ajax/libs/cropperjs/2.0.0-alpha.1/cropper.min.js', [], false, true);
+    // wp_enqueue_style('cropperjs-css', 'https://cdn.bootcdn.net/ajax/libs/cropperjs/2.0.0-alpha.1/cropper.min.css', [], false);
+    // wp_enqueue_script('jquery-cropper', 'https://cdn.bootcdn.net/ajax/libs/jquery-cropper/1.0.1/jquery-cropper.min.js', [], false, true);
+
+
+    // /**
+    //  * 页内平滑滚动
+    //  * @see https://github.com/flesler/jquery.scrollTo
+    //  */
+    // wp_enqueue_script('jquery-scrollto', 'https://cdn.bootcdn.net/ajax/libs/jquery-scrollTo/2.1.3/jquery.scrollTo.min.js', [], false, true);
+
+
     /*
-    Boot CDN库
+    字节跳动 CDN库
     ==========================================================================
     */
 
-    //jquery库 BootCDN版本
-    wp_enqueue_script('jquery', 'https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js', [], false, false);
+    //jquery库 
+    wp_enqueue_script('jquery', 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/jquery/3.6.0/jquery.min.js', [], false, false);
 
-    //fontanwesome图标库 BootCDN版本
-    wp_enqueue_style('fontawesome', 'https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css', [], false);
-    wp_enqueue_style('fontawesome-solid', 'https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/solid.min.css', [], false);
-    wp_enqueue_style('fontawesome-brand', 'https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/brands.min.css', [], false);
+    //fontanwesome图标库 
+    wp_enqueue_style('fontawesome', 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/font-awesome/6.0.0/css/fontawesome.min.css', [], false);
+    wp_enqueue_style('fontawesome-solid', 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/font-awesome/6.0.0/css/solid.min.css', [], false);
+    wp_enqueue_style('fontawesome-brand', 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/font-awesome/6.0.0/css/brands.min.css', [], false);
 
-    //bootstrap库
-    wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.1/css/bootstrap.min.css', [], false);
-    wp_enqueue_script('twitter-bootstrap-js', 'https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.1/js/bootstrap.bundle.min.js', [], false, true);
-
+    //bootstrap库 用staticfile地址, 因为字节跳动没有新版
+    wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.staticfile.org/twitter-bootstrap/5.3.2/css/bootstrap.min.css', [], false);
+    wp_enqueue_script('twitter-bootstrap-js', 'https://cdn.staticfile.org/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js', [], false, true);
 
     //图片灯箱 lightbox2库
-    wp_enqueue_style('lightbox2-css', 'https://cdn.bootcdn.net/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css', [], false);
-    wp_enqueue_script('lightbox2-js', 'https://cdn.bootcdn.net/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js', [], false, true);
+    wp_enqueue_style('lightbox2-css', 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/lightbox2/2.11.3/css/lightbox.min.css', [], false);
+    wp_enqueue_script('lightbox2-js', 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/lightbox2/2.11.3/js/lightbox.min.js', [], false, true);
 
     //UA解析 UAParser JS库
-    wp_enqueue_script('ua-parser', 'https://cdn.bootcdn.net/ajax/libs/UAParser.js/1.0.36/ua-parser.min.js', [], false, true);
+    wp_enqueue_script('ua-parser', 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/UAParser.js/1.0.2/ua-parser.min.js', [], false, true);
 
     //图片裁剪 JS库
-    wp_enqueue_script('cropperjs-js', 'https://cdn.bootcdn.net/ajax/libs/cropperjs/2.0.0-alpha.1/cropper.min.js', [], false, true);
-    wp_enqueue_style('cropperjs-css', 'https://cdn.bootcdn.net/ajax/libs/cropperjs/2.0.0-alpha.1/cropper.min.css', [], false);
-    wp_enqueue_script('jquery-cropper', 'https://cdn.bootcdn.net/ajax/libs/jquery-cropper/1.0.1/jquery-cropper.min.js', [], false, true);
+    wp_enqueue_script('cropperjs-js', 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/cropperjs/2.0.0-alpha.2/cropper.min.js', [], false, true);
+    wp_enqueue_style('cropperjs-css', 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/cropperjs/2.0.0-alpha.2/cropper.min.css', [], false);
+    wp_enqueue_script('jquery-cropper', 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/jquery-cropper/1.0.1/jquery-cropper.min.js', [], false, true);
 
 
     /**
@@ -107,9 +144,6 @@ function setup_front_end_external_css_and_script()
      * @see https://github.com/flesler/jquery.scrollTo
      */
     wp_enqueue_script('jquery-scrollto', 'https://cdn.bootcdn.net/ajax/libs/jquery-scrollTo/2.1.3/jquery.scrollTo.min.js', [], false, true);
-
-
-
 
     /*
     本地 CDN库

@@ -37,8 +37,8 @@ function setup_login_page_css_and_script()
 {
 
 	//bootstrap css
-	// wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.staticfile.org/twitter-bootstrap/4.5.0/css/bootstrap.min.css', [], '4.50');
-	wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.1/css/bootstrap.min.css', [], false);
+	wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.staticfile.org/twitter-bootstrap/5.3.2/css/bootstrap.min.css', [], false);
+	// wp_enqueue_style('twitter-bootstrap-css', 'https://cdn.staticfile.org/twitter-bootstrap/5.3.2/css/bootstrap.min.css', [], false);
 
 	wp_enqueue_style('custom-system-css', get_template_directory_uri() . '/css/style-system.css', [], Config::CSS_JS_VERSION);
 	wp_enqueue_style('custom-login-css', get_template_directory_uri() . '/css/style-login.css', [], Config::CSS_JS_VERSION);
@@ -46,9 +46,3 @@ function setup_login_page_css_and_script()
 
 	wp_enqueue_script('custom-login-js', get_template_directory_uri() . '/js/login.js', [], Config::CSS_JS_VERSION, true);
 }
-
-
-
-
-
-
