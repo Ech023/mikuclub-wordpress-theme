@@ -87,7 +87,7 @@ HTML;
 	//PC端 文章页 - 正文中间
 	if (get_theme_option(Admin_Meta::POST_CONTENT_ADSENSE_PC_ENABLE))
 	{
-		$pc_adsense = '<div class="pop-banner text-center my-2 d-none d-md-block">' . get_theme_option(Admin_Meta::POST_CONTENT_ADSENSE_PC) . '</div>';
+		$pc_adsense = '<div class="pop-banner text-center my-2 d-md-block">' . get_theme_option(Admin_Meta::POST_CONTENT_ADSENSE_PC) . '</div>';
 	}
 	$mobile_adsense = '';
 	//手机端 文章页 - 正文中间
