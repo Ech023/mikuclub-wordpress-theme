@@ -665,10 +665,7 @@ HTML;
 	{
 		$open_social_share_html = \mikuclub_open_social\open_social_share_html();
 	}
-	else if (function_exists('open_social_share_html'))
-	{
-		$open_social_share_html = open_social_share_html();
-	}
+	
 	
 
 	if ($open_social_share_html)

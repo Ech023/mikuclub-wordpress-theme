@@ -6,6 +6,7 @@ use mikuclub\constant\Expired;
 use mikuclub\constant\Post_Meta;
 use mikuclub\constant\User_Meta;
 use WP_Comment;
+use WP_Error;
 use WP_Post;
 use WP_User;
 
@@ -1189,7 +1190,38 @@ function calculate_user_badges_level($value)
 }
 
 
+/**
+ * 删除用户自己
+ *
+ * @return bool
+ */
+function delete_user_self()
+{
+	$result = false;
 
+	$user_id = get_current_user_id();
+
+	if ($user_id)
+	{
+		require_once ABSPATH . 'wp-admin/includes/user.php';
+		$result = wp_delete_user($user_id);
+		if ($result)
+		{
+			// 注销用户
+			wp_logout();
+		}
+		else
+		{
+			$result = new WP_Error(
+				'rest_cannot_delete',
+				__('The user cannot be deleted.'),
+				array('status' => 500)
+			);
+		}
+	}
+
+	return $result;
+}
 
 
 // /**

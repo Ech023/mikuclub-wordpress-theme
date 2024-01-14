@@ -37,95 +37,118 @@ $breadcrumbs = print_breadcrumbs_component();
 
     <div class="page-content my-2 ">
 
-        <form class="row user-profile">
+        <form class="row user-profile gy-2">
+
+            <div class="col-12">
+                <div class="rounded bg-light-2 p-2 small">
+                    建议输入有效的个人邮箱和密码, 这些能多一种方式来登陆账号
+                </div>
+            </div>
+
 
             <div class="col-12 col-md-6">
 
-                <div class="mb-3">
-                    <label class="form-label" for="user_login">用户ID </label>
-                    <input type="text" class="form-control" id="user_login" value="<?php echo $user->user_login; ?>" readonly />
-                    <small class="form-text text-muted">不可修改</small>
+
+                <div class="row row-cols-1 gy-2">
+                    <div class="col">
+                        <label class="form-label" for="user_login">用户ID </label>
+                        <input type="text" class="form-control" id="user_login" value="<?php echo $user->user_login; ?>" disabled />
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label" for="user_email">邮箱 <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="user_email" name="email" value="<?php echo $user->user_email; ?>" required />
+                        <small class="form-text text-muted">请确保填写了有效的邮箱地址, 将来可以用来找回密码</small>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label" for="user_name">昵称 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="user_name" name="user_name" value="<?php echo $user->display_name; ?>" autocomplete="off" maxlength="20" required />
+                        <small class="form-text text-muted">公开显示的昵称 长度限制20字</small>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label" for="description">个性签名</label>
+                        <input type="text" class="form-control" id="description" name="description" value="<?php echo $user->user_description; ?>" autocomplete="off" maxlength="100" />
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label" for="password">新密码</label>
+                        <input type="password" class="form-control" id="password" name="password" autocomplete="new-password" />
+                        <small class="form-text text-muted">如果不需要修改密码, 留空即可, 本密码不影响社交账号登陆</small>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label" for="user_email">邮箱 <span class="text-danger">*</span></label>
-                    <input type="email" class="form-control" id="user_email" name="email" value="<?php echo $user->user_email; ?>" required />
-                    <small class="form-text text-muted">请确保填写了有效的邮箱地址, 将来可以用来找回密码</small>
-                </div>
 
-                <div class="mb-3">
-                    <label class="form-label" for="user_name">昵称 <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="user_name" name="user_name" value="<?php echo $user->display_name; ?>" autocomplete="off" maxlength="20" required />
-                    <small class="form-text text-muted">公开显示的昵称 长度限制20字</small>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label" for="description">个性签名</label>
-                    <input type="text" class="form-control" id="description" name="description" value="<?php echo $user->user_description; ?>" autocomplete="off" maxlength="100" />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label" for="password">新密码</label>
-                    <input type="password" class="form-control" id="password" name="password" autocomplete="new-password" />
-                    <small class="form-text text-muted">如果不需要修改密码, 留空即可, 本密码不影响社交账号登陆</small>
-                </div>
 
             </div>
 
             <div class="col-12 col-md-6">
 
-                <div class="mb-3 row ">
+                <div class="row row-cols-1 gy-2">
                     <div class="col">
-                        <label class="form-label" for="password">积分</label>
-                        <div>
-                            <?php echo User_Point::get_point($user->ID); ?>
+                        <div class="row ">
+                            <div class="col">
+                                <label class="form-label" for="password">积分</label>
+                                <div>
+                                    <?php echo User_Point::get_point($user->ID); ?>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label class="form-label" for="password">等级</label>
+                                <div>
+                                    <?php echo User_Point::get_point_level($user->ID); ?>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
+
+
+                    <div class="my-2 border-top"></div>
+
                     <div class="col">
-                        <label class="form-label" for="password">等级</label>
-                        <div>
-                            <?php echo User_Point::get_point_level($user->ID); ?>
+                        <div class="mb-2">我的头像</div>
+                        <div class="text-center">
+                            <img src="<?php echo get_my_user_avatar($user->ID); ?>" class="img-fluid avatar rounded-circle" width="93" height="93" />
                         </div>
+
                     </div>
 
-                </div>
+                    <div class="col">
+                        <div>
 
-                <div class="mb-3 border-top"></div>
+                            <label class="form-label" for="user_avatar">更改新的头像</label>
+                            <small class="form-text text-muted">图片大小需要100 * 100像素以上, 支持JPG、PNG等格式, 图片需小于3M</small>
+                            <input type="file" class="form-control open_image_cropper_modal" id="user_avatar" name="user_avatar" accept="image/png,image/jpg,image/jpeg,image/bmp,image/webp">
+                        </div>
 
-                <div class="mb-3">
-                    <div class="mb-2">我的头像</div>
-                    <div class="text-center">
-                        <img src="<?php echo get_my_user_avatar($user->ID); ?>" class="img-fluid avatar rounded-circle" width="93" height="93" />
+
                     </div>
 
-                </div>
+                    <div class="my-2 border-top"></div>
 
-                <div class="mb-3">
-                    <div>
+                    <div class="col">
+                        <div class="mb-2">绑定社交账号</div>
+                        <?php
 
-                        <label class="form-label" for="user_avatar">更改新的头像</label>
-                        <small class="form-text text-muted">图片大小需要100 * 100像素以上, 支持JPG、PNG等格式, 图片需小于3M</small>
-                        <input type="file" class="form-control open_image_cropper_modal" id="user_avatar" name="user_avatar" accept="image/png,image/jpg,image/jpeg,image/bmp,image/webp">
+                        if (function_exists('\mikuclub_open_social\open_social_bind_html'))
+                        {
+                            echo \mikuclub_open_social\open_social_bind_html();
+                        }
+
+                        ?>
+                        <small class="form-text text-muted my-2">点击图标可以进行绑定/解绑操作</small>
+
                     </div>
 
+                    <div class="my-2 border-top"></div>
 
-                </div>
+                    <div class="col">
 
-                <div class="mb-3">
-                    <div class="mb-2">绑定社交账号</div>
-                    <?php
-
-                    if (function_exists('\mikuclub_open_social\open_social_bind_html'))
-                    {
-                        echo \mikuclub_open_social\open_social_bind_html();
-                    }
-                    else if (function_exists('open_social_bind_html'))
-                    {
-                        echo open_social_bind_html();
-                    }
-
-                    ?>
-                    <small class="form-text text-muted my-2">点击图标可以进行绑定/解绑操作</small>
+                        <div class="delete_user_self btn btn-sm btn-danger">删除账号</div>
+                        <div class="form-text text-muted my-2">注意: 确认删除后, 账号将无法恢复</div>
+                    </div>
 
                 </div>
 

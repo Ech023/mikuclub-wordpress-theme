@@ -93,6 +93,7 @@ const URLS = {
     deleteStickyComment: MY_SITE.apiRoot + UTILS_PATH + 'delete_sticky_comment',
 
     forumReplyList: MY_SITE.apiRoot + UTILS_PATH + 'forum_reply_list',
+    deleteUserSelf: MY_SITE.apiRoot + UTILS_PATH + 'delete_user_self',
 };
 
 const HTTP_METHOD = {

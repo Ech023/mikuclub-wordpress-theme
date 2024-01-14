@@ -197,6 +197,23 @@ function api_delete_user_black_list($data)
 	return $result;
 }
 
+/**
+ * 删除用户自己的API接口
+ *
+ * @return bool|WP_Error
+ */
+function api_delete_user_self()
+{
+
+	$result = execute_with_try_catch_wp_error(function ()
+	{
+		$result = delete_user_self();
+		return $result;
+	});
+
+	return $result;
+}
+
 
 /**
  * 在wp/v2/users  回复中增加自定义 metadata数据
@@ -303,5 +320,14 @@ function register_custom_user_metadata()
 			'callback'            => 'mikuclub\api_delete_user_black_list',
 			'permission_callback' => 'is_user_logged_in',
 		],
+	]);
+
+	register_rest_route('utils/v2', '/delete_user_self', [
+		[
+			'methods'             => 'POST',
+			'callback'            => 'mikuclub\api_delete_user_self',
+			'permission_callback' => 'is_user_logged_in',
+		],
+	
 	]);
 }
