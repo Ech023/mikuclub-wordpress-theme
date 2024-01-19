@@ -153,6 +153,15 @@ HTML;
             <li class="border-bottom my-2" style="margin-left: -1.5rem; margin-right: -1.5rem;"></li>
 
             <li class="nav-item">
+                <a class="nav-link" href="{$home}/150107" title="赞助网站" >
+                    <i class="fa-solid fa-circle-dollar-to-slot me-2"></i>
+                    <span class="">赞助网站</span>
+                </a>
+            </li>
+
+            <li class="border-bottom my-2" style="margin-left: -1.5rem; margin-right: -1.5rem;"></li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="{$logout_url}" title="退出账号">
                     <i class="fa-solid fa-right-from-bracket me-2"></i>
                     <span class="">退出账号</span>
