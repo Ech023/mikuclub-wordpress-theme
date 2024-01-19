@@ -586,10 +586,10 @@ class Download_Link_Type
                 $result = '曲奇云盘';
                 break;
             case static::YUN_189:
-                $result = '天翼云';
+                $result = '天翼云盘';
                 break;
             case static::YUN_139:
-                $result = '和彩云';
+                $result = '移动云盘';
                 break;
             case static::MAGNET:
                 $result = '磁力链接';
