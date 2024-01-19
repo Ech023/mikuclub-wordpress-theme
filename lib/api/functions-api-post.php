@@ -287,6 +287,8 @@ function api_update_post_meta($data)
 
 		//更新元数据
 		$result = update_post_meta($post_id, $meta_key, $meta_value);
+		//清空文章的缓存
+		File_Cache::delete_post_cache_meta_by_post_id($post_id);
 
 		if ($result === false)
 		{
