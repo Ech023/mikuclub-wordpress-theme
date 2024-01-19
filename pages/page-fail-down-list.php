@@ -3,6 +3,7 @@
 //如果不是管理员
 namespace mikuclub;
 
+use mikuclub\constant\Download_Link_Type;
 use mikuclub\constant\Post_Meta;
 use mikuclub\Input_Validator;
 use mikuclub\User_Capability;
@@ -36,66 +37,142 @@ foreach ($post_list as $my_post)
 {
 
     //获取下载地址
-    $down1 = get_post_meta($my_post->id, Post_Meta::POST_DOWN, true);
+    $down = get_post_meta($my_post->id, Post_Meta::POST_DOWN, true);
     $down2 = get_post_meta($my_post->id, Post_Meta::POST_DOWN2, true);
     $down3 = get_post_meta($my_post->id, Post_Meta::POST_DOWN3, true);
-    //获取密码
-    $password  = get_post_meta($my_post->id, Post_Meta::POST_PASSWORD, true);
-    $password2 = get_post_meta($my_post->id, Post_Meta::POST_PASSWORD2, true);
-    $password3 = get_post_meta($my_post->id, Post_Meta::POST_PASSWORD3, true);
+    //获取访问密码
+    $access_password  = get_post_meta($my_post->id, Post_Meta::POST_PASSWORD, true);
+    $access_password2 = get_post_meta($my_post->id, Post_Meta::POST_PASSWORD2, true);
+    $access_password3 = get_post_meta($my_post->id, Post_Meta::POST_PASSWORD3, true);
+
+    //获取解压密码
+    $unzip_password  = get_post_meta($my_post->id, Post_Meta::POST_UNZIP_PASSWORD, true);
+    $unzip_password2 = get_post_meta($my_post->id, Post_Meta::POST_UNZIP_PASSWORD2, true);
+    $unzip_password3 = get_post_meta($my_post->id, Post_Meta::POST_UNZIP_PASSWORD3, true);
+
+    //获取解压密码2
+    $unzip_sub_password  = get_post_meta($my_post->id, Post_Meta::POST_UNZIP_SUB_PASSWORD, true);
+    $unzip_sub_password2 = get_post_meta($my_post->id, Post_Meta::POST_UNZIP_SUB_PASSWORD2, true);
+    $unzip_sub_password3 = get_post_meta($my_post->id, Post_Meta::POST_UNZIP_SUB_PASSWORD3, true);
 
     //如果链接不存在, 尝试从文章内容中解析
-    if (empty($down1) && empty($down2))
+    if (empty($down) && empty($down2))
     {
 
         $result = get_down_link_from_old_post($my_post->id);
         if (isset($result[Post_Meta::POST_DOWN]))
         {
-            $down1 = $result[Post_Meta::POST_DOWN];
+            $down = $result[Post_Meta::POST_DOWN];
         }
         if (empty($down2) && isset($result[Post_Meta::POST_DOWN2]))
         {
             $down2 = $result[Post_Meta::POST_DOWN2];
         }
-        if (empty($password) && isset($result[Post_Meta::POST_PASSWORD]))
+        if (empty($access_password) && isset($result[Post_Meta::POST_PASSWORD]))
         {
-            $password = $result[Post_Meta::POST_PASSWORD];
+            $access_password = $result[Post_Meta::POST_PASSWORD];
         }
-        if (empty($password2) && isset($result[Post_Meta::POST_PASSWORD2]))
+        if (empty($access_password2) && isset($result[Post_Meta::POST_PASSWORD2]))
         {
-            $password2 = $result[Post_Meta::POST_PASSWORD2];
+            $access_password2 = $result[Post_Meta::POST_PASSWORD2];
         }
     }
 
-    //修正链接头部
-    $down1          = convert_link_to_https($down1);
-    $down2          = convert_link_to_https($down2);
-    $down3          = convert_link_to_https($down3);
+    $array_post_down = [
+        [
+            'meta_key' => Post_Meta::POST_DOWN,
+            'down' => $down,
+            'access_password' => $access_password,
+            'unzip_password' => $unzip_password,
+            'unzip_sub_password' => $unzip_sub_password,
+        ],
+        [
+            'meta_key' => Post_Meta::POST_DOWN2,
+            'down' => $down2,
+            'access_password' => $access_password2,
+            'unzip_password' => $unzip_password2,
+            'unzip_sub_password' => $unzip_sub_password2,
+        ],
+        [
+            'meta_key' => Post_Meta::POST_DOWN3,
+            'down' => $down3,
+            'access_password' => $access_password3,
+            'unzip_password' => $unzip_password3,
+            'unzip_sub_password' => $unzip_sub_password3,
+        ],
+    ];
+
+    $down_html = '';
+    foreach ($array_post_down as $post_down)
+    {
+        $meta_key = $post_down['meta_key'];
+        $down = $post_down['down'];
+        $access_password =  $post_down['access_password'];
+        $unzip_password = $post_down['unzip_password'];
+        $unzip_sub_password = $post_down['unzip_sub_password'];
+        
+
+        //修正链接
+        if ($down)
+        {
+            $down_type = Download_Link_Type::get_type_by_link($down);
+
+            $down = convert_link_to_https($down);
+            //如果是支持的格式, 把访问密码增加到下载地址里
+            $down = add_access_password_to_down_link($down, $access_password, $down_type);
+
+            $down_html .= <<<HTML
+                <div class="down-container row g-2 align-items-center">
+                    <div class="badge-container col-auto">
+                    <span class="badge bg-secondary">未检测</span>
+                    </div>
+                    <div class="col-8">
+                        <a class="down text-break small" href="{$down}" target="_blank">
+                        {$down}
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <button class="delete_down_link btn btn-sm btn-light-2" data-post_id="{$my_post->id}" data-meta_key="{$meta_key}">删除地址</button>
+                    </div>
+                </div>
+               
+HTML;
+
+            if ($access_password)
+            {
+                $down_html .= <<<HTML
+                <div class="small passowrd my-2">
+                    提取码 <span class="fw-bold">{$access_password}</span>
+                </div>
+HTML;
+            }
+            if ($unzip_password)
+            {
+                $down_html .= <<<HTML
+                <div class="small unzip_password my-2">
+                    解压码 <span class="fw-bold">{$unzip_password}</span>
+                </div>
+HTML;
+            }
+            if ($unzip_sub_password)
+            {
+                $down_html .= <<<HTML
+                <div class="small unzip_sub_password my-2">
+                    解压码2 <span class="fw-bold">{$unzip_sub_password}</span>
+                </div>
+HTML;
+            }
+
+            $down_html .= '<hr/>';
+        }
+    }
+
+
+
     $post_fail_time = get_post_fail_times($my_post->id);
     $post_edit_link = get_edit_post_link($my_post->id);
     $baidu_fast_link = get_post_meta($my_post->id, 'baidu_fast_link', true);
 
-    $down1_html = '';
-    if ($down1)
-    {
-        $down1_html = '<a class="down" href="' . $down1 . '" target="_blank">
-                       ' . $down1 . '
-                    </a>';
-    }
-    $down2_html = '';
-    if ($down2)
-    {
-        $down2_html = '<hr/><a class="down" href="' . $down2 . '" target="_blank">
-                       ' . $down2 . '
-                    </a>';
-    }
-    $down3_html = '';
-    if ($down3)
-    {
-        $down3_html = '<hr/><a class="down" href="' . $down3 . '" target="_blank">
-                       ' . $down3 . '
-                        </a>';
-    }
 
     $baidu_fast_link_html = '';
     if ($baidu_fast_link)
@@ -114,7 +191,7 @@ foreach ($post_list as $my_post)
             </div>
             <div class="col-2 ">
                 <div >
-                    <a class="" title="{$my_post->post_title}" href="{$my_post->post_href}" target="_blank">
+                    <a class="small" title="{$my_post->post_title}" href="{$my_post->post_href}" target="_blank">
                         {$my_post->post_title}
                     </a>
                 </div>
@@ -126,36 +203,14 @@ foreach ($post_list as $my_post)
             </div>
             <div class="col-4">
                   
-            
-     
-                <div class="mt-2">
-                       {$down1_html}
-                </div>
-
-                <div class="passowrd mt-2">
-                    {$password}
-                </div>
-                
-                <div class="mt-2">
-                        {$down2_html}
-                </div>
-                <div class="passowrd2 mt-2">
-                    {$password2}
-                </div>
-                <div class="mt-2">
-                        {$down3_html}
-                </div>
-                <div class="passowrd3 mt-2">
-                    {$password3}
-                </div>
-                
+                {$down_html}
                 
                 <div class="mt-2">
                         {$baidu_fast_link_html}
                 </div>
             </div>
-          <div class="col-1 d-flex align-items-center">
-            <h5 class="text-danger mb-2 fail-time">{$post_fail_time}</h5>
+          <div class="col-1">
+            <h5 class="text-danger fail-time">{$post_fail_time}</h5>
           </div>
              <div class="col-2">
                 <button class="btn btn-secondary m-2 reset-fail-times">清零</button>
@@ -176,9 +231,9 @@ HTML;
 <div class="page-fail-down-list">
 
     <div class="page-header">
-       
-            <?php echo print_breadcrumbs_component(); ?>
-     
+
+        <?php echo print_breadcrumbs_component(); ?>
+
 
 
         <div class="text-end">

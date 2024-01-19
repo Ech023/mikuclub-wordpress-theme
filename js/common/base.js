@@ -94,6 +94,7 @@ const URLS = {
 
     forumReplyList: MY_SITE.apiRoot + UTILS_PATH + 'forum_reply_list',
     deleteUserSelf: MY_SITE.apiRoot + UTILS_PATH + 'delete_user_self',
+    updatePostMeta: MY_SITE.apiRoot + UTILS_PATH + 'post_meta',
 };
 
 const HTTP_METHOD = {

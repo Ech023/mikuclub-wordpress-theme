@@ -40,8 +40,11 @@ $(function () {
                 post_id: $(element).data('post-id'),
                 disable: true
             }, disableFailTimes);
-           
-           
+            $(element).on('click', 'button.delete_down_link', '', function () {
+                delete_down_link($(this));
+            });
+
+
 
         });
 
@@ -61,25 +64,27 @@ $(function () {
  */
 function failDownListLinkCheck($linkElement) {
 
-    let link = $linkElement.attr('href');
+    const link = $linkElement.attr('href');
+    const $down_container_element = $linkElement.closest('.down-container');
+    const $badge_container_element = $down_container_element.find('.badge-container');
 
-    if (!link.includes('pan.baidu.com') && !link.includes('aliyun') && !value.includes('alipan')) {
+    if (!link.includes('pan.baidu.com') && !link.includes('aliyun') && !link.includes('alipan')) {
         return;
     }
 
-    let isValidCallback = function () {
+    const isValidCallback = function () {
 
-        $linkElement.before('<span class="badge bg-success">有效</span>');
+        $badge_container_element.empty().append('<span class="badge bg-success">还有效</span>');
         $linkElement.addClass('text-success');
     };
 
-    let isInValidCallback = function () {
-        $linkElement.before('<span class="badge bg-danger">已失效</span>');
+    const isInValidCallback = function () {
+        $badge_container_element.empty().append('<span class="badge bg-danger">已失效</span>');
         $linkElement.addClass('text-danger');
     };
 
-    let errorCallback = function () {
-        $linkElement.before('<span class="badge bg-secondary">检测失败</span>');
+    const errorCallback = function () {
+        $badge_container_element.empty().append('<span class="badge bg-warning">检测失败</span>');
     };
 
     checkBaiduPanValidity(link, isValidCallback, isInValidCallback, errorCallback);
@@ -181,3 +186,39 @@ function disableFailTimes(event) {
 }
 
 
+//删除对应的下载链接
+function delete_down_link($button) {
+
+    open_confirm_modal('确认要清空该下载地址吗?', '', () => {
+
+        const data = {
+            post_id: $button.data('post_id'),
+            meta_key: $button.data('meta_key'),
+            meta_value: '',
+        };
+
+        send_post(
+            URLS.updatePostMeta,
+            data,
+            () => {
+                show_loading_modal();
+            },
+            () => {
+                MyToast.show_success('清空成功');
+
+                //更新按钮状态
+                $button.removeClass('btn-light-2').addClass('btn-dark-1')
+                $button.html('清空成功');
+                $button.toggleDisabled();
+
+            },
+            defaultFailCallback,
+            () => {
+                hide_loading_modal();
+            }
+        );
+
+    });
+
+
+}

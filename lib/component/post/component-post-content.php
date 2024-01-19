@@ -274,41 +274,8 @@ function print_download_box($title, $down_link, $access_password, $unzip_passwor
 	{
 		$down_type = Download_Link_Type::get_type_by_link($down_link);
 
-		//如果有独立的访问密码 
-		if ($access_password)
-		{
-
-			//如果是百度网盘和夸克的分享 + 不包含 ? 问号
-			if (($down_type === Download_Link_Type::BAIDU_PAN || $down_type === Download_Link_Type::QUARK) && stripos($down_link, '?') === false)
-			{
-				$params = '';
-
-				//如果是百度盘 还需要额外检查格式
-				if ($down_type === Download_Link_Type::BAIDU_PAN)
-				{
-					//如果是标准没有带访问密码的百度分享地址 + 链接里没有 ? 问号
-					if (stripos($down_link, 'pan.baidu.com/s/1') !== false)
-					{
-						$params = [
-							'pwd' => $access_password,
-						];
-					}
-				}
-				else if ($down_type === Download_Link_Type::QUARK)
-				{
-					$params = [
-						'passcode' => $access_password,
-					];
-				}
-
-				//如果有正确生成参数
-				if ($params)
-				{
-					//移除#符号和后面的内容, 添加访问密码到下载链接里
-					$down_link = explode('#', $down_link)[0] . '?' . http_build_query($params);
-				}
-			}
-		}
+		//如果是支持的格式, 把访问密码增加到下载地址里
+		$down_link = add_access_password_to_down_link($down_link, $access_password, $down_type);
 
 
 		$button_text = Download_Link_Type::get_description($down_type) ?: '下载';
@@ -376,6 +343,57 @@ HTML;
 
 
 	return $output;
+}
+
+
+/**
+ * 把访问密码添加到下载链接里
+ *
+ * @param string $down_link
+ * @param string $access_password
+ * @param string $down_type
+ * @return string
+ */
+function add_access_password_to_down_link($down_link, $access_password,  $down_type)
+{
+	$result = $down_link;
+
+	//如果有下载链接和访问密码和下载类型
+	if ($down_link && $access_password && $down_type)
+	{
+		//如果是百度网盘和夸克的分享 并且链接里 不包含 ? 问号
+		if (($down_type === Download_Link_Type::BAIDU_PAN || $down_type === Download_Link_Type::QUARK) && stripos($down_link, '?') === false)
+		{
+			$params = '';
+
+			//如果是百度盘 还需要额外检查格式
+			if ($down_type === Download_Link_Type::BAIDU_PAN)
+			{
+				//如果是标准没有带访问密码的百度分享地址
+				if (stripos($down_link, 'pan.baidu.com/s/1') !== false)
+				{
+					$params = [
+						'pwd' => $access_password,
+					];
+				}
+			}
+			else if ($down_type === Download_Link_Type::QUARK)
+			{
+				$params = [
+					'passcode' => $access_password,
+				];
+			}
+
+			//如果有正确生成参数
+			if ($params)
+			{
+				//移除#符号和后面的内容, 添加访问密码到下载链接里
+				$result = explode('#', $down_link)[0] . '?' . http_build_query($params);
+			}
+		}
+	}
+
+	return $result;
 }
 
 /**
@@ -663,10 +681,11 @@ HTML;
 	$open_social_share_html = '';
 	if (function_exists('\mikuclub_open_social\open_social_share_html'))
 	{
+
 		$open_social_share_html = \mikuclub_open_social\open_social_share_html();
 	}
-	
-	
+
+
 
 	if ($open_social_share_html)
 	{
