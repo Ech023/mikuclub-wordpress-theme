@@ -12,6 +12,7 @@ use WP_Comment;
 use WP_Comment_Query;
 use WP_Error;
 use WP_REST_Request;
+use WP_REST_Response;
 
 /**
  * 评论相关的函数
@@ -827,4 +828,18 @@ function insert_comment($comment_content, $comment_post_id, $comment_parent = 0)
     }
 
     return $result;
+}
+
+/**
+ * 通过api删除评论的时候 触发的动作
+ * 清空该评论相关的缓存
+ * 
+ * @param WP_Comment       $comment  The deleted comment data.
+ * @param WP_REST_Response $response The response returned from the API.
+ * @param WP_REST_Request  $request  The request sent to the API.
+ * @return void
+ */
+function action_on_rest_delete_comment($comment, $response, $request)
+{
+    delete_comment_file_cache(intval($comment->comment_ID), intval($comment->comment_post_ID));
 }
