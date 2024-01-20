@@ -79,17 +79,20 @@ function get_comment_reply_count($comment_id)
  */
 function update_comment_reply_count($comment_id)
 {
+    $count = 0;
+    if ($comment_id)
+    {
 
-    $args = [
-        'status' => 'approve',
-        'count' => true,
-        'parent' => $comment_id
-    ];
+        $args = [
+            'status' => 'approve',
+            'count' => true,
+            'parent' => $comment_id
+        ];
 
-    //查询评论数
-    $count = get_comments($args);
-    update_comment_meta($comment_id, Comment_Meta::COMMENT_REPLIES_COUNT, $count);
-
+        //查询评论数
+        $count = get_comments($args);
+        update_comment_meta($comment_id, Comment_Meta::COMMENT_REPLIES_COUNT, $count);
+    }
     return intval($count);
 }
 
@@ -123,22 +126,25 @@ function get_array_children_comment_id($comment_id)
  */
 function update_array_children_comment_id($comment_id)
 {
-
-    $args = [
-        'parent' => $comment_id,
-        'hierarchical' => 'flat', //包括间接回复 , 添加到列表结尾
-        'fields' => 'ids',
-        'status' => 'approve',
-    ];
-
-    $array_children_comment_id = get_comments($args);
-    $array_children_comment_id = array_map(function ($id)
+    $array_children_comment_id = [];
+    if ($comment_id)
     {
-        return intval($id);
-    }, $array_children_comment_id);
 
-    update_comment_meta($comment_id, Comment_Meta::ARRAY_CHILDREN_COMMENT_ID, $array_children_comment_id);
+        $args = [
+            'parent' => $comment_id,
+            'hierarchical' => 'flat', //包括间接回复 , 添加到列表结尾
+            'fields' => 'ids',
+            'status' => 'approve',
+        ];
 
+        $array_children_comment_id = get_comments($args);
+        $array_children_comment_id = array_map(function ($id)
+        {
+            return intval($id);
+        }, $array_children_comment_id);
+
+        update_comment_meta($comment_id, Comment_Meta::ARRAY_CHILDREN_COMMENT_ID, $array_children_comment_id);
+    }
     return $array_children_comment_id;
 }
 
@@ -629,6 +635,11 @@ function delete_comment($comment_id)
             throw new Exception('删除失败');
         }
 
+        //更新父评论的子评论总数
+        update_comment_reply_count(intval($comment->comment_parent));
+        //更新子评论ID数组
+        update_array_children_comment_id(intval($comment->comment_parent));
+
         //清空该文章的所有评论缓存
         delete_comment_file_cache($comment_id, $post_id);
     }
@@ -842,4 +853,9 @@ function insert_comment($comment_content, $comment_post_id, $comment_parent = 0)
 function action_on_rest_delete_comment($comment, $response, $request)
 {
     delete_comment_file_cache(intval($comment->comment_ID), intval($comment->comment_post_ID));
+
+    //更新父评论的子评论总数
+    update_comment_reply_count(intval($comment->comment_parent));
+    //更新子评论ID数组
+    update_array_children_comment_id(intval($comment->comment_parent));
 }
