@@ -339,16 +339,18 @@ function api_custom_post_metadata($data)
 	//获取所有meta数据 (如果键值是数组 需要自己反序列化)
 	$metadata = get_post_meta($post_id, '', false);
 
-	//如果未设置
-	if (!isset($metadata[Post_Meta::POST_THUMBNAIL_SRC]))
-	{
-		$metadata[Post_Meta::POST_THUMBNAIL_SRC] = [];
-	}
-	if (empty($metadata[Post_Meta::POST_THUMBNAIL_SRC]) || empty($metadata[Post_Meta::POST_THUMBNAIL_SRC][0]))
-	{
-		//重新获取预览图地址
-		$metadata[Post_Meta::POST_THUMBNAIL_SRC][0] = Post_Image::get_thumbnail_src($post_id);
-	}
+	// //如果未设置
+	// if (!isset($metadata[Post_Meta::POST_THUMBNAIL_SRC]))
+	// {
+	// 	$metadata[Post_Meta::POST_THUMBNAIL_SRC] = [];
+	// }
+	// if (empty($metadata[Post_Meta::POST_THUMBNAIL_SRC]) || empty($metadata[Post_Meta::POST_THUMBNAIL_SRC][0]))
+	// {
+	// 	//重新获取预览图地址
+	// 	$metadata[Post_Meta::POST_THUMBNAIL_SRC][0] = Post_Image::get_thumbnail_src($post_id);
+	// }
+	$metadata[Post_Meta::POST_THUMBNAIL_SRC] = $metadata[Post_Meta::POST_THUMBNAIL_SRC] ?? [];
+	$metadata[Post_Meta::POST_THUMBNAIL_SRC][0] = Post_Image::get_thumbnail_src($post_id);
 
 	//重新获取一遍各个大小的预览图片地址数组
 	//因为默认批量获取 没有对数组进行反反序列化
