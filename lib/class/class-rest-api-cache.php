@@ -4,6 +4,7 @@ namespace mikuclub;
 
 use mikuclub\constant\Config;
 use mikuclub\constant\Expired;
+use mikuclub\constant\Post_Meta;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Server;
@@ -202,8 +203,8 @@ class Rest_Api_Cache
             {
                 case static::POSTS:
 
-                    //如果不存在 搜索参数 或者 author参数, 或者 参数ID 不是 当前用户ID
-                    if (!isset($_REQUEST['search'])  && (!isset($_REQUEST['author']) ||  intval($_REQUEST['author']) !== get_current_user_id()))
+                    //如果不存在 禁用缓存 和 搜索参数 或者 author参数, 或者 参数ID 不是 当前用户ID
+                    if (!isset($_REQUEST[Post_Query::CUSTOM_NO_CACHE]) && !isset($_REQUEST['search'])  && (!isset($_REQUEST['author']) ||  intval($_REQUEST['author']) !== get_current_user_id()))
                     {
     
                         $result = File_Cache::WP_REST_POSTS;
