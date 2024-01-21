@@ -149,16 +149,16 @@ function copy_to_clipboard($input) {
 
     // $element.trigger('select');
     const value = $input.val();
-    //使用新版方法复制到剪切板
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(value);
-    }
-    //否则继续用旧版复制方法
-    else {
+    //使用新版方法复制到剪切板 (失去焦点就会失效)
+    // if (navigator.clipboard) {
+    //     navigator.clipboard.writeText(value);
+    // }
+    // //否则继续用旧版复制方法
+    // else {
         $input.trigger('select');
         //复制到剪切板
         document.execCommand('copy');
-    }
+    // }
 
     //提示框
     MyToast.show_success('已自动复制: ' + value);
