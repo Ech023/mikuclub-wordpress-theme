@@ -18,15 +18,19 @@ function api_check_app_update()
 {
 
 	$output = [
-		'versionCode' => 35,
-		'versionName' => 'v2.9.4版本 [23年12月30号发布]',
-		'forceUpdate' => true,
+		'versionCode' => 37,
+		'versionName' => 'v3.0版本 [24年1月22号发布]',
+		'forceUpdate' => false,
 		// 'downUrl' => 'https://mikuclub.fun/app/mikuclub_v2.9.4.apk',
-		'downUrl' => 'https://cdn.mikuclub.fun/app/mikuclub_v2.9.4.apk',
+		'downUrl' => 'https://cdn2.mikuclub.fun/app/mikuclub_v3.0.apk',
 		'description' => '' .
-			'- 2.9.4版本: 修复登陆失效导致无法查看收藏-评论-搜索-投稿等\n' .
-			'- 2.9.2版本: 修复安卓12以上首页闪退问题\n' .
-			'- 2.9.1版本: 修复安卓14无法查看大图的问题\n' .
+			'重大更新, 建议下载升级新版' .
+			'- 增加差评按钮\n' .
+			'- 评论列表优化, 支持删除自己的评论\n' .
+			'- 显示二级解压密码' .
+			'- 添加备用图床功能' .
+			'- 支持谷歌账号登陆' .
+			'- 修复若干BUG\n' .
 			//'- 修复 微博登陆问题\n'.
 			//'- 增加 投稿页面秒传链接的文本框\n'.
 			//'- 支持直接唤起阿里云盘 (失败)\n'.
