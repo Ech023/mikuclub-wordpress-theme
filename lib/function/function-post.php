@@ -621,6 +621,7 @@ function add_custom_post_meta_on_rest_post($post, $request)
         //未在REST INSERT POST里使用到
         $array_post_meta_key_to_create = [
             Post_Meta::POST_SOURCE,
+            Post_Meta::POST_YOUTUBE,
             Post_Meta::POST_VIDEO,
         ];
         foreach ($array_post_meta_key_to_create as $meta_key)
@@ -637,10 +638,16 @@ function add_custom_post_meta_on_rest_post($post, $request)
             //Post_Meta::POST_SOURCE, 未使用
             Post_Meta::POST_DOWN,
             Post_Meta::POST_DOWN2,
+            Post_Meta::POST_DOWN3,
             Post_Meta::POST_PASSWORD,
             Post_Meta::POST_PASSWORD2,
+            Post_Meta::POST_PASSWORD3,
             Post_Meta::POST_UNZIP_PASSWORD,
             Post_Meta::POST_UNZIP_PASSWORD2,
+            Post_Meta::POST_UNZIP_PASSWORD3,
+            Post_Meta::POST_UNZIP_SUB_PASSWORD,
+            Post_Meta::POST_UNZIP_SUB_PASSWORD2,
+            Post_Meta::POST_UNZIP_SUB_PASSWORD3,
             // Post_Meta::POST_BAIDU_FAST_LINK, //已失效
             Post_Meta::POST_BILIBILI,
             //Post_Meta::POST_VIDEO, 未使用
@@ -649,8 +656,11 @@ function add_custom_post_meta_on_rest_post($post, $request)
 
         foreach ($array_post_meta_key_to_update as $meta_key)
         {
-            $meta_value = $meta[$meta_key] ?? '';
-            update_post_meta($post->ID, $meta_key, $meta_value);
+            if (isset($meta[$meta_key]))
+            {
+                $meta_value = $meta[$meta_key] ?? '';
+                update_post_meta($post->ID, $meta_key, $meta_value);
+            }
         }
 
 
