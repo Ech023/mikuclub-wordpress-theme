@@ -18,13 +18,14 @@ function api_check_app_update()
 {
 
 	$output = [
-		'versionCode' => 37,
-		'versionName' => 'v3.0版本 [24年1月22号发布]',
+		'versionCode' => 38,
+		'versionName' => 'v3.0.1版本 [24年1月22号发布]',
 		'forceUpdate' => false,
 		// 'downUrl' => 'https://mikuclub.fun/app/mikuclub_v2.9.4.apk',
-		'downUrl' => 'https://cdn2.mikuclub.fun/app/mikuclub_v3.0.apk',
+		'downUrl' => 'https://cdn2.mikuclub.fun/app/mikuclub_v3.0.1.apk',
 		'description' => '' .
 			'重大更新, 建议下载升级新版' .
+			'- 新: 调整差评和好评按钮位置\n' .
 			'- 增加差评按钮\n' .
 			'- 评论列表优化, 支持删除自己的评论\n' .
 			'- 显示二级解压密码' .
