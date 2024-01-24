@@ -524,6 +524,7 @@ class Download_Link_Type
                 '139' => static::YUN_139,
                 'magnet' => static::MAGNET,
                 'sharepoint' => static::ONE_DRIVE,
+                '1drv.ms' => static::ONE_DRIVE, //ONE DRIVE短域名
                 'mega' => static::MEGA,
                 'pikpak' => static::PIKPAK,
             ];
