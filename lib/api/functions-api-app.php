@@ -22,7 +22,7 @@ function api_check_app_update()
 		'versionName' => 'v3.0.2版本 [24年1月24号发布]',
 		'forceUpdate' => false,
 		// 'downUrl' => 'https://mikuclub.fun/app/mikuclub_v2.9.4.apk',
-		'downUrl' => 'https://cdn2.mikuclub.fun/app/mikuclub_v3.0.2.apk',
+		'downUrl' => 'https://cdn2.mikuclub.fun/app/mikuclub_v3.0.1.2.apk',
 		'description' => '' .
 			'重大更新, 建议下载升级新版' .
 			'- 3.0.2: 修复搜索页重复弹出键盘的问题\n' .
