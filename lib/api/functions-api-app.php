@@ -18,13 +18,13 @@ function api_check_app_update()
 {
 
 	$output = [
-		'versionCode' => 39,
-		'versionName' => 'v3.0.2版本 [24年1月24号发布]',
+		'versionCode' => 40,
+		'versionName' => 'v3.0.3版本 [24年1月25号发布]',
 		'forceUpdate' => false,
 		// 'downUrl' => 'https://mikuclub.fun/app/mikuclub_v2.9.4.apk',
-		'downUrl' => 'https://cdn2.mikuclub.fun/app/mikuclub_v3.0.1.2.apk',
+		'downUrl' => 'https://cdn2.mikuclub.fun/app/mikuclub_v3.0.3.apk',
 		'description' => '' .
-			'重大更新, 建议下载升级新版' .
+			'- 3.0.3: 暗夜模式默认将跟随系统, 修复暗夜模式按钮的颜色\n' .
 			'- 3.0.2: 修复搜索页重复弹出键盘的问题\n' .
 			'- 3.0.1: 调整差评和好评按钮位置\n' .
 			'- 增加差评按钮\n' .
