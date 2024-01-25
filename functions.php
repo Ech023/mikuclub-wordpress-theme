@@ -459,7 +459,7 @@ function setup_front_end_script_variable()
         $post_id = get_the_ID();
         $dynamic_variable['post_id'] = $post_id;
         $dynamic_variable['post_main_cat'] = get_post_main_cat_id($post_id);
-        $dynamic_variable['post_author_id'] = get_post_field('post_author', $post_id);
+        $dynamic_variable['post_author_id'] = intval(get_post_field('post_author', $post_id));
     }
     //如果是分类页
     if (is_category())

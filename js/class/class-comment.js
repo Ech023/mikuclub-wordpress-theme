@@ -54,11 +54,17 @@ class MyComment {
         const is_admin = MY_SITE.is_admin;
         //判断当前用户是否是评论人
         const is_comment_author = MY_SITE.user_id === parseInt(this.author.id)
-        //判断当前用户是否是文章的作者
-        const is_post_author = parseInt(MY_SITE.post_author_id) === parseInt(this.author.id);
-        //判断当前用户是否是高级用户 并且是 文章的作者
-        const is_premium_user_and_post_author = MY_SITE.is_premium_user && is_post_author;
 
+        //判断当前用户是否是文章的作者
+        const is_post_author = MY_SITE.user_id === MY_SITE.post_author_id;
+
+        //判断当前评论是否是文章的作者发布
+        const is_post_author_comment =  parseInt(this.author.id) === MY_SITE.post_author_id;
+  
+
+        //判断当前用户是否是高级用户 并且是 文章的作者
+        const is_premium_user_and_post_author = MY_SITE.is_premium_user && is_post_author && false;
+       
 
 
         //递归输出 子评论
@@ -85,7 +91,7 @@ class MyComment {
         let authorDisplayName = this.author.display_name;
         //如果是UP主自己发的评论
         //添加高亮显示
-        if (is_post_author) {
+        if (is_post_author_comment) {
             authorDisplayName = `
                 <span class="px-1 me-1 border border-danger rounded text-danger">UP主</span>
                 <span class="text-danger fw-bold">${authorDisplayName}</span>
