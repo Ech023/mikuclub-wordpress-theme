@@ -992,7 +992,7 @@ function update_post_parent($array_post_id, $post_parent_id)
         SET 
             post_parent = {$post_parent_id}
         WHERE
-            ID IN {$string_array_post_id}
+            ID IN ({$string_array_post_id})
 SQL;
 
     $wpdb->query($query);
